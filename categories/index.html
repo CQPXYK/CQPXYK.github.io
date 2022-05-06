@@ -12,7 +12,7 @@
   
   <title>
     
-      CQ&#39;s Blog
+      Categories | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -150,42 +150,122 @@
 </header>
 
     <div id="article-banner">
-  <h2>Archives</h2>
-  <!-- <p class="post-date">归档</p> -->
+  <h2>Categories</h2>
+  <!--
+  <p class="post-date">2022-05-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+  -->
 </div>
-<main class="app-body" id="archives">
-  
-  
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2022
-  </h1>
-  <div class="section-list">
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><p>1</p>
+<h1 id="读书笔记"><a href="#读书笔记" class="headerlink" title="读书笔记"></a>读书笔记</h1><p>2</p>
+<h1 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h1><p>3</p>
+<h1 id="工作教程"><a href="#工作教程" class="headerlink" title="工作教程"></a>工作教程</h1><p><a href="../../2022/05/06/blog/">搭建个人博客</a></p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>所有的内容均是为了保证自己能有一个从输入到输出的学习过程，每个内容记录都可能会有各种理解上的不足与偏差，但是都会持续地进行改进与完善。</p>
+</section>
+    <!-- Tags START -->
     
+    <!-- Tags END -->
+    <!-- NAV START -->
     
-      <div class="section-list-item">
-        <a href="/2022/05/06/blog/" class="archive-title">搭建个人博客</a>
-        <p class="archive-date">05-06</p>
-      </div>
+    <!-- NAV END -->
+    <!-- 打赏 START -->
     
-      <div class="section-list-item">
-        <a href="/2022/05/03/hello-world/" class="archive-title">Hello World</a>
-        <p class="archive-date">05-03</p>
-      </div>
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-nav-text">基础知识</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="toc-nav-text">读书笔记</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">工具介绍</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%95%99%E7%A8%8B"><span class="toc-nav-text">工作教程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-nav-text">写在最后</span></a></li></ol>
     
   </div>
-</section>
+</aside>
   
+  <!-- Catalog END -->
 </main>
 
 <script>
   (function () {
-    var url = 'http://example.com/archives/2022/index.html';
+    var url = 'http://example.com/categories/index.html';
+    <!--
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+    -->
     $('#article-banner').geopattern(url);
     $('.header').removeClass('fixed-header');
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
   })();
 </script>
+
+
+
+
+
+
+
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>

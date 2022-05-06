@@ -43,7 +43,7 @@ pre {
   display: flex;
   display: -ms-flexbox;
   display: -webkit-box;
-  display: -webkit-flex;
+/* display: -webkit-flex */
   transform: unset !important;
 }
 .wechat-share {
@@ -124,7 +124,7 @@ h2.article-head {
   box-sizing: border-box;
   top: 0;
   left: 0;
-  padding: 100px 20px 25px 20px;
+  padding: 5px 5px 5px 5px;
   text-align: center;
   position: relative;
   background-repeat: no-repeat;
@@ -335,7 +335,7 @@ h2.article-head {
 .fixed-header {
   position: fixed;
   background-color: rgba(255,255,255,0.98);
-  box-shadow: 0 0 3px rgba(14,14,14,0.26);
+  box-shadow: 0 0 3px;
 }
 .fixed-header .home-link {
   color: #42b983;
@@ -597,29 +597,6 @@ h2.article-head {
   display: block;
   margin: 20px auto;
   cursor: zoom-in;
-}
-.markdown-content figure,
-.article-summary figure {
-  background: #f8f8f8;
-  padding: 0 10px;
-  border-radius: 2px;
-  margin: 20px 0;
-  overflow: auto;
-  position: relative;
-}
-.markdown-content figure:after,
-.article-summary figure:after {
-  content: attr(data-lang);
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: #ccc;
-  text-align: right;
-  font-size: 0.7em;
-  padding: 5px 10px 0;
-  line-height: 15px;
-  height: 15px;
-  font-weight: 500;
 }
 .markdown-content > table,
 .article-summary > table {

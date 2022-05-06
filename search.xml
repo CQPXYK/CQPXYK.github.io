@@ -18,4 +18,14 @@
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>搭建个人博客</title>
+    <url>/2022/05/06/blog/</url>
+    <content><![CDATA[<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p>1）Git：一种分布式版本控制系统（DVCS）；</p>
+<p>2）GitHub：一个只支持Git进行版本控制的代码托管平台；</p>
+<p>3）GitHub Pages：提供免费静态网站托管服务，它能够对GitHub中的静态文件资源进行处理并展示成一个网站，同时还会给这个网站提供一个特定的域名，但用户也可以将域名改成自己想要的；</p>
+<p>4）Node.js：一个开源和跨平台的JavaScript运行时环境</p>
+<p>5）Hexo：一个将用户编辑的md格式的文件生成HTML静态资源文件的博客框架。</p>
+]]></content>
+  </entry>
 </search>
