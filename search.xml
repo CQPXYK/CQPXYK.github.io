@@ -1,31 +1,630 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/05/03/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <title>代码整洁之道</title>
+    <url>/2022/05/06/clean-code/</url>
+    <content><![CDATA[<h1 id="1、整洁代码"><a href="#1、整洁代码" class="headerlink" title="1、整洁代码"></a>1、整洁代码</h1><p>保持高效的唯一做法就是始终保持代码整洁。</p>
+<ul>
+<li>代码逻辑应该直截了当；</li>
+<li>尽量减少依赖关系；</li>
+<li>完善错误处理代码；</li>
+<li>性能调制最优；</li>
+<li>整洁的代码只做好一件事；</li>
+<li>干净利落的抽象；</li>
+<li>不引人猜忌；</li>
+<li>单元测试和验收测试；</li>
+<li>明确、清晰、尽可能少的实体（类、API、方法等）；</li>
+<li>没有重复代码；</li>
+<li>代码应通过其字面表达含义；</li>
+<li>代码便于作者之外的人阅读和增补；</li>
+<li>几乎没有改进的余地。</li>
+</ul>
+<h1 id="2、有意义的命名"><a href="#2、有意义的命名" class="headerlink" title="2、有意义的命名"></a>2、有意义的命名</h1><p>需要同时关注代码的简洁度和模糊度，可通过有意义的命名来降低模糊度。</p>
+<ul>
+<li>名副其实；</li>
+<li>无误导倾向；</li>
+<li>有意义的区分；</li>
+<li>可朗读；</li>
+<li>可搜索（单字母名称仅用于短方法中的本地变量，名称长度应与其作用域大小相对应）；</li>
+<li>区分名词和动词；</li>
+<li>添加有意义的语境（创建一个类，类中包含有多个成员变量，则该类名起到了一个变量名前缀的作用）。</li>
+</ul>
+<h1 id="3、函数"><a href="#3、函数" class="headerlink" title="3、函数"></a>3、函数</h1><p>函数应该只做且做好这一件事，即函数中的语句均在同一抽象层级上。</p>
+<ul>
+<li>短小（20行封顶）；</li>
+<li>if、else、while语句中的代码块应该只占一行；</li>
+<li>函数的缩进层级不应该多于两层；</li>
+<li>通过多态将switch语句埋藏在较低的抽象层级（比如抽象工厂）中，而非具体的上层功能函数中；</li>
+<li>函数参数数量越少越好，不多于2；</li>
+<li>多个参数的传入顺序可以隐含在函数名中；</li>
+<li>函数体中不应进行函数名所描述之外的操作，即函数应无副作用；</li>
+<li>用异常处理代替返回错误码时的处理，使得错误处理代码从主路径中分离出来；</li>
+<li>保持函数短小比结构化编程（无break，continue，goto，只有一个return）更有利。</li>
+</ul>
+<h1 id="4、注释"><a href="#4、注释" class="headerlink" title="4、注释"></a>4、注释</h1><p>尽量用代码来代替注释进行表达。</p>
+<p>好注释应：</p>
+<ul>
+<li>提供某个决定背后的意图；</li>
+<li>小心确认注释的正确性；</li>
+<li>面向读者而非自己；</li>
+<li>无冗余描述；</li>
+<li>解释未能自行解释的代码。</li>
+</ul>
+<h1 id="5、格式"><a href="#5、格式" class="headerlink" title="5、格式"></a>5、格式</h1><p>即使代码不复存在，代码的风格和律条也会存活下来。</p>
+<ul>
+<li>向报纸学习，有主题，有大纲，细节往下依次展开，有许多篇文章而不是一篇大长文；</li>
+<li>垂直方向上的空白行隔开了代码概念上的紧密程度；</li>
+<li>尽量不要将关系密切的概念放到不同的文件中，这也是避免使用protected变量的理由之一；</li>
+<li>局部变量声明应靠近使用位置，实体变量声明应该在类的顶部。</li>
+</ul>
+<h1 id="6、对象和数据结构"><a href="#6、对象和数据结构" class="headerlink" title="6、对象和数据结构"></a>6、对象和数据结构</h1><ul>
+<li>严肃思考对象所包含的数据，不应随意乱加取值器和赋值器；</li>
+<li>过程式代码便于在不改动既有数据结构的前提下添加新函数，难以添加新数据结构，面向对象代码便于在不改动既有函数的前提下添加新类，难以添加新函数，需根据情况选择编写两种不同的风格的代码；</li>
+<li>方法不应调用由任何函数所返回的对象的方法，因为会暴露所返回对象的内部结构，即违反德墨忒尔律（模块不应了解它所操作对象的内部）；</li>
+<li>只有公共变量，没有函数的类（或者所有私有变量均有取值器，且无取值器之外的函数的类）被称为数据传送对象（Data Transfer Objects, DTO），是最精简的数据结构；</li>
+<li>避免数据结构和对象的混杂使用。</li>
+</ul>
+<h1 id="7、错误处理"><a href="#7、错误处理" class="headerlink" title="7、错误处理"></a>7、错误处理</h1><p>错误处理很重要，但凌乱的错误处理可能会搞乱代码逻辑。</p>
+<p>在业务逻辑和错误处理代码之间建立良好的区隔：</p>
+<ul>
+<li>使用异常处理而非返回错误码；</li>
+<li>先写try-catch结构，再写业务代码；</li>
+<li>使用未检异常（使用已检异常时，抛出异常处和catch语句之间的每个方法签名都需要添加throw子句，这违反了开放/闭合原则）；</li>
+<li>思考异常如何被捕获，当各种异常被捕获后的处理一致时，对调用API进行打包，确保返回通用异常类型，从而简化代码；</li>
+<li>不返回也不传递null值。</li>
+</ul>
+<h1 id="8、边界"><a href="#8、边界" class="headerlink" title="8、边界"></a>8、边界</h1><p>在使用带三方程序包时，需要保持软件边界整洁，将外来代码干净利落地整合进自身代码中。</p>
+<ul>
+<li>避免从公共API中返回边界接口，或者将边界接口作为参数传递给公共API；</li>
+<li>在使用第三方程序包之前先通过学习性测试来了解该程序包；</li>
+<li>通过定义并使用接口（即定义未知的边界）来使用尚不存在的代码；</li>
+<li>边界上的代码需要清晰的分割和定义了期望的测试，应该避免自己的代码去过多了解第三方代码中的特定信息。</li>
+</ul>
+<h1 id="9、单元测试"><a href="#9、单元测试" class="headerlink" title="9、单元测试"></a>9、单元测试</h1><ul>
+<li>在编写出无法通过的测试代码之前，不能编写生产代码；</li>
+<li>只能编写刚好无法通过的测试代码；</li>
+<li>只能编写刚好通过当前失败测试的生产代码；</li>
+<li>要像编写生产代码一样编写整洁的测试代码，见前面全部内容；</li>
+<li>有些事永远不会在生成环境中做，但在测试环境中做却完全没有问题（双重标准）；</li>
+<li>单个测试当中的断言个数应当最小化（但也不严苛的追求只能有一个断言），每个测试函数都只测试一个概念；</li>
+<li>测试应当能够快速运行，各个测试之间应当相互独立，可以在任何环境重复通过，应当有布尔值输出，实现自足验证，始终要及时编写测试。</li>
+</ul>
+<h1 id="10、类"><a href="#10、类" class="headerlink" title="10、类"></a>10、类</h1><ul>
+<li>类成员出现顺序：公共静态常量，私有静态变量，私有实体变量，公共函数，由公共函数调用的私有工具函数紧随其后；</li>
+<li>类成员通常设为private，测试代码需要调用的函数和变量可设置为protected；</li>
+<li>单一权责原则（SRP）认为类或模块应该只有一条加以修改的理由，臃肿的类应当切分为只有单一权责的去耦式单元，只有一条修改的理由；</li>
+<li>类应当只有少数实体变量，类中的每个方法都应该操作一个或多个这种变量，如果类中的每个变量都被每个方法所使用，则该类具有最大的内聚性；</li>
+<li>创建极大化内聚类一般是不可取也不可能的，但希望类的内聚性保持在较高位置；</li>
+<li>根据函数应当短小以及类应当高内聚的原则，将大函数拆分为小函数时，也会将类拆分为小类；</li>
+<li>在理想系统中，通过扩展系统而非修改现有代码来添加新特性；</li>
+<li>依赖倒置原则（DIP）认为类应当依赖抽象而不是具体实现代码细节。</li>
+</ul>
+<h1 id="11、系统"><a href="#11、系统" class="headerlink" title="11、系统"></a>11、系统</h1><ul>
+<li>软件系统应将起始过程和起始后的运行过程逻辑分离开（比如延迟性初始化/赋值就违背了这一原则）；</li>
+<li>通过抽象工厂模式让应用自行控制何时创建对象，将构造细节隔离在应用程序代码之外；</li>
+<li>依赖注入（Dependency Injection, DI）机制可以分离构造与使用，Spring框架提供了最有名的Java DI容器；</li>
+<li>恰当切分关注面，面向切面编程（Aspect Oriented Programming），AOP有时会与实现它的技术相混淆，如方法拦截、通过代理做“封包”，但AOP系统的真正价值在于用简洁和模块化的方式指定系统行为；</li>
+<li>Java中的AOP机制有：Java代理、Spring框架、AspectJ；</li>
+<li>最佳系统架构由模块化的关注面领域组成，每个关注面均用纯面向对象语言实现，不同领域之间用最不具有侵害性的方面或类方面工具整合起来。</li>
+</ul>
+<h1 id="12、迭进"><a href="#12、迭进" class="headerlink" title="12、迭进"></a>12、迭进</h1><ul>
+<li><p>保持系统可测试并测试通过，可测试的系统会导向保持类短小、单一、低耦合、高内聚的设计方案；</p>
+</li>
+<li><p>消除重复，对于重复代码可以做共性抽取，并遵循SRP原则；</p>
+</li>
+<li><p>保证代码的表达力，使得读者易于理解作者的意图；</p>
+</li>
+<li><p>在做到以上前提的基础上尽可能减少类和方法的数量，即这条是优先级最低的一条。</p>
+</li>
+</ul>
+<h1 id="13、并发"><a href="#13、并发" class="headerlink" title="13、并发"></a>13、并发</h1><p>并发将做什么（目的）和何时（时机）做分解开，从而改进应用程序的吞吐量和结构，依靠于容器的并发处理能力还不能够保证并发程序不会出错。</p>
+<ul>
+<li><p>只有在多个线程或处理器之间能分享大量等待时间的时候能够通过并发来改善性能；</p>
+</li>
+<li><p>并发系统的算法设计与单线程系统极不相同，并发常常需要对设计策略做根本性修改；</p>
+</li>
+<li><p>即便使用具有并发处理能力的容器进行并发编程时，依旧要了解容器在做什么，了解如何应对各种并发问题；</p>
+</li>
+<li><p>分离并发相关代码和其他代码（这也符合单一权责原则），再进行调试；</p>
+</li>
+<li><p>限制数据作用域，谨记数据封装，严格限制对可能被共享的数据的访问；</p>
+</li>
+<li><p>使用类库提供的线程安全群集，需要掌握JUC；</p>
+</li>
+<li><p>使用executor框架执行无关任务，尽量使用非锁定解决方案；</p>
+</li>
+<li><p>警惕同步方法之间的依赖，一个类中不应该有多个同步方法；</p>
+</li>
+<li><p>在出现并发问题时，尽可能修改服务端代码，若服务端无法修改，则采用适配器模式修改服务端提供的API，尽量不修改客户端代码；</p>
+</li>
+<li><p>平静关闭系统很难做到，要预留足够多的时间来编写能够正确关闭的并发代码；</p>
+</li>
+<li><p>不要将并发系统错误归咎于偶发事件；</p>
+</li>
+<li><p>不要同时检查非线程代码和线程代码，先确保代码在线程之外可工作，能放进POJO中的代码越多越好，再由线程直接调用POJO；</p>
+</li>
+<li><p>编写可调整的线程代码，在系统运行时允许线程依据吞吐量和系统使用率来自我调整；</p>
+</li>
+<li><p>运行多于处理器数量的线程（仅用于测试不要用于生产），这会促进频繁的任务交换，进而越有可能找到错过临界区或导致死锁的代码；</p>
+</li>
+<li><p>增加对wait()、sleep()、yield()以及priority()方法的调用（仅用于测试不要用于生产），改变代码执行顺序，则更容易测试出出错的执行顺序。</p>
+</li>
+</ul>
+<h1 id="14、逐步改进（案例一）"><a href="#14、逐步改进（案例一）" class="headerlink" title="14、逐步改进（案例一）"></a>14、逐步改进（案例一）</h1><p><strong>问题：</strong>一份能够完成简单需求的代码，会因为后续的简单需求补充而变得混乱，比如原本针对布尔型元素的功能在后续需要对整型、字符串型等各种类型的元素依旧保持有效，这种简单的需求改进很可能导致复杂的代码改进，使得原本整洁的代码变得混乱。</p>
+<p><strong>应对：</strong>一开始就尽量了解清楚需求的背景、动机、意义，从用户、产品、开发等各种角色来思考需求后续可能会如何迭代，从而设计出尽可能健壮的代码实现方案。</p>
+<p><strong>问题：</strong>初始设计不可能做到绝对周全，后续迭代过程中依旧会遇到需要改动代码结构的情况。</p>
+<p><strong>应对：</strong>改动的过程中要采用TDD，每次修改都必须确保系统能像以前一样工作，具体改动方式参照上文内容。</p>
+<h1 id="15、Junit内幕（案例二）"><a href="#15、Junit内幕（案例二）" class="headerlink" title="15、Junit内幕（案例二）"></a>15、Junit内幕（案例二）</h1><p>应当更清晰地表达代码的意图：</p>
+<ul>
+<li><p>多个连在一起的条件判断应当用一个函数封装起来；</p>
+</li>
+<li><p>正向肯定的判断放在if条件中，而不用if not；</p>
+</li>
+<li><p>变量名称中不加难以理解的前缀；</p>
+</li>
+<li><p>函数中的局部变量名不与成员变量一致，此时就不需要使用this来区分；</p>
+</li>
+<li><p>函数调用应良好反映出时序关系；</p>
+</li>
+<li><p>将功能复杂的大函数拆分成功能单一的小函数。</p>
+</li>
+</ul>
+<h1 id="16、重构SerialDate（案例三）"><a href="#16、重构SerialDate（案例三）" class="headerlink" title="16、重构SerialDate（案例三）"></a>16、重构SerialDate（案例三）</h1><ul>
+<li>不要继承常量类，而是将常量类改为自己的枚举类型；</li>
+<li>实现了Serializable接口的类应当显式声明并手动配置序列版本UID变量；</li>
+<li>类的成员变量应确保是与该类有关的变量，否则该变量就不应该称为该类的成员变量，函数同理；</li>
+<li>不应由抽象类来提供具体实现信息，这种设计会污染抽象类；</li>
+<li>基类不应了解派生类的情况，更不应该在基类的行为中创建出派生类实例，如果代码中出现这种情况可以更改为利用抽象工厂来完成创建实例的任务；</li>
+<li>不要通过整数形式来传递信息（描述不清且修改时易遗漏），而是通过符号形式传递；</li>
+<li>无需编写默认构造器，因为编译器会自动生成；</li>
+<li>成员类应当在概念上依赖于外围类并且足够小巧，否则就将成员类移出外围类；</li>
+<li>类的静态函数的入参不应有类实例，该静态函数更不应该对类的实例进行操作。</li>
+</ul>
 ]]></content>
   </entry>
   <entry>
     <title>搭建个人博客</title>
     <url>/2022/05/06/blog/</url>
-    <content><![CDATA[<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p>1）Git：一种分布式版本控制系统（DVCS）；</p>
-<p>2）GitHub：一个只支持Git进行版本控制的代码托管平台；</p>
-<p>3）GitHub Pages：提供免费静态网站托管服务，它能够对GitHub中的静态文件资源进行处理并展示成一个网站，同时还会给这个网站提供一个特定的域名，但用户也可以将域名改成自己想要的；</p>
-<p>4）Node.js：一个开源和跨平台的JavaScript运行时环境</p>
-<p>5）Hexo：一个将用户编辑的md格式的文件生成HTML静态资源文件的博客框架。</p>
+    <content><![CDATA[<h1 id="1、工具"><a href="#1、工具" class="headerlink" title="1、工具"></a>1、工具</h1><ul>
+<li><p>Git：一种分布式版本控制系统（DVCS）；</p>
+</li>
+<li><p>GitHub：一个只支持Git进行版本控制的代码托管平台；</p>
+</li>
+<li><p>GitHub Pages：提供免费静态网站托管服务，它能够对GitHub中的静态文件资源进行处理并展示成一个网站，同时还会给这个网站提供一个特定的域名，但用户也可以将域名改成自己想要的；</p>
+</li>
+<li><p>Node.js：一个开源和跨平台的JavaScript运行时环境；</p>
+</li>
+<li><p>Hexo：一个将用户编辑的md格式的文件生成HTML静态资源文件的博客框架。</p>
+</li>
+</ul>
+<h1 id="2、前期准备"><a href="#2、前期准备" class="headerlink" title="2、前期准备"></a>2、前期准备</h1><h2 id="2-1-Git、GitHub及配置"><a href="#2-1-Git、GitHub及配置" class="headerlink" title="2.1 Git、GitHub及配置"></a>2.1 Git、GitHub及配置</h2><p>​    1）在<a href="https://git-scm.com/downloads">Git</a>下载安装包并安装；</p>
+<p>​    2）鼠标右键可以看到：Git Bash Here，单击打开；</p>
+<p>​    3）输入<code>git -version</code>，可以看到安装好的版本信息；</p>
+<p>​    4）在<a href="https://github.com/">GitHub</a>注册账号；</p>
+<p>​    5）设置Git用户信息；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">&quot;GitHubName&quot;</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;GitHub Email&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    6）生成SSH key</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;GitHubEmail&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    7）连续一路回车直到生成一个矩形图案，此时，可以看到用户目录下生成了<code>.ssh</code>文件夹，该文件夹的<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件分别对应SSH key的公钥和私钥；</p>
+<img src="blog_1.png" alt="文件目录截图1" style="zoom:70%;" />
+
+<img src="blog_2.png" alt="文件目录截图2" style="zoom:70%;" />
+
+<p>​    8）打开GitHub主页 –&gt; Settings –&gt; SSH and GPG keys –&gt; New SSH key，将id_rsa.pub中的内容复制粘贴到key中，title可以随便取，点击Add SSH key；</p>
+<img src="blog_3.png" alt="项目设置截图1" style="zoom:70%;" />
+
+<p>​    9）验证是否成功；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>​    10）SSH key配置完毕后，就可以将本地的源码和资源上传到GitHub，而无需每次都输账号和密码。</p>
+<h2 id="2-2-GitHub-Page和域名"><a href="#2-2-GitHub-Page和域名" class="headerlink" title="2.2 GitHub Page和域名"></a>2.2 GitHub Page和域名</h2><p>​    1）打开GitHub主页 –&gt; <code>+</code>按钮 –&gt; New respository，在Repository name输入框中填入<code>GitHubName.github.io</code>，勾选Initialize this repository with a README选项；</p>
+<p>​    2）在浏览器中输入<a href="https://githubname.github.io/">https://GitHubName.github.io/</a> 即可看到如下页面，代表成功开启了GitHub Pages服务；</p>
+<img src="blog_4.png" alt="浏览器截图1" style="zoom:70%;" />
+
+<p>​    3）在<a href="https://wanwang.aliyun.com/">万网-阿里云</a>注册账号或直接登录，选择还未被注册的域名，进入结算页面，创建持有者信息模本，验证并等待审核，付钱；</p>
+<img src="blog_5.png" alt="域名注册截图1" style="zoom:70%;" />
+
+<p>​    4）由于GitHub推荐在DNS中使用A记录和CNAME相结合的方式，在注册好的个人域名后点击解析添加如下两条解析记录，其中，iPv4地址可以通过<code>ping</code>得到；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ping GitHubName.github.io</span><br></pre></td></tr></table></figure>
+
+<img src="blog_6.png" alt="域名注册截图2" style="zoom:70%;" />
+
+<p>​    5）打开GitHubName.github.io仓库 –&gt; Add file –&gt; Create new file，文件名为<code>CNAME</code>，内容为注册好的个人域名，然后提交；</p>
+<img src="blog_7.png" alt="项目设置截图2" style="zoom:70%;" />
+
+<p>​    6）在浏览器中输入个人域名即可看到如下页面，代表成功绑定了域名；</p>
+<img src="blog_8.png" alt="浏览器截图2" style="zoom:70%;" />
+
+<p>​    7）打开GitHubName.github.io仓库 –&gt; Settings –&gt; Pages，勾选<code>Enforce HTTPS</code>选项即可强制走Https。</p>
+<img src="blog_9.png" alt="项目设置截图3" style="zoom:70%;" />
+
+<h2 id="2-3-Node-js和Hexo"><a href="#2-3-Node-js和Hexo" class="headerlink" title="2.3 Node.js和Hexo"></a>2.3 Node.js和Hexo</h2><p>​    1）在<a href="https://nodejs.org/en/download/">Node.js</a>下载安装包并安装；</p>
+<p>​    2）查看安装好的版本信息；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">$ npm -v</span><br></pre></td></tr></table></figure>
+
+<p>​    3）在<code>nodejs</code>文件夹中新建两个空文件夹 <code>node_cache</code>、<code>node_global</code>；</p>
+<img src="blog_10.png" alt="文件目录截图3" style="zoom:70%;" />
+
+<p>​    4）配置；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> prefix <span class="string">&quot;D:\nodejs\node_global&quot;</span></span><br><span class="line">$ npm config <span class="built_in">set</span> cache <span class="string">&quot;D:\nodejs\node_cache&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    5）打开控制面板 –&gt; 系统 –&gt; 高级系统设置 –&gt; 环境变量，在系统变量中新建一个变量名为<code>ODE_PATH</code>，值为<code>D:\nodejs\node_global\node_modules</code>；</p>
+<img src="blog_11.png" alt="系统设置截图1" style="zoom:70%;" />
+
+<p>​    6）编辑用户变量里的Path，将npm的路径改为：<code>D:\nodejs\node_global</code>；</p>
+<img src="blog_12.png" alt="系统设置截图2" style="zoom:70%;" />
+
+<p>​    7）安装webpack并查看版本信息；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install webpack –g</span><br><span class="line">$ npm webpack –v</span><br></pre></td></tr></table></figure>
+
+<p>至此，npm在安装全局模块时的路径和环境变量均设置完成，如果不设置的话，后续安装模块时会安装到C盘，不方便管理，甚至有可能安装好hexo后却无法使用；</p>
+<p>​    8）安装hexo并查看版本信息。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br><span class="line">$ hexo –v</span><br></pre></td></tr></table></figure>
+
+<h1 id="3、博客搭建"><a href="#3、博客搭建" class="headerlink" title="3、博客搭建"></a>3、博客搭建</h1><h2 id="3-1-搭建和预览"><a href="#3-1-搭建和预览" class="headerlink" title="3.1 搭建和预览"></a>3.1 搭建和预览</h2><p>​    1）在想要放置的地方建立一个文件夹<code>GitHubName.github.io</code>作为博客根目录；</p>
+<p>​    2）在博客根目录下初始化hexo，可以看到博客根目录中有了以下内容；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+
+<img src="blog_13.png" alt="文件目录截图4" style="zoom:70%;" />
+
+<p>​    3）在<code>source</code>文件夹下新建一个<code>CNAME</code>文件，然后在此文件中写入注册好的个人域名；</p>
+<img src="blog_14.png" alt="文件目录截图5" style="zoom:70%;" />
+
+<p>​    4）在博客根目录下静态部署，生成博客，此时会将<code>source\_posts</code>文件夹下的<code>hello-world.md</code>文件解析到一个<code>public</code>文件夹下，并生成<code>db.json</code>文件；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+
+<img src="blog_15.png" alt="文件目录截图6" style="zoom:70%;" />
+
+<p>​    5）在博客根目录下本地运行后，在<a href="http://localhost:4000/">http://localhost:4000/</a> 即可本地预览博客，预览结束之后按<code>Ctrl+C</code>来停止运行服务器，每当修改完网站里的东西就可以通过这种方式来预览，而不是直接发布到网上。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-配置和部署"><a href="#3-2-配置和部署" class="headerlink" title="3.2 配置和部署"></a>3.2 配置和部署</h2><p>​    1）在博客根目录下的<code>_config.yml</code>文件中作以下配置，<code>_config.yml</code>是整个博客的配置文件，每项配置参数在中<a href="https://hexo.io/zh-cn/docs/configuration">hexo官网</a>有详细的介绍；</p>
+<img src="blog_16.png" alt="文件配置截图1" style="zoom:70%;" />
+
+<p>​    2）在博客根目录下安装一个帮助我们上传文件的Git部署插件；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>​    3）将博客部署到GitHub服务器，这一步如果没有反应的话，就在<code>_config.yml</code>文件中所配置<code>repo</code>的冒号后再增加一个空格；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>​    4）在浏览器中输入个人域名即可看到如下页面，代表成功部署了博客。</p>
+<img src="blog_17.png" alt="浏览器截图3" style="zoom:70%;" />
+
+<h2 id="3-3-个性化主题"><a href="#3-3-个性化主题" class="headerlink" title="3.3 个性化主题"></a>3.3 个性化主题</h2><p>​    1）在<a href="https://hexo.io/themes/">hexo themes</a>中挑一个想要的hexo主题，在博客根目录下执行以下操作，即可将xxx主题保存到<code>themes\xxx</code>文件夹下；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> xxxURL themes\xxx</span><br></pre></td></tr></table></figure>
+
+<p>​    2）在博客根目录下的<code>_config.yml</code>文件中作以下配置；</p>
+<img src="blog_18.png" alt="文件配置截图2" style="zoom:70%;" />
+
+<p>​    3）关于个人图标、打赏、评论等功能需要在xxx主题的<code>_config.yml</code>等文件中进行配置，不同主题的配置方法可能略有不同，可自行根据所设置主题的<code>README.md</code>文件所介绍的内容进行配置；</p>
+<p>​    4）在博客根目录下重复以下步骤即可在<a href="http://localhost:4000/">http://localhost:4000/</a> 中预览新主题下的博客；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<p>​    5）将博客部署到GitHub服务器并等待一段时间后，在浏览器中输入个人域名即可看到所设置主题下的博客。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-菜单和写作"><a href="#3-4-菜单和写作" class="headerlink" title="3.4 菜单和写作"></a>3.4 菜单和写作</h2><p>​    1）在<code>themes\xxx</code>目录下的<code>_config.yml</code>文件中作以下配置，即可设置想要的博客菜单，下图设置了首页、分类以及归档菜单；</p>
+<img src="blog_19.png" alt="文件配置截图3" style="zoom:70%;" />
+
+<p>​    2）在博客根目录下执行以下操作即可在<code>source</code>目录下生成一个<code>categories</code>文件夹，编辑（<a href="https://markdown.com.cn/">markdown</a>）该文件夹中的<code>index.md</code>文件，那么在网页上点击<code>categories</code>菜单后就能显示出所编辑的内容；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<img src="blog_20.png" alt="文件目录截图7" style="zoom:70%;" />
+
+<p>​    3）为了在静态部署生成博客时能够将<code>source\_posts</code>中的图片资源也解析到<code>public</code>文件夹中，需要在博客根目录下的<code>_config.yml</code>文件中作以下配置；</p>
+<img src="blog_21.png" alt="文件配置截图4" style="zoom:90%;" />
+
+<p>​    4）此时执行以下操作即可在<code>source\_post</code>目录新建一个<code>xxx.md</code>文件和一个<code>xxx</code>文件夹，那么在编辑<code>xxx.md</code>文件时所使用的图片资源就放置在<code>xxx</code>文件夹中；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new xxx</span><br></pre></td></tr></table></figure>
+
+<p>​    5）需要注意的是插入图片的路径问题，静态部署前<code>xxx.md</code>文件中所插入的图片位于<code>xxx</code>文件夹中，静态部署后图片会被解析到与html文件相同文件夹下，因此，在编辑完成后静态部署前需要将插入图片的路径更改为正确的形式，这一点可自行观察解析后的<code>public</code>文件夹结构；</p>
+<p>​    6）有时候需要在不同页面跳转，只需在其他md文件中插入需要的跳转的md文件被解析后的地址，即可完成跳转；</p>
+<p>​    7）重复之前的预览、调整和部署操作，在浏览器中输入个人域名即可看到编辑后博客内容。</p>
+<h1 id="4、体验提升"><a href="#4、体验提升" class="headerlink" title="4、体验提升"></a>4、体验提升</h1><h2 id="4-1-自动化"><a href="#4-1-自动化" class="headerlink" title="4.1 自动化"></a>4.1 自动化</h2><h2 id="4-2-多终端"><a href="#4-2-多终端" class="headerlink" title="4.2 多终端"></a>4.2 多终端</h2><h2 id="4-3-其他"><a href="#4-3-其他" class="headerlink" title="4.3 其他"></a>4.3 其他</h2><p>​    1）在博客根目录下安装搜索插件可令博客支持搜索功能；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb</span><br></pre></td></tr></table></figure>
+
+<p>​    2）</p>
+<h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
+<li><a href="https://sketchk.xyz/2017/03/24/A-Guide-Of-Making-Your-Personal-Blog-Part-1/">《A-Guide-Of-Making-Your-Personal-Blog》</a></li>
+<li><a href="https://docs.github.com/cn/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages">《about-custom-domains-and-github-pages》</a></li>
+<li><a href="https://juejin.cn/post/6844904131266609165">https://juejin.cn/post/6844904131266609165</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/102592286">https://zhuanlan.zhihu.com/p/102592286</a></li>
+<li><a href="http://lowrank.science/archives/">http://lowrank.science/archives/</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>设计模式</title>
+    <url>/2022/05/06/design-patterns/</url>
+    <content><![CDATA[<h1 id="1、类图"><a href="#1、类图" class="headerlink" title="1、类图"></a>1、类图</h1><h2 id="1-1-泛化关系（Generalization）"><a href="#1-1-泛化关系（Generalization）" class="headerlink" title="1.1 泛化关系（Generalization）"></a>1.1 泛化关系（Generalization）</h2><p>用于描述非抽象类的继承关系，关键字为<code>extends</code>。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-实现关系（Realization）"><a href="#1-2-实现关系（Realization）" class="headerlink" title="1.2 实现关系（Realization）"></a>1.2 实现关系（Realization）</h2><p>用于描述抽象类/接口的实现关系，关键字为<code>implements</code>。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-聚合关系（Aggregation）"><a href="#1-3-聚合关系（Aggregation）" class="headerlink" title="1.3 聚合关系（Aggregation）"></a>1.3 聚合关系（Aggregation）</h2><p>用于描述整体和部分个体之间的非强依赖关系，整体不存在时部分个体依旧存在。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcade</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorman</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-4-复合关系（Composition）"><a href="#1-4-复合关系（Composition）" class="headerlink" title="1.4 复合关系（Composition）"></a>1.4 复合关系（Composition）</h2><p>用于描述整体和部分之间的强依赖关系，整体不存在时部分也不存在。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Engine</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tire</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-5-关联关系（Association）"><a href="#1-5-关联关系（Association）" class="headerlink" title="1.5 关联关系（Association）"></a>1.5 关联关系（Association）</h2><p>用于描述类对象之间的静态强关联关系，该关系与运行过程的状态无关，在运行前就可以确定。关联关系通常以成员变量（静态方法变量）的形式实现。</p>
+<p>关联关系默认不强调方向，表示对象之间默认互相知道，如果特别强调方向（如下图），则表示A知道B，但B不知道A。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Driver</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Licence</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-6-依赖关系（Dependency）"><a href="#1-6-依赖关系（Dependency）" class="headerlink" title="1.6 依赖关系（Dependency）"></a>1.6 依赖关系（Dependency）</h2><p>用于描述类对象之间的临时性动态关联关系，该关系与运行过程中的状态相关，在运行时确定。依赖应当总是单向的，要杜绝双向依赖及循环依赖的产生。依赖关系通常以类方法的传入传出参数（或局部变量）实现。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Offgas <span class="title function_">move</span><span class="params">(Gasoline G)</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Gasoline</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Offgas</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>泛化 =</strong> <strong>实现 &gt;</strong> <strong>复合 &gt;</strong> <strong>聚合 &gt;</strong> <strong>关联 &gt;</strong> <strong>依赖</strong></p>
+<h1 id="2、设计模式"><a href="#2、设计模式" class="headerlink" title="2、设计模式"></a>2、设计模式</h1><p>设计模式是解决一些固有问题的一系列方案，学习现有的设计模式可以做到经验复用。</p>
+<h2 id="2-1-创建型"><a href="#2-1-创建型" class="headerlink" title="2.1 创建型"></a>2.1 创建型</h2><h3 id="2-1-1-单例（Singleton）"><a href="#2-1-1-单例（Singleton）" class="headerlink" title="2.1.1 单例（Singleton）"></a>2.1.1 单例（Singleton）</h3><p>确保在一个进程中一个类有且只有一个实例，并提供该实例的全局访问点。</p>
+<p>1）线程安全</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）延迟加载，使用同步访问方法以防止循环初始化，但也增加了访问成本，线程安全，性能不好</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (INSTANCE == <span class="literal">null</span>) &#123;</span><br><span class="line">            INSTANCE = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）针对静态域的延迟加载，lazy initialization holder class模式，静态访问方法不需要同步，不会因延迟初始化增加访问成本，线程安全，性能好</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）枚举类型，绝对安全</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）一般不是通过<code>new</code>操作符，而是由框架（例如Spring）来创建装配从而获取单例，<code>@Component</code>注解默认将组件标注为单例。</p>
+<h3 id="2-1-2-简单工厂（Simple-Factory）"><a href="#2-1-2-简单工厂（Simple-Factory）" class="headerlink" title="2.1.2 简单工厂（Simple Factory）"></a>2.1.2 简单工厂（Simple Factory）</h3><p>提供用于创建一个对象的简单工厂类，实例化操作由简单工厂类完成。</p>
+<p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>SimpleFactory</code>工厂类，通过<code>SimpleFactory</code>简单工厂实现具体<code>Product</code>的实例化。<code>User</code>类可忽略具体<code>Product</code>（<code>ProductA</code>和<code>ProductB</code>）的细节，从而将<code>User</code>类与具体<code>Product</code>实现类解耦。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span> <span class="params">(<span class="type">int</span> type)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="number">1</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (type == <span class="number">2</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductB</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">SimpleFactory</span> <span class="variable">simpleFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleFactory</span>();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> simpleFactory.createProduct(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-3-工厂方法（Factory-Method）"><a href="#2-1-3-工厂方法（Factory-Method）" class="headerlink" title="2.1.3 工厂方法（Factory Method）"></a>2.1.3 工厂方法（Factory Method）</h3><p>提供用于创建一个对象的工厂接口，实例化操作由该工厂接口的具体实现类完成。</p>
+<p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>ProductFactory</code>接口，通过<code>ProductFactory</code>接口的具体类（<code>ProductFactoryImpl</code>）实现具体<code>Product</code>（<code>ProductA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>ProductFactoryImpl</code>）和具体<code>Product</code>（<code>ProductA</code>）的细节，从而将<code>User</code>类与工厂类及具体<code>Product</code>实现类解耦。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">ProductFactory</span> <span class="variable">impl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProductFactoryImpl</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ProductFactory <span class="title function_">getFactory</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> impl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductFactoryImpl</span> <span class="keyword">implements</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ProductFactory</span> <span class="variable">factory</span> <span class="operator">=</span> ProductFactory.getFactory();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上内容所述工厂方法可化简为静态工厂方法（Static Factory Method），如下所示</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (...) &#123;</span><br><span class="line">            <span class="comment">// return interface from cache</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span> ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> ProductFactory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样做的好处在于<code>factoryMethod</code>方法可能会<code>new</code>一个新的<code>ProductA</code>实例，也可能直接返回一个缓存的实例，对于<code>User</code>类来说，无需知道<code>ProductA</code>创建的细节。</p>
+<p>总结：</p>
+<ul>
+<li><p>实际更常用的是更简单的静态工厂方法；</p>
+</li>
+<li><p>工厂方法定义工厂接口和产品接口，但创建实际工厂和实际产品被推迟到子类实现，使得调用方只和抽象工厂和抽象产品打交道；</p>
+</li>
+<li><p>调用方尽量持有接口或者抽象类，避免持有具体类型的子类，以便工厂方法能随时切换不同的子类返回，而不影响调用方代码。</p>
+</li>
+</ul>
+<h3 id="2-1-4-抽象工厂（Abstract-Factory）"><a href="#2-1-4-抽象工厂（Abstract-Factory）" class="headerlink" title="2.1.4 抽象工厂（Abstract Factory）"></a>2.1.4 抽象工厂（Abstract Factory）</h3><p>提供<strong>用于创建对象家族</strong>的工厂接口（对象家族指很多个必须一起创建出来的相关的对象），对象家族中的单一对象由工厂方法创建出来，即实例化操作由该工厂接口的具体实现类完成。</p>
+<p>如下图所示，<code>User</code>类关联<code>Product</code>接口、<code>Tool</code>接口以及<code>AbstractFactory</code>接口，通过<code>AbstractFactory</code>接口的具体类（<code>FactoryImplA</code>）实现具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>AbstractFactory</code>）、具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的细节，从而将<code>User</code>类与工厂类、具体<code>Product</code>实现类及具体<code>Tool</code>实现类解耦。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AbstractFactory <span class="title function_">createFactoryA</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FactoryImplA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ToolA</span> <span class="keyword">implements</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryImplA</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ToolA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">AbstractFactory</span> <span class="variable">factoryA</span> <span class="operator">=</span> AbstractFactory.createFactoryA();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factoryA.createProduct();</span><br><span class="line">        <span class="type">Tool</span> <span class="variable">tool</span> <span class="operator">=</span> factoryA.createTool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-5-生成器（Builder）"><a href="#2-1-5-生成器（Builder）" class="headerlink" title="2.1.5 生成器（Builder）"></a>2.1.5 生成器（Builder）</h3><p>通过多个可选的步骤或者多个可选的零件来灵活创建一个复杂的对象。</p>
+<p>如下图所示，Builder模式并不直接生成一个<code>Product</code>类的对象，而是让客户端调用生成器得到一个<code>Builder</code>对象，然后在<code>Builder</code>对象上调用类似于<code>setter</code>的方法来设置可选参数，最后调用无参的<code>builder</code>方法来生成真正需要的（通常是不可变类的）<code>Product</code>类对象。</p>
+<p><code>Builder</code>类通常作为需要构建的类的静态成员类，<code>Builder</code>类的设置方法均返回<code>this</code>，以便<strong>将调用链接起来，得到一个流式的API</strong>。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Product</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.requiredParameter = builder.requiredParameter;</span><br><span class="line">        <span class="built_in">this</span>.optionalParameter = builder.optionalParameter;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Builder</span><span class="params">(<span class="type">int</span> requiredParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.requiredParameter = requiredParameter;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">setOptionalParameter</span><span class="params">(<span class="type">int</span> optionalParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.optionalParameter = optionalParameter;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Product <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Product</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Product</span>.Builder(requiredParameter)</span><br><span class="line">            .setOptionalParameter(optionalParameter).build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-行为型"><a href="#2-2-行为型" class="headerlink" title="2.2 行为型"></a>2.2 行为型</h2><h3 id="2-2-1-观察者（Observer）"><a href="#2-2-1-观察者（Observer）" class="headerlink" title="2.2.1 观察者（Observer）"></a>2.2.1 观察者（Observer）</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动被更新，又称发布-订阅（Publish-Subscribe）模式，发布方和订阅方彼此分离，互不影响。</p>
+<p>如下图所示，观察者Admin和Customer与被观察者Store彼此分离，互不影响，被观察者将通知变成一个Event对象，观察者自己从Event对象中读取通知类型和通知数据。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>1）不推荐借助Java标准库中的java.util.Observable类和Observer接口来实现观察者模式；</p>
+<p>2）不同的Event对象有着不同的通知Topic，观察者可以自行订阅自己感兴趣的Topic。</p>
+<h3 id="2-2-2-状态（State）"><a href="#2-2-2-状态（State）" class="headerlink" title="2.2.2 状态（State）"></a>2.2.2 状态（State）</h3><p>将不同状态下的行为逻辑分拆到不同的状态类中，允许对象在其内部状态改变时改变其行为。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>1）状态模式常用于带有状态的对象中，增加新状态非常容易；</p>
+<p>2）状态模式的关键在于状态转换，简单的状态转换可以直接由调用方指定，复杂的状态转换可以在内部根据条件触发完成。</p>
+<h3 id="2-2-3-策略（Strategy）"><a href="#2-2-3-策略（Strategy）" class="headerlink" title="2.2.3 策略（Strategy）"></a>2.2.3 策略（Strategy）</h3><p>定义一系列算法，这些算法被封装到一个对象中，策略模式使得这些算法在运行时可以互相替换，并且独立于使用这些算法的客户端。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>1）一个完整的策略模式要定义策略以及使用策略的上下文，策略模式的核心思想是在一个计算方法中把容易变化的算法抽出来作为“策略”参数传进去，使得新增策略不必修改原有逻辑；</p>
+<p>2）状态模式与策略模式类似，都能够动态改变对象的行为，状态模式通过状态转移来改变State对象，而策略模式通过本身决策来改变所使用的算法；</p>
+<p>3）状态模式主要是用于解决动态的状态转移问题，策略模式主要是用于动态地替换所使用的算法；</p>
+<p>4）策略模式和Lambda表达式配合使用可极大提高程序灵活性，例如Arrays.sort (T[] a, Comparator&lt;? Super T&gt; c)方法就可根据lambda表达式所提供的比较策略c来实现不同比较策略下的排序</p>
+<h3 id="2-2-4-模板方法（Template-Method）"><a href="#2-2-4-模板方法（Template-Method）" class="headerlink" title="2.2.4 模板方法（Template Method）"></a>2.2.4 模板方法（Template Method）</h3><p>定义一个操作中的算法框架，并将一些步骤的实现延迟到子类，使得子类可以在不改变算法结构的同时修改一些步骤的实现。</p>
+<p>如下图所示，清洗、调料以及烹饪这三步是固定的，但是可以在RoastChicken和FriedChicken子类中，定义souse和cook函数的具体实现。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>1）模板方法的核心思想是：父类定义骨架，子类实现某些细节；</p>
+<p>2）为了防止子类重写父类的骨架方法，可以在父类中对骨架方法使用final；</p>
+<p>3）对于需要子类实现的抽象方法，一般声明为protected，使得这些方法对外部客户端不可见。</p>
+<h2 id="2-3-结构型"><a href="#2-3-结构型" class="headerlink" title="2.3 结构型"></a>2.3 结构型</h2><h3 id="2-3-1-适配器（Adapter-Wrapper）"><a href="#2-3-1-适配器（Adapter-Wrapper）" class="headerlink" title="2.3.1 适配器（Adapter/Wrapper）"></a>2.3.1 适配器（Adapter/Wrapper）</h3><p>把一个抽象类/接口转换成另一个用户需要的抽象类/接口，使得不兼容的接口可以一起正常工作。</p>
+<p>如下图所示，User类通过DogToCatAdapter适配器将Dog接口转换成用户需要的Cat接口，经过转换，用户在调用Cat接口的meow方法时，实际间接调用的是Dog接口bark方法。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-2-装饰器（Decorator）"><a href="#2-3-2-装饰器（Decorator）" class="headerlink" title="2.3.2 装饰器（Decorator）"></a>2.3.2 装饰器（Decorator）</h3><p>在运行期动态地给对象实例增加各种新的功能。如下图所示，抽象类ProductDecorator内复合了Product接口，通过扩展ProductDecorator可以得到各种具备不同功能的产品，用户可以叠加各种功能得到自己需要的产品。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>1）可以代替相同功能的子类，从而降低设计各种子类的工作量；</p>
+<p>2）把核心功能和附加功能分开，两部分都可以独立地扩展，最后由调用方在运行期间动态地自由组合得到自己需要的功能；</p>
+<p>3）Proxy让调用者认为获取到的是核心类接口，但实际上是代理类，而Decorator让调用者自己创建核心类（ProductImpl），然后在核心类上一层一层地叠加各种功能。</p>
+<h3 id="2-3-3-享元（Flyweight）"><a href="#2-3-3-享元（Flyweight）" class="headerlink" title="2.3.3 享元（Flyweight）"></a>2.3.3 享元（Flyweight）</h3><p>利用共享的方式来支持大量细粒度的对象。如下图所示，product1和product2是同一个对象，返回结果为true。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<p>1）对于不可变类（实例不能被修改的类）来说，反复创建其相同的实例没有必要，直接向调用方返回一个共享的实例即可；</p>
+<p>2）享元模式常用于工厂方法的内部优化，在工厂内部，很可能返回缓存的实例而不是new一个新的实例；</p>
+<p>3）在实际应用中，享元模式主要应用于缓存，即客户端重复请求某些对象时，不必每次查询数据库或者读取文件，而是直接返回缓存中的对象。</p>
+<h3 id="2-3-4-代理（Proxy）"><a href="#2-3-4-代理（Proxy）" class="headerlink" title="2.3.4 代理（Proxy）"></a>2.3.4 代理（Proxy）</h3><p>对调用方提供一个代理，该代理能够控制对一个对象的访问。</p>
+<p>如下图所示，ProductProxy通过定义APPProduct类型的成员变量，从而在调用APPProduct的fun方法的前后增加一些额外的操作。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>根据代理所增加的额外操作的不同，代理可分为：</p>
+<p>1）远程代理（Remote Proxy）：本地调用者持有的接口是一个代理，该代理将对接口的方法转换成远程调用并返回结果，该代理<strong>控制了对远程对象的访问</strong>，此时代理附加的额外操作是对请求对象和返回对象进行编码并发送至远程对象；</p>
+<p>2）虚拟代理（Virtual Proxy）：调用者先持有一个代理对象，而真正的对象并没有创建，直到客户端真的需要调用该对象时，才创建真正的对象，该代理<strong>控制了对创建开销很大的对象的访问</strong>，此时代理附加的额外操作是创建真正要访问的对象；</p>
+<p>3）保护代理（Protection Proxy）：该代理<strong>根据调用者的权限控制了对对象的访问</strong>，此时代理附加的额外操作是检查调用者是否具有访问的权限；</p>
+<p>4）智能代理（Smart Reference）：该代理取代了简单的指针，<strong>在存在多个外部调用者时控制了对对象的访问</strong>，此时代理附加的额外操作是对调用者个数进行计数（即记录对象的引用次数），在调用者访问对象时检查是否已经锁定了它，在调用者不进行调用时释放对象。</p>
+<h1 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h1><ul>
+<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%80%9D%E6%83%B3.html">http://www.cyc2018.xyz/其他/编码实践/面向对象思想.html</a></p>
+</li>
+<li><p><a href="https://design-patterns.readthedocs.io/zh_CN/latest/read_uml.html">https://design-patterns.readthedocs.io/zh_CN/latest/read_uml.html</a></p>
+</li>
+<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%20-%20%E7%9B%AE%E5%BD%95.html#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80">http://www.cyc2018.xyz/其他/设计模式/设计模式.html</a></p>
+</li>
+<li><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528">https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528</a></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Effective Java</title>
+    <url>/2022/05/06/effective-java/</url>
+    <content><![CDATA[<h1 id="1、引言"><a href="#1、引言" class="headerlink" title="1、引言"></a>1、引言</h1><p>仅仅学会语言的结构及如何使用是不够的，还需要学习如何以<strong>惯用和高效的方式</strong>来表达；仅仅编写出能够有效工作能够被别人理解的代码是不够的，还必须把代码组织成<strong>易于修改的形式</strong>。本书关心如何编写出<strong>清晰、正确、可用、健壮、灵活和可维护的程序</strong>。</p>
+<p>注：</p>
+<ul>
+<li><p>本书中所使用的术语“组件（Component）”指任何可重用的软件元素，从单个方法到包含多个包的复杂框架；</p>
+</li>
+<li><p>本书中所使用的术语“API元素”是指类、接口、构造器、成员和序列化形式，程序员可以通过API访问类、接口或者包；</p>
+</li>
+<li><p>本书中所使用的术语“继承”指实现继承（一个类扩展另一个类），不适用于接口继承（一个类实现一个接口，或者一个接口扩展另一个接口）。</p>
+</li>
+</ul>
+<h1 id="2、创建和销毁对象"><a href="#2、创建和销毁对象" class="headerlink" title="2、创建和销毁对象"></a>2、创建和销毁对象</h1><h2 id="2-1-静态工厂方法代替构造器（1）"><a href="#2-1-静态工厂方法代替构造器（1）" class="headerlink" title="2.1 静态工厂方法代替构造器（1）"></a>2.1 静态工厂方法代替构造器（1）</h2><p>与公有构造器相比，静态工厂方法的优势在于：</p>
+<ul>
+<li><p>静态工厂方法有更能表达方法实际意义的名称，能通过命名合适的不同名称来实现多个相同参数列表的方法；</p>
+</li>
+<li><p>静态工厂方法不必在每次调用时都创建一个新对象，可以重复利用已经构建好的实例，也有助于类严格控制哪些实例应该存在；</p>
+</li>
+<li><p>静态工厂方法可以返回原类型的任何子类型的对象，则API可以通过静态工厂方法返回非公有类的对象，适用于基于接口的框架；</p>
+</li>
+<li><p>静态工厂方法所返回的对象所属的类，在编写该静态工厂方法时可以不存在。</p>
+</li>
+</ul>
+<p>静态工厂方法的劣势在于：</p>
+<ul>
+<li><p>类如果不含有<code>public</code>或者<code>protected</code>的构造器，就不能被子类化，但这另一方面也鼓励了程序员使用复合而不是继承；</p>
+</li>
+<li><p>程序员难以发现静态工厂方法，API文档中没有明确标注出来；</p>
+</li>
+</ul>
+<h2 id="2-2-存在多个构造器参数时使用生成器（2）"><a href="#2-2-存在多个构造器参数时使用生成器（2）" class="headerlink" title="2.2 存在多个构造器参数时使用生成器（2）"></a>2.2 存在多个构造器参数时使用生成器（2）</h2><p>静态工厂方法和构造器都不能很好地扩展到大量可选参数，面对存在多个构造器参数的情况，有以下几种解决方式：</p>
+<ul>
+<li><p>重叠构造器模式，但此时客户端代码难以编写和阅读；</p>
+</li>
+<li><p><code>JavaBean</code>模式，但在构造过程中无法保证<code>JavaBean</code>的一致性，无法实现不可变类，需要额外开销来确保线程安全；</p>
+</li>
+<li><p>生成器模式（Builder），它可以有多个可变参数，既能保证像重叠构造器那样的安全性，也能保证像<code>JavaBean</code>模式那么好的可读性，此外Builder模式也适用于类层次结构。</p>
+</li>
+</ul>
+<h2 id="2-3-通过枚举类型强化Singleton属性（3）"><a href="#2-3-通过枚举类型强化Singleton属性（3）" class="headerlink" title="2.3 通过枚举类型强化Singleton属性（3）"></a>2.3 通过枚举类型强化Singleton属性（3）</h2><p>当构造器设为私有时，可以通过final变量或者静态工厂可以实现Singleton，这种方式有两个问题需要注意：</p>
+<ul>
+<li><p>享有特权的客户端可以通过反射机制调用私有构造器，为了抵御这种攻击，可以令构造器在创建第二个实例时抛出异常；</p>
+</li>
+<li><p>需要通过<code>implements Serializable</code>实现可序列化，但每次反序列化一个序列化的实例时依旧会创建一个新的实例，为了防止这种情况，需要在Singleton类中增加一个<code>readResolve</code>方法。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> Object <span class="title function_">readResolve</span> <span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除此以上实现Singleton的方式，还可以通过声明一个包含单个枚举元素的枚举类型来实现Singleton：</p>
+<ul>
+<li><p>这种方式更加简洁，无偿地提供了序列化机制，即使是在面对复杂的序列化或者反射攻击时，也绝对防止多次实例化；</p>
+</li>
+<li><p>如果Singleton必须扩展一个超类，而不是扩展<code>Enum</code>时，不宜使用这种方法。</p>
+</li>
+</ul>
+<h2 id="2-4-通过私有构造器强化不可实例化的能力（4）"><a href="#2-4-通过私有构造器强化不可实例化的能力（4）" class="headerlink" title="2.4 通过私有构造器强化不可实例化的能力（4）"></a>2.4 通过私有构造器强化不可实例化的能力（4）</h2><ul>
+<li><p>一个静态工具类只包含静态方法和静态域，这种类不希望被实例化；</p>
+</li>
+<li><p>当一个类缺少显示构造器时，编译器会自动提供一个公有的无参缺省构造器，此时这个类是可以被实例化的。因此，只要让类包含一个私有构造器且该私有构造器一旦被调用就抛出异常，就能确保这个类不可被实例化；</p>
+</li>
+<li><p>这种做法的副作用是该类不可被子类化（子类都会显示或者隐式地调用超类的构造器）。</p>
+</li>
+</ul>
+<h2 id="2-5-优先考虑依赖注入来引用资源（5）"><a href="#2-5-优先考虑依赖注入来引用资源（5）" class="headerlink" title="2.5 优先考虑依赖注入来引用资源（5）"></a>2.5 优先考虑依赖注入来引用资源（5）</h2><ul>
+<li><p>不要使用Singleton类和静态工具类来实现需要引用底层资源的类，而是应该将资源或者资源工厂以依赖注入的方式传递给构造器或者静态工厂或者生成器，从而创建出需要引用资源的类；</p>
+</li>
+<li><p>过多的手动编写的依赖注入会导致大型项目凌乱不堪，不过这种凌乱可以通过依赖注入框架（比如Spring）得到解决。</p>
+</li>
+</ul>
+<h2 id="2-6-避免创建不必要的对象（6）"><a href="#2-6-避免创建不必要的对象（6）" class="headerlink" title="2.6 避免创建不必要的对象（6）"></a>2.6 避免创建不必要的对象（6）</h2><ul>
+<li>对于同时提供了静态工厂方法和构造器的不可变类，通常优先使用静态工厂方法；</li>
+<li>如果需要重复的使用一些创建成本高的对象，可将该对象缓存起来重用；</li>
+<li>优先使用基本类型而不是装箱基本类型，注意无意识的自动装箱；</li>
+<li>并不是所有情况下都避免创建不必要的对象，要妥善权衡创建新对象的代价和维护单一对象的代价孰轻孰重。</li>
+</ul>
+<h2 id="2-7-消除过期的对象引用（7）"><a href="#2-7-消除过期的对象引用（7）" class="headerlink" title="2.7 消除过期的对象引用（7）"></a>2.7 消除过期的对象引用（7）</h2><h3 id="2-7-1-消除过期引用的方法"><a href="#2-7-1-消除过期引用的方法" class="headerlink" title="2.7.1 消除过期引用的方法"></a>2.7.1 消除过期引用的方法</h3><p>虽然Java语言具备垃圾回收功能，但程序员依旧需要考虑内存管理问题，比如消除过期的对象引用（过期引用指永远也不会被解除的引用）。消除过期引用最好的方法是让包含该引用的变量结束其生命周期，故应当在最紧凑的作用域范围内定义每一个变量。</p>
+<h3 id="2-7-2-消除过期引用的好处"><a href="#2-7-2-消除过期引用的好处" class="headerlink" title="2.7.2 消除过期引用的好处"></a>2.7.2 消除过期引用的好处</h3><ul>
+<li><p>如果过期引用被无意识的保留下来，那么垃圾收回不仅不会处理这个对象，也不会处理被这个对象所引用的所有其他对象。当这个对象被排除在垃圾回收机制之外，就会造成内存泄漏。这种问题的修复方法就是<strong>一旦对象引用过期，就立即消除这个引用</strong>；</p>
+</li>
+<li><p>如果过期引用以后又被错误的解除引用，程序会立即抛出空指针异常，而不是悄悄地错误运行下去。</p>
+</li>
+</ul>
+<h3 id="2-7-3-内存泄漏的发生"><a href="#2-7-3-内存泄漏的发生" class="headerlink" title="2.7.3 内存泄漏的发生"></a>2.7.3 内存泄漏的发生</h3><p>内存泄漏的发生有以下几种来源：</p>
+<ul>
+<li><p>自己管理内存的类（比如<code>Stack</code>类）；</p>
+</li>
+<li><p>缓存（考虑用一个后台线程定期清理）；</p>
+</li>
+<li><p>监听器和其他回调（确保回调立即被当做垃圾回收的最佳方法是只保存它们的弱引用）。</p>
+</li>
+</ul>
+<h2 id="2-8-避免使用终结方法和清除方法（8）"><a href="#2-8-避免使用终结方法和清除方法（8）" class="headerlink" title="2.8 避免使用终结方法和清除方法（8）"></a>2.8 避免使用终结方法和清除方法（8）</h2><p>终结方法（<code>finalizer</code>）和清除方法（<code>cleaner</code>）的缺点在于：</p>
+<ul>
+<li><p>不能被保证及时执行，从一个对象变得不可达到其终结方法被执行这段时间是任意长的，可能会随意地延迟对象的回收过程，一些重要操作无法及时执行，同时也带来时间性能上的损失；</p>
+</li>
+<li><p>正常情况下，未捕获的异常将会使线程终止，并打印出栈轨迹，但如果异常发生在终结方法中，则不会如此，甚至不会有警告打印出来。</p>
+</li>
+</ul>
+<p>因此，当对象中封装的资源确实需要终止时，可以让类实现<code>AutoCloseable</code>，并要求客户端在每个实例不再需要时调用<code>close</code>方法。</p>
+<p><code>finalizer</code>和<code>cleaner</code>的优点在于：</p>
+<ul>
+<li><p>当资源所有者忘记调用<code>close</code>方法时，<code>finalizer</code>和<code>cleaner</code>可以充当“安全网”（不一定释放资源总比一定不释放要好）；</p>
+</li>
+<li><p>空的<code>finalizer</code>方法可以避免恶意子类的攻击；</p>
+</li>
+<li><p><code>cleaner</code>方法适用于清除没有关键资源的本地对等体。</p>
+</li>
+</ul>
+<h2 id="2-9-try-with-resources优先于try-finally（9）"><a href="#2-9-try-with-resources优先于try-finally（9）" class="headerlink" title="2.9 try-with-resources优先于try-finally（9）"></a>2.9 <code>try-with-resources</code>优先于<code>try-finally</code>（9）</h2><p><code>try-finally</code>语句的不足在于：</p>
+<ul>
+<li><p>客户端不一定记得编写<code>finally</code>块来释放资源，而充当“安全网”的<code>finalizer</code>和<code>cleaner</code>方法并不可靠；</p>
+</li>
+<li><p>当<code>finally</code>中发生异常时，<code>finally</code>中的异常会抹除<code>try</code>中发生的异常，在异常轨迹中完全没有try中异常的记录。</p>
+</li>
+</ul>
+<p><code>try-with-resources</code>语句可以有效地避免以上问题，且代码更加简洁清晰。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Git</title>
+    <url>/2022/05/06/git/</url>
+    <content><![CDATA[<h1 id="版本控制（Revision-control）"><a href="#版本控制（Revision-control）" class="headerlink" title="版本控制（Revision control）"></a>版本控制（Revision control）</h1><p>将每一次文件变更的时间，作者，内容都记录下来，并更新版本号。通过记录文件内容的变更，从而<strong>追踪文件的变更</strong>。此外，由于软件开发往往是多人协同作业，那么版本间的同步问题以及开发者间的通信问题都需要通过版本控制来解决，也就是说，版本控制的另一功能是<strong>并行开发</strong>。在开发过程中，首先需要设定开发基线，确定各个配置项的开发初始版本，开发人员再基于开发基线的版本，开发出所需的目标版本，并行开发中的许多错误都可以通过版本控制中分支与合并的方法来解决。</p>
+<h1 id="集中式版本控制系统（Centralized-Version-Control-Systems，简称-CVCS）"><a href="#集中式版本控制系统（Centralized-Version-Control-Systems，简称-CVCS）" class="headerlink" title="集中式版本控制系统（Centralized Version Control Systems，简称 CVCS）"></a>集中式版本控制系统（Centralized Version Control Systems，简称 CVCS）</h1><p>项目的历史记录均被保存在单一位置，<strong>有丢失风险</strong>，且<strong>必须联网</strong>才能工作。</p>
+<h1 id="分布式版本控制系统（Distributed-Version-Control-System，简称-DVCS）"><a href="#分布式版本控制系统（Distributed-Version-Control-System，简称-DVCS）" class="headerlink" title="分布式版本控制系统（Distributed Version Control System，简称 DVCS）"></a>分布式版本控制系统（Distributed Version Control System，简称 DVCS）</h1><p>客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git属于DVCS，Git与其他版本控制系统的主要区别在于对待数据的方式。大多数版本控制系统都是以文件变更列表的方式存储信息，这类系统将它们保存的信息看作一组基本文件和每个文件随时间逐步累积的差异，而Git采用直接记录快照的方式，而非差异比较。每次提交更新或者保存项目状态时，Git对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git不再重新存储该文件，而是保留一个链接指向之前存储的文件。Git仓库和Github中心服务器之间的传输是通过SSH加密的。</p>
+<h1 id="工作流（Workflow）"><a href="#工作流（Workflow）" class="headerlink" title="工作流（Workflow）"></a>工作流（Workflow）</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（.git directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个HEAD指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
+<img src="git_1.jpg" alt="工作流图" style="zoom:100%;" />
+
+<h1 id="分支（Branch）"><a href="#分支（Branch）" class="headerlink" title="分支（Branch）"></a>分支（Branch）</h1><ul>
+<li><p>每个提交通过指针连接成一条时间线。</p>
+</li>
+<li><p>创建仓库时，master指针指向主分支，Head指针始终指向当前分支，当前分支可能是主分支也可能是新建的分支。</p>
+</li>
+<li><p>新建分支就是新建一个指针指向时间线的最后一个节点。</p>
+</li>
+<li><p>切换分支就是让HEAD指针指向新分支，表示新分支成为当前分支。</p>
+</li>
+<li><p>每次提交只会让当前分支指针向后移动，而其他分支指针不会移动。</p>
+</li>
+<li><p>当新建分支开发完毕后，就合并到主分支上，合并分支只需要改变指针即可。</p>
+</li>
+</ul>
+<img src="git_2.jpg" alt="工作流图" style="zoom:100%;" />
+
+<h1 id="命令速查表（Commands-Cheat-Sheet）"><a href="#命令速查表（Commands-Cheat-Sheet）" class="headerlink" title="命令速查表（Commands Cheat Sheet）"></a>命令速查表（Commands Cheat Sheet）</h1><p><a href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p><a href="https://www.liaoxuefeng.com/wiki/896043488029600">https://www.liaoxuefeng.com/wiki/896043488029600</a></p>
+</li>
+<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/Git.html">http://www.cyc2018.xyz/其他/编码实践/Git.html</a></p>
+</li>
+<li><p><a href="https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro">https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro</a></p>
+</li>
+</ul>
 ]]></content>
   </entry>
 </search>

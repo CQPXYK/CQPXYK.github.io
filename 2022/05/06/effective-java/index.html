@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <!--
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  -->  
+<meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Effective Java | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Effective Java</h2>
+  <!--
+  <p class="post-date">2022-05-06</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+  -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="1、引言"><a href="#1、引言" class="headerlink" title="1、引言"></a>1、引言</h1><p>仅仅学会语言的结构及如何使用是不够的，还需要学习如何以<strong>惯用和高效的方式</strong>来表达；仅仅编写出能够有效工作能够被别人理解的代码是不够的，还必须把代码组织成<strong>易于修改的形式</strong>。本书关心如何编写出<strong>清晰、正确、可用、健壮、灵活和可维护的程序</strong>。</p>
+<p>注：</p>
+<ul>
+<li><p>本书中所使用的术语“组件（Component）”指任何可重用的软件元素，从单个方法到包含多个包的复杂框架；</p>
+</li>
+<li><p>本书中所使用的术语“API元素”是指类、接口、构造器、成员和序列化形式，程序员可以通过API访问类、接口或者包；</p>
+</li>
+<li><p>本书中所使用的术语“继承”指实现继承（一个类扩展另一个类），不适用于接口继承（一个类实现一个接口，或者一个接口扩展另一个接口）。</p>
+</li>
+</ul>
+<h1 id="2、创建和销毁对象"><a href="#2、创建和销毁对象" class="headerlink" title="2、创建和销毁对象"></a>2、创建和销毁对象</h1><h2 id="2-1-静态工厂方法代替构造器（1）"><a href="#2-1-静态工厂方法代替构造器（1）" class="headerlink" title="2.1 静态工厂方法代替构造器（1）"></a>2.1 静态工厂方法代替构造器（1）</h2><p>与公有构造器相比，静态工厂方法的优势在于：</p>
+<ul>
+<li><p>静态工厂方法有更能表达方法实际意义的名称，能通过命名合适的不同名称来实现多个相同参数列表的方法；</p>
+</li>
+<li><p>静态工厂方法不必在每次调用时都创建一个新对象，可以重复利用已经构建好的实例，也有助于类严格控制哪些实例应该存在；</p>
+</li>
+<li><p>静态工厂方法可以返回原类型的任何子类型的对象，则API可以通过静态工厂方法返回非公有类的对象，适用于基于接口的框架；</p>
+</li>
+<li><p>静态工厂方法所返回的对象所属的类，在编写该静态工厂方法时可以不存在。</p>
+</li>
+</ul>
+<p>静态工厂方法的劣势在于：</p>
+<ul>
+<li><p>类如果不含有<code>public</code>或者<code>protected</code>的构造器，就不能被子类化，但这另一方面也鼓励了程序员使用复合而不是继承；</p>
+</li>
+<li><p>程序员难以发现静态工厂方法，API文档中没有明确标注出来；</p>
+</li>
+</ul>
+<h2 id="2-2-存在多个构造器参数时使用生成器（2）"><a href="#2-2-存在多个构造器参数时使用生成器（2）" class="headerlink" title="2.2 存在多个构造器参数时使用生成器（2）"></a>2.2 存在多个构造器参数时使用生成器（2）</h2><p>静态工厂方法和构造器都不能很好地扩展到大量可选参数，面对存在多个构造器参数的情况，有以下几种解决方式：</p>
+<ul>
+<li><p>重叠构造器模式，但此时客户端代码难以编写和阅读；</p>
+</li>
+<li><p><code>JavaBean</code>模式，但在构造过程中无法保证<code>JavaBean</code>的一致性，无法实现不可变类，需要额外开销来确保线程安全；</p>
+</li>
+<li><p>生成器模式（Builder），它可以有多个可变参数，既能保证像重叠构造器那样的安全性，也能保证像<code>JavaBean</code>模式那么好的可读性，此外Builder模式也适用于类层次结构。</p>
+</li>
+</ul>
+<h2 id="2-3-通过枚举类型强化Singleton属性（3）"><a href="#2-3-通过枚举类型强化Singleton属性（3）" class="headerlink" title="2.3 通过枚举类型强化Singleton属性（3）"></a>2.3 通过枚举类型强化Singleton属性（3）</h2><p>当构造器设为私有时，可以通过final变量或者静态工厂可以实现Singleton，这种方式有两个问题需要注意：</p>
+<ul>
+<li><p>享有特权的客户端可以通过反射机制调用私有构造器，为了抵御这种攻击，可以令构造器在创建第二个实例时抛出异常；</p>
+</li>
+<li><p>需要通过<code>implements Serializable</code>实现可序列化，但每次反序列化一个序列化的实例时依旧会创建一个新的实例，为了防止这种情况，需要在Singleton类中增加一个<code>readResolve</code>方法。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object <span class="title function_">readResolve</span> <span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除此以上实现Singleton的方式，还可以通过声明一个包含单个枚举元素的枚举类型来实现Singleton：</p>
+<ul>
+<li><p>这种方式更加简洁，无偿地提供了序列化机制，即使是在面对复杂的序列化或者反射攻击时，也绝对防止多次实例化；</p>
+</li>
+<li><p>如果Singleton必须扩展一个超类，而不是扩展<code>Enum</code>时，不宜使用这种方法。</p>
+</li>
+</ul>
+<h2 id="2-4-通过私有构造器强化不可实例化的能力（4）"><a href="#2-4-通过私有构造器强化不可实例化的能力（4）" class="headerlink" title="2.4 通过私有构造器强化不可实例化的能力（4）"></a>2.4 通过私有构造器强化不可实例化的能力（4）</h2><ul>
+<li><p>一个静态工具类只包含静态方法和静态域，这种类不希望被实例化；</p>
+</li>
+<li><p>当一个类缺少显示构造器时，编译器会自动提供一个公有的无参缺省构造器，此时这个类是可以被实例化的。因此，只要让类包含一个私有构造器且该私有构造器一旦被调用就抛出异常，就能确保这个类不可被实例化；</p>
+</li>
+<li><p>这种做法的副作用是该类不可被子类化（子类都会显示或者隐式地调用超类的构造器）。</p>
+</li>
+</ul>
+<h2 id="2-5-优先考虑依赖注入来引用资源（5）"><a href="#2-5-优先考虑依赖注入来引用资源（5）" class="headerlink" title="2.5 优先考虑依赖注入来引用资源（5）"></a>2.5 优先考虑依赖注入来引用资源（5）</h2><ul>
+<li><p>不要使用Singleton类和静态工具类来实现需要引用底层资源的类，而是应该将资源或者资源工厂以依赖注入的方式传递给构造器或者静态工厂或者生成器，从而创建出需要引用资源的类；</p>
+</li>
+<li><p>过多的手动编写的依赖注入会导致大型项目凌乱不堪，不过这种凌乱可以通过依赖注入框架（比如Spring）得到解决。</p>
+</li>
+</ul>
+<h2 id="2-6-避免创建不必要的对象（6）"><a href="#2-6-避免创建不必要的对象（6）" class="headerlink" title="2.6 避免创建不必要的对象（6）"></a>2.6 避免创建不必要的对象（6）</h2><ul>
+<li>对于同时提供了静态工厂方法和构造器的不可变类，通常优先使用静态工厂方法；</li>
+<li>如果需要重复的使用一些创建成本高的对象，可将该对象缓存起来重用；</li>
+<li>优先使用基本类型而不是装箱基本类型，注意无意识的自动装箱；</li>
+<li>并不是所有情况下都避免创建不必要的对象，要妥善权衡创建新对象的代价和维护单一对象的代价孰轻孰重。</li>
+</ul>
+<h2 id="2-7-消除过期的对象引用（7）"><a href="#2-7-消除过期的对象引用（7）" class="headerlink" title="2.7 消除过期的对象引用（7）"></a>2.7 消除过期的对象引用（7）</h2><h3 id="2-7-1-消除过期引用的方法"><a href="#2-7-1-消除过期引用的方法" class="headerlink" title="2.7.1 消除过期引用的方法"></a>2.7.1 消除过期引用的方法</h3><p>虽然Java语言具备垃圾回收功能，但程序员依旧需要考虑内存管理问题，比如消除过期的对象引用（过期引用指永远也不会被解除的引用）。消除过期引用最好的方法是让包含该引用的变量结束其生命周期，故应当在最紧凑的作用域范围内定义每一个变量。</p>
+<h3 id="2-7-2-消除过期引用的好处"><a href="#2-7-2-消除过期引用的好处" class="headerlink" title="2.7.2 消除过期引用的好处"></a>2.7.2 消除过期引用的好处</h3><ul>
+<li><p>如果过期引用被无意识的保留下来，那么垃圾收回不仅不会处理这个对象，也不会处理被这个对象所引用的所有其他对象。当这个对象被排除在垃圾回收机制之外，就会造成内存泄漏。这种问题的修复方法就是<strong>一旦对象引用过期，就立即消除这个引用</strong>；</p>
+</li>
+<li><p>如果过期引用以后又被错误的解除引用，程序会立即抛出空指针异常，而不是悄悄地错误运行下去。</p>
+</li>
+</ul>
+<h3 id="2-7-3-内存泄漏的发生"><a href="#2-7-3-内存泄漏的发生" class="headerlink" title="2.7.3 内存泄漏的发生"></a>2.7.3 内存泄漏的发生</h3><p>内存泄漏的发生有以下几种来源：</p>
+<ul>
+<li><p>自己管理内存的类（比如<code>Stack</code>类）；</p>
+</li>
+<li><p>缓存（考虑用一个后台线程定期清理）；</p>
+</li>
+<li><p>监听器和其他回调（确保回调立即被当做垃圾回收的最佳方法是只保存它们的弱引用）。</p>
+</li>
+</ul>
+<h2 id="2-8-避免使用终结方法和清除方法（8）"><a href="#2-8-避免使用终结方法和清除方法（8）" class="headerlink" title="2.8 避免使用终结方法和清除方法（8）"></a>2.8 避免使用终结方法和清除方法（8）</h2><p>终结方法（<code>finalizer</code>）和清除方法（<code>cleaner</code>）的缺点在于：</p>
+<ul>
+<li><p>不能被保证及时执行，从一个对象变得不可达到其终结方法被执行这段时间是任意长的，可能会随意地延迟对象的回收过程，一些重要操作无法及时执行，同时也带来时间性能上的损失；</p>
+</li>
+<li><p>正常情况下，未捕获的异常将会使线程终止，并打印出栈轨迹，但如果异常发生在终结方法中，则不会如此，甚至不会有警告打印出来。</p>
+</li>
+</ul>
+<p>因此，当对象中封装的资源确实需要终止时，可以让类实现<code>AutoCloseable</code>，并要求客户端在每个实例不再需要时调用<code>close</code>方法。</p>
+<p><code>finalizer</code>和<code>cleaner</code>的优点在于：</p>
+<ul>
+<li><p>当资源所有者忘记调用<code>close</code>方法时，<code>finalizer</code>和<code>cleaner</code>可以充当“安全网”（不一定释放资源总比一定不释放要好）；</p>
+</li>
+<li><p>空的<code>finalizer</code>方法可以避免恶意子类的攻击；</p>
+</li>
+<li><p><code>cleaner</code>方法适用于清除没有关键资源的本地对等体。</p>
+</li>
+</ul>
+<h2 id="2-9-try-with-resources优先于try-finally（9）"><a href="#2-9-try-with-resources优先于try-finally（9）" class="headerlink" title="2.9 try-with-resources优先于try-finally（9）"></a>2.9 <code>try-with-resources</code>优先于<code>try-finally</code>（9）</h2><p><code>try-finally</code>语句的不足在于：</p>
+<ul>
+<li><p>客户端不一定记得编写<code>finally</code>块来释放资源，而充当“安全网”的<code>finalizer</code>和<code>cleaner</code>方法并不可靠；</p>
+</li>
+<li><p>当<code>finally</code>中发生异常时，<code>finally</code>中的异常会抹除<code>try</code>中发生的异常，在异常轨迹中完全没有try中异常的记录。</p>
+</li>
+</ul>
+<p><code>try-with-resources</code>语句可以有效地避免以上问题，且代码更加简洁清晰。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/05/06/clean-code/">
+        <span class="nav-arrow">← </span>
+        
+          代码整洁之道
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2022/05/06/git/">
+        
+          Git
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%BC%95%E8%A8%80"><span class="toc-nav-text">1、引言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%88%9B%E5%BB%BA%E5%92%8C%E9%94%80%E6%AF%81%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">2、创建和销毁对象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%9D%99%E6%80%81%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E4%BB%A3%E6%9B%BF%E6%9E%84%E9%80%A0%E5%99%A8%EF%BC%881%EF%BC%89"><span class="toc-nav-text">2.1 静态工厂方法代替构造器（1）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%AD%98%E5%9C%A8%E5%A4%9A%E4%B8%AA%E6%9E%84%E9%80%A0%E5%99%A8%E5%8F%82%E6%95%B0%E6%97%B6%E4%BD%BF%E7%94%A8%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%882%EF%BC%89"><span class="toc-nav-text">2.2 存在多个构造器参数时使用生成器（2）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E9%80%9A%E8%BF%87%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E5%BC%BA%E5%8C%96Singleton%E5%B1%9E%E6%80%A7%EF%BC%883%EF%BC%89"><span class="toc-nav-text">2.3 通过枚举类型强化Singleton属性（3）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E9%80%9A%E8%BF%87%E7%A7%81%E6%9C%89%E6%9E%84%E9%80%A0%E5%99%A8%E5%BC%BA%E5%8C%96%E4%B8%8D%E5%8F%AF%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%9A%84%E8%83%BD%E5%8A%9B%EF%BC%884%EF%BC%89"><span class="toc-nav-text">2.4 通过私有构造器强化不可实例化的能力（4）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E4%BC%98%E5%85%88%E8%80%83%E8%99%91%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%9D%A5%E5%BC%95%E7%94%A8%E8%B5%84%E6%BA%90%EF%BC%885%EF%BC%89"><span class="toc-nav-text">2.5 优先考虑依赖注入来引用资源（5）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-6-%E9%81%BF%E5%85%8D%E5%88%9B%E5%BB%BA%E4%B8%8D%E5%BF%85%E8%A6%81%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%886%EF%BC%89"><span class="toc-nav-text">2.6 避免创建不必要的对象（6）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-7-%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8%EF%BC%887%EF%BC%89"><span class="toc-nav-text">2.7 消除过期的对象引用（7）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-7-1-%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E5%BC%95%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-nav-text">2.7.1 消除过期引用的方法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-7-2-%E6%B6%88%E9%99%A4%E8%BF%87%E6%9C%9F%E5%BC%95%E7%94%A8%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-nav-text">2.7.2 消除过期引用的好处</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-7-3-%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E7%9A%84%E5%8F%91%E7%94%9F"><span class="toc-nav-text">2.7.3 内存泄漏的发生</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-8-%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8%E7%BB%88%E7%BB%93%E6%96%B9%E6%B3%95%E5%92%8C%E6%B8%85%E9%99%A4%E6%96%B9%E6%B3%95%EF%BC%888%EF%BC%89"><span class="toc-nav-text">2.8 避免使用终结方法和清除方法（8）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-9-try-with-resources%E4%BC%98%E5%85%88%E4%BA%8Etry-finally%EF%BC%889%EF%BC%89"><span class="toc-nav-text">2.9 try-with-resources优先于try-finally（9）</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/05/06/effective-java/';
+    <!--
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+    -->
+    $('#article-banner').geopattern(url);
+    $('.header').removeClass('fixed-header');
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <!--
+<footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+-->
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
