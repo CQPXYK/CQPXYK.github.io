@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <!--
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  -->  
+<meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Spring Framework | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Spring Framework</h2>
+  <!--
+  <p class="post-date">2022-05-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+  -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是一个取代了EJB的轻量级框架，它提供了一系列底层和基础设施，持快速开发Java EE应用程序。</p>
+<p>Spring Framework主要包括几个模块：</p>
+<ul>
+<li>支持IoC和AOP的容器；</li>
+<li>支持JDBC和ORM的数据访问模块；</li>
+<li>支持声明式事务的模块；</li>
+<li>支持基于Servlet的MVC开发；</li>
+<li>支持基于Reactive的Web开发；</li>
+<li>以及集成JMS、JavaMail、JMX、缓存等其他模块。</li>
+</ul>
+<h1 id="2、IoC-容器"><a href="#2、IoC-容器" class="headerlink" title="2、IoC 容器"></a>2、IoC 容器</h1><h2 id="2-1-问题与解决"><a href="#2-1-问题与解决" class="headerlink" title="2.1 问题与解决"></a>2.1 问题与解决</h2><p>Java组件在协助工作时，可能会反复实例化一些很复杂的组件，为了避免重复工作，考虑共享一些组件，但组件的共享会导致组件之间的依赖关系逐渐复杂，组件的创建、共享以及销毁也变得不好管理，即难以根据依赖关系创建、组装、获取和销毁组件。</p>
+<p>传统应用程序中，组件的控制权在应用程序本身，在IoC模式下，组件控制权发生了反转（从应用程序转移到IoC容器），应用程序只需要<strong>直接使用</strong>（通过<code>setXXX</code>方法或者带<code>XXX</code>参数的构造方法来注入<code>XXX</code>实例，而不再需要<code>new XXX</code>）已经创建好配置好的组件。</p>
+<p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。</p>
+<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过以下方式来进行配置：1）XML文件；2）注解。</p>
+<h2 id="2-2-XML文件配置"><a href="#2-2-XML文件配置" class="headerlink" title="2.2 XML文件配置"></a>2.2 XML文件配置</h2><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<p>2）通过属性注入或者依赖注入编写组件；</p>
+<p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件，每个<code>&lt;bean …&gt;</code>都有一个<code>id</code>标识，Bean通过<code>&lt;property name = &quot;…&quot; ref = &quot;…&quot; /&gt;</code>来注入另一个Bean，通过<code>&lt;property name = &quot;…&quot; value = &quot;…&quot; /&gt;</code>来注入数据类型；</p>
+<p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean（只需要这一行代码），<strong>其实Spring容器就是ApplicationContext接口，ClassPathXmlApplicationContext是该接口的一个实现类；</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;application.xml&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>5）从Spring的IoC容器中获取装配好的Bean。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>1）通过<code>@Component</code>和<code>@Autowired</code>注解编写组件；</p>
+<p>2）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
+<p>3）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean（只需要这一行代码）；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br></pre></td></tr></table></figure>
+
+<p>4）在<code>AppConfig</code>类的<code>main</code>函数中，从Spring的IoC容器中获取装配好的Bean；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
+
+<p>5）通常将启动配置<code>AppConfig</code>类位于自定义的顶层包，其他Bean按类别放入子包。</p>
+<h2 id="2-4-注解说明"><a href="#2-4-注解说明" class="headerlink" title="2.4 注解说明"></a>2.4 注解说明</h2><p><code>@Component</code>：用于类，相当于定义了一个<code>id</code>为小写开头的类名的Bean。</p>
+<p><code>@Autowired</code>：用于类的数据成员，相当于把指定类型的Bean注入到指定字段，<code>@Autowired</code>默认在指定类型的Bean不存在时报错，而<code>@Autowired(required = false)</code>则不会报错，即找到指定类型时注入，没找到时忽略。</p>
+<p><code>@Configuration</code>：用于类，表示该类是一个配置类。</p>
+<p><code>@ComponentScan</code>：用于类，告知容器自动搜索当前类所在的包以及子包，将所有标注为<code>@Component</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
+<p><code>@Scope</code>：用于类，单独使用<code>@Component</code>注解时会默认将组件标注为Singleton（单例），即每次通过<code>getBean</code>方法获取到Bean总是同一个实例，而增加<code>@Scope</code>注解时，则可以将组件标注为不同的作用域的Bean，例如<code>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>将组件标注为Prototype（原型），Prototype的生命周期显然与Singleton不同。</p>
+<p><code>@Bean</code>：用于方法，当一个Bean不在<code>AppConfig</code>配置类所在的包中时，可以在<code>AppConfig</code>配置类中编写标注了<code>@Bean</code>的方法来创建并返回该Bean（Singleton）。</p>
+<p><code>@PostConstruct</code>：用于Bean在注入必要依赖后的<code>init</code>方法，从而进行初始化。Spring只根据<code>@PostConstruct</code>查找无参数方法，对方法名不作要求。</p>
+<p><code>@PreDestory</code>：用于Bean在容器关闭时的<code>shutdown</code>方法，从而进行相关的清理操作。Spring只根据<code>@PreDestory</code>查找无参数方法，对方法名不作要求。</p>
+<p><code>@Qualiflier(&quot;beanNname&quot;)</code>：在存在多个相同类型的Bean的情况下，用于指定注入的Bean的别名。</p>
+<p><code>@Primary</code>：在存在多个相同类型的Bean的情况下，用于指定优先注入的Bean，则注入时不需要指出该优先注入的Bean的别名。相同类型的Bean只有一个可以指定为<code>@Primary</code>，其他必须用<code>@Qualiflier(&quot;beanNname&quot;)</code>指定别名。</p>
+<p><code>@Value</code>：用于注入资源，当程序需要读取一个资源文件（比如配置文件等）中的内容时，可在数据成员（<code>private Resource resource;</code>）上标注<code>@Value(&quot;classpath:/logo.txt&quot;)</code>，就能在classpath中搜索到<code>logo.txt</code>文件，然后直接调用<code>resource.getInputStream()</code>就可以获取到输入流，避免了自己搜索文件的代码。所有资源文件均位于<code>src/main/resources</code>路径下。</p>
+<p><code>@PropertySource(&quot;app.properties&quot;)</code>：用于<code>AppConfig</code>配置类，告知容器自动读取名为<code>app.properties</code>的配置文件，接着可以使用<code>@Value(&quot;$&#123;key:defaultValue&#125;&quot;)</code>来注入配置文件中<code>key</code>的<code>value</code>。这比使用<code>@Value(&quot;classpath:/app.properties&quot;)</code>+输入流的方式来读取配置文件更加简单，还有一种方式是先通过一个Bean（Spring容器中的默认类名称为<code>SmtpConfig</code>）持有所有的配置属性值，然后在其他Bean中使用<code>@value(&quot;#&#123;smtpConfig.property&#125;&quot;)</code>来注入属性值。</p>
+<p><code>@Profile</code>：用于表示不同环境下的Bean，程序运行时通过指定运行环境就可以使得容器只创建该环境下的Bean。</p>
+<p><code>@Conditional</code>：用于根据一定条件确定是否创建Bean。</p>
+<h2 id="2-5-工厂Bean"><a href="#2-5-工厂Bean" class="headerlink" title="2.5 工厂Bean"></a>2.5 工厂Bean</h2><p>Spring提供了工厂模式来创建Bean。</p>
+<ul>
+<li><p>假如需要以工厂模式创建<code>Product</code>，首先需要定义一个工厂Bean（<code>ProductFactoryBean</code>），该工厂Bean需要实现<code>FactotyBean</code>接口；</p>
+</li>
+<li><p>Spring会优先实例化工厂Bean，然后通过工厂Bean的<code>getObject</code>方法创建真正的Bean（<code>Product</code>）</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;Product&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    String product= <span class="string">&quot;P&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.of(product);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.class;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此，如果定义了一个工厂Bean，Spring创建的Bean实际上是这个工厂Bean的<code>getObject</code>方法所返回的Bean。</p>
+<h1 id="3、AOP"><a href="#3、AOP" class="headerlink" title="3、AOP"></a>3、AOP</h1><h2 id="3-1-问题与解决"><a href="#3-1-问题与解决" class="headerlink" title="3.1 问题与解决"></a>3.1 问题与解决</h2><p>假设业务的组件中有多个业务方法，每个业务方法除了要执行核心业务逻辑，还需要执行安全检查、事务管理等处理逻辑，这些处理逻辑会重复出现在每个四处分散的业务方法中。</p>
+<p>针对该问题可以使用Proxy模式。对每个业务方法实现Proxy，将这些处理逻辑放置在Proxy当中。这种手动编写Proxy的方式不够简单，更简单的方法是将每一种处理看作一个切面，然后以某种自动化的方式将切面逻辑织入到核心逻辑中，从而实现Proxy模式。</p>
+<p>AOP把系统分解为不同的切面（比如安全检查、事务管理等处理）。Spring的AOP是基于JVM的动态代理实现的，可以理解为在客户端调用业务对象时，通过AOP技术在核心业务逻辑运行前后织入切面逻辑。AOP本质上只是一种代理模式的实现方式。</p>
+<h2 id="3-2-装配"><a href="#3-2-装配" class="headerlink" title="3.2 装配"></a>3.2 装配</h2><p>1）通过Maven引入<code>spring-aspects</code>依赖；</p>
+<p>2）使用<code>@Aspect</code>标注编写切面Bean；</p>
+<p>3）使用<code>@Before</code>等注解在切面Bean中编写拦截器代码（即切面逻辑）；</p>
+<p>4）给<code>@Configuration</code>标注的配置类加上<code>@EnableAspectJAutoProxy</code>注解，使得IoC容器自动查找<code>@Aspect</code>所标注的Bean，并根据每个方法的<code>@Before</code>等注解将AOP织入到特定的Bean中。</p>
+<h2 id="3-3-拦截器说明"><a href="#3-3-拦截器说明" class="headerlink" title="3.3 拦截器说明"></a>3.3 拦截器说明</h2><p><code>@Before</code>：先执行拦截器代码，再执行目标代码，如果拦截器抛出异常，目标代码不执行。</p>
+<p><code>@After</code>：先执行目标代码，再执行拦截器代码，无论目标代码是否抛出异常，拦截器代码都会执行。</p>
+<p><code>@AfterReturning</code>：和<code>@After</code>的区别在于，只有目标代码正常返回时才会执行拦截器代码。</p>
+<p><code>@AfterThrowing</code>：和<code>@After</code>的区别在于，只有目标代码抛出异常时才会执行拦截器代码。</p>
+<p><code>@Around</code>：能在目标代码执行前后均执行拦截器代码，即便目标代码抛出异常，依旧继续执行拦截器代码，能够实现以上全部拦截器的功能。</p>
+<h2 id="3-4-指定核心代码"><a href="#3-4-指定核心代码" class="headerlink" title="3.4 指定核心代码"></a>3.4 指定核心代码</h2><p>在使用拦截器时，可以通过<code>execution (* xxx.Xyz.*(…))</code>这样语法来指定需要织入AOP的核心代码（比如<code>@Before (&quot;execution (public * com.service.*.*(…))&quot;)</code>可以指定这个包下的所有Bean的所有方法），但这种指定方式不够精准，容易出错，可以考虑通过注解来标注需要拦截的方法，从而精准指定需要织入AOP的核心代码。</p>
+<p>1）比如<code>@Transactional</code>注解用于标注需要拦截并执行事务处理的方法，除了<code>@Transactional</code>注解，还可以自定义注解来标注需要拦截的方法；</p>
+<p>2）定义切面Bean，并通过<code>@annotation (小写开头的注解名)</code>这样的语法来指定需要织入AOP的核心代码（比如<code>@Before (&quot;@annotation (metricTime)&quot;)</code>对应自定义的<code>@MetricTime</code>注解）。</p>
+<h2 id="3-5-CGLIB"><a href="#3-5-CGLIB" class="headerlink" title="3.5 CGLIB"></a>3.5 CGLIB</h2><p>Spring的AOP是基于JVM的动态代理实现的，而JVM的动态代理要求必须实现接口，Spring通过CGLIB来动态创建业务接口/类的代理接口/子类，在代理接口/子类中织入切面逻辑。需要注意的地方在于：</p>
+<ul>
+<li>Spring通过<strong>CGLIB创建的代理类不会初始化继承自原始类的任何成员变量</strong>，包括final类型的成员变量，也就是说，CGLIB所创建的代理所继承的成员变量的值始终为null，因此加AOP很可能会导致NPE；</li>
+<li>以上NPE问题的解决方式是业务类通过<code>getXXX</code>方法而不是直接获取<code>XXX</code>变量的值，那么CGLIB创建的代理类会覆写<code>getXXX</code>方法，从而返回原始业务类的<code>XXX</code>变量的值；</li>
+<li>Spring通过<strong>CGLIB创建的代理类无法覆写继承自原始类的final方法</strong>，即无法代理final方法。</li>
+</ul>
+<p>综上所述，为了正确使用AOP，在访问被注入的Bean的成员变量时，总是调用<code>getXXX</code>方法而非直接访问字段；编写可能会被代理的Bean时，不要编写<code>public final</code>方法。</p>
+<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><p><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></p>
+<p><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary">https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary</a></p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/05/06/design-patterns/">
+        <span class="nav-arrow">← </span>
+        
+          设计模式
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2022/05/07/maven/">
+        
+          Maven
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC-%E5%AE%B9%E5%99%A8"><span class="toc-nav-text">2、IoC 容器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">2.4 注解说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.5 工厂Bean</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">4、参考资料</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/05/07/spring/';
+    <!--
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+    -->
+    $('#article-banner').geopattern(url);
+    $('.header').removeClass('fixed-header');
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <!--
+<footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+-->
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

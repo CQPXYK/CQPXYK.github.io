@@ -1,6 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>搭建个人博客</title>
+    <url>/2022/05/06/blog/</url>
+    <content><![CDATA[<h1 id="1、工具"><a href="#1、工具" class="headerlink" title="1、工具"></a>1、工具</h1><ul>
+<li><p>Git：一种分布式版本控制系统（DVCS）；</p>
+</li>
+<li><p>GitHub：一个只支持Git进行版本控制的代码托管平台；</p>
+</li>
+<li><p>GitHub Pages：提供免费静态网站托管服务，它能够对GitHub中的静态文件资源进行处理并展示成一个网站，同时还会给这个网站提供一个特定的域名，但用户也可以将域名改成自己想要的；</p>
+</li>
+<li><p>Node.js：一个开源和跨平台的JavaScript运行时环境；</p>
+</li>
+<li><p>Hexo：一个将用户编辑的md格式的文件生成HTML静态资源文件的博客框架。</p>
+</li>
+</ul>
+<h1 id="2、前期准备"><a href="#2、前期准备" class="headerlink" title="2、前期准备"></a>2、前期准备</h1><h2 id="2-1-Git、GitHub及配置"><a href="#2-1-Git、GitHub及配置" class="headerlink" title="2.1 Git、GitHub及配置"></a>2.1 Git、GitHub及配置</h2><p>​    1）在<a href="https://git-scm.com/downloads">Git</a>下载安装包并安装；</p>
+<p>​    2）鼠标右键可以看到：Git Bash Here，单击打开；</p>
+<p>​    3）输入<code>git -version</code>，可以看到安装好的版本信息；</p>
+<p>​    4）在<a href="https://github.com/">GitHub</a>注册账号；</p>
+<p>​    5）设置Git用户信息；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">&quot;GitHubName&quot;</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;GitHub Email&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    6）生成SSH key</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;GitHubEmail&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    7）连续一路回车直到生成一个矩形图案，此时，可以看到用户目录下生成了<code>.ssh</code>文件夹，该文件夹的<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件分别对应SSH key的公钥和私钥；</p>
+<img src="blog_1.png" alt="文件目录截图1" style="zoom:70%;" />
+
+<img src="blog_2.png" alt="文件目录截图2" style="zoom:70%;" />
+
+<p>​    8）打开GitHub主页 –&gt; Settings –&gt; SSH and GPG keys –&gt; New SSH key，将id_rsa.pub中的内容复制粘贴到key中，title可以随便取，点击Add SSH key；</p>
+<img src="blog_3.png" alt="项目设置截图1" style="zoom:70%;" />
+
+<p>​    9）验证是否成功；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>​    10）SSH key配置完毕后，就可以将本地的源码和资源上传到GitHub，而无需每次都输账号和密码。</p>
+<h2 id="2-2-GitHub-Page和域名"><a href="#2-2-GitHub-Page和域名" class="headerlink" title="2.2 GitHub Page和域名"></a>2.2 GitHub Page和域名</h2><p>​    1）打开GitHub主页 –&gt; <code>+</code>按钮 –&gt; New respository，在Repository name输入框中填入<code>GitHubName.github.io</code>，勾选Initialize this repository with a README选项；</p>
+<p>​    2）在浏览器中输入<a href="https://githubname.github.io/">https://GitHubName.github.io/</a> 即可看到如下页面，代表成功开启了GitHub Pages服务；</p>
+<img src="blog_4.png" alt="浏览器截图1" style="zoom:70%;" />
+
+<p>​    3）在<a href="https://wanwang.aliyun.com/">万网-阿里云</a>注册账号或直接登录，选择还未被注册的域名，进入结算页面，创建持有者信息模本，验证并等待审核，付钱；</p>
+<img src="blog_5.png" alt="域名注册截图1" style="zoom:70%;" />
+
+<p>​    4）由于GitHub推荐在DNS中使用A记录和CNAME相结合的方式，在注册好的个人域名后点击解析添加如下两条解析记录，其中，iPv4地址可以通过<code>ping</code>得到；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ping GitHubName.github.io</span><br></pre></td></tr></table></figure>
+
+<img src="blog_6.png" alt="域名注册截图2" style="zoom:70%;" />
+
+<p>​    5）打开GitHubName.github.io仓库 –&gt; Add file –&gt; Create new file，文件名为<code>CNAME</code>，内容为注册好的个人域名，然后提交；</p>
+<img src="blog_7.png" alt="项目设置截图2" style="zoom:70%;" />
+
+<p>​    6）在浏览器中输入个人域名即可看到如下页面，代表成功绑定了域名；</p>
+<img src="blog_8.png" alt="浏览器截图2" style="zoom:70%;" />
+
+<p>​    7）打开GitHubName.github.io仓库 –&gt; Settings –&gt; Pages，勾选<code>Enforce HTTPS</code>选项即可强制走Https。</p>
+<img src="blog_9.png" alt="项目设置截图3" style="zoom:70%;" />
+
+<h2 id="2-3-Node-js和Hexo"><a href="#2-3-Node-js和Hexo" class="headerlink" title="2.3 Node.js和Hexo"></a>2.3 Node.js和Hexo</h2><p>​    1）在<a href="https://nodejs.org/en/download/">Node.js</a>下载安装包并安装；</p>
+<p>​    2）查看安装好的版本信息；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">$ npm -v</span><br></pre></td></tr></table></figure>
+
+<p>​    3）在<code>nodejs</code>文件夹中新建两个空文件夹 <code>node_cache</code>、<code>node_global</code>；</p>
+<img src="blog_10.png" alt="文件目录截图3" style="zoom:70%;" />
+
+<p>​    4）配置；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> prefix <span class="string">&quot;D:\nodejs\node_global&quot;</span></span><br><span class="line">$ npm config <span class="built_in">set</span> cache <span class="string">&quot;D:\nodejs\node_cache&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    5）打开控制面板 –&gt; 系统 –&gt; 高级系统设置 –&gt; 环境变量，在系统变量中新建一个变量名为<code>ODE_PATH</code>，值为<code>D:\nodejs\node_global\node_modules</code>；</p>
+<img src="blog_11.png" alt="系统设置截图1" style="zoom:70%;" />
+
+<p>​    6）编辑用户变量里的Path，将npm的路径改为：<code>D:\nodejs\node_global</code>；</p>
+<img src="blog_12.png" alt="系统设置截图2" style="zoom:70%;" />
+
+<p>​    7）安装webpack并查看版本信息；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install webpack –g</span><br><span class="line">$ npm webpack –v</span><br></pre></td></tr></table></figure>
+
+<p>至此，npm在安装全局模块时的路径和环境变量均设置完成，如果不设置的话，后续安装模块时会安装到C盘，不方便管理，甚至有可能安装好hexo后却无法使用；</p>
+<p>​    8）安装hexo并查看版本信息。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br><span class="line">$ hexo –v</span><br></pre></td></tr></table></figure>
+
+<h1 id="3、博客搭建"><a href="#3、博客搭建" class="headerlink" title="3、博客搭建"></a>3、博客搭建</h1><h2 id="3-1-搭建和预览"><a href="#3-1-搭建和预览" class="headerlink" title="3.1 搭建和预览"></a>3.1 搭建和预览</h2><p>​    1）在想要放置的地方建立一个文件夹<code>GitHubName.github.io</code>作为博客根目录；</p>
+<p>​    2）在博客根目录下初始化hexo，可以看到博客根目录中有了以下内容；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+
+<img src="blog_13.png" alt="文件目录截图4" style="zoom:70%;" />
+
+<p>​    3）在<code>source</code>文件夹下新建一个<code>CNAME</code>文件，然后在此文件中写入注册好的个人域名；</p>
+<img src="blog_14.png" alt="文件目录截图5" style="zoom:70%;" />
+
+<p>​    4）在博客根目录下静态部署，生成博客，此时会将<code>source\_posts</code>文件夹下的<code>hello-world.md</code>文件解析到一个<code>public</code>文件夹下，并生成<code>db.json</code>文件；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+
+<img src="blog_15.png" alt="文件目录截图6" style="zoom:70%;" />
+
+<p>​    5）在博客根目录下本地运行后，在<a href="http://localhost:4000/">http://localhost:4000/</a> 即可本地预览博客，预览结束之后按<code>Ctrl+C</code>来停止运行服务器，每当修改完网站里的东西就可以通过这种方式来预览，而不是直接发布到网上。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-配置和部署"><a href="#3-2-配置和部署" class="headerlink" title="3.2 配置和部署"></a>3.2 配置和部署</h2><p>​    1）在博客根目录下的<code>_config.yml</code>文件中作以下配置，<code>_config.yml</code>是整个博客的配置文件，每项配置参数在中<a href="https://hexo.io/zh-cn/docs/configuration">hexo官网</a>有详细的介绍；</p>
+<img src="blog_16.png" alt="文件配置截图1" style="zoom:70%;" />
+
+<p>​    2）在博客根目录下安装一个帮助我们上传文件的Git部署插件；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>​    3）将博客部署到GitHub服务器，这一步如果没有反应的话，就在<code>_config.yml</code>文件中所配置<code>repo</code>的冒号后再增加一个空格；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<p>​    4）在浏览器中输入个人域名即可看到如下页面，代表成功部署了博客。</p>
+<img src="blog_17.png" alt="浏览器截图3" style="zoom:70%;" />
+
+<h2 id="3-3-个性化主题"><a href="#3-3-个性化主题" class="headerlink" title="3.3 个性化主题"></a>3.3 个性化主题</h2><p>​    1）在<a href="https://hexo.io/themes/">hexo themes</a>中挑一个想要的hexo主题，在博客根目录下执行以下操作，即可将xxx主题保存到<code>themes\xxx</code>文件夹下；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> xxxURL themes\xxx</span><br></pre></td></tr></table></figure>
+
+<p>​    2）在博客根目录下的<code>_config.yml</code>文件中作以下配置；</p>
+<img src="blog_18.png" alt="文件配置截图2" style="zoom:70%;" />
+
+<p>​    3）关于个人图标、打赏、评论等功能需要在xxx主题的<code>_config.yml</code>等文件中进行配置，不同主题的配置方法可能略有不同，可自行根据所设置主题的<code>README.md</code>文件所介绍的内容进行配置；</p>
+<p>​    4）在博客根目录下重复以下步骤即可在<a href="http://localhost:4000/">http://localhost:4000/</a> 中预览新主题下的博客；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<p>​    5）将博客部署到GitHub服务器并等待一段时间后，在浏览器中输入个人域名即可看到所设置主题下的博客。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-菜单和写作"><a href="#3-4-菜单和写作" class="headerlink" title="3.4 菜单和写作"></a>3.4 菜单和写作</h2><p>​    1）在<code>themes\xxx</code>目录下的<code>_config.yml</code>文件中作以下配置，即可设置想要的博客菜单，下图设置了首页、分类以及归档菜单；</p>
+<img src="blog_19.png" alt="文件配置截图3" style="zoom:70%;" />
+
+<p>​    2）在博客根目录下执行以下操作即可在<code>source</code>目录下生成一个<code>categories</code>文件夹，编辑（<a href="https://markdown.com.cn/">markdown</a>）该文件夹中的<code>index.md</code>文件，那么在网页上点击<code>categories</code>菜单后就能显示出所编辑的内容；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page categories</span><br></pre></td></tr></table></figure>
+
+<img src="blog_20.png" alt="文件目录截图7" style="zoom:70%;" />
+
+<p>​    3）为了在静态部署生成博客时能够将<code>source\_posts</code>中的图片资源也解析到<code>public</code>文件夹中，需要在博客根目录下的<code>_config.yml</code>文件中作以下配置；</p>
+<img src="blog_21.png" alt="文件配置截图4" style="zoom:90%;" />
+
+<p>​    4）此时执行以下操作即可在<code>source\_post</code>目录新建一个<code>xxx.md</code>文件和一个<code>xxx</code>文件夹，那么在编辑<code>xxx.md</code>文件时所使用的图片资源就放置在<code>xxx</code>文件夹中；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new xxx</span><br></pre></td></tr></table></figure>
+
+<p>​    5）需要注意的是插入图片的路径问题，静态部署前<code>xxx.md</code>文件中所插入的图片位于<code>xxx</code>文件夹中，静态部署后图片会被解析到与html文件相同文件夹下，因此，在编辑完成后静态部署前需要将插入图片的路径更改为正确的形式，这一点可自行观察解析后的<code>public</code>文件夹结构；</p>
+<p>​    6）有时候需要在不同页面跳转，只需在其他md文件中插入需要的跳转的md文件被解析后的地址，即可完成跳转；</p>
+<p>​    7）重复之前的预览、调整和部署操作，在浏览器中输入个人域名即可看到编辑后博客内容。</p>
+<h1 id="4、体验提升"><a href="#4、体验提升" class="headerlink" title="4、体验提升"></a>4、体验提升</h1><h2 id="4-1-自动化"><a href="#4-1-自动化" class="headerlink" title="4.1 自动化"></a>4.1 自动化</h2><h2 id="4-2-多终端"><a href="#4-2-多终端" class="headerlink" title="4.2 多终端"></a>4.2 多终端</h2><h2 id="4-3-其他"><a href="#4-3-其他" class="headerlink" title="4.3 其他"></a>4.3 其他</h2><p>​    1）在博客根目录下安装搜索插件可令博客支持搜索功能；</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb</span><br></pre></td></tr></table></figure>
+
+<p>​    2）</p>
+<h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
+<li><a href="https://sketchk.xyz/2017/03/24/A-Guide-Of-Making-Your-Personal-Blog-Part-1/">《A-Guide-Of-Making-Your-Personal-Blog》</a></li>
+<li><a href="https://docs.github.com/cn/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages">《about-custom-domains-and-github-pages》</a></li>
+<li><a href="https://juejin.cn/post/6844904131266609165">https://juejin.cn/post/6844904131266609165</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/102592286">https://zhuanlan.zhihu.com/p/102592286</a></li>
+<li><a href="http://lowrank.science/archives/">http://lowrank.science/archives/</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>代码整洁之道</title>
     <url>/2022/05/06/clean-code/</url>
     <content><![CDATA[<h1 id="1、整洁代码"><a href="#1、整洁代码" class="headerlink" title="1、整洁代码"></a>1、整洁代码</h1><p>保持高效的唯一做法就是始终保持代码整洁。</p>
@@ -183,178 +336,37 @@
 ]]></content>
   </entry>
   <entry>
-    <title>搭建个人博客</title>
-    <url>/2022/05/06/blog/</url>
-    <content><![CDATA[<h1 id="1、工具"><a href="#1、工具" class="headerlink" title="1、工具"></a>1、工具</h1><ul>
-<li><p>Git：一种分布式版本控制系统（DVCS）；</p>
-</li>
-<li><p>GitHub：一个只支持Git进行版本控制的代码托管平台；</p>
-</li>
-<li><p>GitHub Pages：提供免费静态网站托管服务，它能够对GitHub中的静态文件资源进行处理并展示成一个网站，同时还会给这个网站提供一个特定的域名，但用户也可以将域名改成自己想要的；</p>
-</li>
-<li><p>Node.js：一个开源和跨平台的JavaScript运行时环境；</p>
-</li>
-<li><p>Hexo：一个将用户编辑的md格式的文件生成HTML静态资源文件的博客框架。</p>
-</li>
-</ul>
-<h1 id="2、前期准备"><a href="#2、前期准备" class="headerlink" title="2、前期准备"></a>2、前期准备</h1><h2 id="2-1-Git、GitHub及配置"><a href="#2-1-Git、GitHub及配置" class="headerlink" title="2.1 Git、GitHub及配置"></a>2.1 Git、GitHub及配置</h2><p>​    1）在<a href="https://git-scm.com/downloads">Git</a>下载安装包并安装；</p>
-<p>​    2）鼠标右键可以看到：Git Bash Here，单击打开；</p>
-<p>​    3）输入<code>git -version</code>，可以看到安装好的版本信息；</p>
-<p>​    4）在<a href="https://github.com/">GitHub</a>注册账号；</p>
-<p>​    5）设置Git用户信息；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">&quot;GitHubName&quot;</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;GitHub Email&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>​    6）生成SSH key</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;GitHubEmail&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>​    7）连续一路回车直到生成一个矩形图案，此时，可以看到用户目录下生成了<code>.ssh</code>文件夹，该文件夹的<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件分别对应SSH key的公钥和私钥；</p>
-<img src="blog_1.png" alt="文件目录截图1" style="zoom:70%;" />
-
-<img src="blog_2.png" alt="文件目录截图2" style="zoom:70%;" />
-
-<p>​    8）打开GitHub主页 –&gt; Settings –&gt; SSH and GPG keys –&gt; New SSH key，将id_rsa.pub中的内容复制粘贴到key中，title可以随便取，点击Add SSH key；</p>
-<img src="blog_3.png" alt="项目设置截图1" style="zoom:70%;" />
-
-<p>​    9）验证是否成功；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-
-<p>​    10）SSH key配置完毕后，就可以将本地的源码和资源上传到GitHub，而无需每次都输账号和密码。</p>
-<h2 id="2-2-GitHub-Page和域名"><a href="#2-2-GitHub-Page和域名" class="headerlink" title="2.2 GitHub Page和域名"></a>2.2 GitHub Page和域名</h2><p>​    1）打开GitHub主页 –&gt; <code>+</code>按钮 –&gt; New respository，在Repository name输入框中填入<code>GitHubName.github.io</code>，勾选Initialize this repository with a README选项；</p>
-<p>​    2）在浏览器中输入<a href="https://githubname.github.io/">https://GitHubName.github.io/</a> 即可看到如下页面，代表成功开启了GitHub Pages服务；</p>
-<img src="blog_4.png" alt="浏览器截图1" style="zoom:70%;" />
-
-<p>​    3）在<a href="https://wanwang.aliyun.com/">万网-阿里云</a>注册账号或直接登录，选择还未被注册的域名，进入结算页面，创建持有者信息模本，验证并等待审核，付钱；</p>
-<img src="blog_5.png" alt="域名注册截图1" style="zoom:70%;" />
-
-<p>​    4）由于GitHub推荐在DNS中使用A记录和CNAME相结合的方式，在注册好的个人域名后点击解析添加如下两条解析记录，其中，iPv4地址可以通过<code>ping</code>得到；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ping GitHubName.github.io</span><br></pre></td></tr></table></figure>
-
-<img src="blog_6.png" alt="域名注册截图2" style="zoom:70%;" />
-
-<p>​    5）打开GitHubName.github.io仓库 –&gt; Add file –&gt; Create new file，文件名为<code>CNAME</code>，内容为注册好的个人域名，然后提交；</p>
-<img src="blog_7.png" alt="项目设置截图2" style="zoom:70%;" />
-
-<p>​    6）在浏览器中输入个人域名即可看到如下页面，代表成功绑定了域名；</p>
-<img src="blog_8.png" alt="浏览器截图2" style="zoom:70%;" />
-
-<p>​    7）打开GitHubName.github.io仓库 –&gt; Settings –&gt; Pages，勾选<code>Enforce HTTPS</code>选项即可强制走Https。</p>
-<img src="blog_9.png" alt="项目设置截图3" style="zoom:70%;" />
-
-<h2 id="2-3-Node-js和Hexo"><a href="#2-3-Node-js和Hexo" class="headerlink" title="2.3 Node.js和Hexo"></a>2.3 Node.js和Hexo</h2><p>​    1）在<a href="https://nodejs.org/en/download/">Node.js</a>下载安装包并安装；</p>
-<p>​    2）查看安装好的版本信息；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ node -v</span><br><span class="line">$ npm -v</span><br></pre></td></tr></table></figure>
-
-<p>​    3）在<code>nodejs</code>文件夹中新建两个空文件夹 <code>node_cache</code>、<code>node_global</code>；</p>
-<img src="blog_10.png" alt="文件目录截图3" style="zoom:70%;" />
-
-<p>​    4）配置；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> prefix <span class="string">&quot;D:\nodejs\node_global&quot;</span></span><br><span class="line">$ npm config <span class="built_in">set</span> cache <span class="string">&quot;D:\nodejs\node_cache&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>​    5）打开控制面板 –&gt; 系统 –&gt; 高级系统设置 –&gt; 环境变量，在系统变量中新建一个变量名为<code>ODE_PATH</code>，值为<code>D:\nodejs\node_global\node_modules</code>；</p>
-<img src="blog_11.png" alt="系统设置截图1" style="zoom:70%;" />
-
-<p>​    6）编辑用户变量里的Path，将npm的路径改为：<code>D:\nodejs\node_global</code>；</p>
-<img src="blog_12.png" alt="系统设置截图2" style="zoom:70%;" />
-
-<p>​    7）安装webpack并查看版本信息；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install webpack –g</span><br><span class="line">$ npm webpack –v</span><br></pre></td></tr></table></figure>
-
-<p>至此，npm在安装全局模块时的路径和环境变量均设置完成，如果不设置的话，后续安装模块时会安装到C盘，不方便管理，甚至有可能安装好hexo后却无法使用；</p>
-<p>​    8）安装hexo并查看版本信息。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br><span class="line">$ hexo –v</span><br></pre></td></tr></table></figure>
-
-<h1 id="3、博客搭建"><a href="#3、博客搭建" class="headerlink" title="3、博客搭建"></a>3、博客搭建</h1><h2 id="3-1-搭建和预览"><a href="#3-1-搭建和预览" class="headerlink" title="3.1 搭建和预览"></a>3.1 搭建和预览</h2><p>​    1）在想要放置的地方建立一个文件夹<code>GitHubName.github.io</code>作为博客根目录；</p>
-<p>​    2）在博客根目录下初始化hexo，可以看到博客根目录中有了以下内容；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
-
-<img src="blog_13.png" alt="文件目录截图4" style="zoom:70%;" />
-
-<p>​    3）在<code>source</code>文件夹下新建一个<code>CNAME</code>文件，然后在此文件中写入注册好的个人域名；</p>
-<img src="blog_14.png" alt="文件目录截图5" style="zoom:70%;" />
-
-<p>​    4）在博客根目录下静态部署，生成博客，此时会将<code>source\_posts</code>文件夹下的<code>hello-world.md</code>文件解析到一个<code>public</code>文件夹下，并生成<code>db.json</code>文件；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
-
-<img src="blog_15.png" alt="文件目录截图6" style="zoom:70%;" />
-
-<p>​    5）在博客根目录下本地运行后，在<a href="http://localhost:4000/">http://localhost:4000/</a> 即可本地预览博客，预览结束之后按<code>Ctrl+C</code>来停止运行服务器，每当修改完网站里的东西就可以通过这种方式来预览，而不是直接发布到网上。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-2-配置和部署"><a href="#3-2-配置和部署" class="headerlink" title="3.2 配置和部署"></a>3.2 配置和部署</h2><p>​    1）在博客根目录下的<code>_config.yml</code>文件中作以下配置，<code>_config.yml</code>是整个博客的配置文件，每项配置参数在中<a href="https://hexo.io/zh-cn/docs/configuration">hexo官网</a>有详细的介绍；</p>
-<img src="blog_16.png" alt="文件配置截图1" style="zoom:70%;" />
-
-<p>​    2）在博客根目录下安装一个帮助我们上传文件的Git部署插件；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>​    3）将博客部署到GitHub服务器，这一步如果没有反应的话，就在<code>_config.yml</code>文件中所配置<code>repo</code>的冒号后再增加一个空格；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<p>​    4）在浏览器中输入个人域名即可看到如下页面，代表成功部署了博客。</p>
-<img src="blog_17.png" alt="浏览器截图3" style="zoom:70%;" />
-
-<h2 id="3-3-个性化主题"><a href="#3-3-个性化主题" class="headerlink" title="3.3 个性化主题"></a>3.3 个性化主题</h2><p>​    1）在<a href="https://hexo.io/themes/">hexo themes</a>中挑一个想要的hexo主题，在博客根目录下执行以下操作，即可将xxx主题保存到<code>themes\xxx</code>文件夹下；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> xxxURL themes\xxx</span><br></pre></td></tr></table></figure>
-
-<p>​    2）在博客根目录下的<code>_config.yml</code>文件中作以下配置；</p>
-<img src="blog_18.png" alt="文件配置截图2" style="zoom:70%;" />
-
-<p>​    3）关于个人图标、打赏、评论等功能需要在xxx主题的<code>_config.yml</code>等文件中进行配置，不同主题的配置方法可能略有不同，可自行根据所设置主题的<code>README.md</code>文件所介绍的内容进行配置；</p>
-<p>​    4）在博客根目录下重复以下步骤即可在<a href="http://localhost:4000/">http://localhost:4000/</a> 中预览新主题下的博客；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
-
-<p>​    5）将博客部署到GitHub服务器并等待一段时间后，在浏览器中输入个人域名即可看到所设置主题下的博客。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-4-菜单和写作"><a href="#3-4-菜单和写作" class="headerlink" title="3.4 菜单和写作"></a>3.4 菜单和写作</h2><p>​    1）在<code>themes\xxx</code>目录下的<code>_config.yml</code>文件中作以下配置，即可设置想要的博客菜单，下图设置了首页、分类以及归档菜单；</p>
-<img src="blog_19.png" alt="文件配置截图3" style="zoom:70%;" />
-
-<p>​    2）在博客根目录下执行以下操作即可在<code>source</code>目录下生成一个<code>categories</code>文件夹，编辑（<a href="https://markdown.com.cn/">markdown</a>）该文件夹中的<code>index.md</code>文件，那么在网页上点击<code>categories</code>菜单后就能显示出所编辑的内容；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<img src="blog_20.png" alt="文件目录截图7" style="zoom:70%;" />
-
-<p>​    3）为了在静态部署生成博客时能够将<code>source\_posts</code>中的图片资源也解析到<code>public</code>文件夹中，需要在博客根目录下的<code>_config.yml</code>文件中作以下配置；</p>
-<img src="blog_21.png" alt="文件配置截图4" style="zoom:90%;" />
-
-<p>​    4）此时执行以下操作即可在<code>source\_post</code>目录新建一个<code>xxx.md</code>文件和一个<code>xxx</code>文件夹，那么在编辑<code>xxx.md</code>文件时所使用的图片资源就放置在<code>xxx</code>文件夹中；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new xxx</span><br></pre></td></tr></table></figure>
-
-<p>​    5）需要注意的是插入图片的路径问题，静态部署前<code>xxx.md</code>文件中所插入的图片位于<code>xxx</code>文件夹中，静态部署后图片会被解析到与html文件相同文件夹下，因此，在编辑完成后静态部署前需要将插入图片的路径更改为正确的形式，这一点可自行观察解析后的<code>public</code>文件夹结构；</p>
-<p>​    6）有时候需要在不同页面跳转，只需在其他md文件中插入需要的跳转的md文件被解析后的地址，即可完成跳转；</p>
-<p>​    7）重复之前的预览、调整和部署操作，在浏览器中输入个人域名即可看到编辑后博客内容。</p>
-<h1 id="4、体验提升"><a href="#4、体验提升" class="headerlink" title="4、体验提升"></a>4、体验提升</h1><h2 id="4-1-自动化"><a href="#4-1-自动化" class="headerlink" title="4.1 自动化"></a>4.1 自动化</h2><h2 id="4-2-多终端"><a href="#4-2-多终端" class="headerlink" title="4.2 多终端"></a>4.2 多终端</h2><h2 id="4-3-其他"><a href="#4-3-其他" class="headerlink" title="4.3 其他"></a>4.3 其他</h2><p>​    1）在博客根目录下安装搜索插件可令博客支持搜索功能；</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb</span><br></pre></td></tr></table></figure>
-
-<p>​    2）</p>
-<h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
-<li><a href="https://sketchk.xyz/2017/03/24/A-Guide-Of-Making-Your-Personal-Blog-Part-1/">《A-Guide-Of-Making-Your-Personal-Blog》</a></li>
-<li><a href="https://docs.github.com/cn/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages">《about-custom-domains-and-github-pages》</a></li>
-<li><a href="https://juejin.cn/post/6844904131266609165">https://juejin.cn/post/6844904131266609165</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/102592286">https://zhuanlan.zhihu.com/p/102592286</a></li>
-<li><a href="http://lowrank.science/archives/">http://lowrank.science/archives/</a></li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
     <title>设计模式</title>
     <url>/2022/05/06/design-patterns/</url>
     <content><![CDATA[<h1 id="1、类图"><a href="#1、类图" class="headerlink" title="1、类图"></a>1、类图</h1><h2 id="1-1-泛化关系（Generalization）"><a href="#1-1-泛化关系（Generalization）" class="headerlink" title="1.1 泛化关系（Generalization）"></a>1.1 泛化关系（Generalization）</h2><p>用于描述非抽象类的继承关系，关键字为<code>extends</code>。</p>
+<img src="patterns_1.png" alt="泛化关系" style="zoom:70%;" />
+
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-2-实现关系（Realization）"><a href="#1-2-实现关系（Realization）" class="headerlink" title="1.2 实现关系（Realization）"></a>1.2 实现关系（Realization）</h2><p>用于描述抽象类/接口的实现关系，关键字为<code>implements</code>。</p>
+<img src="patterns_2.png" alt="实现关系" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-3-聚合关系（Aggregation）"><a href="#1-3-聚合关系（Aggregation）" class="headerlink" title="1.3 聚合关系（Aggregation）"></a>1.3 聚合关系（Aggregation）</h2><p>用于描述整体和部分个体之间的非强依赖关系，整体不存在时部分个体依旧存在。</p>
+<img src="patterns_3.png" alt="聚合关系" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcade</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorman</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-4-复合关系（Composition）"><a href="#1-4-复合关系（Composition）" class="headerlink" title="1.4 复合关系（Composition）"></a>1.4 复合关系（Composition）</h2><p>用于描述整体和部分之间的强依赖关系，整体不存在时部分也不存在。</p>
+<img src="patterns_4.png" alt="复合关系" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Engine</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tire</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-5-关联关系（Association）"><a href="#1-5-关联关系（Association）" class="headerlink" title="1.5 关联关系（Association）"></a>1.5 关联关系（Association）</h2><p>用于描述类对象之间的静态强关联关系，该关系与运行过程的状态无关，在运行前就可以确定。关联关系通常以成员变量（静态方法变量）的形式实现。</p>
 <p>关联关系默认不强调方向，表示对象之间默认互相知道，如果特别强调方向（如下图），则表示A知道B，但B不知道A。</p>
+<img src="patterns_5.png" alt="关联关系" style="zoom:70%;" />
+
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Driver</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Licence</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-6-依赖关系（Dependency）"><a href="#1-6-依赖关系（Dependency）" class="headerlink" title="1.6 依赖关系（Dependency）"></a>1.6 依赖关系（Dependency）</h2><p>用于描述类对象之间的临时性动态关联关系，该关系与运行过程中的状态相关，在运行时确定。依赖应当总是单向的，要杜绝双向依赖及循环依赖的产生。依赖关系通常以类方法的传入传出参数（或局部变量）实现。</p>
+<img src="patterns_6.png" alt="依赖关系" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Offgas <span class="title function_">move</span><span class="params">(Gasoline G)</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Gasoline</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Offgas</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>泛化 =</strong> <strong>实现 &gt;</strong> <strong>复合 &gt;</strong> <strong>聚合 &gt;</strong> <strong>关联 &gt;</strong> <strong>依赖</strong></p>
@@ -375,13 +387,19 @@
 <p>5）一般不是通过<code>new</code>操作符，而是由框架（例如Spring）来创建装配从而获取单例，<code>@Component</code>注解默认将组件标注为单例。</p>
 <h3 id="2-1-2-简单工厂（Simple-Factory）"><a href="#2-1-2-简单工厂（Simple-Factory）" class="headerlink" title="2.1.2 简单工厂（Simple Factory）"></a>2.1.2 简单工厂（Simple Factory）</h3><p>提供用于创建一个对象的简单工厂类，实例化操作由简单工厂类完成。</p>
 <p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>SimpleFactory</code>工厂类，通过<code>SimpleFactory</code>简单工厂实现具体<code>Product</code>的实例化。<code>User</code>类可忽略具体<code>Product</code>（<code>ProductA</code>和<code>ProductB</code>）的细节，从而将<code>User</code>类与具体<code>Product</code>实现类解耦。</p>
+<img src="patterns_7.png" alt="简单工厂" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span> <span class="params">(<span class="type">int</span> type)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="number">1</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (type == <span class="number">2</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductB</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">SimpleFactory</span> <span class="variable">simpleFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleFactory</span>();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> simpleFactory.createProduct(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-1-3-工厂方法（Factory-Method）"><a href="#2-1-3-工厂方法（Factory-Method）" class="headerlink" title="2.1.3 工厂方法（Factory Method）"></a>2.1.3 工厂方法（Factory Method）</h3><p>提供用于创建一个对象的工厂接口，实例化操作由该工厂接口的具体实现类完成。</p>
 <p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>ProductFactory</code>接口，通过<code>ProductFactory</code>接口的具体类（<code>ProductFactoryImpl</code>）实现具体<code>Product</code>（<code>ProductA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>ProductFactoryImpl</code>）和具体<code>Product</code>（<code>ProductA</code>）的细节，从而将<code>User</code>类与工厂类及具体<code>Product</code>实现类解耦。</p>
+<img src="patterns_8.png" alt="工厂方法" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">ProductFactory</span> <span class="variable">impl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProductFactoryImpl</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ProductFactory <span class="title function_">getFactory</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> impl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductFactoryImpl</span> <span class="keyword">implements</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ProductFactory</span> <span class="variable">factory</span> <span class="operator">=</span> ProductFactory.getFactory();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>以上内容所述工厂方法可化简为静态工厂方法（Static Factory Method），如下所示</p>
+<img src="patterns_9.png" alt="静态工厂" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (...) &#123;</span><br><span class="line">            <span class="comment">// return interface from cache</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span> ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> ProductFactory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这样做的好处在于<code>factoryMethod</code>方法可能会<code>new</code>一个新的<code>ProductA</code>实例，也可能直接返回一个缓存的实例，对于<code>User</code>类来说，无需知道<code>ProductA</code>创建的细节。</p>
@@ -396,41 +414,63 @@
 </ul>
 <h3 id="2-1-4-抽象工厂（Abstract-Factory）"><a href="#2-1-4-抽象工厂（Abstract-Factory）" class="headerlink" title="2.1.4 抽象工厂（Abstract Factory）"></a>2.1.4 抽象工厂（Abstract Factory）</h3><p>提供<strong>用于创建对象家族</strong>的工厂接口（对象家族指很多个必须一起创建出来的相关的对象），对象家族中的单一对象由工厂方法创建出来，即实例化操作由该工厂接口的具体实现类完成。</p>
 <p>如下图所示，<code>User</code>类关联<code>Product</code>接口、<code>Tool</code>接口以及<code>AbstractFactory</code>接口，通过<code>AbstractFactory</code>接口的具体类（<code>FactoryImplA</code>）实现具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>AbstractFactory</code>）、具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的细节，从而将<code>User</code>类与工厂类、具体<code>Product</code>实现类及具体<code>Tool</code>实现类解耦。</p>
+<img src="patterns_10.png" alt="抽象工厂" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AbstractFactory <span class="title function_">createFactoryA</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FactoryImplA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ToolA</span> <span class="keyword">implements</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryImplA</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ToolA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">AbstractFactory</span> <span class="variable">factoryA</span> <span class="operator">=</span> AbstractFactory.createFactoryA();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factoryA.createProduct();</span><br><span class="line">        <span class="type">Tool</span> <span class="variable">tool</span> <span class="operator">=</span> factoryA.createTool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-1-5-生成器（Builder）"><a href="#2-1-5-生成器（Builder）" class="headerlink" title="2.1.5 生成器（Builder）"></a>2.1.5 生成器（Builder）</h3><p>通过多个可选的步骤或者多个可选的零件来灵活创建一个复杂的对象。</p>
 <p>如下图所示，Builder模式并不直接生成一个<code>Product</code>类的对象，而是让客户端调用生成器得到一个<code>Builder</code>对象，然后在<code>Builder</code>对象上调用类似于<code>setter</code>的方法来设置可选参数，最后调用无参的<code>builder</code>方法来生成真正需要的（通常是不可变类的）<code>Product</code>类对象。</p>
 <p><code>Builder</code>类通常作为需要构建的类的静态成员类，<code>Builder</code>类的设置方法均返回<code>this</code>，以便<strong>将调用链接起来，得到一个流式的API</strong>。</p>
+<img src="patterns_11.png" alt="生成器" style="zoom:70%;" />
+
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Product</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.requiredParameter = builder.requiredParameter;</span><br><span class="line">        <span class="built_in">this</span>.optionalParameter = builder.optionalParameter;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Builder</span><span class="params">(<span class="type">int</span> requiredParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.requiredParameter = requiredParameter;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">setOptionalParameter</span><span class="params">(<span class="type">int</span> optionalParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.optionalParameter = optionalParameter;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Product <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Product</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Product</span>.Builder(requiredParameter)</span><br><span class="line">            .setOptionalParameter(optionalParameter).build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="2-2-行为型"><a href="#2-2-行为型" class="headerlink" title="2.2 行为型"></a>2.2 行为型</h2><h3 id="2-2-1-观察者（Observer）"><a href="#2-2-1-观察者（Observer）" class="headerlink" title="2.2.1 观察者（Observer）"></a>2.2.1 观察者（Observer）</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动被更新，又称发布-订阅（Publish-Subscribe）模式，发布方和订阅方彼此分离，互不影响。</p>
-<p>如下图所示，观察者Admin和Customer与被观察者Store彼此分离，互不影响，被观察者将通知变成一个Event对象，观察者自己从Event对象中读取通知类型和通知数据。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如下图所示，观察者<code>Admin</code>和<code>Customer</code>与被观察者<code>Store</code>彼此分离，互不影响，被观察者将通知变成一个<code>Event</code>对象，观察者自己从<code>Event</code>对象中读取通知类型和通知数据。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observable</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">registerObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">removeObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">onEvent</span><span class="params">(Event event)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Store</span> implemets Observable &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Admin</span> implemets Observer &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Customer</span> implemets Observer &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Store</span> <span class="variable">store</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Store</span>();</span><br><span class="line">        store.registerObserver(<span class="keyword">new</span> <span class="title class_">Admin</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
-<p>1）不推荐借助Java标准库中的java.util.Observable类和Observer接口来实现观察者模式；</p>
-<p>2）不同的Event对象有着不同的通知Topic，观察者可以自行订阅自己感兴趣的Topic。</p>
+<ul>
+<li><p>不推荐借助Java标准库中的<code>java.util.Observable</code>类和<code>Observer</code>接口来实现观察者模式；</p>
+</li>
+<li><p>不同的<code>Event</code>对象有着不同的通知<code>Topic</code>，观察者可以自行订阅自己感兴趣的<code>Topic</code>。</p>
+</li>
+</ul>
 <h3 id="2-2-2-状态（State）"><a href="#2-2-2-状态（State）" class="headerlink" title="2.2.2 状态（State）"></a>2.2.2 状态（State）</h3><p>将不同状态下的行为逻辑分拆到不同的状态类中，允许对象在其内部状态改变时改变其行为。</p>
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
-<p>1）状态模式常用于带有状态的对象中，增加新状态非常容易；</p>
-<p>2）状态模式的关键在于状态转换，简单的状态转换可以直接由调用方指定，复杂的状态转换可以在内部根据条件触发完成。</p>
+<ul>
+<li><p>状态模式常用于带有状态的对象中，增加新状态非常容易；</p>
+</li>
+<li><p>状态模式的关键在于状态转换，简单的状态转换可以直接由调用方指定，复杂的状态转换可以在内部根据条件触发完成。</p>
+</li>
+</ul>
 <h3 id="2-2-3-策略（Strategy）"><a href="#2-2-3-策略（Strategy）" class="headerlink" title="2.2.3 策略（Strategy）"></a>2.2.3 策略（Strategy）</h3><p>定义一系列算法，这些算法被封装到一个对象中，策略模式使得这些算法在运行时可以互相替换，并且独立于使用这些算法的客户端。</p>
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
-<p>1）一个完整的策略模式要定义策略以及使用策略的上下文，策略模式的核心思想是在一个计算方法中把容易变化的算法抽出来作为“策略”参数传进去，使得新增策略不必修改原有逻辑；</p>
-<p>2）状态模式与策略模式类似，都能够动态改变对象的行为，状态模式通过状态转移来改变State对象，而策略模式通过本身决策来改变所使用的算法；</p>
-<p>3）状态模式主要是用于解决动态的状态转移问题，策略模式主要是用于动态地替换所使用的算法；</p>
-<p>4）策略模式和Lambda表达式配合使用可极大提高程序灵活性，例如Arrays.sort (T[] a, Comparator&lt;? Super T&gt; c)方法就可根据lambda表达式所提供的比较策略c来实现不同比较策略下的排序</p>
+<ul>
+<li><p>一个完整的策略模式要定义策略以及使用策略的上下文，策略模式的核心思想是在一个计算方法中把容易变化的算法抽出来作为“策略”参数传进去，使得新增策略不必修改原有逻辑；</p>
+</li>
+<li><p>状态模式与策略模式类似，都能够动态改变对象的行为，状态模式通过状态转移来改变State对象，而策略模式通过本身决策来改变所使用的算法；</p>
+</li>
+<li><p>状态模式主要是用于解决动态的状态转移问题，策略模式主要是用于动态地替换所使用的算法；</p>
+</li>
+<li><p>策略模式和Lambda表达式配合使用可极大提高程序灵活性，例如<code>Arrays.sort (T[] a, Comparator&lt;? Super T&gt; c)</code>方法就可根据lambda表达式所提供的比较策略<code>c</code>来实现不同比较策略下的排序</p>
+</li>
+</ul>
 <h3 id="2-2-4-模板方法（Template-Method）"><a href="#2-2-4-模板方法（Template-Method）" class="headerlink" title="2.2.4 模板方法（Template Method）"></a>2.2.4 模板方法（Template Method）</h3><p>定义一个操作中的算法框架，并将一些步骤的实现延迟到子类，使得子类可以在不改变算法结构的同时修改一些步骤的实现。</p>
 <p>如下图所示，清洗、调料以及烹饪这三步是固定的，但是可以在RoastChicken和FriedChicken子类中，定义souse和cook函数的具体实现。</p>
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
-<p>1）模板方法的核心思想是：父类定义骨架，子类实现某些细节；</p>
-<p>2）为了防止子类重写父类的骨架方法，可以在父类中对骨架方法使用final；</p>
+<ul>
+<li><p>模板方法的核心思想是：父类定义骨架，子类实现某些细节；</p>
+</li>
+<li><p>为了防止子类重写父类的骨架方法，可以在父类中对骨架方法使用final；</p>
+</li>
+</ul>
 <p>3）对于需要子类实现的抽象方法，一般声明为protected，使得这些方法对外部客户端不可见。</p>
 <h2 id="2-3-结构型"><a href="#2-3-结构型" class="headerlink" title="2.3 结构型"></a>2.3 结构型</h2><h3 id="2-3-1-适配器（Adapter-Wrapper）"><a href="#2-3-1-适配器（Adapter-Wrapper）" class="headerlink" title="2.3.1 适配器（Adapter/Wrapper）"></a>2.3.1 适配器（Adapter/Wrapper）</h3><p>把一个抽象类/接口转换成另一个用户需要的抽象类/接口，使得不兼容的接口可以一起正常工作。</p>
 <p>如下图所示，User类通过DogToCatAdapter适配器将Dog接口转换成用户需要的Cat接口，经过转换，用户在调用Cat接口的meow方法时，实际间接调用的是Dog接口bark方法。</p>
@@ -440,25 +480,41 @@
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
-<p>1）可以代替相同功能的子类，从而降低设计各种子类的工作量；</p>
-<p>2）把核心功能和附加功能分开，两部分都可以独立地扩展，最后由调用方在运行期间动态地自由组合得到自己需要的功能；</p>
-<p>3）Proxy让调用者认为获取到的是核心类接口，但实际上是代理类，而Decorator让调用者自己创建核心类（ProductImpl），然后在核心类上一层一层地叠加各种功能。</p>
+<ul>
+<li><p>可以代替相同功能的子类，从而降低设计各种子类的工作量；</p>
+</li>
+<li><p>把核心功能和附加功能分开，两部分都可以独立地扩展，最后由调用方在运行期间动态地自由组合得到自己需要的功能；</p>
+</li>
+<li><p>Proxy让调用者认为获取到的是核心类接口，但实际上是代理类，而Decorator让调用者自己创建核心类（ProductImpl），然后在核心类上一层一层地叠加各种功能。</p>
+</li>
+</ul>
 <h3 id="2-3-3-享元（Flyweight）"><a href="#2-3-3-享元（Flyweight）" class="headerlink" title="2.3.3 享元（Flyweight）"></a>2.3.3 享元（Flyweight）</h3><p>利用共享的方式来支持大量细粒度的对象。如下图所示，product1和product2是同一个对象，返回结果为true。</p>
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
-<p>1）对于不可变类（实例不能被修改的类）来说，反复创建其相同的实例没有必要，直接向调用方返回一个共享的实例即可；</p>
-<p>2）享元模式常用于工厂方法的内部优化，在工厂内部，很可能返回缓存的实例而不是new一个新的实例；</p>
-<p>3）在实际应用中，享元模式主要应用于缓存，即客户端重复请求某些对象时，不必每次查询数据库或者读取文件，而是直接返回缓存中的对象。</p>
+<ul>
+<li><p>对于不可变类（实例不能被修改的类）来说，反复创建其相同的实例没有必要，直接向调用方返回一个共享的实例即可；</p>
+</li>
+<li><p>享元模式常用于工厂方法的内部优化，在工厂内部，很可能返回缓存的实例而不是new一个新的实例；</p>
+</li>
+<li><p>在实际应用中，享元模式主要应用于缓存，即客户端重复请求某些对象时，不必每次查询数据库或者读取文件，而是直接返回缓存中的对象。</p>
+</li>
+</ul>
 <h3 id="2-3-4-代理（Proxy）"><a href="#2-3-4-代理（Proxy）" class="headerlink" title="2.3.4 代理（Proxy）"></a>2.3.4 代理（Proxy）</h3><p>对调用方提供一个代理，该代理能够控制对一个对象的访问。</p>
 <p>如下图所示，ProductProxy通过定义APPProduct类型的成员变量，从而在调用APPProduct的fun方法的前后增加一些额外的操作。</p>
  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>根据代理所增加的额外操作的不同，代理可分为：</p>
-<p>1）远程代理（Remote Proxy）：本地调用者持有的接口是一个代理，该代理将对接口的方法转换成远程调用并返回结果，该代理<strong>控制了对远程对象的访问</strong>，此时代理附加的额外操作是对请求对象和返回对象进行编码并发送至远程对象；</p>
-<p>2）虚拟代理（Virtual Proxy）：调用者先持有一个代理对象，而真正的对象并没有创建，直到客户端真的需要调用该对象时，才创建真正的对象，该代理<strong>控制了对创建开销很大的对象的访问</strong>，此时代理附加的额外操作是创建真正要访问的对象；</p>
-<p>3）保护代理（Protection Proxy）：该代理<strong>根据调用者的权限控制了对对象的访问</strong>，此时代理附加的额外操作是检查调用者是否具有访问的权限；</p>
-<p>4）智能代理（Smart Reference）：该代理取代了简单的指针，<strong>在存在多个外部调用者时控制了对对象的访问</strong>，此时代理附加的额外操作是对调用者个数进行计数（即记录对象的引用次数），在调用者访问对象时检查是否已经锁定了它，在调用者不进行调用时释放对象。</p>
+<ul>
+<li><p>远程代理（Remote Proxy）：本地调用者持有的接口是一个代理，该代理将对接口的方法转换成远程调用并返回结果，该代理<strong>控制了对远程对象的访问</strong>，此时代理附加的额外操作是对请求对象和返回对象进行编码并发送至远程对象；</p>
+</li>
+<li><p>虚拟代理（Virtual Proxy）：调用者先持有一个代理对象，而真正的对象并没有创建，直到客户端真的需要调用该对象时，才创建真正的对象，该代理<strong>控制了对创建开销很大的对象的访问</strong>，此时代理附加的额外操作是创建真正要访问的对象；</p>
+</li>
+<li><p>保护代理（Protection Proxy）：该代理<strong>根据调用者的权限控制了对对象的访问</strong>，此时代理附加的额外操作是检查调用者是否具有访问的权限；</p>
+</li>
+<li><p>智能代理（Smart Reference）：该代理取代了简单的指针，<strong>在存在多个外部调用者时控制了对对象的访问</strong>，此时代理附加的额外操作是对调用者个数进行计数（即记录对象的引用次数），在调用者访问对象时检查是否已经锁定了它，在调用者不进行调用时释放对象。</p>
+</li>
+</ul>
 <h1 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h1><ul>
 <li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%80%9D%E6%83%B3.html">http://www.cyc2018.xyz/其他/编码实践/面向对象思想.html</a></p>
 </li>
@@ -625,6 +681,145 @@
 <li><p><a href="https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro">https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro</a></p>
 </li>
 </ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Maven</title>
+    <url>/2022/05/07/maven/</url>
+    <content><![CDATA[<p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下</p>
+<ul>
+<li><code>pom.xml</code>：项目描述文件；</li>
+<li><code>src/main/java</code>：Java源码；</li>
+<li><code>src/main/resources</code>：资源文件；</li>
+<li><code>src/test/java</code>：测试源码；</li>
+<li><code>src/test/resources</code>：测试资源文件；</li>
+<li><code>target</code>：所有编译、打包生成的文件。</li>
+</ul>
+<p>注：</p>
+<ul>
+<li>在<code>pom.xml</code>文件中，<code>groupId</code>类似于Java的包名，通常是公司或组织名称；<code>artifactId</code>似于Java的类名，通常是项目名称，再加上<code>version</code>；</li>
+<li>一个Maven工程就是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量唯一定位要依赖的jar包。</li>
+</ul>
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven定义了几种依赖类型（scope）如下</p>
+<ul>
+<li>compile：编译时需要用到的jar包（最常用的，直接放入classpath）；</li>
+<li>test：编译UT时需要用到的jar包，比如junit；</li>
+<li>runtime：编译时不需要，但运行时需要用到的jar包，比如mysql；</li>
+<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），比如servlet-api。</li>
+</ul>
+<h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
+<li>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</li>
+<li>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</li>
+<li>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</li>
+<li><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种SNAPSHOT版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</li>
+<li>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要一个配置，在用户主目录下进入<code>.m2</code>目录，创建一个<code>settings.xml</code>配置文件；</li>
+<li>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</li>
+</ul>
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><ul>
+<li>Maven有两个生命周期（lifecycle）： default和clean，每个lifecycle都由一系列阶段（phase）构成；</li>
+<li>mvn命令后面的参数是指phase；</li>
+<li>当命令中只有一个phase时，就运行default这个lifecycle，并运行到指定的phase；</li>
+<li>当命令中有两个phase时，就依次先后运行clean和default这两个lifecycle到分别指定的phase；</li>
+<li>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</li>
+<li>每执行一个phase，又会触发一个或多个goal，goal是最小任务单元，goal的名称是<code>a:b</code>这种形式；</li>
+<li>大多数情况下只要指定phase，就默认执行这些phase默认绑定的goal，只有少数情况可以直接指定运行一个goal，例如，启动Tomcat服务器的命令是<code>mvn tomcat:run</code>；</li>
+<li>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</li>
+<li>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件，maven-source-plugin和maven-javadoc-plugin插件分别用来创建源码和javadoc。</li>
+</ul>
+<h1 id="模块管理"><a href="#模块管理" class="headerlink" title="模块管理"></a>模块管理</h1><ul>
+<li>将一个项目拆分为多个模块可以降低软件复杂度，拆分后的项目中的每个模块都有自己的<code>pom.xml</code>和<code>src</code>，可以把每个模块当做独立的Maven项目，每个模块也可以在<code>pom.xml</code>引入其他模块；</li>
+<li>当模块之间存在大量重复时，可以提取出公共的部分作为parent，parent的<code>&lt;packaging&gt;</code>是<code>pom</code>，module的<code>&lt;packaging&gt;</code>是<code>jar</code>，parent本身不含任何Java代码；</li>
+<li>在根目录输入命令<code>mvn clean package</code>，即可将包括parent在内的所有module一次性全部编译打包。</li>
+</ul>
+<img src="maven_1.jpg" alt="模块结构" style="zoom:100%;" />
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Spring Framework</title>
+    <url>/2022/05/07/spring/</url>
+    <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是一个取代了EJB的轻量级框架，它提供了一系列底层和基础设施，持快速开发Java EE应用程序。</p>
+<p>Spring Framework主要包括几个模块：</p>
+<ul>
+<li>支持IoC和AOP的容器；</li>
+<li>支持JDBC和ORM的数据访问模块；</li>
+<li>支持声明式事务的模块；</li>
+<li>支持基于Servlet的MVC开发；</li>
+<li>支持基于Reactive的Web开发；</li>
+<li>以及集成JMS、JavaMail、JMX、缓存等其他模块。</li>
+</ul>
+<h1 id="2、IoC-容器"><a href="#2、IoC-容器" class="headerlink" title="2、IoC 容器"></a>2、IoC 容器</h1><h2 id="2-1-问题与解决"><a href="#2-1-问题与解决" class="headerlink" title="2.1 问题与解决"></a>2.1 问题与解决</h2><p>Java组件在协助工作时，可能会反复实例化一些很复杂的组件，为了避免重复工作，考虑共享一些组件，但组件的共享会导致组件之间的依赖关系逐渐复杂，组件的创建、共享以及销毁也变得不好管理，即难以根据依赖关系创建、组装、获取和销毁组件。</p>
+<p>传统应用程序中，组件的控制权在应用程序本身，在IoC模式下，组件控制权发生了反转（从应用程序转移到IoC容器），应用程序只需要<strong>直接使用</strong>（通过<code>setXXX</code>方法或者带<code>XXX</code>参数的构造方法来注入<code>XXX</code>实例，而不再需要<code>new XXX</code>）已经创建好配置好的组件。</p>
+<p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。</p>
+<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过以下方式来进行配置：1）XML文件；2）注解。</p>
+<h2 id="2-2-XML文件配置"><a href="#2-2-XML文件配置" class="headerlink" title="2.2 XML文件配置"></a>2.2 XML文件配置</h2><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<p>2）通过属性注入或者依赖注入编写组件；</p>
+<p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件，每个<code>&lt;bean …&gt;</code>都有一个<code>id</code>标识，Bean通过<code>&lt;property name = &quot;…&quot; ref = &quot;…&quot; /&gt;</code>来注入另一个Bean，通过<code>&lt;property name = &quot;…&quot; value = &quot;…&quot; /&gt;</code>来注入数据类型；</p>
+<p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean（只需要这一行代码），<strong>其实Spring容器就是ApplicationContext接口，ClassPathXmlApplicationContext是该接口的一个实现类；</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;application.xml&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>5）从Spring的IoC容器中获取装配好的Bean。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>1）通过<code>@Component</code>和<code>@Autowired</code>注解编写组件；</p>
+<p>2）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
+<p>3）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean（只需要这一行代码）；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br></pre></td></tr></table></figure>
+
+<p>4）在<code>AppConfig</code>类的<code>main</code>函数中，从Spring的IoC容器中获取装配好的Bean；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
+
+<p>5）通常将启动配置<code>AppConfig</code>类位于自定义的顶层包，其他Bean按类别放入子包。</p>
+<h2 id="2-4-注解说明"><a href="#2-4-注解说明" class="headerlink" title="2.4 注解说明"></a>2.4 注解说明</h2><p><code>@Component</code>：用于类，相当于定义了一个<code>id</code>为小写开头的类名的Bean。</p>
+<p><code>@Autowired</code>：用于类的数据成员，相当于把指定类型的Bean注入到指定字段，<code>@Autowired</code>默认在指定类型的Bean不存在时报错，而<code>@Autowired(required = false)</code>则不会报错，即找到指定类型时注入，没找到时忽略。</p>
+<p><code>@Configuration</code>：用于类，表示该类是一个配置类。</p>
+<p><code>@ComponentScan</code>：用于类，告知容器自动搜索当前类所在的包以及子包，将所有标注为<code>@Component</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
+<p><code>@Scope</code>：用于类，单独使用<code>@Component</code>注解时会默认将组件标注为Singleton（单例），即每次通过<code>getBean</code>方法获取到Bean总是同一个实例，而增加<code>@Scope</code>注解时，则可以将组件标注为不同的作用域的Bean，例如<code>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>将组件标注为Prototype（原型），Prototype的生命周期显然与Singleton不同。</p>
+<p><code>@Bean</code>：用于方法，当一个Bean不在<code>AppConfig</code>配置类所在的包中时，可以在<code>AppConfig</code>配置类中编写标注了<code>@Bean</code>的方法来创建并返回该Bean（Singleton）。</p>
+<p><code>@PostConstruct</code>：用于Bean在注入必要依赖后的<code>init</code>方法，从而进行初始化。Spring只根据<code>@PostConstruct</code>查找无参数方法，对方法名不作要求。</p>
+<p><code>@PreDestory</code>：用于Bean在容器关闭时的<code>shutdown</code>方法，从而进行相关的清理操作。Spring只根据<code>@PreDestory</code>查找无参数方法，对方法名不作要求。</p>
+<p><code>@Qualiflier(&quot;beanNname&quot;)</code>：在存在多个相同类型的Bean的情况下，用于指定注入的Bean的别名。</p>
+<p><code>@Primary</code>：在存在多个相同类型的Bean的情况下，用于指定优先注入的Bean，则注入时不需要指出该优先注入的Bean的别名。相同类型的Bean只有一个可以指定为<code>@Primary</code>，其他必须用<code>@Qualiflier(&quot;beanNname&quot;)</code>指定别名。</p>
+<p><code>@Value</code>：用于注入资源，当程序需要读取一个资源文件（比如配置文件等）中的内容时，可在数据成员（<code>private Resource resource;</code>）上标注<code>@Value(&quot;classpath:/logo.txt&quot;)</code>，就能在classpath中搜索到<code>logo.txt</code>文件，然后直接调用<code>resource.getInputStream()</code>就可以获取到输入流，避免了自己搜索文件的代码。所有资源文件均位于<code>src/main/resources</code>路径下。</p>
+<p><code>@PropertySource(&quot;app.properties&quot;)</code>：用于<code>AppConfig</code>配置类，告知容器自动读取名为<code>app.properties</code>的配置文件，接着可以使用<code>@Value(&quot;$&#123;key:defaultValue&#125;&quot;)</code>来注入配置文件中<code>key</code>的<code>value</code>。这比使用<code>@Value(&quot;classpath:/app.properties&quot;)</code>+输入流的方式来读取配置文件更加简单，还有一种方式是先通过一个Bean（Spring容器中的默认类名称为<code>SmtpConfig</code>）持有所有的配置属性值，然后在其他Bean中使用<code>@value(&quot;#&#123;smtpConfig.property&#125;&quot;)</code>来注入属性值。</p>
+<p><code>@Profile</code>：用于表示不同环境下的Bean，程序运行时通过指定运行环境就可以使得容器只创建该环境下的Bean。</p>
+<p><code>@Conditional</code>：用于根据一定条件确定是否创建Bean。</p>
+<h2 id="2-5-工厂Bean"><a href="#2-5-工厂Bean" class="headerlink" title="2.5 工厂Bean"></a>2.5 工厂Bean</h2><p>Spring提供了工厂模式来创建Bean。</p>
+<ul>
+<li><p>假如需要以工厂模式创建<code>Product</code>，首先需要定义一个工厂Bean（<code>ProductFactoryBean</code>），该工厂Bean需要实现<code>FactotyBean</code>接口；</p>
+</li>
+<li><p>Spring会优先实例化工厂Bean，然后通过工厂Bean的<code>getObject</code>方法创建真正的Bean（<code>Product</code>）</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;Product&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    String product= <span class="string">&quot;P&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.of(product);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.class;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此，如果定义了一个工厂Bean，Spring创建的Bean实际上是这个工厂Bean的<code>getObject</code>方法所返回的Bean。</p>
+<h1 id="3、AOP"><a href="#3、AOP" class="headerlink" title="3、AOP"></a>3、AOP</h1><h2 id="3-1-问题与解决"><a href="#3-1-问题与解决" class="headerlink" title="3.1 问题与解决"></a>3.1 问题与解决</h2><p>假设业务的组件中有多个业务方法，每个业务方法除了要执行核心业务逻辑，还需要执行安全检查、事务管理等处理逻辑，这些处理逻辑会重复出现在每个四处分散的业务方法中。</p>
+<p>针对该问题可以使用Proxy模式。对每个业务方法实现Proxy，将这些处理逻辑放置在Proxy当中。这种手动编写Proxy的方式不够简单，更简单的方法是将每一种处理看作一个切面，然后以某种自动化的方式将切面逻辑织入到核心逻辑中，从而实现Proxy模式。</p>
+<p>AOP把系统分解为不同的切面（比如安全检查、事务管理等处理）。Spring的AOP是基于JVM的动态代理实现的，可以理解为在客户端调用业务对象时，通过AOP技术在核心业务逻辑运行前后织入切面逻辑。AOP本质上只是一种代理模式的实现方式。</p>
+<h2 id="3-2-装配"><a href="#3-2-装配" class="headerlink" title="3.2 装配"></a>3.2 装配</h2><p>1）通过Maven引入<code>spring-aspects</code>依赖；</p>
+<p>2）使用<code>@Aspect</code>标注编写切面Bean；</p>
+<p>3）使用<code>@Before</code>等注解在切面Bean中编写拦截器代码（即切面逻辑）；</p>
+<p>4）给<code>@Configuration</code>标注的配置类加上<code>@EnableAspectJAutoProxy</code>注解，使得IoC容器自动查找<code>@Aspect</code>所标注的Bean，并根据每个方法的<code>@Before</code>等注解将AOP织入到特定的Bean中。</p>
+<h2 id="3-3-拦截器说明"><a href="#3-3-拦截器说明" class="headerlink" title="3.3 拦截器说明"></a>3.3 拦截器说明</h2><p><code>@Before</code>：先执行拦截器代码，再执行目标代码，如果拦截器抛出异常，目标代码不执行。</p>
+<p><code>@After</code>：先执行目标代码，再执行拦截器代码，无论目标代码是否抛出异常，拦截器代码都会执行。</p>
+<p><code>@AfterReturning</code>：和<code>@After</code>的区别在于，只有目标代码正常返回时才会执行拦截器代码。</p>
+<p><code>@AfterThrowing</code>：和<code>@After</code>的区别在于，只有目标代码抛出异常时才会执行拦截器代码。</p>
+<p><code>@Around</code>：能在目标代码执行前后均执行拦截器代码，即便目标代码抛出异常，依旧继续执行拦截器代码，能够实现以上全部拦截器的功能。</p>
+<h2 id="3-4-指定核心代码"><a href="#3-4-指定核心代码" class="headerlink" title="3.4 指定核心代码"></a>3.4 指定核心代码</h2><p>在使用拦截器时，可以通过<code>execution (* xxx.Xyz.*(…))</code>这样语法来指定需要织入AOP的核心代码（比如<code>@Before (&quot;execution (public * com.service.*.*(…))&quot;)</code>可以指定这个包下的所有Bean的所有方法），但这种指定方式不够精准，容易出错，可以考虑通过注解来标注需要拦截的方法，从而精准指定需要织入AOP的核心代码。</p>
+<p>1）比如<code>@Transactional</code>注解用于标注需要拦截并执行事务处理的方法，除了<code>@Transactional</code>注解，还可以自定义注解来标注需要拦截的方法；</p>
+<p>2）定义切面Bean，并通过<code>@annotation (小写开头的注解名)</code>这样的语法来指定需要织入AOP的核心代码（比如<code>@Before (&quot;@annotation (metricTime)&quot;)</code>对应自定义的<code>@MetricTime</code>注解）。</p>
+<h2 id="3-5-CGLIB"><a href="#3-5-CGLIB" class="headerlink" title="3.5 CGLIB"></a>3.5 CGLIB</h2><p>Spring的AOP是基于JVM的动态代理实现的，而JVM的动态代理要求必须实现接口，Spring通过CGLIB来动态创建业务接口/类的代理接口/子类，在代理接口/子类中织入切面逻辑。需要注意的地方在于：</p>
+<ul>
+<li>Spring通过<strong>CGLIB创建的代理类不会初始化继承自原始类的任何成员变量</strong>，包括final类型的成员变量，也就是说，CGLIB所创建的代理所继承的成员变量的值始终为null，因此加AOP很可能会导致NPE；</li>
+<li>以上NPE问题的解决方式是业务类通过<code>getXXX</code>方法而不是直接获取<code>XXX</code>变量的值，那么CGLIB创建的代理类会覆写<code>getXXX</code>方法，从而返回原始业务类的<code>XXX</code>变量的值；</li>
+<li>Spring通过<strong>CGLIB创建的代理类无法覆写继承自原始类的final方法</strong>，即无法代理final方法。</li>
+</ul>
+<p>综上所述，为了正确使用AOP，在访问被注入的Bean的成员变量时，总是调用<code>getXXX</code>方法而非直接访问字段；编写可能会被代理的Bean时，不要编写<code>public final</code>方法。</p>
+<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></p>
+<p><a href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary">https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary</a></p>
 ]]></content>
   </entry>
 </search>
