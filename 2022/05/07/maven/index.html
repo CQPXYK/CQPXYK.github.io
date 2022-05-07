@@ -164,17 +164,25 @@
     <section class="markdown-content"><p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
 <h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下</p>
 <ul>
-<li><code>pom.xml</code>：项目描述文件；</li>
-<li><code>src/main/java</code>：Java源码；</li>
-<li><code>src/main/resources</code>：资源文件；</li>
-<li><code>src/test/java</code>：测试源码；</li>
-<li><code>src/test/resources</code>：测试资源文件；</li>
-<li><code>target</code>：所有编译、打包生成的文件。</li>
+<li><p><code>pom.xml</code>：项目描述文件；</p>
+</li>
+<li><p><code>src/main/java</code>：Java源码；</p>
+</li>
+<li><p><code>src/main/resources</code>：资源文件；</p>
+</li>
+<li><p><code>src/test/java</code>：测试源码；</p>
+</li>
+<li><p><code>src/test/resources</code>：测试资源文件；</p>
+</li>
+<li><p><code>target</code>：所有编译、打包生成的文件。</p>
+</li>
 </ul>
 <p>注：</p>
 <ul>
-<li>在<code>pom.xml</code>文件中，<code>groupId</code>类似于Java的包名，通常是公司或组织名称；<code>artifactId</code>似于Java的类名，通常是项目名称，再加上<code>version</code>；</li>
-<li>一个Maven工程就是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量唯一定位要依赖的jar包。</li>
+<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>类似于Java的包名，通常是公司或组织名称；<code>artifactId</code>似于Java的类名，通常是项目名称，再加上<code>version</code>；</p>
+</li>
+<li><p>一个Maven工程就是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量唯一定位要依赖的jar包。</p>
+</li>
 </ul>
 <h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven定义了几种依赖类型（scope）如下</p>
 <ul>
@@ -184,28 +192,46 @@
 <li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），比如servlet-api。</li>
 </ul>
 <h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
-<li>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</li>
-<li>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</li>
-<li>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</li>
-<li><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种SNAPSHOT版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</li>
-<li>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要一个配置，在用户主目录下进入<code>.m2</code>目录，创建一个<code>settings.xml</code>配置文件；</li>
-<li>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</li>
+<li><p>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</p>
+</li>
+<li><p>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</p>
+</li>
+<li><p>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
+</li>
+<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种SNAPSHOT版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
+</li>
+<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要一个配置，在用户主目录下进入<code>.m2</code>目录，创建一个<code>settings.xml</code>配置文件；</p>
+</li>
+<li><p>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</p>
+</li>
 </ul>
 <h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><ul>
-<li>Maven有两个生命周期（lifecycle）： default和clean，每个lifecycle都由一系列阶段（phase）构成；</li>
-<li>mvn命令后面的参数是指phase；</li>
-<li>当命令中只有一个phase时，就运行default这个lifecycle，并运行到指定的phase；</li>
-<li>当命令中有两个phase时，就依次先后运行clean和default这两个lifecycle到分别指定的phase；</li>
-<li>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</li>
-<li>每执行一个phase，又会触发一个或多个goal，goal是最小任务单元，goal的名称是<code>a:b</code>这种形式；</li>
-<li>大多数情况下只要指定phase，就默认执行这些phase默认绑定的goal，只有少数情况可以直接指定运行一个goal，例如，启动Tomcat服务器的命令是<code>mvn tomcat:run</code>；</li>
-<li>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</li>
-<li>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件，maven-source-plugin和maven-javadoc-plugin插件分别用来创建源码和javadoc。</li>
+<li><p>Maven有两个生命周期（lifecycle）： default和clean，每个lifecycle都由一系列阶段（phase）构成；</p>
+</li>
+<li><p>mvn命令后面的参数是指phase；</p>
+</li>
+<li><p>当命令中只有一个phase时，就运行default这个lifecycle，并运行到指定的phase；</p>
+</li>
+<li><p>当命令中有两个phase时，就依次先后运行clean和default这两个lifecycle到分别指定的phase；</p>
+</li>
+<li><p>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</p>
+</li>
+<li><p>每执行一个phase，又会触发一个或多个goal，goal是最小任务单元，goal的名称是<code>a:b</code>这种形式；</p>
+</li>
+<li><p>大多数情况下只要指定phase，就默认执行这些phase默认绑定的goal，只有少数情况可以直接指定运行一个goal，例如，启动Tomcat服务器的命令是<code>mvn tomcat:run</code>；</p>
+</li>
+<li><p>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</p>
+</li>
+<li><p>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件，maven-source-plugin和maven-javadoc-plugin插件分别用来创建源码和javadoc。</p>
+</li>
 </ul>
 <h1 id="模块管理"><a href="#模块管理" class="headerlink" title="模块管理"></a>模块管理</h1><ul>
-<li>将一个项目拆分为多个模块可以降低软件复杂度，拆分后的项目中的每个模块都有自己的<code>pom.xml</code>和<code>src</code>，可以把每个模块当做独立的Maven项目，每个模块也可以在<code>pom.xml</code>引入其他模块；</li>
-<li>当模块之间存在大量重复时，可以提取出公共的部分作为parent，parent的<code>&lt;packaging&gt;</code>是<code>pom</code>，module的<code>&lt;packaging&gt;</code>是<code>jar</code>，parent本身不含任何Java代码；</li>
-<li>在根目录输入命令<code>mvn clean package</code>，即可将包括parent在内的所有module一次性全部编译打包。</li>
+<li><p>将一个项目拆分为多个模块可以降低软件复杂度，拆分后的项目中的每个模块都有自己的<code>pom.xml</code>和<code>src</code>，可以把每个模块当做独立的Maven项目，每个模块也可以在<code>pom.xml</code>引入其他模块；</p>
+</li>
+<li><p>当模块之间存在大量重复时，可以提取出公共的部分作为parent，parent的<code>&lt;packaging&gt;</code>是<code>pom</code>，module的<code>&lt;packaging&gt;</code>是<code>jar</code>，parent本身不含任何Java代码；</p>
+</li>
+<li><p>在根目录输入命令<code>mvn clean package</code>，即可将包括parent在内的所有module一次性全部编译打包。</p>
+</li>
 </ul>
 <img src="maven_1.jpg" alt="模块结构" style="zoom:100%;" />
 
