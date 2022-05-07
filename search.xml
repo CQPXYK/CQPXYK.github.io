@@ -16,7 +16,7 @@
 </li>
 </ul>
 <h1 id="2、前期准备"><a href="#2、前期准备" class="headerlink" title="2、前期准备"></a>2、前期准备</h1><h2 id="2-1-Git、GitHub及配置"><a href="#2-1-Git、GitHub及配置" class="headerlink" title="2.1 Git、GitHub及配置"></a>2.1 Git、GitHub及配置</h2><p>1）在<a href="https://git-scm.com/downloads">Git</a>下载安装包并安装；</p>
-<p>2）鼠标右键可以看到：Git Bash Here，单击打开；</p>
+<p>2）鼠标右键可以看到：<code>Git Bash Here</code>，单击打开；</p>
 <p>3）输入<code>git -version</code>，可以看到安装好的版本信息；</p>
 <p>4）在<a href="https://github.com/">GitHub</a>注册账号；</p>
 <p>5）设置Git用户信息；</p>
@@ -30,32 +30,32 @@
 
 <img src="blog_2.png" alt="文件目录截图2" style="zoom:70%;" />
 
-<p>8）打开GitHub主页 –&gt; Settings –&gt; SSH and GPG keys –&gt; New SSH key，将id_rsa.pub中的内容复制粘贴到key中，title可以随便取，点击Add SSH key；</p>
+<p>8）打开GitHub主页 –&gt; <code>Settings</code> –&gt; <code>SSH and GPG keys</code> –&gt; <code>New SSH key</code>，将<code>id_rsa.pub</code>中的内容复制粘贴到key中，title可以随便取，点击<code>Add SSH key</code>；</p>
 <img src="blog_3.png" alt="项目设置截图1" style="zoom:70%;" />
 
 <p>9）验证是否成功；</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
 
 <p>10）SSH key配置完毕后，就可以将本地的源码和资源上传到GitHub，而无需每次都输账号和密码。</p>
-<h2 id="2-2-GitHub-Page和域名"><a href="#2-2-GitHub-Page和域名" class="headerlink" title="2.2 GitHub Page和域名"></a>2.2 GitHub Page和域名</h2><p>1）打开GitHub主页 –&gt; <code>+</code>按钮 –&gt; New respository，在Repository name输入框中填入<code>GitHubName.github.io</code>，勾选Initialize this repository with a README选项；</p>
+<h2 id="2-2-GitHub-Page和域名"><a href="#2-2-GitHub-Page和域名" class="headerlink" title="2.2 GitHub Page和域名"></a>2.2 GitHub Page和域名</h2><p>1）打开GitHub主页 –&gt; <code>+</code>按钮 –&gt; <code>New respository</code>，在<code>Repository name</code>输入框中填入<code>GitHubName.github.io</code>，勾选<code>Initialize this repository with a README</code>选项；</p>
 <p>2）在浏览器中输入<a href="https://githubname.github.io/">https://GitHubName.github.io/</a> 即可看到如下页面，代表成功开启了GitHub Pages服务；</p>
 <img src="blog_4.png" alt="浏览器截图1" style="zoom:70%;" />
 
 <p>3）在<a href="https://wanwang.aliyun.com/">万网-阿里云</a>注册账号或直接登录，选择还未被注册的域名，进入结算页面，创建持有者信息模本，验证并等待审核，付钱；</p>
 <img src="blog_5.png" alt="域名注册截图1" style="zoom:70%;" />
 
-<p>4）由于GitHub推荐在DNS中使用A记录和CNAME相结合的方式，在注册好的个人域名后点击解析添加如下两条解析记录，其中，iPv4地址可以通过<code>ping</code>得到；</p>
+<p>4）由于GitHub推荐在DNS中使用A记录和CNAME相结合的方式，在注册好的个人域名后点击解析添加如下两条解析记录，其中，IPv4地址可以通过<code>ping</code>得到；</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ping GitHubName.github.io</span><br></pre></td></tr></table></figure>
 
 <img src="blog_6.png" alt="域名注册截图2" style="zoom:70%;" />
 
-<p>5）打开GitHubName.github.io仓库 –&gt; Add file –&gt; Create new file，文件名为<code>CNAME</code>，内容为注册好的个人域名，然后提交；</p>
+<p>5）打开GitHubName.github.io仓库 –&gt; <code>Add file</code> –&gt; <code>Create new file</code>，文件名为<code>CNAME</code>，内容为注册好的个人域名，然后提交；</p>
 <img src="blog_7.png" alt="项目设置截图2" style="zoom:70%;" />
 
 <p>6）在浏览器中输入个人域名即可看到如下页面，代表成功绑定了域名；</p>
 <img src="blog_8.png" alt="浏览器截图2" style="zoom:70%;" />
 
-<p>7）打开GitHubName.github.io仓库 –&gt; Settings –&gt; Pages，勾选<code>Enforce HTTPS</code>选项即可强制走Https。</p>
+<p>7）打开GitHubName.github.io仓库 –&gt; <code>Settings</code> –&gt; <code>Pages</code>，勾选<code>Enforce HTTPS</code>选项即可强制走Https。</p>
 <img src="blog_9.png" alt="项目设置截图3" style="zoom:70%;" />
 
 <h2 id="2-3-Node-js和Hexo"><a href="#2-3-Node-js和Hexo" class="headerlink" title="2.3 Node.js和Hexo"></a>2.3 Node.js和Hexo</h2><p>1）在<a href="https://nodejs.org/en/download/">Node.js</a>下载安装包并安装；</p>
@@ -65,19 +65,19 @@
 <p>3）在<code>nodejs</code>文件夹中新建两个空文件夹 <code>node_cache</code>、<code>node_global</code>；</p>
 <img src="blog_10.png" alt="文件目录截图3" style="zoom:70%;" />
 
-<p>4）配置；</p>
+<p>4）配置（如果不配置的话，后续安装模块时会安装到C盘，不方便管理，甚至有可能安装好hexo后却无法使用）；</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm config <span class="built_in">set</span> prefix <span class="string">&quot;D:\nodejs\node_global&quot;</span></span><br><span class="line">$ npm config <span class="built_in">set</span> cache <span class="string">&quot;D:\nodejs\node_cache&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>5）打开控制面板 –&gt; 系统 –&gt; 高级系统设置 –&gt; 环境变量，在系统变量中新建一个变量名为<code>ODE_PATH</code>，值为<code>D:\nodejs\node_global\node_modules</code>；</p>
+<p>5）打开控制面板 –&gt; <code>系统</code> –&gt; <code>高级系统设置</code> –&gt; <code>环境变量</code>，在系统变量中新建一个变量名为<code>ODE_PATH</code>，值为<code>D:\nodejs\node_global\node_modules</code>；</p>
 <img src="blog_11.png" alt="系统设置截图1" style="zoom:70%;" />
 
-<p>6）编辑用户变量里的Path，将npm的路径改为：<code>D:\nodejs\node_global</code>；</p>
+<p>6）编辑用户变量里的<code>Path</code>，将npm的路径改为：<code>D:\nodejs\node_global</code>；</p>
 <img src="blog_12.png" alt="系统设置截图2" style="zoom:70%;" />
 
 <p>7）安装webpack并查看版本信息；</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install webpack –g</span><br><span class="line">$ npm webpack –v</span><br></pre></td></tr></table></figure>
 
-<p>至此，npm在安装全局模块时的路径和环境变量均设置完成，如果不设置的话，后续安装模块时会安装到C盘，不方便管理，甚至有可能安装好hexo后却无法使用；</p>
+<p>至此，npm在安装全局模块时的路径和环境变量均设置完成；</p>
 <p>8）安装hexo并查看版本信息。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br><span class="line">$ hexo –v</span><br></pre></td></tr></table></figure>
 
@@ -137,9 +137,9 @@
 <p>4）此时执行以下操作即可在<code>source\_post</code>目录新建一个<code>xxx.md</code>文件和一个<code>xxx</code>文件夹，那么在编辑<code>xxx.md</code>文件时所使用的图片资源就放置在<code>xxx</code>文件夹中；</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new xxx</span><br></pre></td></tr></table></figure>
 
-<p>5）需要注意的是插入图片的路径问题，静态部署前<code>xxx.md</code>文件中所插入的图片位于<code>xxx</code>文件夹中，静态部署后图片会被解析到与html文件相同文件夹下，因此，在编辑完成后静态部署前需要将插入图片的路径更改为正确的形式，这一点可自行观察解析后的<code>public</code>文件夹结构；</p>
+<p>5）需要注意的是插入图片的路径问题，静态部署前<code>xxx.md</code>文件中所插入的图片位于<code>xxx</code>文件夹中，静态部署后图片会被解析到与html文件相同的文件夹下，因此，在编辑完成后静态部署前需要将插入图片的路径更改为正确的形式，这一点可自行观察解析后的<code>public</code>文件夹结构；</p>
 <p>6）有时候需要在不同页面跳转，只需在其他md文件中插入需要的跳转的md文件被解析后的地址，即可完成跳转；</p>
-<p>7）重复之前的预览、调整和部署操作，在浏览器中输入个人域名即可看到编辑后博客内容；</p>
+<p>7）重复之前的预览、调整和部署操作，在浏览器中输入个人域名即可看到编辑后的博客内容；</p>
 <p>8）写博客的时候碰到一个问题：无序列表中采用反引号包裹的代码在网页上没有显示出代码形式；解决方案：在无序列表的某一条中的最后依次输入回车和后退（不要输入连续两次回车），此时反引号包裹的代码即可在网页上正常显示了；导致这个问题的原因暂时还不知道。</p>
 <h1 id="4、体验提升"><a href="#4、体验提升" class="headerlink" title="4、体验提升"></a>4、体验提升</h1><h2 id="4-1-自动化"><a href="#4-1-自动化" class="headerlink" title="4.1 自动化"></a>4.1 自动化</h2><h2 id="4-2-多终端"><a href="#4-2-多终端" class="headerlink" title="4.2 多终端"></a>4.2 多终端</h2><h2 id="4-3-其他"><a href="#4-3-其他" class="headerlink" title="4.3 其他"></a>4.3 其他</h2><p>​    1）在博客根目录下安装搜索插件可令博客支持搜索功能；</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-generator-searchdb</span><br></pre></td></tr></table></figure>
@@ -155,7 +155,7 @@
 ]]></content>
   </entry>
   <entry>
-    <title>代码整洁之道</title>
+    <title>Clean Code</title>
     <url>/2022/05/06/clean-code/</url>
     <content><![CDATA[<h1 id="1、整洁代码"><a href="#1、整洁代码" class="headerlink" title="1、整洁代码"></a>1、整洁代码</h1><p>保持高效的唯一做法就是始终保持代码整洁。</p>
 <ul>
@@ -186,14 +186,14 @@
 <h1 id="3、函数"><a href="#3、函数" class="headerlink" title="3、函数"></a>3、函数</h1><p>函数应该只做且做好这一件事，即函数中的语句均在同一抽象层级上。</p>
 <ul>
 <li>短小（20行封顶）；</li>
-<li>if、else、while语句中的代码块应该只占一行；</li>
+<li><code>if</code>、<code>else</code>、<code>while</code>语句中的代码块应该只占一行；</li>
 <li>函数的缩进层级不应该多于两层；</li>
-<li>通过多态将switch语句埋藏在较低的抽象层级（比如抽象工厂）中，而非具体的上层功能函数中；</li>
+<li>通过多态将<code>switch</code>语句埋藏在较低的抽象层级（比如抽象工厂）中，而非具体的上层功能函数中；</li>
 <li>函数参数数量越少越好，不多于2；</li>
 <li>多个参数的传入顺序可以隐含在函数名中；</li>
 <li>函数体中不应进行函数名所描述之外的操作，即函数应无副作用；</li>
 <li>用异常处理代替返回错误码时的处理，使得错误处理代码从主路径中分离出来；</li>
-<li>保持函数短小比结构化编程（无break，continue，goto，只有一个return）更有利。</li>
+<li>保持函数短小比结构化编程（无<code>break</code>，<code>continue</code>，<code>goto</code>，只有一个<code>return</code>）更有利。</li>
 </ul>
 <h1 id="4、注释"><a href="#4、注释" class="headerlink" title="4、注释"></a>4、注释</h1><p>尽量用代码来代替注释进行表达。</p>
 <p>好注释应：</p>
@@ -208,7 +208,7 @@
 <ul>
 <li>向报纸学习，有主题，有大纲，细节往下依次展开，有许多篇文章而不是一篇大长文；</li>
 <li>垂直方向上的空白行隔开了代码概念上的紧密程度；</li>
-<li>尽量不要将关系密切的概念放到不同的文件中，这也是避免使用protected变量的理由之一；</li>
+<li>尽量不要将关系密切的概念放到不同的文件中，这也是避免使用<code>protected</code>变量的理由之一；</li>
 <li>局部变量声明应靠近使用位置，实体变量声明应该在类的顶部。</li>
 </ul>
 <h1 id="6、对象和数据结构"><a href="#6、对象和数据结构" class="headerlink" title="6、对象和数据结构"></a>6、对象和数据结构</h1><ul>
@@ -222,10 +222,10 @@
 <p>在业务逻辑和错误处理代码之间建立良好的区隔：</p>
 <ul>
 <li>使用异常处理而非返回错误码；</li>
-<li>先写try-catch结构，再写业务代码；</li>
-<li>使用未检异常（使用已检异常时，抛出异常处和catch语句之间的每个方法签名都需要添加throw子句，这违反了开放/闭合原则）；</li>
+<li>先写<code>try-catch</code>结构，再写业务代码；</li>
+<li>使用未检异常（使用已检异常时，抛出异常处和<code>catch</code>语句之间的每个方法签名都需要添加<code>throw</code>子句，这违反了开放/闭合原则）；</li>
 <li>思考异常如何被捕获，当各种异常被捕获后的处理一致时，对调用API进行打包，确保返回通用异常类型，从而简化代码；</li>
-<li>不返回也不传递null值。</li>
+<li>不返回也不传递<code>null</code>值。</li>
 </ul>
 <h1 id="8、边界"><a href="#8、边界" class="headerlink" title="8、边界"></a>8、边界</h1><p>在使用带三方程序包时，需要保持软件边界整洁，将外来代码干净利落地整合进自身代码中。</p>
 <ul>
@@ -245,7 +245,7 @@
 </ul>
 <h1 id="10、类"><a href="#10、类" class="headerlink" title="10、类"></a>10、类</h1><ul>
 <li>类成员出现顺序：公共静态常量，私有静态变量，私有实体变量，公共函数，由公共函数调用的私有工具函数紧随其后；</li>
-<li>类成员通常设为private，测试代码需要调用的函数和变量可设置为protected；</li>
+<li>类成员通常设为<code>private</code>，测试代码需要调用的函数和变量可设置为<code>protected</code>；</li>
 <li>单一权责原则（SRP）认为类或模块应该只有一条加以修改的理由，臃肿的类应当切分为只有单一权责的去耦式单元，只有一条修改的理由；</li>
 <li>类应当只有少数实体变量，类中的每个方法都应该操作一个或多个这种变量，如果类中的每个变量都被每个方法所使用，则该类具有最大的内聚性；</li>
 <li>创建极大化内聚类一般是不可取也不可能的，但希望类的内聚性保持在较高位置；</li>
@@ -283,7 +283,7 @@
 </li>
 <li><p>限制数据作用域，谨记数据封装，严格限制对可能被共享的数据的访问；</p>
 </li>
-<li><p>使用类库提供的线程安全群集，需要掌握JUC；</p>
+<li><p>使用类库提供的线程安全群集，需要掌握<code>JUC</code>；</p>
 </li>
 <li><p>使用executor框架执行无关任务，尽量使用非锁定解决方案；</p>
 </li>
@@ -301,7 +301,7 @@
 </li>
 <li><p>运行多于处理器数量的线程（仅用于测试不要用于生产），这会促进频繁的任务交换，进而越有可能找到错过临界区或导致死锁的代码；</p>
 </li>
-<li><p>增加对wait()、sleep()、yield()以及priority()方法的调用（仅用于测试不要用于生产），改变代码执行顺序，则更容易测试出出错的执行顺序。</p>
+<li><p>增加对<code>wait()</code>、<code>sleep()</code>、<code>yield()</code>以及<code>priority()</code>方法的调用（仅用于测试不要用于生产），改变代码执行顺序，则更容易测试出出错的执行顺序。</p>
 </li>
 </ul>
 <h1 id="14、逐步改进（案例一）"><a href="#14、逐步改进（案例一）" class="headerlink" title="14、逐步改进（案例一）"></a>14、逐步改进（案例一）</h1><p><strong>问题：</strong>一份能够完成简单需求的代码，会因为后续的简单需求补充而变得混乱，比如原本针对布尔型元素的功能在后续需要对整型、字符串型等各种类型的元素依旧保持有效，这种简单的需求改进很可能导致复杂的代码改进，使得原本整洁的代码变得混乱。</p>
@@ -312,20 +312,20 @@
 <ul>
 <li><p>多个连在一起的条件判断应当用一个函数封装起来；</p>
 </li>
-<li><p>正向肯定的判断放在if条件中，而不用if not；</p>
+<li><p>正向肯定的判断放在<code>if</code>条件中，而不用if not xxx的逻辑；</p>
 </li>
 <li><p>变量名称中不加难以理解的前缀；</p>
 </li>
-<li><p>函数中的局部变量名不与成员变量一致，此时就不需要使用this来区分；</p>
+<li><p>函数中的局部变量名不与成员变量一致，此时就不需要使用<code>this</code>来区分；</p>
 </li>
 <li><p>函数调用应良好反映出时序关系；</p>
 </li>
 <li><p>将功能复杂的大函数拆分成功能单一的小函数。</p>
 </li>
 </ul>
-<h1 id="16、重构SerialDate（案例三）"><a href="#16、重构SerialDate（案例三）" class="headerlink" title="16、重构SerialDate（案例三）"></a>16、重构SerialDate（案例三）</h1><ul>
+<h1 id="16、重构SerialDate（案例三）"><a href="#16、重构SerialDate（案例三）" class="headerlink" title="16、重构SerialDate（案例三）"></a>16、重构<code>SerialDate</code>（案例三）</h1><ul>
 <li>不要继承常量类，而是将常量类改为自己的枚举类型；</li>
-<li>实现了Serializable接口的类应当显式声明并手动配置序列版本UID变量；</li>
+<li>实现了<code>Serializable</code>接口的类应当显式声明并手动配置序列版本UID变量；</li>
 <li>类的成员变量应确保是与该类有关的变量，否则该变量就不应该称为该类的成员变量，函数同理；</li>
 <li>不应由抽象类来提供具体实现信息，这种设计会污染抽象类；</li>
 <li>基类不应了解派生类的情况，更不应该在基类的行为中创建出派生类实例，如果代码中出现这种情况可以更改为利用抽象工厂来完成创建实例的任务；</li>
@@ -337,8 +337,8 @@
 ]]></content>
   </entry>
   <entry>
-    <title>设计模式</title>
-    <url>/2022/05/06/design-patterns/</url>
+    <title>Design Patterns</title>
+    <url>/2022/05/07/design-patterns/</url>
     <content><![CDATA[<h1 id="1、类图"><a href="#1、类图" class="headerlink" title="1、类图"></a>1、类图</h1><h2 id="1-1-泛化关系（Generalization）"><a href="#1-1-泛化关系（Generalization）" class="headerlink" title="1.1 泛化关系（Generalization）"></a>1.1 泛化关系（Generalization）</h2><p>用于描述非抽象类的继承关系，关键字为<code>extends</code>。</p>
 <img src="patterns_1.png" alt="泛化关系" style="zoom:70%;" />
 
@@ -352,18 +352,12 @@
 <h2 id="1-3-聚合关系（Aggregation）"><a href="#1-3-聚合关系（Aggregation）" class="headerlink" title="1.3 聚合关系（Aggregation）"></a>1.3 聚合关系（Aggregation）</h2><p>用于描述整体和部分个体之间的非强依赖关系，整体不存在时部分个体依旧存在。</p>
 <img src="patterns_3.png" alt="聚合关系" style="zoom:70%;" />
 
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcade</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorman</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="1-4-复合关系（Composition）"><a href="#1-4-复合关系（Composition）" class="headerlink" title="1.4 复合关系（Composition）"></a>1.4 复合关系（Composition）</h2><p>用于描述整体和部分之间的强依赖关系，整体不存在时部分也不存在。</p>
 <img src="patterns_4.png" alt="复合关系" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Engine</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tire</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-5-关联关系（Association）"><a href="#1-5-关联关系（Association）" class="headerlink" title="1.5 关联关系（Association）"></a>1.5 关联关系（Association）</h2><p>用于描述类对象之间的静态强关联关系，该关系与运行过程的状态无关，在运行前就可以确定。关联关系通常以成员变量（静态方法变量）的形式实现。</p>
 <p>关联关系默认不强调方向，表示对象之间默认互相知道，如果特别强调方向（如下图），则表示A知道B，但B不知道A。</p>
 <img src="patterns_5.png" alt="关联关系" style="zoom:70%;" />
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Driver</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Licence</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="1-6-依赖关系（Dependency）"><a href="#1-6-依赖关系（Dependency）" class="headerlink" title="1.6 依赖关系（Dependency）"></a>1.6 依赖关系（Dependency）</h2><p>用于描述类对象之间的临时性动态关联关系，该关系与运行过程中的状态相关，在运行时确定。依赖应当总是单向的，要杜绝双向依赖及循环依赖的产生。依赖关系通常以类方法的传入传出参数（或局部变量）实现。</p>
 <img src="patterns_6.png" alt="依赖关系" style="zoom:70%;" />
@@ -434,7 +428,7 @@
 <ul>
 <li><p>不推荐借助Java标准库中的<code>java.util.Observable</code>类和<code>Observer</code>接口来实现观察者模式；</p>
 </li>
-<li><p>不同的<code>Event</code>对象有着不同的通知<code>Topic</code>，观察者可以自行订阅自己感兴趣的<code>Topic</code>。</p>
+<li><p>不同的<code>Event</code>对象有着不同的通知Topic，观察者可以自行订阅自己感兴趣的Topic。</p>
 </li>
 </ul>
 <h3 id="2-2-2-状态（State）"><a href="#2-2-2-状态（State）" class="headerlink" title="2.2.2 状态（State）"></a>2.2.2 状态（State）</h3><p>将不同状态下的行为逻辑分拆到不同的状态类中，允许对象在其内部状态改变时改变其行为。</p>
@@ -563,9 +557,9 @@
 <ul>
 <li><p>重叠构造器模式，但此时客户端代码难以编写和阅读；</p>
 </li>
-<li><p><code>JavaBean</code>模式，但在构造过程中无法保证<code>JavaBean</code>的一致性，无法实现不可变类，需要额外开销来确保线程安全；</p>
+<li><p>JavaBean模式，但在构造过程中无法保证JavaBean的一致性，无法实现不可变类，需要额外开销来确保线程安全；</p>
 </li>
-<li><p>生成器模式（Builder），它可以有多个可变参数，既能保证像重叠构造器那样的安全性，也能保证像<code>JavaBean</code>模式那么好的可读性，此外Builder模式也适用于类层次结构。</p>
+<li><p>生成器模式（Builder），它可以有多个可变参数，既能保证像重叠构造器那样的安全性，也能保证像JavaBean模式那么好的可读性，此外Builder模式也适用于类层次结构。</p>
 </li>
 </ul>
 <h2 id="2-3-通过枚举类型强化Singleton属性（3）"><a href="#2-3-通过枚举类型强化Singleton属性（3）" class="headerlink" title="2.3 通过枚举类型强化Singleton属性（3）"></a>2.3 通过枚举类型强化Singleton属性（3）</h2><p>当构造器设为私有时，可以通过final变量或者静态工厂可以实现Singleton，这种方式有两个问题需要注意：</p>
@@ -581,7 +575,7 @@
 <ul>
 <li><p>这种方式更加简洁，无偿地提供了序列化机制，即使是在面对复杂的序列化或者反射攻击时，也绝对防止多次实例化；</p>
 </li>
-<li><p>如果Singleton必须扩展一个超类，而不是扩展<code>Enum</code>时，不宜使用这种方法。</p>
+<li><p>如果Singleton类必须扩展一个超类，而不是扩展<code>Enum</code>时，不宜使用这种方法。</p>
 </li>
 </ul>
 <h2 id="2-4-通过私有构造器强化不可实例化的能力（4）"><a href="#2-4-通过私有构造器强化不可实例化的能力（4）" class="headerlink" title="2.4 通过私有构造器强化不可实例化的能力（4）"></a>2.4 通过私有构造器强化不可实例化的能力（4）</h2><ul>
@@ -650,21 +644,21 @@
   <entry>
     <title>Git</title>
     <url>/2022/05/06/git/</url>
-    <content><![CDATA[<h1 id="版本控制（Revision-control）"><a href="#版本控制（Revision-control）" class="headerlink" title="版本控制（Revision control）"></a>版本控制（Revision control）</h1><p>将每一次文件变更的时间，作者，内容都记录下来，并更新版本号。通过记录文件内容的变更，从而<strong>追踪文件的变更</strong>。此外，由于软件开发往往是多人协同作业，那么版本间的同步问题以及开发者间的通信问题都需要通过版本控制来解决，也就是说，版本控制的另一功能是<strong>并行开发</strong>。在开发过程中，首先需要设定开发基线，确定各个配置项的开发初始版本，开发人员再基于开发基线的版本，开发出所需的目标版本，并行开发中的许多错误都可以通过版本控制中分支与合并的方法来解决。</p>
-<h1 id="集中式版本控制系统（Centralized-Version-Control-Systems，简称-CVCS）"><a href="#集中式版本控制系统（Centralized-Version-Control-Systems，简称-CVCS）" class="headerlink" title="集中式版本控制系统（Centralized Version Control Systems，简称 CVCS）"></a>集中式版本控制系统（Centralized Version Control Systems，简称 CVCS）</h1><p>项目的历史记录均被保存在单一位置，<strong>有丢失风险</strong>，且<strong>必须联网</strong>才能工作。</p>
-<h1 id="分布式版本控制系统（Distributed-Version-Control-System，简称-DVCS）"><a href="#分布式版本控制系统（Distributed-Version-Control-System，简称-DVCS）" class="headerlink" title="分布式版本控制系统（Distributed Version Control System，简称 DVCS）"></a>分布式版本控制系统（Distributed Version Control System，简称 DVCS）</h1><p>客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
+    <content><![CDATA[<h1 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h1><p>将每一次文件变更的时间，作者，内容都记录下来，并更新版本号。通过记录文件内容的变更，从而<strong>追踪文件的变更</strong>。此外，由于软件开发往往是多人协同作业，那么版本间的同步问题以及开发者间的通信问题都需要通过版本控制来解决，也就是说，版本控制的另一功能是<strong>并行开发</strong>。在开发过程中，首先需要设定开发基线，确定各个配置项的开发初始版本，开发人员再基于开发基线的版本，开发出所需的目标版本，并行开发中的许多错误都可以通过版本控制中分支与合并的方法来解决。</p>
+<h1 id="集中式版本控制系统"><a href="#集中式版本控制系统" class="headerlink" title="集中式版本控制系统"></a>集中式版本控制系统</h1><p>集中式版本控制系统（Centralized Version Control Systems），简称 CVCS。项目的历史记录均被保存在单一位置，<strong>有丢失风险</strong>，且<strong>必须联网</strong>才能工作。</p>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系统（Distributed Version Control System），简称 DVCS。客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
 <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git属于DVCS，Git与其他版本控制系统的主要区别在于对待数据的方式。大多数版本控制系统都是以文件变更列表的方式存储信息，这类系统将它们保存的信息看作一组基本文件和每个文件随时间逐步累积的差异，而Git采用直接记录快照的方式，而非差异比较。每次提交更新或者保存项目状态时，Git对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git不再重新存储该文件，而是保留一个链接指向之前存储的文件。Git仓库和Github中心服务器之间的传输是通过SSH加密的。</p>
-<h1 id="工作流（Workflow）"><a href="#工作流（Workflow）" class="headerlink" title="工作流（Workflow）"></a>工作流（Workflow）</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（.git directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个HEAD指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
+<h1 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（<code>.git</code> directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个<code>HEAD</code>指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
 <img src="git_1.jpg" alt="工作流图" style="zoom:100%;" />
 
-<h1 id="分支（Branch）"><a href="#分支（Branch）" class="headerlink" title="分支（Branch）"></a>分支（Branch）</h1><ul>
+<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
 <li><p>每个提交通过指针连接成一条时间线。</p>
 </li>
-<li><p>创建仓库时，master指针指向主分支，Head指针始终指向当前分支，当前分支可能是主分支也可能是新建的分支。</p>
+<li><p>创建仓库时，<code>master</code>指针指向主分支，<code>HEAD</code>指针始终指向当前分支，当前分支可能是主分支也可能是新建的分支。</p>
 </li>
 <li><p>新建分支就是新建一个指针指向时间线的最后一个节点。</p>
 </li>
-<li><p>切换分支就是让HEAD指针指向新分支，表示新分支成为当前分支。</p>
+<li><p>切换分支就是让<code>HEAD</code>指针指向新分支，表示新分支成为当前分支。</p>
 </li>
 <li><p>每次提交只会让当前分支指针向后移动，而其他分支指针不会移动。</p>
 </li>
@@ -673,7 +667,7 @@
 </ul>
 <img src="git_2.jpg" alt="工作流图" style="zoom:100%;" />
 
-<h1 id="命令速查表（Commands-Cheat-Sheet）"><a href="#命令速查表（Commands-Cheat-Sheet）" class="headerlink" title="命令速查表（Commands Cheat Sheet）"></a>命令速查表（Commands Cheat Sheet）</h1><p><a href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
+<h1 id="命令速查表"><a href="#命令速查表" class="headerlink" title="命令速查表"></a>命令速查表</h1><p><a href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><p><a href="https://www.liaoxuefeng.com/wiki/896043488029600">https://www.liaoxuefeng.com/wiki/896043488029600</a></p>
 </li>
@@ -688,7 +682,7 @@
     <title>Maven</title>
     <url>/2022/05/07/maven/</url>
     <content><![CDATA[<p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
-<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下：</p>
 <ul>
 <li><p><code>pom.xml</code>：项目描述文件；</p>
 </li>
@@ -705,12 +699,12 @@
 </ul>
 <p>注：</p>
 <ul>
-<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>类似于Java的包名，通常是公司或组织名称；<code>artifactId</code>似于Java的类名，通常是项目名称，再加上<code>version</code>；</p>
+<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>类似于Java的包名，通常是公司或组织名称；<code>artifactId</code>似于Java的类名，通常是项目名称；</p>
 </li>
-<li><p>一个Maven工程就是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量唯一定位要依赖的jar包。</p>
+<li><p>一个Maven工程是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量来唯一定位要依赖的jar包。</p>
 </li>
 </ul>
-<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven定义了几种依赖类型（scope）如下</p>
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven会自动解析并判断真正需要的依赖，避免了繁琐的人工管理。Maven定义了几种依赖关系（scope）如下：</p>
 <ul>
 <li>compile：编译时需要用到的jar包（最常用的，直接放入classpath）；</li>
 <li>test：编译UT时需要用到的jar包，比如junit；</li>
@@ -724,21 +718,21 @@
 </li>
 <li><p>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
 </li>
-<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种SNAPSHOT版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
+<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种开发版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
 </li>
-<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要一个配置，在用户主目录下进入<code>.m2</code>目录，创建一个<code>settings.xml</code>配置文件；</p>
+<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要在用户主目录的<code>.m2</code>目录创建一个<code>settings.xml</code>配置文件，进行配置；</p>
 </li>
 <li><p>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</p>
 </li>
 </ul>
 <h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><ul>
-<li><p>Maven有两个生命周期（lifecycle）： default和clean，每个lifecycle都由一系列阶段（phase）构成；</p>
+<li><p>Maven有两个生命周期（lifecycle）： <code>default</code>和<code>clean</code>，每个lifecycle都由一系列阶段（phase）构成；</p>
 </li>
 <li><p>mvn命令后面的参数是指phase；</p>
 </li>
-<li><p>当命令中只有一个phase时，就运行default这个lifecycle，并运行到指定的phase；</p>
+<li><p>当命令中只有一个phase时，就运行<code>default</code>这个lifecycle，并运行到指定的phase；</p>
 </li>
-<li><p>当命令中有两个phase时，就依次先后运行clean和default这两个lifecycle到分别指定的phase；</p>
+<li><p>当命令中有两个phase时，就依次先后运行<code>clean</code>和<code>default</code>这两个lifecycle到分别指定的phase；</p>
 </li>
 <li><p>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</p>
 </li>
@@ -761,13 +755,15 @@
 </ul>
 <img src="maven_1.jpg" alt="模块结构" style="zoom:100%;" />
 
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></li>
+</ul>
 ]]></content>
   </entry>
   <entry>
     <title>Spring Framework</title>
     <url>/2022/05/07/spring/</url>
-    <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是一个取代了EJB的轻量级框架，它提供了一系列底层和基础设施，持快速开发Java EE应用程序。</p>
+    <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是一个取代了EJB的轻量级框架，它提供了一系列底层和基础设施，是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
 <p>Spring Framework主要包括几个模块：</p>
 <ul>
 <li>支持IoC和AOP的容器；</li>
@@ -777,10 +773,17 @@
 <li>支持基于Reactive的Web开发；</li>
 <li>以及集成JMS、JavaMail、JMX、缓存等其他模块。</li>
 </ul>
+<p>通过这些模块，Spring可以实现：</p>
+<ul>
+<li>基于POJO的轻量级和最小入侵性编程；</li>
+<li>基于依赖注入和面向接口实现松耦合；</li>
+<li>基于切面和惯例进行声明式编程；</li>
+<li>基于切面和模板减少样板式代码。</li>
+</ul>
 <h1 id="2、IoC-容器"><a href="#2、IoC-容器" class="headerlink" title="2、IoC 容器"></a>2、IoC 容器</h1><h2 id="2-1-问题与解决"><a href="#2-1-问题与解决" class="headerlink" title="2.1 问题与解决"></a>2.1 问题与解决</h2><p>Java组件在协助工作时，可能会反复实例化一些很复杂的组件，为了避免重复工作，考虑共享一些组件，但组件的共享会导致组件之间的依赖关系逐渐复杂，组件的创建、共享以及销毁也变得不好管理，即难以根据依赖关系创建、组装、获取和销毁组件。</p>
 <p>传统应用程序中，组件的控制权在应用程序本身，在IoC模式下，组件控制权发生了反转（从应用程序转移到IoC容器），应用程序只需要<strong>直接使用</strong>（通过<code>setXXX</code>方法或者带<code>XXX</code>参数的构造方法来注入<code>XXX</code>实例，而不再需要<code>new XXX</code>）已经创建好配置好的组件。</p>
 <p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。</p>
-<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过以下方式来进行配置：1）XML文件；2）注解。</p>
+<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过XML文件或者注解这两种方式来进行配置。</p>
 <h2 id="2-2-XML文件配置"><a href="#2-2-XML文件配置" class="headerlink" title="2.2 XML文件配置"></a>2.2 XML文件配置</h2><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）通过属性注入或者依赖注入编写组件；</p>
 <p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件，每个<code>&lt;bean …&gt;</code>都有一个<code>id</code>标识，Bean通过<code>&lt;property name = &quot;…&quot; ref = &quot;…&quot; /&gt;</code>来注入另一个Bean，通过<code>&lt;property name = &quot;…&quot; value = &quot;…&quot; /&gt;</code>来注入数据类型；</p>
@@ -845,8 +848,11 @@
 <li>Spring通过<strong>CGLIB创建的代理类无法覆写继承自原始类的final方法</strong>，即无法代理final方法。</li>
 </ul>
 <p>综上所述，为了正确使用AOP，在访问被注入的Bean的成员变量时，总是调用<code>getXXX</code>方法而非直接访问字段；编写可能会被代理的Bean时，不要编写<code>public final</code>方法。</p>
-<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></p>
-<p><a href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary">https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary</a></p>
+<h1 id="4、声明式事务"><a href="#4、声明式事务" class="headerlink" title="4、声明式事务"></a>4、声明式事务</h1><h1 id="5、Spring-MVC"><a href="#5、Spring-MVC" class="headerlink" title="5、Spring MVC"></a>5、Spring MVC</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>《Spring In Action，Third Edition》</li>
+<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
+<li><a href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary">https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary</a></li>
+</ul>
 ]]></content>
   </entry>
 </search>

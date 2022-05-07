@@ -193,9 +193,9 @@
 <ul>
 <li><p>重叠构造器模式，但此时客户端代码难以编写和阅读；</p>
 </li>
-<li><p><code>JavaBean</code>模式，但在构造过程中无法保证<code>JavaBean</code>的一致性，无法实现不可变类，需要额外开销来确保线程安全；</p>
+<li><p>JavaBean模式，但在构造过程中无法保证JavaBean的一致性，无法实现不可变类，需要额外开销来确保线程安全；</p>
 </li>
-<li><p>生成器模式（Builder），它可以有多个可变参数，既能保证像重叠构造器那样的安全性，也能保证像<code>JavaBean</code>模式那么好的可读性，此外Builder模式也适用于类层次结构。</p>
+<li><p>生成器模式（Builder），它可以有多个可变参数，既能保证像重叠构造器那样的安全性，也能保证像JavaBean模式那么好的可读性，此外Builder模式也适用于类层次结构。</p>
 </li>
 </ul>
 <h2 id="2-3-通过枚举类型强化Singleton属性（3）"><a href="#2-3-通过枚举类型强化Singleton属性（3）" class="headerlink" title="2.3 通过枚举类型强化Singleton属性（3）"></a>2.3 通过枚举类型强化Singleton属性（3）</h2><p>当构造器设为私有时，可以通过final变量或者静态工厂可以实现Singleton，这种方式有两个问题需要注意：</p>
@@ -211,7 +211,7 @@
 <ul>
 <li><p>这种方式更加简洁，无偿地提供了序列化机制，即使是在面对复杂的序列化或者反射攻击时，也绝对防止多次实例化；</p>
 </li>
-<li><p>如果Singleton必须扩展一个超类，而不是扩展<code>Enum</code>时，不宜使用这种方法。</p>
+<li><p>如果Singleton类必须扩展一个超类，而不是扩展<code>Enum</code>时，不宜使用这种方法。</p>
 </li>
 </ul>
 <h2 id="2-4-通过私有构造器强化不可实例化的能力（4）"><a href="#2-4-通过私有构造器强化不可实例化的能力（4）" class="headerlink" title="2.4 通过私有构造器强化不可实例化的能力（4）"></a>2.4 通过私有构造器强化不可实例化的能力（4）</h2><ul>
@@ -287,7 +287,7 @@
       <a class="nav-left" href="/2022/05/06/clean-code/">
         <span class="nav-arrow">← </span>
         
-          代码整洁之道
+          Clean Code
         
       </a>
     

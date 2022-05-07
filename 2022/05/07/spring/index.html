@@ -161,7 +161,7 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是一个取代了EJB的轻量级框架，它提供了一系列底层和基础设施，持快速开发Java EE应用程序。</p>
+    <section class="markdown-content"><h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是一个取代了EJB的轻量级框架，它提供了一系列底层和基础设施，是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
 <p>Spring Framework主要包括几个模块：</p>
 <ul>
 <li>支持IoC和AOP的容器；</li>
@@ -171,10 +171,17 @@
 <li>支持基于Reactive的Web开发；</li>
 <li>以及集成JMS、JavaMail、JMX、缓存等其他模块。</li>
 </ul>
+<p>通过这些模块，Spring可以实现：</p>
+<ul>
+<li>基于POJO的轻量级和最小入侵性编程；</li>
+<li>基于依赖注入和面向接口实现松耦合；</li>
+<li>基于切面和惯例进行声明式编程；</li>
+<li>基于切面和模板减少样板式代码。</li>
+</ul>
 <h1 id="2、IoC-容器"><a href="#2、IoC-容器" class="headerlink" title="2、IoC 容器"></a>2、IoC 容器</h1><h2 id="2-1-问题与解决"><a href="#2-1-问题与解决" class="headerlink" title="2.1 问题与解决"></a>2.1 问题与解决</h2><p>Java组件在协助工作时，可能会反复实例化一些很复杂的组件，为了避免重复工作，考虑共享一些组件，但组件的共享会导致组件之间的依赖关系逐渐复杂，组件的创建、共享以及销毁也变得不好管理，即难以根据依赖关系创建、组装、获取和销毁组件。</p>
 <p>传统应用程序中，组件的控制权在应用程序本身，在IoC模式下，组件控制权发生了反转（从应用程序转移到IoC容器），应用程序只需要<strong>直接使用</strong>（通过<code>setXXX</code>方法或者带<code>XXX</code>参数的构造方法来注入<code>XXX</code>实例，而不再需要<code>new XXX</code>）已经创建好配置好的组件。</p>
 <p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。</p>
-<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过以下方式来进行配置：1）XML文件；2）注解。</p>
+<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过XML文件或者注解这两种方式来进行配置。</p>
 <h2 id="2-2-XML文件配置"><a href="#2-2-XML文件配置" class="headerlink" title="2.2 XML文件配置"></a>2.2 XML文件配置</h2><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）通过属性注入或者依赖注入编写组件；</p>
 <p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件，每个<code>&lt;bean …&gt;</code>都有一个<code>id</code>标识，Bean通过<code>&lt;property name = &quot;…&quot; ref = &quot;…&quot; /&gt;</code>来注入另一个Bean，通过<code>&lt;property name = &quot;…&quot; value = &quot;…&quot; /&gt;</code>来注入数据类型；</p>
@@ -239,8 +246,11 @@
 <li>Spring通过<strong>CGLIB创建的代理类无法覆写继承自原始类的final方法</strong>，即无法代理final方法。</li>
 </ul>
 <p>综上所述，为了正确使用AOP，在访问被注入的Bean的成员变量时，总是调用<code>getXXX</code>方法而非直接访问字段；编写可能会被代理的Bean时，不要编写<code>public final</code>方法。</p>
-<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><p><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></p>
-<p><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary">https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary</a></p>
+<h1 id="4、声明式事务"><a href="#4、声明式事务" class="headerlink" title="4、声明式事务"></a>4、声明式事务</h1><h1 id="5、Spring-MVC"><a href="#5、Spring-MVC" class="headerlink" title="5、Spring MVC"></a>5、Spring MVC</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>《Spring In Action，Third Edition》</li>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
+<li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary">https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary</a></li>
+</ul>
 </section>
     <!-- Tags START -->
     
@@ -250,17 +260,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2022/05/06/design-patterns/">
+      <a class="nav-left" href="/2022/05/07/maven/">
         <span class="nav-arrow">← </span>
         
-          设计模式
+          Maven
         
       </a>
     
     
-      <a class="nav-right" href="/2022/05/07/maven/">
+      <a class="nav-right" href="/2022/05/07/design-patterns/">
         
-          Maven
+          Design Patterns
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -293,7 +303,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC-%E5%AE%B9%E5%99%A8"><span class="toc-nav-text">2、IoC 容器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">2.4 注解说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.5 工厂Bean</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">4、参考资料</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC-%E5%AE%B9%E5%99%A8"><span class="toc-nav-text">2、IoC 容器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">2.4 注解说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.5 工厂Bean</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、声明式事务</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81Spring-MVC"><span class="toc-nav-text">5、Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
     
   </div>
 </aside>
