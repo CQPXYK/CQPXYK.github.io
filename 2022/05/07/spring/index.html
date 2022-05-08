@@ -178,20 +178,69 @@
 <li>基于切面和惯例进行声明式编程；</li>
 <li>基于切面和模板减少样板式代码。</li>
 </ul>
-<h1 id="2、IoC-容器"><a href="#2、IoC-容器" class="headerlink" title="2、IoC 容器"></a>2、IoC 容器</h1><h2 id="2-1-问题与解决"><a href="#2-1-问题与解决" class="headerlink" title="2.1 问题与解决"></a>2.1 问题与解决</h2><p>Java组件在协助工作时，可能会反复实例化一些很复杂的组件，为了避免重复工作，考虑共享一些组件，但组件的共享会导致组件之间的依赖关系逐渐复杂，组件的创建、共享以及销毁也变得不好管理，即难以根据依赖关系创建、组装、获取和销毁组件。</p>
+<h1 id="2、IoC"><a href="#2、IoC" class="headerlink" title="2、IoC"></a>2、IoC</h1><h2 id="2-1-问题与解决"><a href="#2-1-问题与解决" class="headerlink" title="2.1 问题与解决"></a>2.1 问题与解决</h2><p>Java组件在协助工作时，可能会反复实例化一些很复杂的组件，为了避免重复工作，考虑共享一些组件，但组件的共享会导致组件之间的依赖关系逐渐复杂，组件的创建、共享以及销毁也变得不好管理，即难以根据依赖关系创建、组装、获取和销毁组件，也很难进行单元测试。</p>
 <p>传统应用程序中，组件的控制权在应用程序本身，在IoC模式下，组件控制权发生了反转（从应用程序转移到IoC容器），应用程序只需要<strong>直接使用</strong>（通过<code>setXXX</code>方法或者带<code>XXX</code>参数的构造方法来注入<code>XXX</code>实例，而不再需要<code>new XXX</code>）已经创建好配置好的组件。</p>
-<p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。</p>
-<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过XML文件或者注解这两种方式来进行配置。</p>
+<p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。</p>
+<p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过XML文件或者注解这两种方式来进行配置，这种创建应用对象之间的依赖协作关系的行为通常被称为<strong>装配（wiring）</strong>。</p>
 <h2 id="2-2-XML文件配置"><a href="#2-2-XML文件配置" class="headerlink" title="2.2 XML文件配置"></a>2.2 XML文件配置</h2><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）通过属性注入或者依赖注入编写组件；</p>
-<p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件，每个<code>&lt;bean …&gt;</code>都有一个<code>id</code>标识，Bean通过<code>&lt;property name = &quot;…&quot; ref = &quot;…&quot; /&gt;</code>来注入另一个Bean，通过<code>&lt;property name = &quot;…&quot; value = &quot;…&quot; /&gt;</code>来注入数据类型；</p>
-<p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean（只需要这一行代码），<strong>其实Spring容器就是ApplicationContext接口，ClassPathXmlApplicationContext是该接口的一个实现类；</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;application.xml&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件；</p>
+<ul>
+<li><p>每个Bean都有一个<code>id</code>标识和<code>class</code>属性，<code>id</code>属性定义了Bean的名字；</p>
+</li>
+<li><p>通过<code>&lt;property name = &quot;…&quot; ref = &quot;…&quot; /&gt;</code>来注入另一个Bean；</p>
+</li>
+<li><p>通过<code>&lt;property name = &quot;…&quot; value = &quot;…&quot; /&gt;</code>来注入数据类型；</p>
+</li>
+<li><p>通过<code>&lt;constructor-arg values = &quot;...&quot; /&gt;</code>或者<code>&lt;constructor-arg ref= &quot;...&quot; /&gt;</code>来注入构造器参数（默认的无参构造器不需要这样注入参数；</p>
+</li>
+<li><p><code>scope</code>属性指定了Bean的作用域，默认是singleton；</p>
+<table>
+<thead>
+<tr>
+<th align="left">作用域</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">singleton</td>
+<td>一个Bean定义只有一个对象实例（默认）</td>
+</tr>
+<tr>
+<td align="left">prototype</td>
+<td>每次调用都创建一个实例，允许Bean的定义可以被实例化任意次</td>
+</tr>
+<tr>
+<td align="left">request</td>
+<td>用于一次HTTP请求，每个Bean定义对应一个实例</td>
+</tr>
+<tr>
+<td align="left">session</td>
+<td>用于一个HTTP Session，每个Bean定义对应一个实例</td>
+</tr>
+<tr>
+<td align="left">global-session</td>
+<td>用于一个全局HTTP Session，每个Bean定义对应一个实例</td>
+</tr>
+</tbody></table>
+</li>
+<li><p><code>factory-method</code>属性指定创建Bean的静态方法，从而能够代替构造方法创建Bean；</p>
+</li>
+<li><p><code>init-method</code>和<code>destory-method</code>属性分别指定Bean的初始化和销毁方法；</p>
+</li>
+<li><p><code>default-init-method</code>和<code>default-destory-method</code>属性为上下文中所有的Bean都分别指定默认了初始化和销毁方法；</p>
+</li>
+</ul>
+<p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;application.xml&quot;</span>);</span><br><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> (Product) context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
 
-<p>5）从Spring的IoC容器中获取装配好的Bean。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>1）通过<code>@Component</code>和<code>@Autowired</code>注解编写组件；</p>
+<p>其实Spring容器就是ApplicationContext接口（应用上下文），常用的ApplicationContext接口的实现类有以下三种：</p>
+<ul>
+<li><code>ClassPathXmlApplicationContext</code>：从类路径下的XML配置文件中加载上下文定义，把和上下文定义文件当做资源；</li>
+<li><code>FileSystemXmlapplicationContext</code>：读取文件系统下的XML配置文件并加载上下文定义；</li>
+<li><code>XmlWebApplicationContext</code>：读取Web应用下的XML配置文件并装载上下文定义。</li>
+</ul>
+<h2 id="2-3"><a href="#2-3" class="headerlink" title="2.3"></a>2.3</h2><h2 id="注解配置"><a href="#注解配置" class="headerlink" title="注解配置"></a>注解配置</h2><p>1）通过<code>@Component</code>和<code>@Autowired</code>注解编写组件；</p>
 <p>2）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
 <p>3）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean（只需要这一行代码）；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br></pre></td></tr></table></figure>
@@ -303,7 +352,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC-%E5%AE%B9%E5%99%A8"><span class="toc-nav-text">2、IoC 容器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">2.4 注解说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.5 工厂Bean</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、声明式事务</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81Spring-MVC"><span class="toc-nav-text">5、Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3"><span class="toc-nav-text">2.3</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">注解配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">2.4 注解说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.5 工厂Bean</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、声明式事务</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81Spring-MVC"><span class="toc-nav-text">5、Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
     
   </div>
 </aside>
