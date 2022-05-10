@@ -155,6 +155,192 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Design Patterns</title>
+    <url>/2022/05/07/design-patterns/</url>
+    <content><![CDATA[<h1 id="1、类图"><a href="#1、类图" class="headerlink" title="1、类图"></a>1、类图</h1><h2 id="1-1-泛化关系（Generalization）"><a href="#1-1-泛化关系（Generalization）" class="headerlink" title="1.1 泛化关系（Generalization）"></a>1.1 泛化关系（Generalization）</h2><p>用于描述非抽象类的继承关系，关键字为<code>extends</code>。</p>
+<img src="patterns_1.png" alt="泛化关系" style="zoom:70%;" />
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-实现关系（Realization）"><a href="#1-2-实现关系（Realization）" class="headerlink" title="1.2 实现关系（Realization）"></a>1.2 实现关系（Realization）</h2><p>用于描述抽象类/接口的实现关系，关键字为<code>implements</code>。</p>
+<img src="patterns_2.png" alt="实现关系" style="zoom:70%;" />
+
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-复合关系（Composition）"><a href="#1-3-复合关系（Composition）" class="headerlink" title="1.3 复合关系（Composition）"></a>1.3 复合关系（Composition）</h2><p>用于描述整体和部分之间的强依赖关系，整体不存在时部分也不存在。</p>
+<img src="patterns_3.png" alt="复合关系" style="zoom:70%;" />
+
+<h2 id="1-4-聚合关系（Aggregation）"><a href="#1-4-聚合关系（Aggregation）" class="headerlink" title="1.4 聚合关系（Aggregation）"></a>1.4 聚合关系（Aggregation）</h2><p>用于描述整体和部分个体之间的非强依赖关系，整体不存在时部分个体依旧存在。</p>
+<img src="patterns_4.png" alt="聚合关系" style="zoom:70%;" />
+
+<h2 id="1-5-关联关系（Association）"><a href="#1-5-关联关系（Association）" class="headerlink" title="1.5 关联关系（Association）"></a>1.5 关联关系（Association）</h2><p>用于描述类对象之间的静态强关联关系，该关系与运行过程的状态无关，在运行前就可以确定。关联关系通常以成员变量（静态方法变量）的形式实现。</p>
+<p>关联关系默认不强调方向，表示对象之间默认互相知道，如果特别强调方向（如下图），则表示A知道B，但B不知道A。</p>
+<img src="patterns_5.png" alt="关联关系" style="zoom:70%;" />
+
+<h2 id="1-6-依赖关系（Dependency）"><a href="#1-6-依赖关系（Dependency）" class="headerlink" title="1.6 依赖关系（Dependency）"></a>1.6 依赖关系（Dependency）</h2><p>用于描述类对象之间的临时性动态关联关系，该关系与运行过程中的状态相关，在运行时确定。依赖应当总是单向的，要杜绝双向依赖及循环依赖的产生。依赖关系通常以类方法的传入传出参数（或局部变量）实现。</p>
+<img src="patterns_6.png" alt="依赖关系" style="zoom:70%;" />
+
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Offgas <span class="title function_">move</span><span class="params">(Gasoline G)</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Gasoline</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Offgas</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>耦合紧密程度：泛化 = 实现 &gt; 复合 &gt; 聚合 &gt; 关联 &gt; 依赖</strong></p>
+<h1 id="2、设计模式"><a href="#2、设计模式" class="headerlink" title="2、设计模式"></a>2、设计模式</h1><p>设计模式是解决一些固有问题的一系列方案，学习现有的设计模式可以做到经验复用。</p>
+<h2 id="2-1-创建型"><a href="#2-1-创建型" class="headerlink" title="2.1 创建型"></a>2.1 创建型</h2><h3 id="2-1-1-单例（Singleton）"><a href="#2-1-1-单例（Singleton）" class="headerlink" title="2.1.1 单例（Singleton）"></a>2.1.1 单例（Singleton）</h3><p>确保在一个进程中一个类有且只有一个实例，并提供该实例的全局访问点。</p>
+<p>1）线程安全</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）延迟加载，使用同步访问方法以防止循环初始化，但也增加了访问成本，线程安全，性能不好</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (INSTANCE == <span class="literal">null</span>) &#123;</span><br><span class="line">            INSTANCE = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）针对静态域的延迟加载，lazy initialization holder class模式，静态访问方法不需要同步，不会因延迟初始化增加访问成本，线程安全，性能好</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）枚举类型，绝对安全</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）一般不是通过<code>new</code>操作符，而是由框架（例如Spring）来创建装配从而获取单例，<code>@Component</code>注解默认将组件标注为单例。</p>
+<h3 id="2-1-2-简单工厂（Simple-Factory）"><a href="#2-1-2-简单工厂（Simple-Factory）" class="headerlink" title="2.1.2 简单工厂（Simple Factory）"></a>2.1.2 简单工厂（Simple Factory）</h3><p>提供用于创建一个对象的简单工厂类，实例化操作由简单工厂类完成。</p>
+<p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>SimpleFactory</code>工厂类，通过<code>SimpleFactory</code>简单工厂实现具体<code>Product</code>的实例化。<code>User</code>类可忽略具体<code>Product</code>（<code>ProductA</code>和<code>ProductB</code>）的细节，从而将<code>User</code>类与具体<code>Product</code>实现类解耦。</p>
+<img src="patterns_7.png" alt="简单工厂" style="zoom:70%;" />
+
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span> <span class="params">(<span class="type">int</span> type)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="number">1</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (type == <span class="number">2</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductB</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">SimpleFactory</span> <span class="variable">simpleFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleFactory</span>();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> simpleFactory.createProduct(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-3-工厂方法（Factory-Method）"><a href="#2-1-3-工厂方法（Factory-Method）" class="headerlink" title="2.1.3 工厂方法（Factory Method）"></a>2.1.3 工厂方法（Factory Method）</h3><p>提供用于创建一个对象的工厂接口，实例化操作由该工厂接口的具体实现类完成。</p>
+<p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>ProductFactory</code>接口，通过<code>ProductFactory</code>接口的具体类（<code>ProductFactoryImpl</code>）实现具体<code>Product</code>（<code>ProductA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>ProductFactoryImpl</code>）和具体<code>Product</code>（<code>ProductA</code>）的细节，从而将<code>User</code>类与工厂类及具体<code>Product</code>实现类解耦。</p>
+<img src="patterns_8.png" alt="工厂方法" style="zoom:70%;" />
+
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">ProductFactory</span> <span class="variable">impl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProductFactoryImpl</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ProductFactory <span class="title function_">getFactory</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> impl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductFactoryImpl</span> <span class="keyword">implements</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ProductFactory</span> <span class="variable">factory</span> <span class="operator">=</span> ProductFactory.getFactory();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上内容所述工厂方法可化简为静态工厂方法（Static Factory Method），如下所示</p>
+<img src="patterns_9.png" alt="静态工厂" style="zoom:70%;" />
+
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (...) &#123;</span><br><span class="line">            <span class="comment">// return interface from cache</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span> ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> ProductFactory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样做的好处在于<code>factoryMethod</code>方法可能会<code>new</code>一个新的<code>ProductA</code>实例，也可能直接返回一个缓存的实例，对于<code>User</code>类来说，无需知道<code>ProductA</code>创建的细节。</p>
+<p>总结：</p>
+<ul>
+<li><p>实际更常用的是更简单的静态工厂方法；</p>
+</li>
+<li><p>工厂方法定义工厂接口和产品接口，但创建实际工厂和实际产品被推迟到子类实现，使得调用方只和抽象工厂和抽象产品打交道；</p>
+</li>
+<li><p>调用方尽量持有接口或者抽象类，避免持有具体类型的子类，以便工厂方法能随时切换不同的子类返回，而不影响调用方代码。</p>
+</li>
+</ul>
+<h3 id="2-1-4-抽象工厂（Abstract-Factory）"><a href="#2-1-4-抽象工厂（Abstract-Factory）" class="headerlink" title="2.1.4 抽象工厂（Abstract Factory）"></a>2.1.4 抽象工厂（Abstract Factory）</h3><p>提供<strong>用于创建对象家族</strong>的工厂接口（对象家族指很多个必须一起创建出来的相关的对象），对象家族中的单一对象由工厂方法创建出来，即实例化操作由该工厂接口的具体实现类完成。</p>
+<p>如下图所示，<code>User</code>类关联<code>Product</code>接口、<code>Tool</code>接口以及<code>AbstractFactory</code>接口，通过<code>AbstractFactory</code>接口的具体类（<code>FactoryImplA</code>）实现具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>AbstractFactory</code>）、具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的细节，从而将<code>User</code>类与工厂类、具体<code>Product</code>实现类及具体<code>Tool</code>实现类解耦。</p>
+<img src="patterns_10.png" alt="抽象工厂" style="zoom:70%;" />
+
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AbstractFactory <span class="title function_">createFactoryA</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FactoryImplA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ToolA</span> <span class="keyword">implements</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryImplA</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ToolA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">AbstractFactory</span> <span class="variable">factoryA</span> <span class="operator">=</span> AbstractFactory.createFactoryA();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factoryA.createProduct();</span><br><span class="line">        <span class="type">Tool</span> <span class="variable">tool</span> <span class="operator">=</span> factoryA.createTool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-5-生成器（Builder）"><a href="#2-1-5-生成器（Builder）" class="headerlink" title="2.1.5 生成器（Builder）"></a>2.1.5 生成器（Builder）</h3><p>通过多个可选的步骤或者多个可选的零件来灵活创建一个复杂的对象。</p>
+<p>如下图所示，Builder模式并不直接生成一个<code>Product</code>类的对象，而是让客户端调用生成器得到一个<code>Builder</code>对象，然后在<code>Builder</code>对象上调用类似于<code>setter</code>的方法来设置可选参数，最后调用无参的<code>builder</code>方法来生成真正需要的（通常是不可变类的）<code>Product</code>类对象。</p>
+<p><code>Builder</code>类通常作为需要构建的类的静态成员类，<code>Builder</code>类的设置方法均返回<code>this</code>，以便<strong>将调用链接起来，得到一个流式的API</strong>。</p>
+<img src="patterns_11.png" alt="生成器" style="zoom:70%;" />
+
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Product</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.requiredParameter = builder.requiredParameter;</span><br><span class="line">        <span class="built_in">this</span>.optionalParameter = builder.optionalParameter;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Builder</span><span class="params">(<span class="type">int</span> requiredParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.requiredParameter = requiredParameter;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">setOptionalParameter</span><span class="params">(<span class="type">int</span> optionalParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.optionalParameter = optionalParameter;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Product <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Product</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Product</span>.Builder(requiredParameter)</span><br><span class="line">            .setOptionalParameter(optionalParameter).build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-行为型"><a href="#2-2-行为型" class="headerlink" title="2.2 行为型"></a>2.2 行为型</h2><h3 id="2-2-1-观察者（Observer）"><a href="#2-2-1-观察者（Observer）" class="headerlink" title="2.2.1 观察者（Observer）"></a>2.2.1 观察者（Observer）</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动被更新，又称发布-订阅（Publish-Subscribe）模式，发布方和订阅方彼此分离，互不影响。</p>
+<p>如下图所示，观察者<code>Admin</code>和<code>Customer</code>与被观察者<code>Store</code>彼此分离，互不影响，被观察者将通知变成一个<code>Event</code>对象，观察者自己从<code>Event</code>对象中读取通知类型和通知数据。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observable</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">registerObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">removeObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">onEvent</span><span class="params">(Event event)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Store</span> implemets Observable &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Admin</span> implemets Observer &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Customer</span> implemets Observer &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Store</span> <span class="variable">store</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Store</span>();</span><br><span class="line">        store.registerObserver(<span class="keyword">new</span> <span class="title class_">Admin</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<ul>
+<li><p>不推荐借助Java标准库中的<code>java.util.Observable</code>类和<code>Observer</code>接口来实现观察者模式；</p>
+</li>
+<li><p>不同的<code>Event</code>对象有着不同的通知Topic，观察者可以自行订阅自己感兴趣的Topic。</p>
+</li>
+</ul>
+<h3 id="2-2-2-状态（State）"><a href="#2-2-2-状态（State）" class="headerlink" title="2.2.2 状态（State）"></a>2.2.2 状态（State）</h3><p>将不同状态下的行为逻辑分拆到不同的状态类中，允许对象在其内部状态改变时改变其行为。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<ul>
+<li><p>状态模式常用于带有状态的对象中，增加新状态非常容易；</p>
+</li>
+<li><p>状态模式的关键在于状态转换，简单的状态转换可以直接由调用方指定，复杂的状态转换可以在内部根据条件触发完成。</p>
+</li>
+</ul>
+<h3 id="2-2-3-策略（Strategy）"><a href="#2-2-3-策略（Strategy）" class="headerlink" title="2.2.3 策略（Strategy）"></a>2.2.3 策略（Strategy）</h3><p>定义一系列算法，这些算法被封装到一个对象中，策略模式使得这些算法在运行时可以互相替换，并且独立于使用这些算法的客户端。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<ul>
+<li><p>一个完整的策略模式要定义策略以及使用策略的上下文，策略模式的核心思想是在一个计算方法中把容易变化的算法抽出来作为“策略”参数传进去，使得新增策略不必修改原有逻辑；</p>
+</li>
+<li><p>状态模式与策略模式类似，都能够动态改变对象的行为，状态模式通过状态转移来改变State对象，而策略模式通过本身决策来改变所使用的算法；</p>
+</li>
+<li><p>状态模式主要是用于解决动态的状态转移问题，策略模式主要是用于动态地替换所使用的算法；</p>
+</li>
+<li><p>策略模式和Lambda表达式配合使用可极大提高程序灵活性，例如<code>Arrays.sort (T[] a, Comparator&lt;? Super T&gt; c)</code>方法就可根据lambda表达式所提供的比较策略<code>c</code>来实现不同比较策略下的排序</p>
+</li>
+</ul>
+<h3 id="2-2-4-模板方法（Template-Method）"><a href="#2-2-4-模板方法（Template-Method）" class="headerlink" title="2.2.4 模板方法（Template Method）"></a>2.2.4 模板方法（Template Method）</h3><p>定义一个操作中的算法框架，并将一些步骤的实现延迟到子类，使得子类可以在不改变算法结构的同时修改一些步骤的实现。</p>
+<p>如下图所示，清洗、调料以及烹饪这三步是固定的，但是可以在RoastChicken和FriedChicken子类中，定义souse和cook函数的具体实现。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<ul>
+<li><p>模板方法的核心思想是：父类定义骨架，子类实现某些细节；</p>
+</li>
+<li><p>为了防止子类重写父类的骨架方法，可以在父类中对骨架方法使用final；</p>
+</li>
+</ul>
+<p>3）对于需要子类实现的抽象方法，一般声明为protected，使得这些方法对外部客户端不可见。</p>
+<h2 id="2-3-结构型"><a href="#2-3-结构型" class="headerlink" title="2.3 结构型"></a>2.3 结构型</h2><h3 id="2-3-1-适配器（Adapter-Wrapper）"><a href="#2-3-1-适配器（Adapter-Wrapper）" class="headerlink" title="2.3.1 适配器（Adapter/Wrapper）"></a>2.3.1 适配器（Adapter/Wrapper）</h3><p>把一个抽象类/接口转换成另一个用户需要的抽象类/接口，使得不兼容的接口可以一起正常工作。</p>
+<p>如下图所示，User类通过DogToCatAdapter适配器将Dog接口转换成用户需要的Cat接口，经过转换，用户在调用Cat接口的meow方法时，实际间接调用的是Dog接口bark方法。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-2-装饰器（Decorator）"><a href="#2-3-2-装饰器（Decorator）" class="headerlink" title="2.3.2 装饰器（Decorator）"></a>2.3.2 装饰器（Decorator）</h3><p>在运行期动态地给对象实例增加各种新的功能。如下图所示，抽象类ProductDecorator内复合了Product接口，通过扩展ProductDecorator可以得到各种具备不同功能的产品，用户可以叠加各种功能得到自己需要的产品。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<ul>
+<li><p>可以代替相同功能的子类，从而降低设计各种子类的工作量；</p>
+</li>
+<li><p>把核心功能和附加功能分开，两部分都可以独立地扩展，最后由调用方在运行期间动态地自由组合得到自己需要的功能；</p>
+</li>
+<li><p>Proxy让调用者认为获取到的是核心类接口，但实际上是代理类，而Decorator让调用者自己创建核心类（ProductImpl），然后在核心类上一层一层地叠加各种功能。</p>
+</li>
+</ul>
+<h3 id="2-3-3-享元（Flyweight）"><a href="#2-3-3-享元（Flyweight）" class="headerlink" title="2.3.3 享元（Flyweight）"></a>2.3.3 享元（Flyweight）</h3><p>利用共享的方式来支持大量细粒度的对象。如下图所示，product1和product2是同一个对象，返回结果为true。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总结：</p>
+<ul>
+<li><p>对于不可变类（实例不能被修改的类）来说，反复创建其相同的实例没有必要，直接向调用方返回一个共享的实例即可；</p>
+</li>
+<li><p>享元模式常用于工厂方法的内部优化，在工厂内部，很可能返回缓存的实例而不是new一个新的实例；</p>
+</li>
+<li><p>在实际应用中，享元模式主要应用于缓存，即客户端重复请求某些对象时，不必每次查询数据库或者读取文件，而是直接返回缓存中的对象。</p>
+</li>
+</ul>
+<h3 id="2-3-4-代理（Proxy）"><a href="#2-3-4-代理（Proxy）" class="headerlink" title="2.3.4 代理（Proxy）"></a>2.3.4 代理（Proxy）</h3><p>对调用方提供一个代理，该代理能够控制对一个对象的访问。</p>
+<p>如下图所示，ProductProxy通过定义APPProduct类型的成员变量，从而在调用APPProduct的fun方法的前后增加一些额外的操作。</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>根据代理所增加的额外操作的不同，代理可分为：</p>
+<ul>
+<li><p>远程代理（Remote Proxy）：本地调用者持有的接口是一个代理，该代理将对接口的方法转换成远程调用并返回结果，该代理<strong>控制了对远程对象的访问</strong>，此时代理附加的额外操作是对请求对象和返回对象进行编码并发送至远程对象；</p>
+</li>
+<li><p>虚拟代理（Virtual Proxy）：调用者先持有一个代理对象，而真正的对象并没有创建，直到客户端真的需要调用该对象时，才创建真正的对象，该代理<strong>控制了对创建开销很大的对象的访问</strong>，此时代理附加的额外操作是创建真正要访问的对象；</p>
+</li>
+<li><p>保护代理（Protection Proxy）：该代理<strong>根据调用者的权限控制了对对象的访问</strong>，此时代理附加的额外操作是检查调用者是否具有访问的权限；</p>
+</li>
+<li><p>智能代理（Smart Reference）：该代理取代了简单的指针，<strong>在存在多个外部调用者时控制了对对象的访问</strong>，此时代理附加的额外操作是对调用者个数进行计数（即记录对象的引用次数），在调用者访问对象时检查是否已经锁定了它，在调用者不进行调用时释放对象。</p>
+</li>
+</ul>
+<h1 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h1><ul>
+<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%80%9D%E6%83%B3.html">http://www.cyc2018.xyz/其他/编码实践/面向对象思想.html</a></p>
+</li>
+<li><p><a href="https://design-patterns.readthedocs.io/zh_CN/latest/read_uml.html">https://design-patterns.readthedocs.io/zh_CN/latest/read_uml.html</a></p>
+</li>
+<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%20-%20%E7%9B%AE%E5%BD%95.html#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80">http://www.cyc2018.xyz/其他/设计模式/设计模式.html</a></p>
+</li>
+<li><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528">https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528</a></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Clean Code</title>
     <url>/2022/05/06/clean-code/</url>
     <content><![CDATA[<h1 id="1、整洁代码"><a href="#1、整洁代码" class="headerlink" title="1、整洁代码"></a>1、整洁代码</h1><p>保持高效的唯一做法就是始终保持代码整洁。</p>
@@ -333,192 +519,6 @@
 <li>无需编写默认构造器，因为编译器会自动生成；</li>
 <li>成员类应当在概念上依赖于外围类并且足够小巧，否则就将成员类移出外围类；</li>
 <li>类的静态函数的入参不应有类实例，该静态函数更不应该对类的实例进行操作。</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Design Patterns</title>
-    <url>/2022/05/07/design-patterns/</url>
-    <content><![CDATA[<h1 id="1、类图"><a href="#1、类图" class="headerlink" title="1、类图"></a>1、类图</h1><h2 id="1-1-泛化关系（Generalization）"><a href="#1-1-泛化关系（Generalization）" class="headerlink" title="1.1 泛化关系（Generalization）"></a>1.1 泛化关系（Generalization）</h2><p>用于描述非抽象类的继承关系，关键字为<code>extends</code>。</p>
-<img src="patterns_1.png" alt="泛化关系" style="zoom:70%;" />
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">extends</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-2-实现关系（Realization）"><a href="#1-2-实现关系（Realization）" class="headerlink" title="1.2 实现关系（Realization）"></a>1.2 实现关系（Realization）</h2><p>用于描述抽象类/接口的实现关系，关键字为<code>implements</code>。</p>
-<img src="patterns_2.png" alt="实现关系" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Motorcycle</span> <span class="keyword">implements</span> <span class="title class_">Vehicle</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-3-聚合关系（Aggregation）"><a href="#1-3-聚合关系（Aggregation）" class="headerlink" title="1.3 聚合关系（Aggregation）"></a>1.3 聚合关系（Aggregation）</h2><p>用于描述整体和部分个体之间的非强依赖关系，整体不存在时部分个体依旧存在。</p>
-<img src="patterns_3.png" alt="聚合关系" style="zoom:70%;" />
-
-<h2 id="1-4-复合关系（Composition）"><a href="#1-4-复合关系（Composition）" class="headerlink" title="1.4 复合关系（Composition）"></a>1.4 复合关系（Composition）</h2><p>用于描述整体和部分之间的强依赖关系，整体不存在时部分也不存在。</p>
-<img src="patterns_4.png" alt="复合关系" style="zoom:70%;" />
-
-<h2 id="1-5-关联关系（Association）"><a href="#1-5-关联关系（Association）" class="headerlink" title="1.5 关联关系（Association）"></a>1.5 关联关系（Association）</h2><p>用于描述类对象之间的静态强关联关系，该关系与运行过程的状态无关，在运行前就可以确定。关联关系通常以成员变量（静态方法变量）的形式实现。</p>
-<p>关联关系默认不强调方向，表示对象之间默认互相知道，如果特别强调方向（如下图），则表示A知道B，但B不知道A。</p>
-<img src="patterns_5.png" alt="关联关系" style="zoom:70%;" />
-
-<h2 id="1-6-依赖关系（Dependency）"><a href="#1-6-依赖关系（Dependency）" class="headerlink" title="1.6 依赖关系（Dependency）"></a>1.6 依赖关系（Dependency）</h2><p>用于描述类对象之间的临时性动态关联关系，该关系与运行过程中的状态相关，在运行时确定。依赖应当总是单向的，要杜绝双向依赖及循环依赖的产生。依赖关系通常以类方法的传入传出参数（或局部变量）实现。</p>
-<img src="patterns_6.png" alt="依赖关系" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Offgas <span class="title function_">move</span><span class="params">(Gasoline G)</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Gasoline</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Offgas</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>耦合紧密程度：泛化 = 实现 &gt; 复合 &gt; 聚合 &gt; 关联 &gt; 依赖</strong></p>
-<h1 id="2、设计模式"><a href="#2、设计模式" class="headerlink" title="2、设计模式"></a>2、设计模式</h1><p>设计模式是解决一些固有问题的一系列方案，学习现有的设计模式可以做到经验复用。</p>
-<h2 id="2-1-创建型"><a href="#2-1-创建型" class="headerlink" title="2.1 创建型"></a>2.1 创建型</h2><h3 id="2-1-1-单例（Singleton）"><a href="#2-1-1-单例（Singleton）" class="headerlink" title="2.1.1 单例（Singleton）"></a>2.1.1 单例（Singleton）</h3><p>确保在一个进程中一个类有且只有一个实例，并提供该实例的全局访问点。</p>
-<p>1）线程安全</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）延迟加载，使用同步访问方法以防止循环初始化，但也增加了访问成本，线程安全，性能不好</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (INSTANCE == <span class="literal">null</span>) &#123;</span><br><span class="line">            INSTANCE = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3）针对静态域的延迟加载，lazy initialization holder class模式，静态访问方法不需要同步，不会因延迟初始化增加访问成本，线程安全，性能好</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">INSTANCE</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4）枚举类型，绝对安全</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>5）一般不是通过<code>new</code>操作符，而是由框架（例如Spring）来创建装配从而获取单例，<code>@Component</code>注解默认将组件标注为单例。</p>
-<h3 id="2-1-2-简单工厂（Simple-Factory）"><a href="#2-1-2-简单工厂（Simple-Factory）" class="headerlink" title="2.1.2 简单工厂（Simple Factory）"></a>2.1.2 简单工厂（Simple Factory）</h3><p>提供用于创建一个对象的简单工厂类，实例化操作由简单工厂类完成。</p>
-<p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>SimpleFactory</code>工厂类，通过<code>SimpleFactory</code>简单工厂实现具体<code>Product</code>的实例化。<code>User</code>类可忽略具体<code>Product</code>（<code>ProductA</code>和<code>ProductB</code>）的细节，从而将<code>User</code>类与具体<code>Product</code>实现类解耦。</p>
-<img src="patterns_7.png" alt="简单工厂" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductB</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span> <span class="params">(<span class="type">int</span> type)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="number">1</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (type == <span class="number">2</span>) &#123;</span><br><span class="line">            retrun <span class="keyword">new</span> <span class="title class_">ProductB</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">SimpleFactory</span> <span class="variable">simpleFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleFactory</span>();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> simpleFactory.createProduct(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-1-3-工厂方法（Factory-Method）"><a href="#2-1-3-工厂方法（Factory-Method）" class="headerlink" title="2.1.3 工厂方法（Factory Method）"></a>2.1.3 工厂方法（Factory Method）</h3><p>提供用于创建一个对象的工厂接口，实例化操作由该工厂接口的具体实现类完成。</p>
-<p>如下图所示，<code>User</code>类关联<code>Product</code>接口和<code>ProductFactory</code>接口，通过<code>ProductFactory</code>接口的具体类（<code>ProductFactoryImpl</code>）实现具体<code>Product</code>（<code>ProductA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>ProductFactoryImpl</code>）和具体<code>Product</code>（<code>ProductA</code>）的细节，从而将<code>User</code>类与工厂类及具体<code>Product</code>实现类解耦。</p>
-<img src="patterns_8.png" alt="工厂方法" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">ProductFactory</span> <span class="variable">impl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProductFactoryImpl</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ProductFactory <span class="title function_">getFactory</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> impl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductFactoryImpl</span> <span class="keyword">implements</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ProductFactory</span> <span class="variable">factory</span> <span class="operator">=</span> ProductFactory.getFactory();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以上内容所述工厂方法可化简为静态工厂方法（Static Factory Method），如下所示</p>
-<img src="patterns_9.png" alt="静态工厂" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ProductFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Product <span class="title function_">factoryMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (...) &#123;</span><br><span class="line">            <span class="comment">// return interface from cache</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span> ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> ProductFactory.factoryMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样做的好处在于<code>factoryMethod</code>方法可能会<code>new</code>一个新的<code>ProductA</code>实例，也可能直接返回一个缓存的实例，对于<code>User</code>类来说，无需知道<code>ProductA</code>创建的细节。</p>
-<p>总结：</p>
-<ul>
-<li><p>实际更常用的是更简单的静态工厂方法；</p>
-</li>
-<li><p>工厂方法定义工厂接口和产品接口，但创建实际工厂和实际产品被推迟到子类实现，使得调用方只和抽象工厂和抽象产品打交道；</p>
-</li>
-<li><p>调用方尽量持有接口或者抽象类，避免持有具体类型的子类，以便工厂方法能随时切换不同的子类返回，而不影响调用方代码。</p>
-</li>
-</ul>
-<h3 id="2-1-4-抽象工厂（Abstract-Factory）"><a href="#2-1-4-抽象工厂（Abstract-Factory）" class="headerlink" title="2.1.4 抽象工厂（Abstract Factory）"></a>2.1.4 抽象工厂（Abstract Factory）</h3><p>提供<strong>用于创建对象家族</strong>的工厂接口（对象家族指很多个必须一起创建出来的相关的对象），对象家族中的单一对象由工厂方法创建出来，即实例化操作由该工厂接口的具体实现类完成。</p>
-<p>如下图所示，<code>User</code>类关联<code>Product</code>接口、<code>Tool</code>接口以及<code>AbstractFactory</code>接口，通过<code>AbstractFactory</code>接口的具体类（<code>FactoryImplA</code>）实现具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的实例化。<code>User</code>类可忽略真正的工厂（<code>AbstractFactory</code>）、具体<code>Product</code>（<code>ProductA</code>）和具体<code>Tool</code>（<code>ToolA</code>）的细节，从而将<code>User</code>类与工厂类、具体<code>Product</code>实现类及具体<code>Tool</code>实现类解耦。</p>
-<img src="patterns_10.png" alt="抽象工厂" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AbstractFactory <span class="title function_">createFactoryA</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FactoryImplA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProductA</span> <span class="keyword">implements</span> <span class="title class_">Product</span> &#123;...&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ToolA</span> <span class="keyword">implements</span> <span class="title class_">Tool</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FactoryImplA</span> <span class="keyword">implements</span> <span class="title class_">AbstractFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ProductA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> Tool <span class="title function_">createTool</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ToolA</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">AbstractFactory</span> <span class="variable">factoryA</span> <span class="operator">=</span> AbstractFactory.createFactoryA();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> factoryA.createProduct();</span><br><span class="line">        <span class="type">Tool</span> <span class="variable">tool</span> <span class="operator">=</span> factoryA.createTool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-1-5-生成器（Builder）"><a href="#2-1-5-生成器（Builder）" class="headerlink" title="2.1.5 生成器（Builder）"></a>2.1.5 生成器（Builder）</h3><p>通过多个可选的步骤或者多个可选的零件来灵活创建一个复杂的对象。</p>
-<p>如下图所示，Builder模式并不直接生成一个<code>Product</code>类的对象，而是让客户端调用生成器得到一个<code>Builder</code>对象，然后在<code>Builder</code>对象上调用类似于<code>setter</code>的方法来设置可选参数，最后调用无参的<code>builder</code>方法来生成真正需要的（通常是不可变类的）<code>Product</code>类对象。</p>
-<p><code>Builder</code>类通常作为需要构建的类的静态成员类，<code>Builder</code>类的设置方法均返回<code>this</code>，以便<strong>将调用链接起来，得到一个流式的API</strong>。</p>
-<img src="patterns_11.png" alt="生成器" style="zoom:70%;" />
-
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Product</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Product</span><span class="params">(Builder builder)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.requiredParameter = builder.requiredParameter;</span><br><span class="line">        <span class="built_in">this</span>.optionalParameter = builder.optionalParameter;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Builder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> requiredParameter;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> optionalParameter;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Builder</span><span class="params">(<span class="type">int</span> requiredParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.requiredParameter = requiredParameter;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Builder <span class="title function_">setOptionalParameter</span><span class="params">(<span class="type">int</span> optionalParameter)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.optionalParameter = optionalParameter;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">public</span> Product <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Product</span>(<span class="built_in">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Product</span>.Builder(requiredParameter)</span><br><span class="line">            .setOptionalParameter(optionalParameter).build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-2-行为型"><a href="#2-2-行为型" class="headerlink" title="2.2 行为型"></a>2.2 行为型</h2><h3 id="2-2-1-观察者（Observer）"><a href="#2-2-1-观察者（Observer）" class="headerlink" title="2.2.1 观察者（Observer）"></a>2.2.1 观察者（Observer）</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动被更新，又称发布-订阅（Publish-Subscribe）模式，发布方和订阅方彼此分离，互不影响。</p>
-<p>如下图所示，观察者<code>Admin</code>和<code>Customer</code>与被观察者<code>Store</code>彼此分离，互不影响，被观察者将通知变成一个<code>Event</code>对象，观察者自己从<code>Event</code>对象中读取通知类型和通知数据。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observable</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">registerObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">removeObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">onEvent</span><span class="params">(Event event)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Store</span> implemets Observable &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Admin</span> implemets Observer &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Customer</span> implemets Observer &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Store</span> <span class="variable">store</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Store</span>();</span><br><span class="line">        store.registerObserver(<span class="keyword">new</span> <span class="title class_">Admin</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>总结：</p>
-<ul>
-<li><p>不推荐借助Java标准库中的<code>java.util.Observable</code>类和<code>Observer</code>接口来实现观察者模式；</p>
-</li>
-<li><p>不同的<code>Event</code>对象有着不同的通知Topic，观察者可以自行订阅自己感兴趣的Topic。</p>
-</li>
-</ul>
-<h3 id="2-2-2-状态（State）"><a href="#2-2-2-状态（State）" class="headerlink" title="2.2.2 状态（State）"></a>2.2.2 状态（State）</h3><p>将不同状态下的行为逻辑分拆到不同的状态类中，允许对象在其内部状态改变时改变其行为。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>总结：</p>
-<ul>
-<li><p>状态模式常用于带有状态的对象中，增加新状态非常容易；</p>
-</li>
-<li><p>状态模式的关键在于状态转换，简单的状态转换可以直接由调用方指定，复杂的状态转换可以在内部根据条件触发完成。</p>
-</li>
-</ul>
-<h3 id="2-2-3-策略（Strategy）"><a href="#2-2-3-策略（Strategy）" class="headerlink" title="2.2.3 策略（Strategy）"></a>2.2.3 策略（Strategy）</h3><p>定义一系列算法，这些算法被封装到一个对象中，策略模式使得这些算法在运行时可以互相替换，并且独立于使用这些算法的客户端。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>总结：</p>
-<ul>
-<li><p>一个完整的策略模式要定义策略以及使用策略的上下文，策略模式的核心思想是在一个计算方法中把容易变化的算法抽出来作为“策略”参数传进去，使得新增策略不必修改原有逻辑；</p>
-</li>
-<li><p>状态模式与策略模式类似，都能够动态改变对象的行为，状态模式通过状态转移来改变State对象，而策略模式通过本身决策来改变所使用的算法；</p>
-</li>
-<li><p>状态模式主要是用于解决动态的状态转移问题，策略模式主要是用于动态地替换所使用的算法；</p>
-</li>
-<li><p>策略模式和Lambda表达式配合使用可极大提高程序灵活性，例如<code>Arrays.sort (T[] a, Comparator&lt;? Super T&gt; c)</code>方法就可根据lambda表达式所提供的比较策略<code>c</code>来实现不同比较策略下的排序</p>
-</li>
-</ul>
-<h3 id="2-2-4-模板方法（Template-Method）"><a href="#2-2-4-模板方法（Template-Method）" class="headerlink" title="2.2.4 模板方法（Template Method）"></a>2.2.4 模板方法（Template Method）</h3><p>定义一个操作中的算法框架，并将一些步骤的实现延迟到子类，使得子类可以在不改变算法结构的同时修改一些步骤的实现。</p>
-<p>如下图所示，清洗、调料以及烹饪这三步是固定的，但是可以在RoastChicken和FriedChicken子类中，定义souse和cook函数的具体实现。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>总结：</p>
-<ul>
-<li><p>模板方法的核心思想是：父类定义骨架，子类实现某些细节；</p>
-</li>
-<li><p>为了防止子类重写父类的骨架方法，可以在父类中对骨架方法使用final；</p>
-</li>
-</ul>
-<p>3）对于需要子类实现的抽象方法，一般声明为protected，使得这些方法对外部客户端不可见。</p>
-<h2 id="2-3-结构型"><a href="#2-3-结构型" class="headerlink" title="2.3 结构型"></a>2.3 结构型</h2><h3 id="2-3-1-适配器（Adapter-Wrapper）"><a href="#2-3-1-适配器（Adapter-Wrapper）" class="headerlink" title="2.3.1 适配器（Adapter/Wrapper）"></a>2.3.1 适配器（Adapter/Wrapper）</h3><p>把一个抽象类/接口转换成另一个用户需要的抽象类/接口，使得不兼容的接口可以一起正常工作。</p>
-<p>如下图所示，User类通过DogToCatAdapter适配器将Dog接口转换成用户需要的Cat接口，经过转换，用户在调用Cat接口的meow方法时，实际间接调用的是Dog接口bark方法。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-3-2-装饰器（Decorator）"><a href="#2-3-2-装饰器（Decorator）" class="headerlink" title="2.3.2 装饰器（Decorator）"></a>2.3.2 装饰器（Decorator）</h3><p>在运行期动态地给对象实例增加各种新的功能。如下图所示，抽象类ProductDecorator内复合了Product接口，通过扩展ProductDecorator可以得到各种具备不同功能的产品，用户可以叠加各种功能得到自己需要的产品。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>总结：</p>
-<ul>
-<li><p>可以代替相同功能的子类，从而降低设计各种子类的工作量；</p>
-</li>
-<li><p>把核心功能和附加功能分开，两部分都可以独立地扩展，最后由调用方在运行期间动态地自由组合得到自己需要的功能；</p>
-</li>
-<li><p>Proxy让调用者认为获取到的是核心类接口，但实际上是代理类，而Decorator让调用者自己创建核心类（ProductImpl），然后在核心类上一层一层地叠加各种功能。</p>
-</li>
-</ul>
-<h3 id="2-3-3-享元（Flyweight）"><a href="#2-3-3-享元（Flyweight）" class="headerlink" title="2.3.3 享元（Flyweight）"></a>2.3.3 享元（Flyweight）</h3><p>利用共享的方式来支持大量细粒度的对象。如下图所示，product1和product2是同一个对象，返回结果为true。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>总结：</p>
-<ul>
-<li><p>对于不可变类（实例不能被修改的类）来说，反复创建其相同的实例没有必要，直接向调用方返回一个共享的实例即可；</p>
-</li>
-<li><p>享元模式常用于工厂方法的内部优化，在工厂内部，很可能返回缓存的实例而不是new一个新的实例；</p>
-</li>
-<li><p>在实际应用中，享元模式主要应用于缓存，即客户端重复请求某些对象时，不必每次查询数据库或者读取文件，而是直接返回缓存中的对象。</p>
-</li>
-</ul>
-<h3 id="2-3-4-代理（Proxy）"><a href="#2-3-4-代理（Proxy）" class="headerlink" title="2.3.4 代理（Proxy）"></a>2.3.4 代理（Proxy）</h3><p>对调用方提供一个代理，该代理能够控制对一个对象的访问。</p>
-<p>如下图所示，ProductProxy通过定义APPProduct类型的成员变量，从而在调用APPProduct的fun方法的前后增加一些额外的操作。</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>根据代理所增加的额外操作的不同，代理可分为：</p>
-<ul>
-<li><p>远程代理（Remote Proxy）：本地调用者持有的接口是一个代理，该代理将对接口的方法转换成远程调用并返回结果，该代理<strong>控制了对远程对象的访问</strong>，此时代理附加的额外操作是对请求对象和返回对象进行编码并发送至远程对象；</p>
-</li>
-<li><p>虚拟代理（Virtual Proxy）：调用者先持有一个代理对象，而真正的对象并没有创建，直到客户端真的需要调用该对象时，才创建真正的对象，该代理<strong>控制了对创建开销很大的对象的访问</strong>，此时代理附加的额外操作是创建真正要访问的对象；</p>
-</li>
-<li><p>保护代理（Protection Proxy）：该代理<strong>根据调用者的权限控制了对对象的访问</strong>，此时代理附加的额外操作是检查调用者是否具有访问的权限；</p>
-</li>
-<li><p>智能代理（Smart Reference）：该代理取代了简单的指针，<strong>在存在多个外部调用者时控制了对对象的访问</strong>，此时代理附加的额外操作是对调用者个数进行计数（即记录对象的引用次数），在调用者访问对象时检查是否已经锁定了它，在调用者不进行调用时释放对象。</p>
-</li>
-</ul>
-<h1 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h1><ul>
-<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%80%9D%E6%83%B3.html">http://www.cyc2018.xyz/其他/编码实践/面向对象思想.html</a></p>
-</li>
-<li><p><a href="https://design-patterns.readthedocs.io/zh_CN/latest/read_uml.html">https://design-patterns.readthedocs.io/zh_CN/latest/read_uml.html</a></p>
-</li>
-<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%20-%20%E7%9B%AE%E5%BD%95.html#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80">http://www.cyc2018.xyz/其他/设计模式/设计模式.html</a></p>
-</li>
-<li><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528">https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528</a></p>
-</li>
 </ul>
 ]]></content>
   </entry>
@@ -708,11 +708,14 @@
 <p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;application.xml&quot;</span>);</span><br><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> (Product) context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
 
-<p>其实Spring容器就是ApplicationContext接口（应用上下文），常用的ApplicationContext接口的实现类有以下三种：</p>
+<p>Spring容器有两种，一种是<code>BeanFactory</code>接口（Bean工厂），另一种是<code>ApplicationContext</code>接口（应用上下文）。通常情况下都会使用应用上下文，很少使用Bean工厂。常用的<code>ApplicationContext</code>接口的实现类有以下三种：</p>
 <ul>
-<li><code>ClassPathXmlApplicationContext</code>：从类路径下的XML配置文件中加载上下文定义，把和上下文定义文件当做资源；</li>
-<li><code>FileSystemXmlapplicationContext</code>：读取文件系统下的XML配置文件并加载上下文定义；</li>
-<li><code>XmlWebApplicationContext</code>：读取Web应用下的XML配置文件并装载上下文定义。</li>
+<li><p><code>ClassPathXmlApplicationContext</code>：从类路径下的XML配置文件中加载上下文定义，把和上下文定义文件当做资源；</p>
+</li>
+<li><p><code>FileSystemXmlapplicationContext</code>：读取文件系统下的XML配置文件并加载上下文定义；</p>
+</li>
+<li><p><code>XmlWebApplicationContext</code>：读取Web应用下的XML配置文件并装载上下文定义。</p>
+</li>
 </ul>
 <h3 id="2-2-2-静态装配"><a href="#2-2-2-静态装配" class="headerlink" title="2.2.2 静态装配"></a>2.2.2 静态装配</h3><ul>
 <li><p>每个Bean都有一个<code>id</code>标识和<code>class</code>属性，<code>id</code>属性定义了Bean的名字；</p>
@@ -768,7 +771,7 @@
 <li><p><code>default-init-method</code>和<code>default-destory-method</code>属性为上下文中所有的Bean都分别指定默认了初始化和销毁方法。</p>
 </li>
 </ul>
-<h3 id="2-2-3-动态装配"><a href="#2-2-3-动态装配" class="headerlink" title="2.2.3 动态装配"></a>2.2.3 动态装配</h3><p>在XML配置文件中除了静态定义依赖关系之外，还可以通过Spring表达式语言（Spring Expression Language, SpEL）在运行期将值动态装配到Bean的属性或者构造器参数中。比如<code>&lt;property name = &quot;...&quot; value = &quot;#&#123;SpEL表达式&#125;&quot; /&gt;</code>可以将#{}界定符中的SpEL表达式所计算得到的值装配到Bean属性中。</p>
+<h3 id="2-2-3-动态装配"><a href="#2-2-3-动态装配" class="headerlink" title="2.2.3 动态装配"></a>2.2.3 动态装配</h3><p>在XML配置文件中除了静态定义依赖关系之外，还可以通过Spring表达式语言（Spring Expression Language, SpEL）在运行期将值动态装配到Bean的属性或者构造器参数中。比如<code>&lt;property name = &quot;...&quot; value = &quot;#&#123;SpEL表达式&#125;&quot; /&gt;</code>可以将<code>#&#123;&#125;</code>界定符中的SpEL表达式所计算得到的值装配到Bean属性中。</p>
 <ul>
 <li><p>SpEL表达式提供了多种运算符；</p>
 <table>
@@ -802,7 +805,7 @@
 </li>
 <li><p><code>+</code>运算符除了进行算法运算外，还可以用于进行字符串连接；</p>
 </li>
-<li><p>在XML配置文件中使用小于等于和大于等于符号时会报错，最好使用文本替代方式</p>
+<li><p>在XML配置文件中使用<code>&lt;=</code>和<code>&gt;=</code>符号时会报错，最好使用文本替代方式</p>
 </li>
 <li><p><code>?.</code>运算符可以代替<code>.</code>运算符来调用方法，并确保访问右边方法前，左边项的值不会为<code>null</code>；</p>
 </li>
@@ -812,51 +815,247 @@
 </li>
 <li><p><code>matches</code>运算符对<code>String</code>类型的文本（作为左边参数）应用正则表达式（作为右边参数）；</p>
 </li>
-<li><p><code>[]</code>运算符可以从用来获取Map、Properties中的成员以及字符串中的某个字符；</p>
+<li><p><code>[]</code>运算符可以从用来获取<code>Map</code>、<code>Properties</code>中的成员以及字符串中的某个字符；</p>
 </li>
 <li><p><code>systemEnvironment</code>包含了应用程序所在的机器上的所有环境变量，<code>systemProperties</code>包含了Java应用程序启动时所设置的所有属性，都可以与<code>[]</code>运算符搭配使用；</p>
 </li>
-<li><p><code>. ? []</code>是一个查询运算符，用于从集合中创建出一个新的集合，新的集合中只存放原集合中符合中括号内的表达式的成员；</p>
+<li><p><code>.?[]</code>是一个查询运算符，用于从集合中创建出一个新的集合，新的集合中只存放原集合中符合中括号内的表达式的成员；</p>
 </li>
-<li><p><code>. ^ []</code>和<code>. $ []</code>也是查询运算符，分别用于从集合中查询出符合中括号内的表达式的第一个匹配项和最后一个匹配项；</p>
+<li><p><code>.^[]</code>和<code>.$[]</code>也是查询运算符，分别用于从集合中查询出符合中括号内的表达式的第一个匹配项和最后一个匹配项；</p>
 </li>
-<li><p><code>. ! []</code>是投影运算符，用于从集合中的每个成员中选定特定的属性放入一个新的集合中；</p>
+<li><p><code>.![]</code>是投影运算符，用于从集合中的每个成员中选定特定的属性放入一个新的集合中；</p>
 </li>
 </ul>
 <p>SpEL表达式虽然功能强大，但是终究是一个字符串，不易于测试，也没有IDE的语法检查的支持，只有在使用传统方式很难甚至不可能但使用SpEL却很简单的情况下才使用SpEL进行装配，尽量不要把过多逻辑放入SpEL。</p>
-<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>1）通过<code>@Component</code>和<code>@Autowired</code>注解编写组件；</p>
-<p>2）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
-<p>3）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean（只需要这一行代码）；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-4-自动装配"><a href="#2-2-4-自动装配" class="headerlink" title="2.2.4 自动装配"></a>2.2.4 自动装配</h3><ul>
+<li><p>通过<code>autowire = &quot;byName&quot; /&gt;</code>可以为属性自动装配ID与该属性的名字相同的Bean；</p>
+</li>
+<li><p>通过<code>autowire = &quot;byType&quot; /&gt;</code>可以为属性自动装配类型与该属性的类型相同的Bean；</p>
+</li>
+<li><p>通过<code>autowire = &quot;constructor&quot; /&gt;</code>可以为构造器自动装配class与构造器入参类型相同的Bean，此时不需要再声明注入构造器参数；</p>
+</li>
+<li><p><code>byType</code>和<code>constructor</code>自动装配都具有一个局限性：如果存在多个与该属性的类型相同的Bean，Spring会抛出异常，因此，要么只允许存在一个Bean与需要自动装配的属性类型相匹配，要么将其他需要被排除的Bean的<code>autowire-candidate</code>属性设为<code>false</code>；</p>
+</li>
+<li><p>通过<code>autowire = &quot;autodetect&quot; /&gt;</code>可以首先尝试使用<code>constructor</code>自动匹配，如果没有发现与构造器相匹配的Bean时，将尝试使用<code>byType</code>自动匹配；、</p>
+</li>
+<li><p>默认情况下，XML文件的<code>default-autowire</code>属性被设置为<code>none</code>，标示XML中所有的Bean都不使用自动装配，除非Bean自己配置了<code>autowire</code>属性；</p>
+</li>
+<li><p>通过将<code>default-autowire</code>属性设置为<code>byName</code>、<code>byType</code>、<code>constructor</code>、<code>autodetect</code>中的任意一个，则可以令每一个Bean的所有属性都使用所设置的自动装配方式；</p>
+</li>
+<li><p>即便设置了默认的自动装配方式，依旧可以在每个Bean中重新设置自动装配方式来覆盖默认设置，即便使用了自动装配，依旧可以混合使用显示的装配来覆盖自动装配；</p>
+</li>
+<li><p>当使用<code>constructor</code>自动装配时，必须自动装配构造器的所有入参，不能混合使用<code>constructor</code>自动装配和<code>&lt;constructor-arg</code>元素。</p>
+</li>
+</ul>
+<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>使用注解自动装配与在XML中使用<code>autowire</code>属性自动装配并没有太大差别，但使用注解方式允许更细粒度的自动装配，可以选择性地标注某一个属性来对其应用自动装配。</p>
+<h3 id="2-3-1-步骤"><a href="#2-3-1-步骤" class="headerlink" title="2.3.1 步骤"></a>2.3.1 步骤</h3><p>1）在XML文件中进行配置；</p>
+<ul>
+<li><p>配置<code>&lt;context:annotation-config&gt;</code>元素，可以告知Spring使用基于注解的自动装配；</p>
+</li>
+<li><p>配置<code>&lt;context:component-scan&gt;</code>元素；</p>
+<ul>
+<li><p>除了完成与<code>&lt;context:annotation-config&gt;</code>元素一样的工作，还允许Spring自动检测Bean和定义Bean，此时不再需要<code>&lt;bean&gt;</code>元素；</p>
+</li>
+<li><p>会扫描<code>base-package</code>属性所指定的包及其所有子包，并查找出能够自动注册为Spring Bean的类；</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span></span></span><br><span class="line"><span class="tag">		<span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>4）在<code>AppConfig</code>类的<code>main</code>函数中，从Spring的IoC容器中获取装配好的Bean；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
+<p>2）通过<code>@Component</code>和<code>@Autowired</code>等注解编写组件；</p>
+<p>3）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
+<p>4）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> (Product) context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
 
 <p>5）通常将启动配置<code>AppConfig</code>类位于自定义的顶层包，其他Bean按类别放入子包。</p>
-<h2 id="2-4-注解说明"><a href="#2-4-注解说明" class="headerlink" title="2.4 注解说明"></a>2.4 注解说明</h2><p><code>@Component</code>：用于类，相当于定义了一个<code>id</code>为小写开头的类名的Bean。</p>
-<p><code>@Autowired</code>：用于类的数据成员，相当于把指定类型的Bean注入到指定字段，<code>@Autowired</code>默认在指定类型的Bean不存在时报错，而<code>@Autowired(required = false)</code>则不会报错，即找到指定类型时注入，没找到时忽略。</p>
-<p><code>@Configuration</code>：用于类，表示该类是一个配置类。</p>
-<p><code>@ComponentScan</code>：用于类，告知容器自动搜索当前类所在的包以及子包，将所有标注为<code>@Component</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
-<p><code>@Scope</code>：用于类，单独使用<code>@Component</code>注解时会默认将组件标注为Singleton（单例），即每次通过<code>getBean</code>方法获取到Bean总是同一个实例，而增加<code>@Scope</code>注解时，则可以将组件标注为不同的作用域的Bean，例如<code>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>将组件标注为Prototype（原型），Prototype的生命周期显然与Singleton不同。</p>
-<p><code>@Bean</code>：用于方法，当一个Bean不在<code>AppConfig</code>配置类所在的包中时，可以在<code>AppConfig</code>配置类中编写标注了<code>@Bean</code>的方法来创建并返回该Bean（Singleton）。</p>
-<p><code>@PostConstruct</code>：用于Bean在注入必要依赖后的<code>init</code>方法，从而进行初始化。Spring只根据<code>@PostConstruct</code>查找无参数方法，对方法名不作要求。</p>
-<p><code>@PreDestory</code>：用于Bean在容器关闭时的<code>shutdown</code>方法，从而进行相关的清理操作。Spring只根据<code>@PreDestory</code>查找无参数方法，对方法名不作要求。</p>
-<p><code>@Qualiflier(&quot;beanNname&quot;)</code>：在存在多个相同类型的Bean的情况下，用于指定注入的Bean的别名。</p>
-<p><code>@Primary</code>：在存在多个相同类型的Bean的情况下，用于指定优先注入的Bean，则注入时不需要指出该优先注入的Bean的别名。相同类型的Bean只有一个可以指定为<code>@Primary</code>，其他必须用<code>@Qualiflier(&quot;beanNname&quot;)</code>指定别名。</p>
-<p><code>@Value</code>：用于注入资源，当程序需要读取一个资源文件（比如配置文件等）中的内容时，可在数据成员（<code>private Resource resource;</code>）上标注<code>@Value(&quot;classpath:/logo.txt&quot;)</code>，就能在classpath中搜索到<code>logo.txt</code>文件，然后直接调用<code>resource.getInputStream()</code>就可以获取到输入流，避免了自己搜索文件的代码。所有资源文件均位于<code>src/main/resources</code>路径下。</p>
-<p><code>@PropertySource(&quot;app.properties&quot;)</code>：用于<code>AppConfig</code>配置类，告知容器自动读取名为<code>app.properties</code>的配置文件，接着可以使用<code>@Value(&quot;$&#123;key:defaultValue&#125;&quot;)</code>来注入配置文件中<code>key</code>的<code>value</code>。这比使用<code>@Value(&quot;classpath:/app.properties&quot;)</code>+输入流的方式来读取配置文件更加简单，还有一种方式是先通过一个Bean（Spring容器中的默认类名称为<code>SmtpConfig</code>）持有所有的配置属性值，然后在其他Bean中使用<code>@value(&quot;#&#123;smtpConfig.property&#125;&quot;)</code>来注入属性值。</p>
-<p><code>@Profile</code>：用于表示不同环境下的Bean，程序运行时通过指定运行环境就可以使得容器只创建该环境下的Bean。</p>
-<p><code>@Conditional</code>：用于根据一定条件确定是否创建Bean。</p>
-<h2 id="2-5-工厂Bean"><a href="#2-5-工厂Bean" class="headerlink" title="2.5 工厂Bean"></a>2.5 工厂Bean</h2><p>Spring提供了工厂模式来创建Bean。</p>
+<h3 id="2-3-2-自动装配"><a href="#2-3-2-自动装配" class="headerlink" title="2.3.2 自动装配"></a>2.3.2 自动装配</h3><ul>
+<li><p><code>@Autowired</code></p>
+<ul>
+<li><p>用于类的数据成员和函数成员，相当于把指定类型（<code>byType</code>）的Bean注入到指定字段，且不受限于<code>private</code>关键字；</p>
+</li>
+<li><p><code>@Autowired</code>默认在指定类型的Bean不存在时报错，而<code>@Autowired(required = false)</code>则不会报错，即找到指定类型时注入，没找到时注入<code>null</code>；</p>
+</li>
+<li><p><code>required</code>属性可以用于<code>@Autowired</code>所使用的任意地方，但当用于构造器装配时，只有一个构造器可以将<code>@Autowired</code>的<code>required</code>属性设置为<code>true</code>，其他构造器的<code>@Autowired</code>的<code>required</code>属性只能设置为<code>false</code>;</p>
+</li>
+<li><p>当使用<code>@Autowired</code>标注多个构造器时，Spring会从满足装配条件的构造器中选择入参最多的那个构造器。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Qualiflier(&quot;beanName&quot;)</code></p>
+<ul>
+<li><p>在存在多个相同类型的Bean的情况下，用于指定注入的Bean的别名，与<code>@Autowired</code>搭配使用，相当于把<code>byType</code>自动装配转换为<code>byName</code>；</p>
+</li>
+<li><p>通过<code>@Qualiflier</code>可以创建自定义的限定器注解，然后通过自定义的限定器注解来代替<code>@Qualiflier</code>来标注指定注入的Bean的范围。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Inject</code></p>
+<ul>
+<li><p>Java的<code>@Inject</code>几乎可以完全替代Spring的<code>@Autowired</code>；</p>
+</li>
+<li><p>与<code>@Autowired</code>不同的是，<code>@Inject</code>没有<code>required</code>属性，因此<code>@Inject</code>标注的依赖关系必须存在，如果不存在则会抛出异常。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Named</code></p>
+<ul>
+<li><p>相对于<code>@Autowired</code>所对应的<code>@Qualiflier</code>，<code>@Inject</code>所对应的是<code>@Named</code>；</p>
+</li>
+<li><p><code>javax.inject</code>包里有自己的<code>@Qualiflier</code>注解，但不建议使用该包中的<code>@Qualiflier</code>注解，而是鼓励使用该注解来创建自定义的限定器注解；</p>
+</li>
+<li><p>实际上，<code>@Named</code>就是使用<code>javax.inject</code>包中的<code>@Qualiflier</code>注解所创建的限定器注解。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Value</code></p>
+<ul>
+<li><p>用于某个属性、方法或者方法参数，并传入一个基本类型或者<code>String</code>类型的值来装配属性，<code>String</code>类型还可以是一个SpEL表达式，表达式的计算结果可以是任意类型；</p>
+</li>
+<li><p>用于注入资源，Spring提供了一个<code>org.springframework.core.io.Resource</code>（注意不是<code>javax.annotation.Resource</code>），它可以像<code>String</code>、<code>int</code>一样使用<code>@Value</code>注入；</p>
+</li>
+<li><p>当程序需要读取一个资源文件（比如配置文件等）中的内容时，可以在<code>Resource</code>类型的数据成员<code>resource</code>上标注<code>@Value(&quot;classpath:/logo.txt&quot;)</code>，然后直接调用<code>resource.getInputStream()</code>就可以获取到classpath中的<code>logo.txt</code>文件的输入流，避免了自己搜索文件的代码。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-3-自动检测"><a href="#2-3-3-自动检测" class="headerlink" title="2.3.3 自动检测"></a>2.3.3 自动检测</h3><p><code>@Configuration</code>：用于类，表示该类是一个配置类。</p>
+<ul>
+<li><p><code>@Component</code></p>
+<ul>
+<li><p>用于类，相当于定义了一个<code>id</code>为小写开头的类名的Bean；</p>
+</li>
+<li><p><code>@Component(&quot;...&quot;)</code>定义了一个显式指定<code>id</code>的Bean。</p>
+</li>
+</ul>
+</li>
+<li><p>过滤组件扫描</p>
+<ul>
+<li><p>在配置<code>&lt;context:component-scan&gt;</code>元素时，可以通过配置<code>&lt;context:include-filter</code>和<code>&lt;context:exclude-filter</code>子元素来设置过滤器，分别调整要扫描和不要扫描的类型；</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span></span></span><br><span class="line"><span class="tag">			<span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:include-filter</span> <span class="attr">type</span> = <span class="string">&quot;...&quot;</span> <span class="attr">expression</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:exclude-filter</span> <span class="attr">type</span> = <span class="string">&quot;...&quot;</span> <span class="attr">expression</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>其中，<code>type</code>属性用于指定要使用的过滤器类型；</p>
+<table>
+<thead>
+<tr>
+<th align="left">过滤器类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>annotation</code></td>
+<td>扫描使用指定注解所标注的类，由<code>expression</code>属性指定要扫描的注解</td>
+</tr>
+<tr>
+<td align="left"><code>assignable</code></td>
+<td>扫描派生于<code>expression</code>属性所指定类型的类</td>
+</tr>
+<tr>
+<td align="left"><code>aspectj</code></td>
+<td>扫描与<code>expression</code>属性所指定的AspectJ表达式所匹配的类</td>
+</tr>
+<tr>
+<td align="left"><code>regex</code></td>
+<td>扫描类名称与<code>expression</code>属性所指定的正则表达式所匹配的类</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-4-基于Java的配置"><a href="#2-3-4-基于Java的配置" class="headerlink" title="2.3.4 基于Java的配置"></a>2.3.4 基于Java的配置</h3><ul>
+<li><p><code>@Configuration</code></p>
+<ul>
+<li><p>通过在XML文件中配置<code>&lt;context:component-scan&gt;</code>元素，还可以告知Spring在包内自动加载使用<code>@Configuration</code>注解所标注的所有类；</p>
+</li>
+<li><p><code>@Configuration</code>注解等同于XML文件中的<code>&lt;beans&gt;</code>元素，它所标注的类会包含一个或多个Spring Bean的定义，这些Bean的定义是使用<code>@Bean</code>注解所标注的方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Bean</code></p>
+<ul>
+<li><p>用于方法，当一个Bean不在<code>AppConfig</code>配置类所在的包中时，可以在<code>AppConfig</code>配置类中编写标注了<code>@Bean</code>的方法来创建并返回该Bean，方法名将作为该Bean的ID；</p>
+</li>
+<li><p>也可以通过<code>@Bean(&quot;...&quot;)</code>或者<code>@Bean</code>+<code>@Qualifier(&quot;...&quot;)</code>指定别名；</p>
+</li>
+<li><p>通过声明方法引用一个Bean并不等同于调用该方法，区别在于每次调用该方法都会得到一个新的实例，而通过<code>@Bean</code>标注时，Spring会拦截该方法的调用，并尝试在应用上下文中查找该Bean，这意味着该Bean是Singleton。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ComponentScan</code></p>
+<ul>
+<li><p>用于类，告知容器自动搜索当前类所在的包以及子包；</p>
+</li>
+<li><p>将所有标注为<code>@Component</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>在XML配置中，Bean的类型和ID都是由字符串来标示的，这就导致它们无法进行编译期检查，写起来也很繁琐，而<strong>在基于Java的配置中，则可以进行编译期检查来确保Bean的类型是合法类型</strong>。</p>
+<h3 id="2-3-5-补充介绍"><a href="#2-3-5-补充介绍" class="headerlink" title="2.3.5 补充介绍"></a>2.3.5 补充介绍</h3><ul>
+<li><p><code>@Scope</code></p>
+<ul>
+<li><p>用于类，单独使用<code>@Component</code>注解时会默认将组件标注为Singleton，即每次通过<code>getBean</code>方法获取到Bean总是同一个实例；</p>
+</li>
+<li><p>增加<code>@Scope</code>注解时，则可以将组件标注为不同的作用域的Bean，例如<code>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>将组件标注为Prototype（原型）。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PostConstruct</code></p>
+<ul>
+<li><p>用于Bean在注入必要依赖后的<code>init</code>方法，从而进行初始化；</p>
+</li>
+<li><p>Spring只根据<code>@PostConstruct</code>查找无参数方法，对方法名不作要求。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PreDestory</code></p>
+<ul>
+<li><p>用于Bean在容器关闭时的<code>shutdown</code>方法，从而进行相关的清理操作；</p>
+</li>
+<li><p>Spring只根据<code>@PreDestory</code>查找无参数方法，对方法名不作要求。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Primary</code></p>
+<ul>
+<li><p>在存在多个相同类型的Bean的情况下，用于指定优先注入的Bean，则注入时不需要指出该优先注入的Bean的别名；</p>
+</li>
+<li><p>相同类型的Bean只有一个可以指定为<code>@Primary</code>，其他必须用<code>@Qualiflier(&quot;beanNname&quot;)</code>指定别名。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PropertySource(&quot;app.properties&quot;)</code></p>
+<ul>
+<li><p>用于<code>AppConfig</code>配置类，告知容器自动读取名为<code>app.properties</code>的配置文件，接着可以使用<code>@Value(&quot;$&#123;key:defaultValue&#125;&quot;)</code>来注入配置文件中<code>key</code>的<code>value</code>，这比使用<code>@Value(&quot;classpath:/app.properties&quot;)</code>+输入流的方式来读取配置文件更加简单；</p>
+</li>
+<li><p>还有一种方式是先通过一个Bean（Spring容器中的默认类名称为<code>SmtpConfig</code>）持有所有的配置属性值，然后在其他Bean中使用<code>@value(&quot;#&#123;smtpConfig.property&#125;&quot;)</code>来注入属性值。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Profile</code></p>
+<ul>
+<li><p>用于配置不同环境下的Bean，程序运行时通过指定运行环境就可以使得容器只创建该环境下的Bean；</p>
+</li>
+<li><p>Spring提供了<code>native</code>（开发）、<code>test</code>（测试）和<code>production</code>（生产）这三种环境。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Conditional</code></p>
+<ul>
+<li>用于根据一定条件确定是否创建Bean。</li>
+</ul>
+</li>
+<li><p>Spring提供了工厂模式来创建Bean</p>
 <ul>
 <li><p>假如需要以工厂模式创建<code>Product</code>，首先需要定义一个工厂Bean（<code>ProductFactoryBean</code>），该工厂Bean需要实现<code>FactotyBean</code>接口；</p>
 </li>
-<li><p>Spring会优先实例化工厂Bean，然后通过工厂Bean的<code>getObject</code>方法创建真正的Bean（<code>Product</code>）</p>
+<li><p>Spring会优先实例化工厂Bean，然后通过工厂Bean的<code>getObject</code>方法创建真正的Bean（<code>Product</code>）；</p>
+</li>
+<li><p>因此，如果定义了一个工厂Bean，Spring创建的Bean实际上是这个工厂Bean的<code>getObject</code>方法所返回的Bean；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;Product&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    String product= <span class="string">&quot;P&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.of(product);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.class;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;Product&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    String product= <span class="string">&quot;P&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.of(product);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.class;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因此，如果定义了一个工厂Bean，Spring创建的Bean实际上是这个工厂Bean的<code>getObject</code>方法所返回的Bean。</p>
 <h1 id="3、AOP"><a href="#3、AOP" class="headerlink" title="3、AOP"></a>3、AOP</h1><h2 id="3-1-问题与解决"><a href="#3-1-问题与解决" class="headerlink" title="3.1 问题与解决"></a>3.1 问题与解决</h2><p>假设业务的组件中有多个业务方法，每个业务方法除了要执行核心业务逻辑，还需要执行安全检查、事务管理等处理逻辑，这些处理逻辑会重复出现在每个四处分散的业务方法中。</p>
 <p>针对该问题可以使用Proxy模式。对每个业务方法实现Proxy，将这些处理逻辑放置在Proxy当中。这种手动编写Proxy的方式不够简单，更简单的方法是将每一种处理看作一个切面，然后以某种自动化的方式将切面逻辑织入到核心逻辑中，从而实现Proxy模式。</p>
 <p>AOP把系统分解为不同的切面（比如安全检查、事务管理等处理）。Spring的AOP是基于JVM的动态代理实现的，可以理解为在客户端调用业务对象时，通过AOP技术在核心业务逻辑运行前后织入切面逻辑。AOP本质上只是一种代理模式的实现方式。</p>

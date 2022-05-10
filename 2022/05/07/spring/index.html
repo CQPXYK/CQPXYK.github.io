@@ -188,11 +188,14 @@
 <p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;application.xml&quot;</span>);</span><br><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> (Product) context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
 
-<p>其实Spring容器就是ApplicationContext接口（应用上下文），常用的ApplicationContext接口的实现类有以下三种：</p>
+<p>Spring容器有两种，一种是<code>BeanFactory</code>接口（Bean工厂），另一种是<code>ApplicationContext</code>接口（应用上下文）。通常情况下都会使用应用上下文，很少使用Bean工厂。常用的<code>ApplicationContext</code>接口的实现类有以下三种：</p>
 <ul>
-<li><code>ClassPathXmlApplicationContext</code>：从类路径下的XML配置文件中加载上下文定义，把和上下文定义文件当做资源；</li>
-<li><code>FileSystemXmlapplicationContext</code>：读取文件系统下的XML配置文件并加载上下文定义；</li>
-<li><code>XmlWebApplicationContext</code>：读取Web应用下的XML配置文件并装载上下文定义。</li>
+<li><p><code>ClassPathXmlApplicationContext</code>：从类路径下的XML配置文件中加载上下文定义，把和上下文定义文件当做资源；</p>
+</li>
+<li><p><code>FileSystemXmlapplicationContext</code>：读取文件系统下的XML配置文件并加载上下文定义；</p>
+</li>
+<li><p><code>XmlWebApplicationContext</code>：读取Web应用下的XML配置文件并装载上下文定义。</p>
+</li>
 </ul>
 <h3 id="2-2-2-静态装配"><a href="#2-2-2-静态装配" class="headerlink" title="2.2.2 静态装配"></a>2.2.2 静态装配</h3><ul>
 <li><p>每个Bean都有一个<code>id</code>标识和<code>class</code>属性，<code>id</code>属性定义了Bean的名字；</p>
@@ -248,7 +251,7 @@
 <li><p><code>default-init-method</code>和<code>default-destory-method</code>属性为上下文中所有的Bean都分别指定默认了初始化和销毁方法。</p>
 </li>
 </ul>
-<h3 id="2-2-3-动态装配"><a href="#2-2-3-动态装配" class="headerlink" title="2.2.3 动态装配"></a>2.2.3 动态装配</h3><p>在XML配置文件中除了静态定义依赖关系之外，还可以通过Spring表达式语言（Spring Expression Language, SpEL）在运行期将值动态装配到Bean的属性或者构造器参数中。比如<code>&lt;property name = &quot;...&quot; value = &quot;#&#123;SpEL表达式&#125;&quot; /&gt;</code>可以将#{}界定符中的SpEL表达式所计算得到的值装配到Bean属性中。</p>
+<h3 id="2-2-3-动态装配"><a href="#2-2-3-动态装配" class="headerlink" title="2.2.3 动态装配"></a>2.2.3 动态装配</h3><p>在XML配置文件中除了静态定义依赖关系之外，还可以通过Spring表达式语言（Spring Expression Language, SpEL）在运行期将值动态装配到Bean的属性或者构造器参数中。比如<code>&lt;property name = &quot;...&quot; value = &quot;#&#123;SpEL表达式&#125;&quot; /&gt;</code>可以将<code>#&#123;&#125;</code>界定符中的SpEL表达式所计算得到的值装配到Bean属性中。</p>
 <ul>
 <li><p>SpEL表达式提供了多种运算符；</p>
 <table>
@@ -282,7 +285,7 @@
 </li>
 <li><p><code>+</code>运算符除了进行算法运算外，还可以用于进行字符串连接；</p>
 </li>
-<li><p>在XML配置文件中使用小于等于和大于等于符号时会报错，最好使用文本替代方式</p>
+<li><p>在XML配置文件中使用<code>&lt;=</code>和<code>&gt;=</code>符号时会报错，最好使用文本替代方式</p>
 </li>
 <li><p><code>?.</code>运算符可以代替<code>.</code>运算符来调用方法，并确保访问右边方法前，左边项的值不会为<code>null</code>；</p>
 </li>
@@ -292,51 +295,247 @@
 </li>
 <li><p><code>matches</code>运算符对<code>String</code>类型的文本（作为左边参数）应用正则表达式（作为右边参数）；</p>
 </li>
-<li><p><code>[]</code>运算符可以从用来获取Map、Properties中的成员以及字符串中的某个字符；</p>
+<li><p><code>[]</code>运算符可以从用来获取<code>Map</code>、<code>Properties</code>中的成员以及字符串中的某个字符；</p>
 </li>
 <li><p><code>systemEnvironment</code>包含了应用程序所在的机器上的所有环境变量，<code>systemProperties</code>包含了Java应用程序启动时所设置的所有属性，都可以与<code>[]</code>运算符搭配使用；</p>
 </li>
-<li><p><code>. ? []</code>是一个查询运算符，用于从集合中创建出一个新的集合，新的集合中只存放原集合中符合中括号内的表达式的成员；</p>
+<li><p><code>.?[]</code>是一个查询运算符，用于从集合中创建出一个新的集合，新的集合中只存放原集合中符合中括号内的表达式的成员；</p>
 </li>
-<li><p><code>. ^ []</code>和<code>. $ []</code>也是查询运算符，分别用于从集合中查询出符合中括号内的表达式的第一个匹配项和最后一个匹配项；</p>
+<li><p><code>.^[]</code>和<code>.$[]</code>也是查询运算符，分别用于从集合中查询出符合中括号内的表达式的第一个匹配项和最后一个匹配项；</p>
 </li>
-<li><p><code>. ! []</code>是投影运算符，用于从集合中的每个成员中选定特定的属性放入一个新的集合中；</p>
+<li><p><code>.![]</code>是投影运算符，用于从集合中的每个成员中选定特定的属性放入一个新的集合中；</p>
 </li>
 </ul>
 <p>SpEL表达式虽然功能强大，但是终究是一个字符串，不易于测试，也没有IDE的语法检查的支持，只有在使用传统方式很难甚至不可能但使用SpEL却很简单的情况下才使用SpEL进行装配，尽量不要把过多逻辑放入SpEL。</p>
-<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>1）通过<code>@Component</code>和<code>@Autowired</code>注解编写组件；</p>
-<p>2）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
-<p>3）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean（只需要这一行代码）；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-4-自动装配"><a href="#2-2-4-自动装配" class="headerlink" title="2.2.4 自动装配"></a>2.2.4 自动装配</h3><ul>
+<li><p>通过<code>autowire = &quot;byName&quot; /&gt;</code>可以为属性自动装配ID与该属性的名字相同的Bean；</p>
+</li>
+<li><p>通过<code>autowire = &quot;byType&quot; /&gt;</code>可以为属性自动装配类型与该属性的类型相同的Bean；</p>
+</li>
+<li><p>通过<code>autowire = &quot;constructor&quot; /&gt;</code>可以为构造器自动装配class与构造器入参类型相同的Bean，此时不需要再声明注入构造器参数；</p>
+</li>
+<li><p><code>byType</code>和<code>constructor</code>自动装配都具有一个局限性：如果存在多个与该属性的类型相同的Bean，Spring会抛出异常，因此，要么只允许存在一个Bean与需要自动装配的属性类型相匹配，要么将其他需要被排除的Bean的<code>autowire-candidate</code>属性设为<code>false</code>；</p>
+</li>
+<li><p>通过<code>autowire = &quot;autodetect&quot; /&gt;</code>可以首先尝试使用<code>constructor</code>自动匹配，如果没有发现与构造器相匹配的Bean时，将尝试使用<code>byType</code>自动匹配；、</p>
+</li>
+<li><p>默认情况下，XML文件的<code>default-autowire</code>属性被设置为<code>none</code>，标示XML中所有的Bean都不使用自动装配，除非Bean自己配置了<code>autowire</code>属性；</p>
+</li>
+<li><p>通过将<code>default-autowire</code>属性设置为<code>byName</code>、<code>byType</code>、<code>constructor</code>、<code>autodetect</code>中的任意一个，则可以令每一个Bean的所有属性都使用所设置的自动装配方式；</p>
+</li>
+<li><p>即便设置了默认的自动装配方式，依旧可以在每个Bean中重新设置自动装配方式来覆盖默认设置，即便使用了自动装配，依旧可以混合使用显示的装配来覆盖自动装配；</p>
+</li>
+<li><p>当使用<code>constructor</code>自动装配时，必须自动装配构造器的所有入参，不能混合使用<code>constructor</code>自动装配和<code>&lt;constructor-arg</code>元素。</p>
+</li>
+</ul>
+<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>使用注解自动装配与在XML中使用<code>autowire</code>属性自动装配并没有太大差别，但使用注解方式允许更细粒度的自动装配，可以选择性地标注某一个属性来对其应用自动装配。</p>
+<h3 id="2-3-1-步骤"><a href="#2-3-1-步骤" class="headerlink" title="2.3.1 步骤"></a>2.3.1 步骤</h3><p>1）在XML文件中进行配置；</p>
+<ul>
+<li><p>配置<code>&lt;context:annotation-config&gt;</code>元素，可以告知Spring使用基于注解的自动装配；</p>
+</li>
+<li><p>配置<code>&lt;context:component-scan&gt;</code>元素；</p>
+<ul>
+<li><p>除了完成与<code>&lt;context:annotation-config&gt;</code>元素一样的工作，还允许Spring自动检测Bean和定义Bean，此时不再需要<code>&lt;bean&gt;</code>元素；</p>
+</li>
+<li><p>会扫描<code>base-package</code>属性所指定的包及其所有子包，并查找出能够自动注册为Spring Bean的类；</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span></span></span><br><span class="line"><span class="tag">		<span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>4）在<code>AppConfig</code>类的<code>main</code>函数中，从Spring的IoC容器中获取装配好的Bean；</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
+<p>2）通过<code>@Component</code>和<code>@Autowired</code>等注解编写组件；</p>
+<p>3）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
+<p>4）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> (Product) context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
 
 <p>5）通常将启动配置<code>AppConfig</code>类位于自定义的顶层包，其他Bean按类别放入子包。</p>
-<h2 id="2-4-注解说明"><a href="#2-4-注解说明" class="headerlink" title="2.4 注解说明"></a>2.4 注解说明</h2><p><code>@Component</code>：用于类，相当于定义了一个<code>id</code>为小写开头的类名的Bean。</p>
-<p><code>@Autowired</code>：用于类的数据成员，相当于把指定类型的Bean注入到指定字段，<code>@Autowired</code>默认在指定类型的Bean不存在时报错，而<code>@Autowired(required = false)</code>则不会报错，即找到指定类型时注入，没找到时忽略。</p>
-<p><code>@Configuration</code>：用于类，表示该类是一个配置类。</p>
-<p><code>@ComponentScan</code>：用于类，告知容器自动搜索当前类所在的包以及子包，将所有标注为<code>@Component</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
-<p><code>@Scope</code>：用于类，单独使用<code>@Component</code>注解时会默认将组件标注为Singleton（单例），即每次通过<code>getBean</code>方法获取到Bean总是同一个实例，而增加<code>@Scope</code>注解时，则可以将组件标注为不同的作用域的Bean，例如<code>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>将组件标注为Prototype（原型），Prototype的生命周期显然与Singleton不同。</p>
-<p><code>@Bean</code>：用于方法，当一个Bean不在<code>AppConfig</code>配置类所在的包中时，可以在<code>AppConfig</code>配置类中编写标注了<code>@Bean</code>的方法来创建并返回该Bean（Singleton）。</p>
-<p><code>@PostConstruct</code>：用于Bean在注入必要依赖后的<code>init</code>方法，从而进行初始化。Spring只根据<code>@PostConstruct</code>查找无参数方法，对方法名不作要求。</p>
-<p><code>@PreDestory</code>：用于Bean在容器关闭时的<code>shutdown</code>方法，从而进行相关的清理操作。Spring只根据<code>@PreDestory</code>查找无参数方法，对方法名不作要求。</p>
-<p><code>@Qualiflier(&quot;beanNname&quot;)</code>：在存在多个相同类型的Bean的情况下，用于指定注入的Bean的别名。</p>
-<p><code>@Primary</code>：在存在多个相同类型的Bean的情况下，用于指定优先注入的Bean，则注入时不需要指出该优先注入的Bean的别名。相同类型的Bean只有一个可以指定为<code>@Primary</code>，其他必须用<code>@Qualiflier(&quot;beanNname&quot;)</code>指定别名。</p>
-<p><code>@Value</code>：用于注入资源，当程序需要读取一个资源文件（比如配置文件等）中的内容时，可在数据成员（<code>private Resource resource;</code>）上标注<code>@Value(&quot;classpath:/logo.txt&quot;)</code>，就能在classpath中搜索到<code>logo.txt</code>文件，然后直接调用<code>resource.getInputStream()</code>就可以获取到输入流，避免了自己搜索文件的代码。所有资源文件均位于<code>src/main/resources</code>路径下。</p>
-<p><code>@PropertySource(&quot;app.properties&quot;)</code>：用于<code>AppConfig</code>配置类，告知容器自动读取名为<code>app.properties</code>的配置文件，接着可以使用<code>@Value(&quot;$&#123;key:defaultValue&#125;&quot;)</code>来注入配置文件中<code>key</code>的<code>value</code>。这比使用<code>@Value(&quot;classpath:/app.properties&quot;)</code>+输入流的方式来读取配置文件更加简单，还有一种方式是先通过一个Bean（Spring容器中的默认类名称为<code>SmtpConfig</code>）持有所有的配置属性值，然后在其他Bean中使用<code>@value(&quot;#&#123;smtpConfig.property&#125;&quot;)</code>来注入属性值。</p>
-<p><code>@Profile</code>：用于表示不同环境下的Bean，程序运行时通过指定运行环境就可以使得容器只创建该环境下的Bean。</p>
-<p><code>@Conditional</code>：用于根据一定条件确定是否创建Bean。</p>
-<h2 id="2-5-工厂Bean"><a href="#2-5-工厂Bean" class="headerlink" title="2.5 工厂Bean"></a>2.5 工厂Bean</h2><p>Spring提供了工厂模式来创建Bean。</p>
+<h3 id="2-3-2-自动装配"><a href="#2-3-2-自动装配" class="headerlink" title="2.3.2 自动装配"></a>2.3.2 自动装配</h3><ul>
+<li><p><code>@Autowired</code></p>
+<ul>
+<li><p>用于类的数据成员和函数成员，相当于把指定类型（<code>byType</code>）的Bean注入到指定字段，且不受限于<code>private</code>关键字；</p>
+</li>
+<li><p><code>@Autowired</code>默认在指定类型的Bean不存在时报错，而<code>@Autowired(required = false)</code>则不会报错，即找到指定类型时注入，没找到时注入<code>null</code>；</p>
+</li>
+<li><p><code>required</code>属性可以用于<code>@Autowired</code>所使用的任意地方，但当用于构造器装配时，只有一个构造器可以将<code>@Autowired</code>的<code>required</code>属性设置为<code>true</code>，其他构造器的<code>@Autowired</code>的<code>required</code>属性只能设置为<code>false</code>;</p>
+</li>
+<li><p>当使用<code>@Autowired</code>标注多个构造器时，Spring会从满足装配条件的构造器中选择入参最多的那个构造器。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Qualiflier(&quot;beanName&quot;)</code></p>
+<ul>
+<li><p>在存在多个相同类型的Bean的情况下，用于指定注入的Bean的别名，与<code>@Autowired</code>搭配使用，相当于把<code>byType</code>自动装配转换为<code>byName</code>；</p>
+</li>
+<li><p>通过<code>@Qualiflier</code>可以创建自定义的限定器注解，然后通过自定义的限定器注解来代替<code>@Qualiflier</code>来标注指定注入的Bean的范围。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Inject</code></p>
+<ul>
+<li><p>Java的<code>@Inject</code>几乎可以完全替代Spring的<code>@Autowired</code>；</p>
+</li>
+<li><p>与<code>@Autowired</code>不同的是，<code>@Inject</code>没有<code>required</code>属性，因此<code>@Inject</code>标注的依赖关系必须存在，如果不存在则会抛出异常。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Named</code></p>
+<ul>
+<li><p>相对于<code>@Autowired</code>所对应的<code>@Qualiflier</code>，<code>@Inject</code>所对应的是<code>@Named</code>；</p>
+</li>
+<li><p><code>javax.inject</code>包里有自己的<code>@Qualiflier</code>注解，但不建议使用该包中的<code>@Qualiflier</code>注解，而是鼓励使用该注解来创建自定义的限定器注解；</p>
+</li>
+<li><p>实际上，<code>@Named</code>就是使用<code>javax.inject</code>包中的<code>@Qualiflier</code>注解所创建的限定器注解。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Value</code></p>
+<ul>
+<li><p>用于某个属性、方法或者方法参数，并传入一个基本类型或者<code>String</code>类型的值来装配属性，<code>String</code>类型还可以是一个SpEL表达式，表达式的计算结果可以是任意类型；</p>
+</li>
+<li><p>用于注入资源，Spring提供了一个<code>org.springframework.core.io.Resource</code>（注意不是<code>javax.annotation.Resource</code>），它可以像<code>String</code>、<code>int</code>一样使用<code>@Value</code>注入；</p>
+</li>
+<li><p>当程序需要读取一个资源文件（比如配置文件等）中的内容时，可以在<code>Resource</code>类型的数据成员<code>resource</code>上标注<code>@Value(&quot;classpath:/logo.txt&quot;)</code>，然后直接调用<code>resource.getInputStream()</code>就可以获取到classpath中的<code>logo.txt</code>文件的输入流，避免了自己搜索文件的代码。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-3-自动检测"><a href="#2-3-3-自动检测" class="headerlink" title="2.3.3 自动检测"></a>2.3.3 自动检测</h3><p><code>@Configuration</code>：用于类，表示该类是一个配置类。</p>
+<ul>
+<li><p><code>@Component</code></p>
+<ul>
+<li><p>用于类，相当于定义了一个<code>id</code>为小写开头的类名的Bean；</p>
+</li>
+<li><p><code>@Component(&quot;...&quot;)</code>定义了一个显式指定<code>id</code>的Bean。</p>
+</li>
+</ul>
+</li>
+<li><p>过滤组件扫描</p>
+<ul>
+<li><p>在配置<code>&lt;context:component-scan&gt;</code>元素时，可以通过配置<code>&lt;context:include-filter</code>和<code>&lt;context:exclude-filter</code>子元素来设置过滤器，分别调整要扫描和不要扫描的类型；</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span></span></span><br><span class="line"><span class="tag">			<span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:include-filter</span> <span class="attr">type</span> = <span class="string">&quot;...&quot;</span> <span class="attr">expression</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:exclude-filter</span> <span class="attr">type</span> = <span class="string">&quot;...&quot;</span> <span class="attr">expression</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>其中，<code>type</code>属性用于指定要使用的过滤器类型；</p>
+<table>
+<thead>
+<tr>
+<th align="left">过滤器类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>annotation</code></td>
+<td>扫描使用指定注解所标注的类，由<code>expression</code>属性指定要扫描的注解</td>
+</tr>
+<tr>
+<td align="left"><code>assignable</code></td>
+<td>扫描派生于<code>expression</code>属性所指定类型的类</td>
+</tr>
+<tr>
+<td align="left"><code>aspectj</code></td>
+<td>扫描与<code>expression</code>属性所指定的AspectJ表达式所匹配的类</td>
+</tr>
+<tr>
+<td align="left"><code>regex</code></td>
+<td>扫描类名称与<code>expression</code>属性所指定的正则表达式所匹配的类</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-4-基于Java的配置"><a href="#2-3-4-基于Java的配置" class="headerlink" title="2.3.4 基于Java的配置"></a>2.3.4 基于Java的配置</h3><ul>
+<li><p><code>@Configuration</code></p>
+<ul>
+<li><p>通过在XML文件中配置<code>&lt;context:component-scan&gt;</code>元素，还可以告知Spring在包内自动加载使用<code>@Configuration</code>注解所标注的所有类；</p>
+</li>
+<li><p><code>@Configuration</code>注解等同于XML文件中的<code>&lt;beans&gt;</code>元素，它所标注的类会包含一个或多个Spring Bean的定义，这些Bean的定义是使用<code>@Bean</code>注解所标注的方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Bean</code></p>
+<ul>
+<li><p>用于方法，当一个Bean不在<code>AppConfig</code>配置类所在的包中时，可以在<code>AppConfig</code>配置类中编写标注了<code>@Bean</code>的方法来创建并返回该Bean，方法名将作为该Bean的ID；</p>
+</li>
+<li><p>也可以通过<code>@Bean(&quot;...&quot;)</code>或者<code>@Bean</code>+<code>@Qualifier(&quot;...&quot;)</code>指定别名；</p>
+</li>
+<li><p>通过声明方法引用一个Bean并不等同于调用该方法，区别在于每次调用该方法都会得到一个新的实例，而通过<code>@Bean</code>标注时，Spring会拦截该方法的调用，并尝试在应用上下文中查找该Bean，这意味着该Bean是Singleton。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ComponentScan</code></p>
+<ul>
+<li><p>用于类，告知容器自动搜索当前类所在的包以及子包；</p>
+</li>
+<li><p>将所有标注为<code>@Component</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>在XML配置中，Bean的类型和ID都是由字符串来标示的，这就导致它们无法进行编译期检查，写起来也很繁琐，而<strong>在基于Java的配置中，则可以进行编译期检查来确保Bean的类型是合法类型</strong>。</p>
+<h3 id="2-3-5-补充介绍"><a href="#2-3-5-补充介绍" class="headerlink" title="2.3.5 补充介绍"></a>2.3.5 补充介绍</h3><ul>
+<li><p><code>@Scope</code></p>
+<ul>
+<li><p>用于类，单独使用<code>@Component</code>注解时会默认将组件标注为Singleton，即每次通过<code>getBean</code>方法获取到Bean总是同一个实例；</p>
+</li>
+<li><p>增加<code>@Scope</code>注解时，则可以将组件标注为不同的作用域的Bean，例如<code>@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)</code>将组件标注为Prototype（原型）。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PostConstruct</code></p>
+<ul>
+<li><p>用于Bean在注入必要依赖后的<code>init</code>方法，从而进行初始化；</p>
+</li>
+<li><p>Spring只根据<code>@PostConstruct</code>查找无参数方法，对方法名不作要求。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PreDestory</code></p>
+<ul>
+<li><p>用于Bean在容器关闭时的<code>shutdown</code>方法，从而进行相关的清理操作；</p>
+</li>
+<li><p>Spring只根据<code>@PreDestory</code>查找无参数方法，对方法名不作要求。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Primary</code></p>
+<ul>
+<li><p>在存在多个相同类型的Bean的情况下，用于指定优先注入的Bean，则注入时不需要指出该优先注入的Bean的别名；</p>
+</li>
+<li><p>相同类型的Bean只有一个可以指定为<code>@Primary</code>，其他必须用<code>@Qualiflier(&quot;beanNname&quot;)</code>指定别名。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PropertySource(&quot;app.properties&quot;)</code></p>
+<ul>
+<li><p>用于<code>AppConfig</code>配置类，告知容器自动读取名为<code>app.properties</code>的配置文件，接着可以使用<code>@Value(&quot;$&#123;key:defaultValue&#125;&quot;)</code>来注入配置文件中<code>key</code>的<code>value</code>，这比使用<code>@Value(&quot;classpath:/app.properties&quot;)</code>+输入流的方式来读取配置文件更加简单；</p>
+</li>
+<li><p>还有一种方式是先通过一个Bean（Spring容器中的默认类名称为<code>SmtpConfig</code>）持有所有的配置属性值，然后在其他Bean中使用<code>@value(&quot;#&#123;smtpConfig.property&#125;&quot;)</code>来注入属性值。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Profile</code></p>
+<ul>
+<li><p>用于配置不同环境下的Bean，程序运行时通过指定运行环境就可以使得容器只创建该环境下的Bean；</p>
+</li>
+<li><p>Spring提供了<code>native</code>（开发）、<code>test</code>（测试）和<code>production</code>（生产）这三种环境。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Conditional</code></p>
+<ul>
+<li>用于根据一定条件确定是否创建Bean。</li>
+</ul>
+</li>
+<li><p>Spring提供了工厂模式来创建Bean</p>
 <ul>
 <li><p>假如需要以工厂模式创建<code>Product</code>，首先需要定义一个工厂Bean（<code>ProductFactoryBean</code>），该工厂Bean需要实现<code>FactotyBean</code>接口；</p>
 </li>
-<li><p>Spring会优先实例化工厂Bean，然后通过工厂Bean的<code>getObject</code>方法创建真正的Bean（<code>Product</code>）</p>
+<li><p>Spring会优先实例化工厂Bean，然后通过工厂Bean的<code>getObject</code>方法创建真正的Bean（<code>Product</code>）；</p>
+</li>
+<li><p>因此，如果定义了一个工厂Bean，Spring创建的Bean实际上是这个工厂Bean的<code>getObject</code>方法所返回的Bean；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;Product&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    String product= <span class="string">&quot;P&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.of(product);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.class;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductFactoryBean</span> <span class="keyword">implements</span> <span class="title class_">FactoryBean</span>&lt;Product&gt; &#123;</span><br><span class="line">    </span><br><span class="line">    String product= <span class="string">&quot;P&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.of(product);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">        <span class="keyword">return</span> Product.class;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>因此，如果定义了一个工厂Bean，Spring创建的Bean实际上是这个工厂Bean的<code>getObject</code>方法所返回的Bean。</p>
 <h1 id="3、AOP"><a href="#3、AOP" class="headerlink" title="3、AOP"></a>3、AOP</h1><h2 id="3-1-问题与解决"><a href="#3-1-问题与解决" class="headerlink" title="3.1 问题与解决"></a>3.1 问题与解决</h2><p>假设业务的组件中有多个业务方法，每个业务方法除了要执行核心业务逻辑，还需要执行安全检查、事务管理等处理逻辑，这些处理逻辑会重复出现在每个四处分散的业务方法中。</p>
 <p>针对该问题可以使用Proxy模式。对每个业务方法实现Proxy，将这些处理逻辑放置在Proxy当中。这种手动编写Proxy的方式不够简单，更简单的方法是将每一种处理看作一个切面，然后以某种自动化的方式将切面逻辑织入到核心逻辑中，从而实现Proxy模式。</p>
 <p>AOP把系统分解为不同的切面（比如安全检查、事务管理等处理）。Spring的AOP是基于JVM的动态代理实现的，可以理解为在客户端调用业务对象时，通过AOP技术在核心业务逻辑运行前后织入切面逻辑。AOP本质上只是一种代理模式的实现方式。</p>
@@ -416,7 +615,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">2.4 注解说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.5 工厂Bean</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、声明式事务</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81Spring-MVC"><span class="toc-nav-text">5、Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.4 自动装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.3.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.3.2 自动装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">2.3.3 自动检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E5%9F%BA%E4%BA%8EJava%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3.4 基于Java的配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-5-%E8%A1%A5%E5%85%85%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2.3.5 补充介绍</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、声明式事务</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81Spring-MVC"><span class="toc-nav-text">5、Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
     
   </div>
 </aside>
