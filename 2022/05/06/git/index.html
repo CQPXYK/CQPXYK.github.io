@@ -166,7 +166,7 @@
 <h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系统（Distributed Version Control System），简称 DVCS。客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
 <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git属于DVCS，Git与其他版本控制系统的主要区别在于对待数据的方式。大多数版本控制系统都是以文件变更列表的方式存储信息，这类系统将它们保存的信息看作一组基本文件和每个文件随时间逐步累积的差异，而Git采用直接记录快照的方式，而非差异比较。每次提交更新或者保存项目状态时，Git对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git不再重新存储该文件，而是保留一个链接指向之前存储的文件。Git仓库和Github中心服务器之间的传输是通过SSH加密的。</p>
 <h1 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（<code>.git</code> directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个<code>HEAD</code>指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
-<img src="git_1.jpg" alt="工作流图" style="zoom:100%;" />
+<img src="工作流图.jpg" alt="工作流图" style="zoom:100%;" />
 
 <h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
 <li><p>每个提交通过指针连接成一条时间线。</p>
@@ -182,7 +182,7 @@
 <li><p>当新建分支开发完毕后，就合并到主分支上，合并分支只需要改变指针即可。</p>
 </li>
 </ul>
-<img src="git_2.jpg" alt="工作流图" style="zoom:100%;" />
+<img src="分支.jpg" alt="分支" style="zoom:100%;" />
 
 <h1 id="命令速查表"><a href="#命令速查表" class="headerlink" title="命令速查表"></a>命令速查表</h1><p><a target="_blank" rel="noopener" href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>

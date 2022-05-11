@@ -182,7 +182,7 @@
 <p>传统应用程序中，组件的控制权在应用程序本身，在IoC模式下，组件控制权发生了反转（从应用程序转移到IoC容器），应用程序只需要<strong>直接使用</strong>（通过<code>setXXX</code>方法或者带<code>XXX</code>参数的构造方法来注入<code>XXX</code>实例，而不再需要<code>new XXX</code>）已经创建好配置好的组件。</p>
 <p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。</p>
 <p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过XML文件或者注解这两种方式来进行配置，这种创建应用对象之间的依赖协作关系的行为通常被称为<strong>装配（wiring）</strong>。</p>
-<h2 id="2-2-XML文件配置"><a href="#2-2-XML文件配置" class="headerlink" title="2.2 XML文件配置"></a>2.2 XML文件配置</h2><h3 id="2-2-1-步骤"><a href="#2-2-1-步骤" class="headerlink" title="2.2.1 步骤"></a>2.2.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<h2 id="2-2-XML配置"><a href="#2-2-XML配置" class="headerlink" title="2.2 XML配置"></a>2.2 XML配置</h2><h3 id="2-2-1-步骤"><a href="#2-2-1-步骤" class="headerlink" title="2.2.1 步骤"></a>2.2.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）通过属性注入或者依赖注入编写组件；</p>
 <p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件；</p>
 <p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
@@ -312,11 +312,11 @@
 </li>
 <li><p>通过<code>autowire = &quot;byType&quot; /&gt;</code>可以为属性自动装配类型与该属性的类型相同的Bean；</p>
 </li>
-<li><p>通过<code>autowire = &quot;constructor&quot; /&gt;</code>可以为构造器自动装配class与构造器入参类型相同的Bean，此时不需要再声明注入构造器参数；</p>
+<li><p>通过<code>autowire = &quot;constructor&quot; /&gt;</code>可以为构造器自动装配类型与构造器入参类型相同的Bean，此时不需要再声明注入构造器参数；</p>
 </li>
 <li><p><code>byType</code>和<code>constructor</code>自动装配都具有一个局限性：如果存在多个与该属性的类型相同的Bean，Spring会抛出异常，因此，要么只允许存在一个Bean与需要自动装配的属性类型相匹配，要么将其他需要被排除的Bean的<code>autowire-candidate</code>属性设为<code>false</code>；</p>
 </li>
-<li><p>通过<code>autowire = &quot;autodetect&quot; /&gt;</code>可以首先尝试使用<code>constructor</code>自动匹配，如果没有发现与构造器相匹配的Bean时，将尝试使用<code>byType</code>自动匹配；、</p>
+<li><p>通过<code>autowire = &quot;autodetect&quot; /&gt;</code>可以首先尝试使用<code>constructor</code>自动匹配，如果没有发现与构造器相匹配的Bean时，将尝试使用<code>byType</code>自动匹配；</p>
 </li>
 <li><p>默认情况下，XML文件的<code>default-autowire</code>属性被设置为<code>none</code>，标示XML中所有的Bean都不使用自动装配，除非Bean自己配置了<code>autowire</code>属性；</p>
 </li>
@@ -328,7 +328,8 @@
 </li>
 </ul>
 <h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>使用注解自动装配与在XML中使用<code>autowire</code>属性自动装配并没有太大差别，但使用注解方式允许更细粒度的自动装配，可以选择性地标注某一个属性来对其应用自动装配。</p>
-<h3 id="2-3-1-步骤"><a href="#2-3-1-步骤" class="headerlink" title="2.3.1 步骤"></a>2.3.1 步骤</h3><p>1）在XML文件中进行配置；</p>
+<h3 id="2-3-1-步骤"><a href="#2-3-1-步骤" class="headerlink" title="2.3.1 步骤"></a>2.3.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<p>2）在XML文件中进行配置；</p>
 <ul>
 <li><p>配置<code>&lt;context:annotation-config&gt;</code>元素，可以告知Spring使用基于注解的自动装配；</p>
 </li>
@@ -343,12 +344,12 @@
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span></span></span><br><span class="line"><span class="tag">		<span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>2）通过<code>@Component</code>和<code>@Autowired</code>等注解编写组件；</p>
-<p>3）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
-<p>4）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
+<p>3）通过<code>@Component</code>和<code>@Autowired</code>等注解编写组件；</p>
+<p>4）通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类来启动容器；</p>
+<p>5）在<code>AppConfig</code>类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> (Product) context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
 
-<p>5）通常将启动配置<code>AppConfig</code>类位于自定义的顶层包，其他Bean按类别放入子包。</p>
+<p>6）通常将启动配置<code>AppConfig</code>类位于自定义的顶层包，其他Bean按类别放入子包。</p>
 <h3 id="2-3-2-自动装配"><a href="#2-3-2-自动装配" class="headerlink" title="2.3.2 自动装配"></a>2.3.2 自动装配</h3><ul>
 <li><p><code>@Autowired</code></p>
 <ul>
@@ -538,27 +539,216 @@
 </ul>
 <h1 id="3、AOP"><a href="#3、AOP" class="headerlink" title="3、AOP"></a>3、AOP</h1><h2 id="3-1-问题与解决"><a href="#3-1-问题与解决" class="headerlink" title="3.1 问题与解决"></a>3.1 问题与解决</h2><p>假设业务的组件中有多个业务方法，每个业务方法除了要执行核心业务逻辑，还需要执行安全检查、事务管理等处理逻辑，这些处理逻辑会重复出现在每个四处分散的业务方法中。</p>
 <p>针对该问题可以使用Proxy模式。对每个业务方法实现Proxy，将这些处理逻辑放置在Proxy当中。这种手动编写Proxy的方式不够简单，更简单的方法是将每一种处理看作一个切面，然后以某种自动化的方式将切面逻辑织入到核心逻辑中，从而实现Proxy模式。</p>
-<p>AOP把系统分解为不同的切面（比如安全检查、事务管理等处理）。Spring的AOP是基于JVM的动态代理实现的，可以理解为在客户端调用业务对象时，通过AOP技术在核心业务逻辑运行前后织入切面逻辑。AOP本质上只是一种代理模式的实现方式。</p>
-<h2 id="3-2-装配"><a href="#3-2-装配" class="headerlink" title="3.2 装配"></a>3.2 装配</h2><p>1）通过Maven引入<code>spring-aspects</code>依赖；</p>
-<p>2）使用<code>@Aspect</code>标注编写切面Bean；</p>
-<p>3）使用<code>@Before</code>等注解在切面Bean中编写拦截器代码（即切面逻辑）；</p>
-<p>4）给<code>@Configuration</code>标注的配置类加上<code>@EnableAspectJAutoProxy</code>注解，使得IoC容器自动查找<code>@Aspect</code>所标注的Bean，并根据每个方法的<code>@Before</code>等注解将AOP织入到特定的Bean中。</p>
-<h2 id="3-3-拦截器说明"><a href="#3-3-拦截器说明" class="headerlink" title="3.3 拦截器说明"></a>3.3 拦截器说明</h2><p><code>@Before</code>：先执行拦截器代码，再执行目标代码，如果拦截器抛出异常，目标代码不执行。</p>
-<p><code>@After</code>：先执行目标代码，再执行拦截器代码，无论目标代码是否抛出异常，拦截器代码都会执行。</p>
-<p><code>@AfterReturning</code>：和<code>@After</code>的区别在于，只有目标代码正常返回时才会执行拦截器代码。</p>
-<p><code>@AfterThrowing</code>：和<code>@After</code>的区别在于，只有目标代码抛出异常时才会执行拦截器代码。</p>
-<p><code>@Around</code>：能在目标代码执行前后均执行拦截器代码，即便目标代码抛出异常，依旧继续执行拦截器代码，能够实现以上全部拦截器的功能。</p>
-<h2 id="3-4-指定核心代码"><a href="#3-4-指定核心代码" class="headerlink" title="3.4 指定核心代码"></a>3.4 指定核心代码</h2><p>在使用拦截器时，可以通过<code>execution (* xxx.Xyz.*(…))</code>这样语法来指定需要织入AOP的核心代码（比如<code>@Before (&quot;execution (public * com.service.*.*(…))&quot;)</code>可以指定这个包下的所有Bean的所有方法），但这种指定方式不够精准，容易出错，可以考虑通过注解来标注需要拦截的方法，从而精准指定需要织入AOP的核心代码。</p>
-<p>1）比如<code>@Transactional</code>注解用于标注需要拦截并执行事务处理的方法，除了<code>@Transactional</code>注解，还可以自定义注解来标注需要拦截的方法；</p>
-<p>2）定义切面Bean，并通过<code>@annotation (小写开头的注解名)</code>这样的语法来指定需要织入AOP的核心代码（比如<code>@Before (&quot;@annotation (metricTime)&quot;)</code>对应自定义的<code>@MetricTime</code>注解）。</p>
+<p>依赖注入有助于应用对象之间的解耦，而AOP把系统分解为不同的切面（比如安全检查、事务管理等处理），可以实现横切关注点与它们所影响的对象之间的解耦。</p>
+<h2 id="3-2-术语介绍"><a href="#3-2-术语介绍" class="headerlink" title="3.2 术语介绍"></a>3.2 术语介绍</h2><ul>
+<li><p><strong>连接点（Joinpoint）</strong></p>
+<ul>
+<li>连接点是应用执行过程中<strong>能够</strong>插入切面的所有点；</li>
+<li>切面代码利用这些点插入到应用的正常流程中，从而添加新的行为；</li>
+<li>连接点模型有：字段连接点、构造器连接点、方法连接点；</li>
+<li>Spring只支持方法连接点，如果需要方法拦截之外的连接点拦截，可以转向更为强大的Aspect。</li>
+</ul>
+</li>
+<li><p><strong>通知（Advice）</strong> </p>
+<ul>
+<li><p>通知定义了切面是<strong>什么</strong>以及<strong>何时</strong>使用；</p>
+</li>
+<li><p>通知有以下五种类型；</p>
+<table>
+<thead>
+<tr>
+<th align="left">通知</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Before</td>
+<td align="left">在方法调用之前调用通知</td>
+</tr>
+<tr>
+<td align="left">After</td>
+<td align="left">在方法完成之后调用通知，无论方法执行是否成功</td>
+</tr>
+<tr>
+<td align="left">After-returning</td>
+<td align="left">在方法成功执行之后调用通知</td>
+</tr>
+<tr>
+<td align="left">After-throwing</td>
+<td align="left">在方法抛出异常后调用通知</td>
+</tr>
+<tr>
+<td align="left">Around</td>
+<td align="left">通知包裹被通知的方法，在被通知方法的调用前和后执行自定义行为</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Spring所创建的通知都是由标准的Java类编写的。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>切点（Pointcut）</strong></p>
+<ul>
+<li>切点定义了切面在<strong>何处</strong>使用，即哪些连接点会得到通知；</li>
+<li>Spring所定义的切点通常由XML文件或者注解来进行配置。</li>
+</ul>
+</li>
+<li><p><strong>切面（Aspect）</strong></p>
+<ul>
+<li>切面是通知和切点的结合，切点和通知是切面的最基本元素；</li>
+<li>通知和切点共同定义了关于切面的全部内容（什么、何时、何处）。</li>
+</ul>
+</li>
+<li><p><strong>引入（Introduction）</strong></p>
+<ul>
+<li>引入允许在不修改现有类的情况下向现有类添加新方法或属性，令其具有新的行为和状态。</li>
+</ul>
+</li>
+<li><p><strong>织入（Weaving）</strong></p>
+<ul>
+<li><p>织入是将切面应用到目标对象来创建新的代理对象的过程，切面在指定的连接点被织入到目标对象中；</p>
+</li>
+<li><p>在目标对象的生命周期里有以下三个时期可以进行织入；</p>
+<table>
+<thead>
+<tr>
+<th align="left">时期</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">编译期</td>
+<td align="left">切面在目标类编译时被织入，比如AspectJ</td>
+</tr>
+<tr>
+<td align="left">类加载期</td>
+<td align="left">切面在目标类加载到JVM时被织入</td>
+</tr>
+<tr>
+<td align="left">运行期</td>
+<td align="left">切面在应用运行的某个时刻被织入，比如Spring AOP</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Spring的AOP是基于JVM的动态代理实现的，在运行期将切面织入到Spring管理的Bean中；</p>
+</li>
+<li><p>Spring的切面由包裹了目标对象的代理类实现，AOP本质上只是一种代理模式的实现方式。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-3-XML配置"><a href="#3-3-XML配置" class="headerlink" title="3.3 XML配置"></a>3.3 XML配置</h2><h3 id="3-3-1-步骤"><a href="#3-3-1-步骤" class="headerlink" title="3.3.1 步骤"></a>3.3.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
+<p>2）编写定义了切面逻辑的简单Java类；</p>
+<p>3）在XML文件中将该类注册为Spring应用上下文中的一个Bean；</p>
+<p>4）在XML文件中将该类配置为一个切面；</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span> = <span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">pointcut</span> = <span class="string">&quot;...&quot;</span> <span class="attr">method</span> = <span class="string">&quot;...&quot;</span> <span class="attr">arg-names</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">pointcut</span> = <span class="string">&quot;...&quot;</span> <span class="attr">method</span> = <span class="string">&quot;...&quot;</span> <span class="attr">arg-names</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span>                </span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-2-配置元素"><a href="#3-3-2-配置元素" class="headerlink" title="3.3.2 配置元素"></a>3.3.2 配置元素</h3><ul>
+<li><p>在<code>&lt;aop:config&gt;</code>元素内可以声明一个或多个通知器、切面或者切点；</p>
+</li>
+<li><p>在<code>&lt;aop:aspect&gt;</code>元素内可以声明一个简单的切面，<code>ref</code>属性引用了一个Bean，该Bean提供了在切面上通知所调用的方法；</p>
+</li>
+<li><p><code>&lt;aop:before&gt;</code>等元素分别定义不同的通知类型，<code>pointcut</code>属性定义了通知所应用的切点，<code>method</code>属性定义了切面上所调用的方法名，<code>arg-names</code>属性定义了所调用方法的入参；</p>
+</li>
+<li><p>如果有多个通知的<code>pointcut</code>属性值是一致的，那么可以通过以下配置方式来避免重复定义切点，其中，<code>&lt;aop-pointcut</code>元素中的<code>expression</code>属性定义了通知所应用的切点；</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span> = <span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span> = <span class="string">&quot;xxx&quot;</span> <span class="attr">expression</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">pointcut-ref</span> = <span class="string">&quot;xxx&quot;</span> <span class="attr">method</span> = <span class="string">&quot;...&quot;</span> <span class="attr">arg-names</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">pointcut-ref</span> = <span class="string">&quot;xxx&quot;</span> <span class="attr">method</span> = <span class="string">&quot;...&quot;</span> <span class="attr">arg-names</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span>                </span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>&lt;aop:before&gt;</code>等元素的<code>pointcut</code>属性以及<code>&lt;aop-pointcut</code>元素的<code>expression</code>属性的值是一个AspectJ切点表达式。</p>
+</li>
+</ul>
+<h3 id="3-3-3-切点表达式"><a href="#3-3-3-切点表达式" class="headerlink" title="3.3.3 切点表达式"></a>3.3.3 切点表达式</h3><p>在Spring AOP中，需要使用AspectJ的切点表达式来定义通知所引用的切点，比如表达式<code>execution(*A.B(...))</code>代表：</p>
+<ul>
+<li><p>使用<code>execution()</code>指示器来唯一选择<code>A</code>类（全限定类名）的<code>B</code>方法；</p>
+</li>
+<li><p>方法表达式以<code>*</code>开始，标识不关心方法的返回值类型；</p>
+</li>
+<li><p>方法参数列表为<code>(...)</code>，标识不关心方法的入参类型。</p>
+</li>
+</ul>
+<p>需要注意的是：</p>
+<ul>
+<li><p>Spring仅支持AspectJ切点指示器的一个子集，<code>execution()</code>指示器就属于该子集；</p>
+</li>
+<li><p>当在Spring中尝试使用AspectJ其他指示器时，会抛出异常；</p>
+</li>
+<li><p><code>bean()</code>指示器使用Bean的ID作为参数来限制切点只匹配特定的Bean，该指示器是由Spring 2.5新引入的。</p>
+</li>
+</ul>
+<h3 id="3-3-4-引入新功能"><a href="#3-3-4-引入新功能" class="headerlink" title="3.3.4 引入新功能"></a>3.3.4 引入新功能</h3><p>切面除了能够为现有的方法增加额外的功能，还能为现有的Spring Bean增加新的方法。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:declare-parents</span> </span></span><br><span class="line"><span class="tag">           	<span class="attr">types-matching</span> = <span class="string">&quot;&quot;</span> <span class="attr">implements-interface</span> = <span class="string">&quot;&quot;</span> <span class="attr">default-impl</span> = <span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>&lt;aop:declare-parents&gt;</code>声明了此切面所通知的Bean在它的对象层次结构会中拥有新的父类型;</p>
+</li>
+<li><p>在这些Bean中，由<code>types-matching</code>属性指定的类型会实现由<code>implements-interface</code>属性指定的接口；</p>
+</li>
+<li><p>具体的实现由<code>default-impl</code>属性来直接标识或者由<code>delegate-ref</code>属性来间接委托。</p>
+</li>
+</ul>
+<h2 id="3-4-注解配置"><a href="#3-4-注解配置" class="headerlink" title="3.4 注解配置"></a>3.4 注解配置</h2><p>在上一节的XML配置中，定义了切面逻辑的简单Java类中并没有任何地方让它成为一个切面，因此，不得不使用XML声明通知和切点。但是通过<code>@Aspect</code>注解，可以在不需要额外XML配置的情况下将简单Java类转换为一个切面。</p>
+<h3 id="3-4-1-步骤"><a href="#3-4-1-步骤" class="headerlink" title="3.4.1 步骤"></a>3.4.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
+<p>2）使用<code>@Aspect</code>标注编写定义了切面逻辑的简单Java类（下文简称为切面Bean）；</p>
+<p>3）使用<code>@Pointcut</code>定义一个可以在<code>@AspectJ</code>切面内可重用的切点；</p>
+<ul>
+<li><p><code>@Pointcut</code>注解的值是一个AspectJ切点表达式；</p>
+</li>
+<li><p><code>@Pointcut</code>注解所标注的是一个空的标识方法，供<code>@Pointcut</code>注解依附；</p>
+</li>
+<li><p>标识方法的方法签名相当于切点的名字，供通知拦截器引用；</p>
+</li>
+</ul>
+<p>4）使用<code>@Before</code>等通知拦截器注解在切面Bean中编写拦截器代码（即切面逻辑）；</p>
+<p>5）给<code>@Configuration</code>标注的配置类加上<code>@EnableAspectJAutoProxy</code>注解，使得IoC容器自动查找<code>@Aspect</code>所标注的Bean，并根据每个方法的<code>@Before</code>等注解将AOP织入到特定的Bean中。</p>
+<h3 id="3-4-2-通知拦截器"><a href="#3-4-2-通知拦截器" class="headerlink" title="3.4.2 通知拦截器"></a>3.4.2 通知拦截器</h3><ul>
+<li><p><code>@Before</code>：先执行拦截器代码，再执行目标代码，如果拦截器抛出异常，目标代码不执行；</p>
+</li>
+<li><p><code>@After</code>：先执行目标代码，再执行拦截器代码，无论目标代码是否抛出异常，拦截器代码都会执行；</p>
+</li>
+<li><p><code>@AfterReturning</code>：和<code>@After</code>的区别在于，只有目标代码正常返回时才会执行拦截器代码；</p>
+</li>
+<li><p><code>@AfterThrowing</code>：和<code>@After</code>的区别在于，只有目标代码抛出异常时才会执行拦截器代码；</p>
+</li>
+<li><p><code>@Around</code>：能在目标代码执行前后均执行拦截器代码，即便目标代码抛出异常，依旧继续执行拦截器代码，能够实现以上全部拦截器的功能。</p>
+</li>
+</ul>
+<h3 id="3-4-3-指定切点"><a href="#3-4-3-指定切点" class="headerlink" title="3.4.3 指定切点"></a>3.4.3 指定切点</h3><p>除了使用AspectJ切点表达式，还可以考虑通过注解来标注需要拦截的方法，从而精准指定需要在何处织入切面。</p>
+<ul>
+<li><p>使用<code>@Transactional</code>注解去标注需要拦截的业务方法，即可精准指定需要在何处织入事务处理切面；</p>
+</li>
+<li><p>除了<code>@Transactional</code>注解，还可以自定义注解来标注需要拦截的方法，然后在切面Bean中通过<code>@annotation (小写开头的注解名)</code>这样的语法可以精准指定需要在何处织入切面；</p>
+</li>
+<li><p>比如<code>@Before (&quot;@annotation (metricTime)&quot;)</code>对应自定义的<code>@MetricTime</code>注解。</p>
+</li>
+</ul>
+<h3 id="3-4-4-引入新功能"><a href="#3-4-4-引入新功能" class="headerlink" title="3.4.4 引入新功能"></a>3.4.4 引入新功能</h3><p>在上文介绍了如何使用基于XML的AOP来为现有的Spring Bean增加新的方法，这一功能依旧可以使用基于注解的AOP来完成。</p>
+<ul>
+<li><p><code>@DeclareParents</code>等价于<code>aop:declare-parents&gt;</code>；</p>
+</li>
+<li><p><code>@DeclareParents</code>的<code>value</code>属性等同于<code>aop:declare-parents&gt;</code>的<code>types-matching</code>属性，标识应该被引入指定接口的Bean的类型；</p>
+</li>
+<li><p><code>@DeclareParents</code>的<code>defaultImpl</code>属性等同于<code>aop:declare-parents&gt;</code>的<code>default-impl</code>属性，标识所引入接口的实现；</p>
+</li>
+<li><p>被<code>@DeclareParents</code>所标注的<code>static</code>属性指定了将被引入的接口；</p>
+</li>
+<li><p><code>@DeclareParents</code>没有与<code>aop:declare-parents&gt;</code>的<code>delegate-ref</code>属性等价的属性。</p>
+</li>
+</ul>
 <h2 id="3-5-CGLIB"><a href="#3-5-CGLIB" class="headerlink" title="3.5 CGLIB"></a>3.5 CGLIB</h2><p>Spring的AOP是基于JVM的动态代理实现的，而JVM的动态代理要求必须实现接口，Spring通过CGLIB来动态创建业务接口/类的代理接口/子类，在代理接口/子类中织入切面逻辑。需要注意的地方在于：</p>
 <ul>
-<li>Spring通过<strong>CGLIB创建的代理类不会初始化继承自原始类的任何成员变量</strong>，包括final类型的成员变量，也就是说，CGLIB所创建的代理所继承的成员变量的值始终为null，因此加AOP很可能会导致NPE；</li>
-<li>以上NPE问题的解决方式是业务类通过<code>getXXX</code>方法而不是直接获取<code>XXX</code>变量的值，那么CGLIB创建的代理类会覆写<code>getXXX</code>方法，从而返回原始业务类的<code>XXX</code>变量的值；</li>
-<li>Spring通过<strong>CGLIB创建的代理类无法覆写继承自原始类的final方法</strong>，即无法代理final方法。</li>
+<li><p>Spring通过<strong>CGLIB创建的代理类不会初始化继承自原始类的任何成员变量</strong>，包括<code>final</code>类型的成员变量，也就是说，CGLIB所创建的代理所继承的成员变量的值始终为<code>null</code>，因此加AOP很可能会导致NPE；</p>
+</li>
+<li><p>以上NPE问题的解决方式是业务类通过<code>getXXX</code>方法而不是直接获取<code>XXX</code>变量的值，那么CGLIB创建的代理类会覆写<code>getXXX</code>方法，从而返回原始业务类的<code>XXX</code>变量的值；</p>
+</li>
+<li><p>Spring通过<strong>CGLIB创建的代理类无法覆写继承自原始类的final方法</strong>，即无法代理<code>final</code>方法。</p>
+</li>
 </ul>
-<p>综上所述，为了正确使用AOP，在访问被注入的Bean的成员变量时，总是调用<code>getXXX</code>方法而非直接访问字段；编写可能会被代理的Bean时，不要编写<code>public final</code>方法。</p>
-<h1 id="4、声明式事务"><a href="#4、声明式事务" class="headerlink" title="4、声明式事务"></a>4、声明式事务</h1><h1 id="5、Spring-MVC"><a href="#5、Spring-MVC" class="headerlink" title="5、Spring MVC"></a>5、Spring MVC</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<p>因此，为了正确使用AOP：</p>
+<ul>
+<li><p>在访问被注入的Bean的成员变量时，总是调用<code>getXXX</code>方法而非直接访问字段；</p>
+</li>
+<li><p>编写可能会被代理的Bean时，避免编写<code>public final</code>方法。</p>
+</li>
+</ul>
+<h1 id="4、Spring-MVC"><a href="#4、Spring-MVC" class="headerlink" title="4、Spring MVC"></a>4、Spring MVC</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li>《Spring In Action，Third Edition》</li>
 <li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
 <li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary">https://snailclimb.gitee.io/javaguide/#/docs/system-design/framework/spring/spring-knowledge-and-questions-summary</a></li>
@@ -615,7 +805,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML文件配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.4 自动装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.3.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.3.2 自动装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">2.3.3 自动检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E5%9F%BA%E4%BA%8EJava%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3.4 基于Java的配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-5-%E8%A1%A5%E5%85%85%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2.3.5 补充介绍</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%A3%85%E9%85%8D"><span class="toc-nav-text">3.2 装配</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%8B%A6%E6%88%AA%E5%99%A8%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">3.3 拦截器说明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%8C%87%E5%AE%9A%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">3.4 指定核心代码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、声明式事务</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81Spring-MVC"><span class="toc-nav-text">5、Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.4 自动装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.3.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.3.2 自动装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">2.3.3 自动检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E5%9F%BA%E4%BA%8EJava%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3.4 基于Java的配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-5-%E8%A1%A5%E5%85%85%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2.3.5 补充介绍</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">3.2 术语介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.3 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.3.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-2-%E9%85%8D%E7%BD%AE%E5%85%83%E7%B4%A0"><span class="toc-nav-text">3.3.2 配置元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-3-%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-nav-text">3.3.3 切点表达式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.3.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.4 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.4.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-2-%E9%80%9A%E7%9F%A5%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-nav-text">3.4.2 通知拦截器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-3-%E6%8C%87%E5%AE%9A%E5%88%87%E7%82%B9"><span class="toc-nav-text">3.4.3 指定切点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.4.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-CGLIB"><span class="toc-nav-text">3.5 CGLIB</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81Spring-MVC"><span class="toc-nav-text">4、Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
     
   </div>
 </aside>
