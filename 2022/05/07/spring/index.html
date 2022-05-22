@@ -858,6 +858,7 @@
 <li>转移（Transfer）：REST涉及转移资源数据，它以某一中表述形式从一个应用转移到另一个应用</li>
 </ul>
 <p>Spring对REST的支持是构建在Spring MVC之上的，控制器可以处理所有的HTTP方法，包含四个主要的REST方法：GET、PUT、DELETE以及POST，分别对应对资源的检索、更新、删除和创建。通过适当设置<code>@RequestMapping</code>注解的<code>method</code>属性，就可以让<code>DispatcherServlet</code>把不同的HTTP方法的请求定向到特定的控制器方法上。</p>
+<p>RESTful Web 服务与传统的 MVC 开发一个关键区别是返回给客户端的内容的创建方式：<strong>传统的 MVC 模式开发会直接返回给客户端一个视图，但是 RESTful Web 服务一般会将返回的数据以 JSON 的形式返回，实现前后端分离开发。</strong></p>
 <h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
 <li>《Spring In Action，Third Edition》</li>
 <li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
@@ -881,7 +882,7 @@
       </a>
     
     
-      <a class="nav-right" href="/2022/05/07/design-patterns/">
+      <a class="nav-right" href="/2022/05/08/design-patterns/">
         
           Design Patterns
         
