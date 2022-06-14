@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/05/07/maven/</loc>
+    <lastmod>2022-06-14</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
-    <lastmod>2022-06-07</lastmod>
+    <lastmod>2022-06-14</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <lastmod>2022-06-14</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/07/spring/</loc>
-    <lastmod>2022-06-07</lastmod>
+    <lastmod>2022-06-13</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/17/java-concurrency/</loc>
@@ -21,19 +29,11 @@
     <lastmod>2022-05-12</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/07/maven/</loc>
-    <lastmod>2022-05-11</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2022/05/06/git/</loc>
     <lastmod>2022-05-11</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/06/clean-code/</loc>
-    <lastmod>2022-05-07</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
     <lastmod>2022-05-07</lastmod>
   </url>
 </urlset> 

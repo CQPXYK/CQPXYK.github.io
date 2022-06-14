@@ -966,6 +966,12 @@
 
 <h1 id="4、Spring-MVC"><a href="#4、Spring-MVC" class="headerlink" title="4、Spring MVC"></a>4、Spring MVC</h1><h2 id="4-1-问题与解决"><a href="#4-1-问题与解决" class="headerlink" title="4.1 问题与解决"></a>4.1 问题与解决</h2><p>由于HTTP协议的无状态性，基于Web的应用程序在状态管理、工作流等问题上面临着重大挑战，Spring MVC就是为了解决这些问题而设计的。</p>
 <p>Spring MVC基于模型-视图-控制器（Model-View-Controller, MVC）模式实现，核心思想在于将业务逻辑、数据、显示分离，有助于构建灵活、松耦合的Web应用程序。</p>
+<ul>
+<li>Model可以是一个JavaBean，也可以是一个包含多个JavaBean的Map；</li>
+<li>View只负责把Model给“渲染”出来；</li>
+<li>Controller专注于业务处理，只需将处理得到Model传递给View。</li>
+</ul>
+<p>三者职责明确，且开发更简单，因为开发Controller时无需关注View，开发View时无需关心如何创建Model。</p>
 <h2 id="4-2-典型请求的生命周期"><a href="#4-2-典型请求的生命周期" class="headerlink" title="4.2 典型请求的生命周期"></a>4.2 典型请求的生命周期</h2><p>每当用户在Web浏览器中点击链接或者提交表单的时候，一个Request就开始工作了：</p>
 <p>1）Request首先会到达<code>DispatcherServlet</code>（前端控制器Servlet）；</p>
 <ul>

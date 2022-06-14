@@ -179,17 +179,17 @@
 </ul>
 <p>注：</p>
 <ul>
-<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>类似于Java的包名，通常是公司或组织名称；<code>artifactId</code>似于Java的类名，通常是项目名称；</p>
+<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>定义隶属的实际项目；<code>artifactId</code>定义项目中的一个模块；</p>
 </li>
 <li><p>一个Maven工程是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量来唯一定位要依赖的jar包。</p>
 </li>
 </ul>
 <h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven会自动解析并判断真正需要的依赖，避免了繁琐的人工管理。Maven定义了几种依赖关系（scope）如下：</p>
 <ul>
-<li>compile：编译时需要用到的jar包（最常用的，直接放入classpath）；</li>
-<li>test：编译UT时需要用到的jar包，比如junit；</li>
-<li>runtime：编译时不需要，但运行时需要用到的jar包，比如mysql；</li>
-<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），比如servlet-api。</li>
+<li>compile：编译、运行和测试时需要用到的jar包（最常用的，直接放入classpath），打包时也要包含进去；</li>
+<li>test：编译UT时需要用到的jar包，不会随项目发布，比如junit；</li>
+<li>runtime：编译时不需要，但运行和测试时需要用到的jar包，比如mysql；</li>
+<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），打包时不需要包含进去，比如servlet-api。</li>
 </ul>
 <h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
 <li><p>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</p>
@@ -222,7 +222,15 @@
 </li>
 <li><p>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</p>
 </li>
-<li><p>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件，maven-source-plugin和maven-javadoc-plugin插件分别用来创建源码和javadoc。</p>
+<li><p>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件。</p>
+<ul>
+<li><p>maven-source-plugin插件用于创建源码</p>
+</li>
+<li><p>maven-javadoc-plugin插件用于创建javadoc</p>
+</li>
+<li><p>spring-boot-maven-plugin插件用于将应用打包成一个可执行的jar包或war包（可直接使用<code>java -jar</code>命令执行）</p>
+</li>
+</ul>
 </li>
 </ul>
 <h1 id="模块管理"><a href="#模块管理" class="headerlink" title="模块管理"></a>模块管理</h1><ul>
