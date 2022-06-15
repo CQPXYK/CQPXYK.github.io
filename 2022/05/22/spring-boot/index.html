@@ -198,7 +198,7 @@
 </li>
 <li><p>文件名必须是<code>application</code>而不是其他名称;</p>
 </li>
-<li><p>文件后缀采用<code>.yml</code>（<a target="_blank" rel="noopener" href="https://yaml.org/">YAML</a>）或者<code>.properties</code>；</p>
+<li><p>文件后缀采用<code>.yml</code>（<a target="_blank" rel="noopener" href="https://yaml.org/">YAML</a>）或者<code>.properties</code>，后者的优先级更高；</p>
 </li>
 <li><p>层级格式的<code>.yml</code>文件比<code>key=value</code>格式的<code>.properties</code>文件更易读；</p>
 </li>
@@ -254,17 +254,17 @@
 <ul>
 <li><p><code>@Value(&quot;$&#123;property&#125;&quot;)</code>：适用于只需获取某单一配置项的值的场景；</p>
 </li>
-<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
+<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类或者<code>getXXXProperties</code>方法，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
 <ul>
 <li><p>配合<code>@Validated</code>注解可以对参数实现校验功能。</p>
 </li>
-<li><p>配合<code>@Component</code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
+<li><p><code>XXXProperties </code>类配合<code>@Component</code>注解或者<code>getXXXProperties</code>方法配合<code>@Bean </code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
 </li>
-<li><p>如果不使用<code>Component</code>注解，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
+<li><p>如果不使用<code>@Component</code>或则<code>@Bean </code>注解将其声明为Bean，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
 </li>
 </ul>
 </li>
-<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的properties 文件中的信息，同样可以将该类声明为一个JavaBean。</p>
+<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的<code>.properties</code> 文件中的信息（<code>.yml</code>文件不行），同样可以将该类声明为一个JavaBean。</p>
 </li>
 </ul>
 <h2 id="2-5-过滤配置类"><a href="#2-5-过滤配置类" class="headerlink" title="2.5 过滤配置类"></a>2.5 过滤配置类</h2><p>可以通过<code>@Conditional</code>及其派生注解来判断是否过滤候选的配置类，被过滤的配置类不会被SpringBoot 的自动装配机制加载，详细介绍见3.1节</p>
@@ -532,6 +532,7 @@
 <li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/springboot-guide/#/">https://snailclimb.gitee.io/springboot-guide/#/</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464">https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26000415/category_9271293.html">https://blog.csdn.net/qq_26000415/category_9271293.html</a></li>
+<li>《Spring Boot实战派》</li>
 </ul>
 </section>
     <!-- Tags START -->

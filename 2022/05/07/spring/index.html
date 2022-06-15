@@ -183,7 +183,7 @@
 <p>IoC和DI是从两个不同的角度来描述了同一件事情，IoC是从对象的角度，对象的控制权转移（反转）给了容器；DI是从容器的角度，容器将对象所依赖的其他对象注入进去</p>
 <p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器， IoC 容器是 Spring 用来实现 IoC 的载体， IoC 容器实际上就是个 Map（key，value），Map 中存放的是各种对象。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。</p>
 <p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过XML文件或者注解这两种方式来进行配置，这种创建应用对象之间的依赖协作关系的行为通常被称为<strong>装配（wiring）</strong>。</p>
-<h2 id="2-2-XML配置"><a href="#2-2-XML配置" class="headerlink" title="2.2 XML配置"></a>2.2 XML配置</h2><h3 id="2-2-1-步骤"><a href="#2-2-1-步骤" class="headerlink" title="2.2.1 步骤"></a>2.2.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<h2 id="2-2-XML配置"><a href="#2-2-XML配置" class="headerlink" title="2.2 XML配置"></a>2.2 XML配置</h2><h3 id="2-2-1-使用步骤"><a href="#2-2-1-使用步骤" class="headerlink" title="2.2.1 使用步骤"></a>2.2.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）通过属性注入或者依赖注入编写组件；</p>
 <p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件，定义需要实例化对象的类的全限定类名以及类之间依赖关系描述；</p>
 <p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
@@ -344,7 +344,7 @@
 </ul>
 <h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>使用注解自动装配与在XML中使用<code>autowire</code>属性自动装配并没有太大差别，但使用注解方式允许更细粒度的自动装配，可以选择性地标注某一个属性来对其应用自动装配。</p>
 <p>可以通过XML来配置第三方jar中的Bean，通过注解来配置自身开发的Bean，此时是XML+注解的配置模式，XML文件依旧存在，因此Spring IoC容器的启动依旧是从加载XML开始的。</p>
-<h3 id="2-3-1-步骤"><a href="#2-3-1-步骤" class="headerlink" title="2.3.1 步骤"></a>2.3.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<h3 id="2-3-1-使用步骤"><a href="#2-3-1-使用步骤" class="headerlink" title="2.3.1 使用步骤"></a>2.3.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）在XML文件中进行配置；</p>
 <ul>
 <li><p>配置<code>&lt;context:annotation-config&gt;</code>元素，可以告知Spring使用基于注解的自动装配；</p>
@@ -804,7 +804,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="3-3-XML配置"><a href="#3-3-XML配置" class="headerlink" title="3.3 XML配置"></a>3.3 XML配置</h2><h3 id="3-3-1-步骤"><a href="#3-3-1-步骤" class="headerlink" title="3.3.1 步骤"></a>3.3.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
+<h2 id="3-3-XML配置"><a href="#3-3-XML配置" class="headerlink" title="3.3 XML配置"></a>3.3 XML配置</h2><h3 id="3-3-1-使用步骤"><a href="#3-3-1-使用步骤" class="headerlink" title="3.3.1 使用步骤"></a>3.3.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
 <p>2）编写定义了切面逻辑的简单Java类；</p>
 <p>3）在XML文件中将该类注册为Spring应用上下文中的一个Bean；</p>
 <p>4）在XML文件中将该类配置为一个切面；</p>
@@ -853,7 +853,7 @@
 </li>
 </ul>
 <h2 id="3-4-注解配置"><a href="#3-4-注解配置" class="headerlink" title="3.4 注解配置"></a>3.4 注解配置</h2><p>在上一节的XML配置中，定义了切面逻辑的简单Java类中并没有任何地方让它成为一个切面，因此，不得不使用XML声明通知和切点。但是通过<code>@Aspect</code>注解，可以在不需要额外XML配置的情况下将简单Java类转换为一个切面。</p>
-<h3 id="3-4-1-步骤"><a href="#3-4-1-步骤" class="headerlink" title="3.4.1 步骤"></a>3.4.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
+<h3 id="3-4-1-使用步骤"><a href="#3-4-1-使用步骤" class="headerlink" title="3.4.1 使用步骤"></a>3.4.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
 <p>2）使用<code>@Aspect</code>标注编写定义了切面逻辑的简单Java类（下文简称为切面Bean）；</p>
 <p>3）使用<code>@Pointcut</code>定义一个可以在<code>@AspectJ</code>切面内可重用的切点；</p>
 <ul>
@@ -880,7 +880,15 @@
 </ul>
 <h3 id="3-4-3-精准指定切点"><a href="#3-4-3-精准指定切点" class="headerlink" title="3.4.3 精准指定切点"></a>3.4.3 精准指定切点</h3><p>除了使用AspectJ切点表达式，还可以考虑通过注解来标注需要拦截的方法，从而精准指定需要在何处织入切面。</p>
 <ul>
-<li><p>使用<code>@Transactional</code>注解去标注需要拦截的业务方法，即可精准指定需要在何处织入事务处理切面，实现声明式事务（事务往往在service层进行控制）；</p>
+<li><p>使用<code>@Transactional</code>注解去标注需要拦截的业务方法，即可精准指定需要在何处织入事务处理切面，实现声明式事务（</p>
+<ul>
+<li><p>事务往往在service层进行控制；</p>
+</li>
+<li><p><code>@Transactional</code>注解只有在使用基于接口的代理时才会生效；</p>
+</li>
+<li><p>如果异常被catch了，则事务就不回滚了，如果想让事务回滚，则必须在catch之后再往外throw异常；</p>
+</li>
+</ul>
 </li>
 <li><p>除了<code>@Transactional</code>注解，还可以自定义注解来标注需要拦截的方法，然后在切面Bean中通过<code>@annotation (小写开头的注解名)</code>这样的语法可以精准指定需要在何处织入切面；</p>
 </li>
@@ -966,14 +974,15 @@
 
 <h1 id="4、Spring-MVC"><a href="#4、Spring-MVC" class="headerlink" title="4、Spring MVC"></a>4、Spring MVC</h1><h2 id="4-1-问题与解决"><a href="#4-1-问题与解决" class="headerlink" title="4.1 问题与解决"></a>4.1 问题与解决</h2><p>由于HTTP协议的无状态性，基于Web的应用程序在状态管理、工作流等问题上面临着重大挑战，Spring MVC就是为了解决这些问题而设计的。</p>
 <p>Spring MVC基于模型-视图-控制器（Model-View-Controller, MVC）模式实现，核心思想在于将业务逻辑、数据、显示分离，有助于构建灵活、松耦合的Web应用程序。</p>
+<p>整个MVC相当于三层架构中的UI表现层，通过MVC对UI层又进一步进行了分层。</p>
 <ul>
 <li>Model可以是一个JavaBean，也可以是一个包含多个JavaBean的Map；</li>
 <li>View只负责把Model给“渲染”出来；</li>
-<li>Controller专注于业务处理，只需将处理得到Model传递给View。</li>
+<li>Controller用于处理View中的响应，调用业务处理方法并将得到的Model返回给View，Controller中尽量不放业务逻辑代码。</li>
 </ul>
 <p>三者职责明确，且开发更简单，因为开发Controller时无需关注View，开发View时无需关心如何创建Model。</p>
-<h2 id="4-2-典型请求的生命周期"><a href="#4-2-典型请求的生命周期" class="headerlink" title="4.2 典型请求的生命周期"></a>4.2 典型请求的生命周期</h2><p>每当用户在Web浏览器中点击链接或者提交表单的时候，一个Request就开始工作了：</p>
-<p>1）Request首先会到达<code>DispatcherServlet</code>（前端控制器Servlet）；</p>
+<h2 id="4-2-请求的生命周期"><a href="#4-2-请求的生命周期" class="headerlink" title="4.2 请求的生命周期"></a>4.2 请求的生命周期</h2><p>每当用户在Web浏览器中点击链接或者提交表单的时候，一个Request就开始工作了：</p>
+<p>1）Request首先会到达<code>DispatcherServlet</code>（前端控制器Servlet，继承自<code>HttpServlet</code>）；</p>
 <ul>
 <li><p><code>DispatcherServlet</code>会查询一个或者多个<code>Handler mapping</code>（处理器映射）；</p>
 </li>
@@ -1008,7 +1017,7 @@
 <li>View模板通过Model数据会渲染输出一个View，通过这个View将Response传递给客户端；</li>
 </ul>
 <p>至此，就完成了从Request离开浏览器到获取Response返回浏览器的过程。</p>
-<h2 id="4-3-搭建Spring-MVC"><a href="#4-3-搭建Spring-MVC" class="headerlink" title="4.3 搭建Spring MVC"></a>4.3 搭建Spring MVC</h2><p>1）在web.xml文件中配置<code>DispatcherServlet</code>；</p>
+<h2 id="4-3-搭建步骤"><a href="#4-3-搭建步骤" class="headerlink" title="4.3 搭建步骤"></a>4.3 搭建步骤</h2><p>1）在web.xml文件中配置<code>DispatcherServlet</code>；</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>spitter<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        org.springframework.web.servlet.DispatcherServlet</span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>spitter<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -1018,7 +1027,7 @@
 </li>
 </ul>
 <p>2）编写<code>spitter-servlet.xml</code>文件并配置注解驱动；</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:resources</span> <span class="attr">mapping</span> = <span class="string">&quot;/resources/**&quot;</span> <span class="attr">location</span> = <span class="string">&quot;/resources/&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:resources</span> <span class="attr">mapping</span> = <span class="string">&quot;/resources/**&quot;</span> <span class="attr">location</span> = <span class="string">&quot;/resources/&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p><code>&lt;mvc:resources&gt;</code>元素建立了一个服务于静态资源的处理器，此时，所有的静态资源都必须放置在应用程序的/resources目录下；</p>
@@ -1027,26 +1036,10 @@
 </li>
 <li><p>Spring也提供了其他类型的处理器映射，只需在Spring中配置该处理器映射Bean即可使用；</p>
 </li>
-</ul>
-<p>3）在<code>spitter-servlet.xml</code>文件中配置以下内容，并编写首页控制器以及面向Spitter和Spittle的控制器；</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>为应用程序所提供的每一种资源（而不是为每个用例）编写一个单独的控制器；</p>
-</li>
-<li><p><code>@Controller</code>注解用于类，表明这个类是一个控制器类；</p>
-</li>
 <li><p><code>&lt;context:component-scan&gt;</code>元素将查找所有的控制器类并将其注册为Bean；</p>
 </li>
-<li><p><code>@RequestMapping(...)</code>注解用于类时，定义了这个控制器所处理的根URL路径；</p>
-</li>
-<li><p><code>@RequestMapping(...)</code>注解用于方法时，表明该方法是一个请求处理方法，要处理指定路径下的请求；</p>
-</li>
-<li><p>请求处理方法的签名可以将任何事物作为入参；</p>
-</li>
-<li><p><code>@RequestParam</code>注解用于方法参数，当查询参数与方法参数名不匹配时，可以通过该注解将两者绑定； </p>
-</li>
 </ul>
+<p>3）编写首页控制器以及面向Spitter和Spittle的控制器，应当为应用程序所提供的每一种资源（而不是为每个用例）编写一个单独的控制器；</p>
 <p>4）在<code>spitter-servlet.xml</code>文件中配置视图解析器</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span> = <span class="string">&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> = <span class="string">&quot;viewClass&quot;</span> </span></span><br><span class="line"><span class="tag">              <span class="attr">value</span> = <span class="string">&quot;org.springframework.web.servlet.view.JstlView&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> = <span class="string">&quot;prefix&quot;</span> <span class="attr">value</span> = <span class="string">&quot;/WEB-INF/views/&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> = <span class="string">&quot;suffix&quot;</span> <span class="attr">value</span> = <span class="string">&quot;.jsp&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -1075,6 +1068,137 @@
 </ul>
 <p>Spring对REST的支持是构建在Spring MVC之上的，控制器可以处理所有的HTTP方法，包含四个主要的REST方法：GET、PUT、DELETE以及POST，分别对应对资源的检索、更新、删除和创建。通过适当设置<code>@RequestMapping</code>注解的<code>method</code>属性，就可以让<code>DispatcherServlet</code>把不同的HTTP方法的请求定向到特定的控制器方法上。</p>
 <p>RESTful Web 服务与传统的 MVC 开发一个关键区别是返回给客户端的内容的创建方式：<strong>传统的 MVC 模式开发会直接返回给客户端一个视图，但是 RESTful Web 服务一般会将返回的数据以 JSON 的形式返回，实现前后端分离开发。</strong></p>
+<h2 id="4-5-定义控制器"><a href="#4-5-定义控制器" class="headerlink" title="4.5 定义控制器"></a>4.5 定义控制器</h2><h3 id="4-5-1-常用注解"><a href="#4-5-1-常用注解" class="headerlink" title="4.5.1 常用注解"></a>4.5.1 常用注解</h3><ul>
+<li><p><code>@Controller</code></p>
+<ul>
+<li>用于类，表明该类是MVC的控制器。</li>
+</ul>
+</li>
+<li><p><code>@RequestBody</code></p>
+<ul>
+<li><p>用于请求方法参数；</p>
+</li>
+<li><p>可以将请求中的(JSON/XML）字符串绑走到相应的Bean 上，也可以将其分别绑定到对应的字符串上。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ResponseBody</code></p>
+<ul>
+<li><p>用于方法；</p>
+</li>
+<li><p>将请求方法返回的对象转换为指定格式（JSON/XML）后，再写入<code>Response</code>对象的<code>body</code>数据区。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RestController</code></p>
+<ul>
+<li><p>是Spring 4.0之后才有的注解；</p>
+</li>
+<li><p>是<code>@Controller</code>和<code>@ResponseBody</code>的结合；</p>
+</li>
+<li><p>用于标注REST风格的控制器。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RequestMapping</code></p>
+<ul>
+<li><p>用于类时，定义了这个控制器所处理的根URL路径；</p>
+</li>
+<li><p>用于方法时，表明该方法是一个请求处理方法，要处理指定URL下的请求；</p>
+</li>
+<li><p>请求处理方法的签名可以将任何事物作为入参；</p>
+</li>
+<li><p><code>value</code>属性用于指定请求的地址；</p>
+</li>
+<li><p><code>method</code>属性用于指定请求的类型（GET、HEAD、POST、PUT、PATCH、DELETE、OPTIONS、TRACE）；</p>
+</li>
+<li><p><code>consumes</code>属性用于指定请求的内容类型；</p>
+</li>
+<li><p><code>produces</code>属性用于指定返回的内容类型；</p>
+</li>
+<li><p><code>params</code>属性用于指定请求中必须包含的参数值；</p>
+</li>
+<li><p><code>headers</code>属性用于指定请求中必须包含的header值。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RequestParam</code></p>
+<ul>
+<li>用于请求方法参数，当查询参数与方法参数名不匹配时，可以通过该注解将两者绑定。</li>
+</ul>
+</li>
+<li><p><code>@PathVariable</code></p>
+<ul>
+<li>用于请求方法参数，将请求中的变量映射到请求处理方法的参数上。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-2-HTTP方法"><a href="#4-5-2-HTTP方法" class="headerlink" title="4.5.2 HTTP方法"></a>4.5.2 HTTP方法</h3><ul>
+<li><p>GET</p>
+<ul>
+<li><p>可只直接使用<code>@GetMapping</code>注解；</p>
+</li>
+<li><p>是最常用的方法，可用于获取资源；</p>
+</li>
+<li><p>在浏览器中可以回退，请求会被浏览器主动缓存；</p>
+</li>
+<li><p>只能进行URL编码，只接收ASCII字符；</p>
+</li>
+<li><p>参数直接暴露在URL上，安全性较低，不能用于传递敏感信息。</p>
+</li>
+</ul>
+</li>
+<li><p>POST</p>
+<ul>
+<li><p>可只直接使用<code>@PostMapping</code>注解；</p>
+</li>
+<li><p>如果需要添加对象，可使用POST方法传递一个Model 对象；</p>
+</li>
+<li><p>访问同一地址时也需要再次提交请求，浏览器不会缓存请求；</p>
+</li>
+<li><p>除了URL，还支持多种编码方式；</p>
+</li>
+<li><p>参数可以放在request body 中，也可以通过URL传递。</p>
+</li>
+</ul>
+</li>
+<li><p>PUT</p>
+<ul>
+<li><p>可只直接使用<code>@PutMapping</code>注解；</p>
+</li>
+<li><p>如果对象需要更新，可使用PUT方法去发送请求。</p>
+</li>
+</ul>
+</li>
+<li><p>PATCH</p>
+<ul>
+<li><p>是一个新引入的方法，是对PUT方法的补充；</p>
+</li>
+<li><p>用来对己知资源进行局部更新，比如一个对象的部分数据而非整个对象数据。</p>
+</li>
+</ul>
+</li>
+<li><p>DELETE</p>
+<ul>
+<li><p>可只直接使用<code>@DeleteMapping</code>注解；</p>
+</li>
+<li><p>在执行前先查询是否有数据；</p>
+</li>
+<li><p>由于返回的是<code>void</code> 类型，要注意判断是否成功，可通过存储过程返回值来判断。</p>
+</li>
+</ul>
+</li>
+<li><p>OPTIONS</p>
+<ul>
+<li>用于获取当前URL。</li>
+</ul>
+</li>
+<li><p>TRACE</p>
+<ul>
+<li>用于显示服务器收到的请求，从而进行测试或诊断。</li>
+</ul>
+</li>
+</ul>
 <h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
 <li>《Spring In Action，Third Edition》</li>
 <li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
@@ -1133,7 +1257,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.4 自动装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.3.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.3.2 自动装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">2.3.3 自动检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E5%9F%BA%E4%BA%8EJava%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3.4 基于Java的配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-5-%E8%A1%A5%E5%85%85%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2.3.5 补充介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-IoC%E7%89%B9%E6%80%A7"><span class="toc-nav-text">2.4 IoC特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-1-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.4.1 工厂Bean</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-2-Bean%E5%B7%A5%E5%8E%82"><span class="toc-nav-text">2.4.2 Bean工厂</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-3-Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">2.4.3 Bean的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-4-%E5%90%8E%E7%BD%AE%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-nav-text">2.4.4 后置处理器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-5-%E5%88%9B%E5%BB%BABean"><span class="toc-nav-text">2.4.5 创建Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">3.2 术语介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.3 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.3.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-2-%E9%85%8D%E7%BD%AE%E5%85%83%E7%B4%A0"><span class="toc-nav-text">3.3.2 配置元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-3-%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-nav-text">3.3.3 切点表达式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.3.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.4 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-1-%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.4.1 步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-2-%E9%80%9A%E7%9F%A5%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-nav-text">3.4.2 通知拦截器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-3-%E7%B2%BE%E5%87%86%E6%8C%87%E5%AE%9A%E5%88%87%E7%82%B9"><span class="toc-nav-text">3.4.3 精准指定切点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.4.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-AOP%E7%89%B9%E6%80%A7"><span class="toc-nav-text">3.5 AOP特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-1-CGLIB"><span class="toc-nav-text">3.5.1 CGLIB</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-2-%E5%88%9B%E5%BB%BA%E4%BB%A3%E7%90%86Bean"><span class="toc-nav-text">3.5.2 创建代理Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81Spring-MVC"><span class="toc-nav-text">4、Spring MVC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">4.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E5%85%B8%E5%9E%8B%E8%AF%B7%E6%B1%82%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">4.2 典型请求的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E6%90%AD%E5%BB%BASpring-MVC"><span class="toc-nav-text">4.3 搭建Spring MVC</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-REST%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">4.4 REST功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">5、参考资料</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.4 自动装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.3.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.3.2 自动装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">2.3.3 自动检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E5%9F%BA%E4%BA%8EJava%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3.4 基于Java的配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-5-%E8%A1%A5%E5%85%85%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2.3.5 补充介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-IoC%E7%89%B9%E6%80%A7"><span class="toc-nav-text">2.4 IoC特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-1-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.4.1 工厂Bean</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-2-Bean%E5%B7%A5%E5%8E%82"><span class="toc-nav-text">2.4.2 Bean工厂</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-3-Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">2.4.3 Bean的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-4-%E5%90%8E%E7%BD%AE%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-nav-text">2.4.4 后置处理器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-5-%E5%88%9B%E5%BB%BABean"><span class="toc-nav-text">2.4.5 创建Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">3.2 术语介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.3 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.3.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-2-%E9%85%8D%E7%BD%AE%E5%85%83%E7%B4%A0"><span class="toc-nav-text">3.3.2 配置元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-3-%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-nav-text">3.3.3 切点表达式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.3.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.4 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.4.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-2-%E9%80%9A%E7%9F%A5%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-nav-text">3.4.2 通知拦截器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-3-%E7%B2%BE%E5%87%86%E6%8C%87%E5%AE%9A%E5%88%87%E7%82%B9"><span class="toc-nav-text">3.4.3 精准指定切点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.4.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-AOP%E7%89%B9%E6%80%A7"><span class="toc-nav-text">3.5 AOP特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-1-CGLIB"><span class="toc-nav-text">3.5.1 CGLIB</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-2-%E5%88%9B%E5%BB%BA%E4%BB%A3%E7%90%86Bean"><span class="toc-nav-text">3.5.2 创建代理Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81Spring-MVC"><span class="toc-nav-text">4、Spring MVC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">4.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E8%AF%B7%E6%B1%82%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">4.2 请求的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">4.3 搭建步骤</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-REST%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">4.4 REST功能</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-5-%E5%AE%9A%E4%B9%89%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="toc-nav-text">4.5 定义控制器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-1-%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">4.5.1 常用注解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-2-HTTP%E6%96%B9%E6%B3%95"><span class="toc-nav-text">4.5.2 HTTP方法</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">5、参考资料</span></a></li></ol>
     
   </div>
 </aside>

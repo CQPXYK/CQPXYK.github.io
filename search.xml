@@ -1313,6 +1313,96 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Maven</title>
+    <url>/2022/05/07/maven/</url>
+    <content><![CDATA[<p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下：</p>
+<ul>
+<li><p><code>pom.xml</code>：项目描述文件；</p>
+</li>
+<li><p><code>src/main/java</code>：Java源码；</p>
+</li>
+<li><p><code>src/main/resources</code>：资源文件；</p>
+</li>
+<li><p><code>src/test/java</code>：测试源码；</p>
+</li>
+<li><p><code>src/test/resources</code>：测试资源文件；</p>
+</li>
+<li><p><code>target</code>：所有编译、打包生成的文件。</p>
+</li>
+</ul>
+<p>注：</p>
+<ul>
+<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>定义隶属的实际项目；<code>artifactId</code>定义项目中的一个模块；</p>
+</li>
+<li><p>一个Maven工程是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量来唯一定位要依赖的jar包。</p>
+</li>
+</ul>
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven会自动解析并判断真正需要的依赖，避免了繁琐的人工管理。Maven定义了几种依赖关系（scope）如下：</p>
+<ul>
+<li>compile：编译、运行和测试时需要用到的jar包（最常用的，直接放入classpath），打包时也要包含进去；</li>
+<li>test：编译UT时需要用到的jar包，不会随项目发布，比如junit；</li>
+<li>runtime：编译时不需要，但运行和测试时需要用到的jar包，比如mysql；</li>
+<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），打包时不需要包含进去，比如servlet-api。</li>
+</ul>
+<h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
+<li><p>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</p>
+</li>
+<li><p>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</p>
+</li>
+<li><p>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
+</li>
+<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种开发版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
+</li>
+<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要在用户主目录的<code>.m2</code>目录创建一个<code>settings.xml</code>配置文件，进行配置；</p>
+</li>
+<li><p>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</p>
+</li>
+</ul>
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><ul>
+<li><p>Maven有两个生命周期（lifecycle）： <code>default</code>和<code>clean</code>，每个lifecycle都由一系列阶段（phase）构成；</p>
+</li>
+<li><p>mvn命令后面的参数是指phase；</p>
+</li>
+<li><p>当命令中只有一个phase时，就运行<code>default</code>这个lifecycle，并运行到指定的phase；</p>
+</li>
+<li><p>当命令中有两个phase时，就依次先后运行<code>clean</code>和<code>default</code>这两个lifecycle到分别指定的phase；</p>
+</li>
+<li><p>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</p>
+</li>
+<li><p>每执行一个phase，又会触发一个或多个goal，goal是最小任务单元，goal的名称是<code>a:b</code>这种形式；</p>
+</li>
+<li><p>大多数情况下只要指定phase，就默认执行这些phase默认绑定的goal，只有少数情况可以直接指定运行一个goal，例如，启动Tomcat服务器的命令是<code>mvn tomcat:run</code>；</p>
+</li>
+<li><p>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</p>
+</li>
+<li><p>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件。</p>
+<ul>
+<li><p>maven-source-plugin插件用于创建源码</p>
+</li>
+<li><p>maven-javadoc-plugin插件用于创建javadoc</p>
+</li>
+<li><p>spring-boot-maven-plugin插件用于将应用打包成一个可执行的jar包或war包（可直接使用<code>java -jar</code>命令执行）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="模块管理"><a href="#模块管理" class="headerlink" title="模块管理"></a>模块管理</h1><ul>
+<li><p>将一个项目拆分为多个模块可以降低软件复杂度，拆分后的项目中的每个模块都有自己的<code>pom.xml</code>和<code>src</code>，可以把每个模块当做独立的Maven项目，每个模块也可以在<code>pom.xml</code>引入其他模块；</p>
+</li>
+<li><p>当模块之间存在大量重复时，可以提取出公共的部分作为parent，parent的<code>&lt;packaging&gt;</code>是<code>pom</code>，module的<code>&lt;packaging&gt;</code>是<code>jar</code>，parent本身不含任何Java代码；</p>
+</li>
+<li><p>在根目录输入命令<code>mvn clean package</code>，即可将包括parent在内的所有module一次性全部编译打包。</p>
+</li>
+</ul>
+<img src="模块结构.jpg" alt="模块结构" style="zoom:100%;" />
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Java Concurrency</title>
     <url>/2022/05/17/java-concurrency/</url>
     <content><![CDATA[<h1 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h1><h2 id="1-1-进程与线程"><a href="#1-1-进程与线程" class="headerlink" title="1.1 进程与线程"></a>1.1 进程与线程</h2><p>现代操作系统（Windows、macOS、Linux）执行多任务实际就是让CPU对多个任务<strong>轮流交替执行</strong>，通常任务数量远远多于CPU的核数。</p>
@@ -1917,96 +2007,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Maven</title>
-    <url>/2022/05/07/maven/</url>
-    <content><![CDATA[<p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
-<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下：</p>
-<ul>
-<li><p><code>pom.xml</code>：项目描述文件；</p>
-</li>
-<li><p><code>src/main/java</code>：Java源码；</p>
-</li>
-<li><p><code>src/main/resources</code>：资源文件；</p>
-</li>
-<li><p><code>src/test/java</code>：测试源码；</p>
-</li>
-<li><p><code>src/test/resources</code>：测试资源文件；</p>
-</li>
-<li><p><code>target</code>：所有编译、打包生成的文件。</p>
-</li>
-</ul>
-<p>注：</p>
-<ul>
-<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>定义隶属的实际项目；<code>artifactId</code>定义项目中的一个模块；</p>
-</li>
-<li><p>一个Maven工程是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量来唯一定位要依赖的jar包。</p>
-</li>
-</ul>
-<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven会自动解析并判断真正需要的依赖，避免了繁琐的人工管理。Maven定义了几种依赖关系（scope）如下：</p>
-<ul>
-<li>compile：编译、运行和测试时需要用到的jar包（最常用的，直接放入classpath），打包时也要包含进去；</li>
-<li>test：编译UT时需要用到的jar包，不会随项目发布，比如junit；</li>
-<li>runtime：编译时不需要，但运行和测试时需要用到的jar包，比如mysql；</li>
-<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），打包时不需要包含进去，比如servlet-api。</li>
-</ul>
-<h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
-<li><p>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</p>
-</li>
-<li><p>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</p>
-</li>
-<li><p>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
-</li>
-<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种开发版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
-</li>
-<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要在用户主目录的<code>.m2</code>目录创建一个<code>settings.xml</code>配置文件，进行配置；</p>
-</li>
-<li><p>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</p>
-</li>
-</ul>
-<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><ul>
-<li><p>Maven有两个生命周期（lifecycle）： <code>default</code>和<code>clean</code>，每个lifecycle都由一系列阶段（phase）构成；</p>
-</li>
-<li><p>mvn命令后面的参数是指phase；</p>
-</li>
-<li><p>当命令中只有一个phase时，就运行<code>default</code>这个lifecycle，并运行到指定的phase；</p>
-</li>
-<li><p>当命令中有两个phase时，就依次先后运行<code>clean</code>和<code>default</code>这两个lifecycle到分别指定的phase；</p>
-</li>
-<li><p>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</p>
-</li>
-<li><p>每执行一个phase，又会触发一个或多个goal，goal是最小任务单元，goal的名称是<code>a:b</code>这种形式；</p>
-</li>
-<li><p>大多数情况下只要指定phase，就默认执行这些phase默认绑定的goal，只有少数情况可以直接指定运行一个goal，例如，启动Tomcat服务器的命令是<code>mvn tomcat:run</code>；</p>
-</li>
-<li><p>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</p>
-</li>
-<li><p>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件。</p>
-<ul>
-<li><p>maven-source-plugin插件用于创建源码</p>
-</li>
-<li><p>maven-javadoc-plugin插件用于创建javadoc</p>
-</li>
-<li><p>spring-boot-maven-plugin插件用于将应用打包成一个可执行的jar包或war包（可直接使用<code>java -jar</code>命令执行）</p>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="模块管理"><a href="#模块管理" class="headerlink" title="模块管理"></a>模块管理</h1><ul>
-<li><p>将一个项目拆分为多个模块可以降低软件复杂度，拆分后的项目中的每个模块都有自己的<code>pom.xml</code>和<code>src</code>，可以把每个模块当做独立的Maven项目，每个模块也可以在<code>pom.xml</code>引入其他模块；</p>
-</li>
-<li><p>当模块之间存在大量重复时，可以提取出公共的部分作为parent，parent的<code>&lt;packaging&gt;</code>是<code>pom</code>，module的<code>&lt;packaging&gt;</code>是<code>jar</code>，parent本身不含任何Java代码；</p>
-</li>
-<li><p>在根目录输入命令<code>mvn clean package</code>，即可将包括parent在内的所有module一次性全部编译打包。</p>
-</li>
-</ul>
-<img src="模块结构.jpg" alt="模块结构" style="zoom:100%;" />
-
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
     <title>Spring Boot</title>
     <url>/2022/05/22/spring-boot/</url>
     <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
@@ -2046,7 +2046,7 @@
 </li>
 <li><p>文件名必须是<code>application</code>而不是其他名称;</p>
 </li>
-<li><p>文件后缀采用<code>.yml</code>（<a href="https://yaml.org/">YAML</a>）或者<code>.properties</code>；</p>
+<li><p>文件后缀采用<code>.yml</code>（<a href="https://yaml.org/">YAML</a>）或者<code>.properties</code>，后者的优先级更高；</p>
 </li>
 <li><p>层级格式的<code>.yml</code>文件比<code>key=value</code>格式的<code>.properties</code>文件更易读；</p>
 </li>
@@ -2102,17 +2102,17 @@
 <ul>
 <li><p><code>@Value(&quot;$&#123;property&#125;&quot;)</code>：适用于只需获取某单一配置项的值的场景；</p>
 </li>
-<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
+<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类或者<code>getXXXProperties</code>方法，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
 <ul>
 <li><p>配合<code>@Validated</code>注解可以对参数实现校验功能。</p>
 </li>
-<li><p>配合<code>@Component</code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
+<li><p><code>XXXProperties </code>类配合<code>@Component</code>注解或者<code>getXXXProperties</code>方法配合<code>@Bean </code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
 </li>
-<li><p>如果不使用<code>Component</code>注解，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
+<li><p>如果不使用<code>@Component</code>或则<code>@Bean </code>注解将其声明为Bean，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
 </li>
 </ul>
 </li>
-<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的properties 文件中的信息，同样可以将该类声明为一个JavaBean。</p>
+<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的<code>.properties</code> 文件中的信息（<code>.yml</code>文件不行），同样可以将该类声明为一个JavaBean。</p>
 </li>
 </ul>
 <h2 id="2-5-过滤配置类"><a href="#2-5-过滤配置类" class="headerlink" title="2.5 过滤配置类"></a>2.5 过滤配置类</h2><p>可以通过<code>@Conditional</code>及其派生注解来判断是否过滤候选的配置类，被过滤的配置类不会被SpringBoot 的自动装配机制加载，详细介绍见3.1节</p>
@@ -2380,6 +2380,7 @@
 <li><a href="https://snailclimb.gitee.io/springboot-guide/#/">https://snailclimb.gitee.io/springboot-guide/#/</a></li>
 <li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464">https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464</a></li>
 <li><a href="https://blog.csdn.net/qq_26000415/category_9271293.html">https://blog.csdn.net/qq_26000415/category_9271293.html</a></li>
+<li>《Spring Boot实战派》</li>
 </ul>
 ]]></content>
   </entry>
@@ -2408,7 +2409,7 @@
 <p>IoC和DI是从两个不同的角度来描述了同一件事情，IoC是从对象的角度，对象的控制权转移（反转）给了容器；DI是从容器的角度，容器将对象所依赖的其他对象注入进去</p>
 <p>Spring的核心就是提供了一个<strong>可扩展的无侵入</strong>的IoC容器， IoC 容器是 Spring 用来实现 IoC 的载体， IoC 容器实际上就是个 Map（key，value），Map 中存放的是各种对象。无侵入指应用程序的组件无需实现Spring的特定接口，对Spring的IoC容器无感知。容器是一种为特定组件的运行提供必要支持的一个软件环境（组件运行环境和底层服务）。</p>
 <p>在Spring的IoC容器中，所有的组件又称为JavaBean，配置一个组件就是在配置一个JavaBean。IoC容器可以管理所有轻量级的JavaBean的生命周期，从而将JavaBean的创建配置与使用相分离。IoC容器在创建和装配Bean时需要知道Bean间的依赖关系，依赖关系可以通过XML文件或者注解这两种方式来进行配置，这种创建应用对象之间的依赖协作关系的行为通常被称为<strong>装配（wiring）</strong>。</p>
-<h2 id="2-2-XML配置"><a href="#2-2-XML配置" class="headerlink" title="2.2 XML配置"></a>2.2 XML配置</h2><h3 id="2-2-1-步骤"><a href="#2-2-1-步骤" class="headerlink" title="2.2.1 步骤"></a>2.2.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<h2 id="2-2-XML配置"><a href="#2-2-XML配置" class="headerlink" title="2.2 XML配置"></a>2.2 XML配置</h2><h3 id="2-2-1-使用步骤"><a href="#2-2-1-使用步骤" class="headerlink" title="2.2.1 使用步骤"></a>2.2.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）通过属性注入或者依赖注入编写组件；</p>
 <p>3）根据组件间的依赖关系编写<code>application.xml</code>配置文件，定义需要实例化对象的类的全限定类名以及类之间依赖关系描述；</p>
 <p>4）创建IoC容器实例，并加载配置文件，使得Spring的IoC容器创建并装配好配置文件中指定的所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean；</p>
@@ -2569,7 +2570,7 @@
 </ul>
 <h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>使用注解自动装配与在XML中使用<code>autowire</code>属性自动装配并没有太大差别，但使用注解方式允许更细粒度的自动装配，可以选择性地标注某一个属性来对其应用自动装配。</p>
 <p>可以通过XML来配置第三方jar中的Bean，通过注解来配置自身开发的Bean，此时是XML+注解的配置模式，XML文件依旧存在，因此Spring IoC容器的启动依旧是从加载XML开始的。</p>
-<h3 id="2-3-1-步骤"><a href="#2-3-1-步骤" class="headerlink" title="2.3.1 步骤"></a>2.3.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
+<h3 id="2-3-1-使用步骤"><a href="#2-3-1-使用步骤" class="headerlink" title="2.3.1 使用步骤"></a>2.3.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）在XML文件中进行配置；</p>
 <ul>
 <li><p>配置<code>&lt;context:annotation-config&gt;</code>元素，可以告知Spring使用基于注解的自动装配；</p>
@@ -3029,7 +3030,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="3-3-XML配置"><a href="#3-3-XML配置" class="headerlink" title="3.3 XML配置"></a>3.3 XML配置</h2><h3 id="3-3-1-步骤"><a href="#3-3-1-步骤" class="headerlink" title="3.3.1 步骤"></a>3.3.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
+<h2 id="3-3-XML配置"><a href="#3-3-XML配置" class="headerlink" title="3.3 XML配置"></a>3.3 XML配置</h2><h3 id="3-3-1-使用步骤"><a href="#3-3-1-使用步骤" class="headerlink" title="3.3.1 使用步骤"></a>3.3.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
 <p>2）编写定义了切面逻辑的简单Java类；</p>
 <p>3）在XML文件中将该类注册为Spring应用上下文中的一个Bean；</p>
 <p>4）在XML文件中将该类配置为一个切面；</p>
@@ -3078,7 +3079,7 @@
 </li>
 </ul>
 <h2 id="3-4-注解配置"><a href="#3-4-注解配置" class="headerlink" title="3.4 注解配置"></a>3.4 注解配置</h2><p>在上一节的XML配置中，定义了切面逻辑的简单Java类中并没有任何地方让它成为一个切面，因此，不得不使用XML声明通知和切点。但是通过<code>@Aspect</code>注解，可以在不需要额外XML配置的情况下将简单Java类转换为一个切面。</p>
-<h3 id="3-4-1-步骤"><a href="#3-4-1-步骤" class="headerlink" title="3.4.1 步骤"></a>3.4.1 步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
+<h3 id="3-4-1-使用步骤"><a href="#3-4-1-使用步骤" class="headerlink" title="3.4.1 使用步骤"></a>3.4.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-aspects</code>依赖；</p>
 <p>2）使用<code>@Aspect</code>标注编写定义了切面逻辑的简单Java类（下文简称为切面Bean）；</p>
 <p>3）使用<code>@Pointcut</code>定义一个可以在<code>@AspectJ</code>切面内可重用的切点；</p>
 <ul>
@@ -3105,7 +3106,15 @@
 </ul>
 <h3 id="3-4-3-精准指定切点"><a href="#3-4-3-精准指定切点" class="headerlink" title="3.4.3 精准指定切点"></a>3.4.3 精准指定切点</h3><p>除了使用AspectJ切点表达式，还可以考虑通过注解来标注需要拦截的方法，从而精准指定需要在何处织入切面。</p>
 <ul>
-<li><p>使用<code>@Transactional</code>注解去标注需要拦截的业务方法，即可精准指定需要在何处织入事务处理切面，实现声明式事务（事务往往在service层进行控制）；</p>
+<li><p>使用<code>@Transactional</code>注解去标注需要拦截的业务方法，即可精准指定需要在何处织入事务处理切面，实现声明式事务（</p>
+<ul>
+<li><p>事务往往在service层进行控制；</p>
+</li>
+<li><p><code>@Transactional</code>注解只有在使用基于接口的代理时才会生效；</p>
+</li>
+<li><p>如果异常被catch了，则事务就不回滚了，如果想让事务回滚，则必须在catch之后再往外throw异常；</p>
+</li>
+</ul>
 </li>
 <li><p>除了<code>@Transactional</code>注解，还可以自定义注解来标注需要拦截的方法，然后在切面Bean中通过<code>@annotation (小写开头的注解名)</code>这样的语法可以精准指定需要在何处织入切面；</p>
 </li>
@@ -3191,14 +3200,15 @@
 
 <h1 id="4、Spring-MVC"><a href="#4、Spring-MVC" class="headerlink" title="4、Spring MVC"></a>4、Spring MVC</h1><h2 id="4-1-问题与解决"><a href="#4-1-问题与解决" class="headerlink" title="4.1 问题与解决"></a>4.1 问题与解决</h2><p>由于HTTP协议的无状态性，基于Web的应用程序在状态管理、工作流等问题上面临着重大挑战，Spring MVC就是为了解决这些问题而设计的。</p>
 <p>Spring MVC基于模型-视图-控制器（Model-View-Controller, MVC）模式实现，核心思想在于将业务逻辑、数据、显示分离，有助于构建灵活、松耦合的Web应用程序。</p>
+<p>整个MVC相当于三层架构中的UI表现层，通过MVC对UI层又进一步进行了分层。</p>
 <ul>
 <li>Model可以是一个JavaBean，也可以是一个包含多个JavaBean的Map；</li>
 <li>View只负责把Model给“渲染”出来；</li>
-<li>Controller专注于业务处理，只需将处理得到Model传递给View。</li>
+<li>Controller用于处理View中的响应，调用业务处理方法并将得到的Model返回给View，Controller中尽量不放业务逻辑代码。</li>
 </ul>
 <p>三者职责明确，且开发更简单，因为开发Controller时无需关注View，开发View时无需关心如何创建Model。</p>
-<h2 id="4-2-典型请求的生命周期"><a href="#4-2-典型请求的生命周期" class="headerlink" title="4.2 典型请求的生命周期"></a>4.2 典型请求的生命周期</h2><p>每当用户在Web浏览器中点击链接或者提交表单的时候，一个Request就开始工作了：</p>
-<p>1）Request首先会到达<code>DispatcherServlet</code>（前端控制器Servlet）；</p>
+<h2 id="4-2-请求的生命周期"><a href="#4-2-请求的生命周期" class="headerlink" title="4.2 请求的生命周期"></a>4.2 请求的生命周期</h2><p>每当用户在Web浏览器中点击链接或者提交表单的时候，一个Request就开始工作了：</p>
+<p>1）Request首先会到达<code>DispatcherServlet</code>（前端控制器Servlet，继承自<code>HttpServlet</code>）；</p>
 <ul>
 <li><p><code>DispatcherServlet</code>会查询一个或者多个<code>Handler mapping</code>（处理器映射）；</p>
 </li>
@@ -3233,7 +3243,7 @@
 <li>View模板通过Model数据会渲染输出一个View，通过这个View将Response传递给客户端；</li>
 </ul>
 <p>至此，就完成了从Request离开浏览器到获取Response返回浏览器的过程。</p>
-<h2 id="4-3-搭建Spring-MVC"><a href="#4-3-搭建Spring-MVC" class="headerlink" title="4.3 搭建Spring MVC"></a>4.3 搭建Spring MVC</h2><p>1）在web.xml文件中配置<code>DispatcherServlet</code>；</p>
+<h2 id="4-3-搭建步骤"><a href="#4-3-搭建步骤" class="headerlink" title="4.3 搭建步骤"></a>4.3 搭建步骤</h2><p>1）在web.xml文件中配置<code>DispatcherServlet</code>；</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>spitter<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        org.springframework.web.servlet.DispatcherServlet</span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>spitter<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -3243,7 +3253,7 @@
 </li>
 </ul>
 <p>2）编写<code>spitter-servlet.xml</code>文件并配置注解驱动；</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:resources</span> <span class="attr">mapping</span> = <span class="string">&quot;/resources/**&quot;</span> <span class="attr">location</span> = <span class="string">&quot;/resources/&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mvc:resources</span> <span class="attr">mapping</span> = <span class="string">&quot;/resources/**&quot;</span> <span class="attr">location</span> = <span class="string">&quot;/resources/&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p><code>&lt;mvc:resources&gt;</code>元素建立了一个服务于静态资源的处理器，此时，所有的静态资源都必须放置在应用程序的/resources目录下；</p>
@@ -3252,26 +3262,10 @@
 </li>
 <li><p>Spring也提供了其他类型的处理器映射，只需在Spring中配置该处理器映射Bean即可使用；</p>
 </li>
-</ul>
-<p>3）在<code>spitter-servlet.xml</code>文件中配置以下内容，并编写首页控制器以及面向Spitter和Spittle的控制器；</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span> = <span class="string">&quot;...&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>为应用程序所提供的每一种资源（而不是为每个用例）编写一个单独的控制器；</p>
-</li>
-<li><p><code>@Controller</code>注解用于类，表明这个类是一个控制器类；</p>
-</li>
 <li><p><code>&lt;context:component-scan&gt;</code>元素将查找所有的控制器类并将其注册为Bean；</p>
 </li>
-<li><p><code>@RequestMapping(...)</code>注解用于类时，定义了这个控制器所处理的根URL路径；</p>
-</li>
-<li><p><code>@RequestMapping(...)</code>注解用于方法时，表明该方法是一个请求处理方法，要处理指定路径下的请求；</p>
-</li>
-<li><p>请求处理方法的签名可以将任何事物作为入参；</p>
-</li>
-<li><p><code>@RequestParam</code>注解用于方法参数，当查询参数与方法参数名不匹配时，可以通过该注解将两者绑定； </p>
-</li>
 </ul>
+<p>3）编写首页控制器以及面向Spitter和Spittle的控制器，应当为应用程序所提供的每一种资源（而不是为每个用例）编写一个单独的控制器；</p>
 <p>4）在<code>spitter-servlet.xml</code>文件中配置视图解析器</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span> = <span class="string">&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> = <span class="string">&quot;viewClass&quot;</span> </span></span><br><span class="line"><span class="tag">              <span class="attr">value</span> = <span class="string">&quot;org.springframework.web.servlet.view.JstlView&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> = <span class="string">&quot;prefix&quot;</span> <span class="attr">value</span> = <span class="string">&quot;/WEB-INF/views/&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> = <span class="string">&quot;suffix&quot;</span> <span class="attr">value</span> = <span class="string">&quot;.jsp&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -3300,6 +3294,137 @@
 </ul>
 <p>Spring对REST的支持是构建在Spring MVC之上的，控制器可以处理所有的HTTP方法，包含四个主要的REST方法：GET、PUT、DELETE以及POST，分别对应对资源的检索、更新、删除和创建。通过适当设置<code>@RequestMapping</code>注解的<code>method</code>属性，就可以让<code>DispatcherServlet</code>把不同的HTTP方法的请求定向到特定的控制器方法上。</p>
 <p>RESTful Web 服务与传统的 MVC 开发一个关键区别是返回给客户端的内容的创建方式：<strong>传统的 MVC 模式开发会直接返回给客户端一个视图，但是 RESTful Web 服务一般会将返回的数据以 JSON 的形式返回，实现前后端分离开发。</strong></p>
+<h2 id="4-5-定义控制器"><a href="#4-5-定义控制器" class="headerlink" title="4.5 定义控制器"></a>4.5 定义控制器</h2><h3 id="4-5-1-常用注解"><a href="#4-5-1-常用注解" class="headerlink" title="4.5.1 常用注解"></a>4.5.1 常用注解</h3><ul>
+<li><p><code>@Controller</code></p>
+<ul>
+<li>用于类，表明该类是MVC的控制器。</li>
+</ul>
+</li>
+<li><p><code>@RequestBody</code></p>
+<ul>
+<li><p>用于请求方法参数；</p>
+</li>
+<li><p>可以将请求中的(JSON/XML）字符串绑走到相应的Bean 上，也可以将其分别绑定到对应的字符串上。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ResponseBody</code></p>
+<ul>
+<li><p>用于方法；</p>
+</li>
+<li><p>将请求方法返回的对象转换为指定格式（JSON/XML）后，再写入<code>Response</code>对象的<code>body</code>数据区。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RestController</code></p>
+<ul>
+<li><p>是Spring 4.0之后才有的注解；</p>
+</li>
+<li><p>是<code>@Controller</code>和<code>@ResponseBody</code>的结合；</p>
+</li>
+<li><p>用于标注REST风格的控制器。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RequestMapping</code></p>
+<ul>
+<li><p>用于类时，定义了这个控制器所处理的根URL路径；</p>
+</li>
+<li><p>用于方法时，表明该方法是一个请求处理方法，要处理指定URL下的请求；</p>
+</li>
+<li><p>请求处理方法的签名可以将任何事物作为入参；</p>
+</li>
+<li><p><code>value</code>属性用于指定请求的地址；</p>
+</li>
+<li><p><code>method</code>属性用于指定请求的类型（GET、HEAD、POST、PUT、PATCH、DELETE、OPTIONS、TRACE）；</p>
+</li>
+<li><p><code>consumes</code>属性用于指定请求的内容类型；</p>
+</li>
+<li><p><code>produces</code>属性用于指定返回的内容类型；</p>
+</li>
+<li><p><code>params</code>属性用于指定请求中必须包含的参数值；</p>
+</li>
+<li><p><code>headers</code>属性用于指定请求中必须包含的header值。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RequestParam</code></p>
+<ul>
+<li>用于请求方法参数，当查询参数与方法参数名不匹配时，可以通过该注解将两者绑定。</li>
+</ul>
+</li>
+<li><p><code>@PathVariable</code></p>
+<ul>
+<li>用于请求方法参数，将请求中的变量映射到请求处理方法的参数上。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-2-HTTP方法"><a href="#4-5-2-HTTP方法" class="headerlink" title="4.5.2 HTTP方法"></a>4.5.2 HTTP方法</h3><ul>
+<li><p>GET</p>
+<ul>
+<li><p>可只直接使用<code>@GetMapping</code>注解；</p>
+</li>
+<li><p>是最常用的方法，可用于获取资源；</p>
+</li>
+<li><p>在浏览器中可以回退，请求会被浏览器主动缓存；</p>
+</li>
+<li><p>只能进行URL编码，只接收ASCII字符；</p>
+</li>
+<li><p>参数直接暴露在URL上，安全性较低，不能用于传递敏感信息。</p>
+</li>
+</ul>
+</li>
+<li><p>POST</p>
+<ul>
+<li><p>可只直接使用<code>@PostMapping</code>注解；</p>
+</li>
+<li><p>如果需要添加对象，可使用POST方法传递一个Model 对象；</p>
+</li>
+<li><p>访问同一地址时也需要再次提交请求，浏览器不会缓存请求；</p>
+</li>
+<li><p>除了URL，还支持多种编码方式；</p>
+</li>
+<li><p>参数可以放在request body 中，也可以通过URL传递。</p>
+</li>
+</ul>
+</li>
+<li><p>PUT</p>
+<ul>
+<li><p>可只直接使用<code>@PutMapping</code>注解；</p>
+</li>
+<li><p>如果对象需要更新，可使用PUT方法去发送请求。</p>
+</li>
+</ul>
+</li>
+<li><p>PATCH</p>
+<ul>
+<li><p>是一个新引入的方法，是对PUT方法的补充；</p>
+</li>
+<li><p>用来对己知资源进行局部更新，比如一个对象的部分数据而非整个对象数据。</p>
+</li>
+</ul>
+</li>
+<li><p>DELETE</p>
+<ul>
+<li><p>可只直接使用<code>@DeleteMapping</code>注解；</p>
+</li>
+<li><p>在执行前先查询是否有数据；</p>
+</li>
+<li><p>由于返回的是<code>void</code> 类型，要注意判断是否成功，可通过存储过程返回值来判断。</p>
+</li>
+</ul>
+</li>
+<li><p>OPTIONS</p>
+<ul>
+<li>用于获取当前URL。</li>
+</ul>
+</li>
+<li><p>TRACE</p>
+<ul>
+<li>用于显示服务器收到的请求，从而进行测试或诊断。</li>
+</ul>
+</li>
+</ul>
 <h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
 <li>《Spring In Action，Third Edition》</li>
 <li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
