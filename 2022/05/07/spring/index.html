@@ -972,7 +972,7 @@
 
 
 
-<h1 id="4、Spring-MVC"><a href="#4、Spring-MVC" class="headerlink" title="4、Spring MVC"></a>4、Spring MVC</h1><h2 id="4-1-问题与解决"><a href="#4-1-问题与解决" class="headerlink" title="4.1 问题与解决"></a>4.1 问题与解决</h2><p>由于HTTP协议的无状态性，基于Web的应用程序在状态管理、工作流等问题上面临着重大挑战，Spring MVC就是为了解决这些问题而设计的。</p>
+<h1 id="4、MVC"><a href="#4、MVC" class="headerlink" title="4、MVC"></a>4、MVC</h1><h2 id="4-1-问题与解决"><a href="#4-1-问题与解决" class="headerlink" title="4.1 问题与解决"></a>4.1 问题与解决</h2><p>由于HTTP协议的无状态性，基于Web的应用程序在状态管理、工作流等问题上面临着重大挑战，Spring MVC就是为了解决这些问题而设计的。</p>
 <p>Spring MVC基于模型-视图-控制器（Model-View-Controller, MVC）模式实现，核心思想在于将业务逻辑、数据、显示分离，有助于构建灵活、松耦合的Web应用程序。</p>
 <p>整个MVC相当于三层架构中的UI表现层，通过MVC对UI层又进一步进行了分层。</p>
 <ul>
@@ -1068,7 +1068,7 @@
 </ul>
 <p>Spring对REST的支持是构建在Spring MVC之上的，控制器可以处理所有的HTTP方法，包含四个主要的REST方法：GET、PUT、DELETE以及POST，分别对应对资源的检索、更新、删除和创建。通过适当设置<code>@RequestMapping</code>注解的<code>method</code>属性，就可以让<code>DispatcherServlet</code>把不同的HTTP方法的请求定向到特定的控制器方法上。</p>
 <p>RESTful Web 服务与传统的 MVC 开发一个关键区别是返回给客户端的内容的创建方式：<strong>传统的 MVC 模式开发会直接返回给客户端一个视图，但是 RESTful Web 服务一般会将返回的数据以 JSON 的形式返回，实现前后端分离开发。</strong></p>
-<h2 id="4-5-定义控制器"><a href="#4-5-定义控制器" class="headerlink" title="4.5 定义控制器"></a>4.5 定义控制器</h2><h3 id="4-5-1-常用注解"><a href="#4-5-1-常用注解" class="headerlink" title="4.5.1 常用注解"></a>4.5.1 常用注解</h3><ul>
+<h2 id="4-5-相关组件"><a href="#4-5-相关组件" class="headerlink" title="4.5 相关组件"></a>4.5 相关组件</h2><h3 id="4-5-1-控制器"><a href="#4-5-1-控制器" class="headerlink" title="4.5.1 控制器"></a>4.5.1 控制器</h3><ul>
 <li><p><code>@Controller</code></p>
 <ul>
 <li>用于类，表明该类是MVC的控制器。</li>
@@ -1133,7 +1133,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="4-5-2-HTTP方法"><a href="#4-5-2-HTTP方法" class="headerlink" title="4.5.2 HTTP方法"></a>4.5.2 HTTP方法</h3><ul>
+<p>可处理的HTTP方法如下：</p>
+<ul>
 <li><p>GET</p>
 <ul>
 <li><p>可只直接使用<code>@GetMapping</code>注解；</p>
@@ -1199,7 +1200,145 @@
 </ul>
 </li>
 </ul>
-<h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
+<h3 id="4-5-2-Servlet"><a href="#4-5-2-Servlet" class="headerlink" title="4.5.2 Servlet"></a>4.5.2 Servlet</h3><p>Servlet 是<code>javax.servlet</code>包中定义的一个接口，除了Controller以外，有时也需要使用Servlet来实现拦截和监昕功能。</p>
+<ul>
+<li><p><code>@WebServlet(urlPattern = &quot;&quot;)</code></p>
+<ul>
+<li><p>用于注册Servlet实现类；</p>
+</li>
+<li><p>使得<code>DispatcherServlet</code>核心控制器知道它的作用，以及处理请求<code>urlpattern</code>。</p>
+</li>
+</ul>
+</li>
+<li><p><code>＠ServletComponentScan</code></p>
+<ul>
+<li><p>用于启动类；</p>
+</li>
+<li><p>以扫描注册指定包内的所有Servlet、Filter以及监听器。</p>
+</li>
+</ul>
+</li>
+<li><p><code>HttpServlet</code></p>
+<ul>
+<li><p>Servlet抽象类；</p>
+</li>
+<li><p>自定义的Servlet需要继承<code>HttpServlet</code>，并重写<code>doGet</code>方法。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-3-过滤器"><a href="#4-5-3-过滤器" class="headerlink" title="4.5.3 过滤器"></a>4.5.3 过滤器</h3><p>对于多个页面都需要进行的例如参数校验等功能，可以通过过滤器来实现，从而避免重复代码。定义一个过滤器应当：</p>
+<ul>
+<li><p>实现<code>Filter</code>接口；</p>
+</li>
+<li><p>实现<code>init</code>、<code>doFilter</code>、<code>destory</code>方法；</p>
+</li>
+<li><p>使用<code>@WebFilter(urlPatterns = &quot;&quot;)</code>注解标注；</p>
+</li>
+<li><p>使用<code>＠ServletComponentScan</code>注解标注启动类。</p>
+</li>
+</ul>
+<h3 id="4-5-4-监听器"><a href="#4-5-4-监听器" class="headerlink" title="4.5.4 监听器"></a>4.5.4 监听器</h3><p>监听器用于监听Web应用程序中某些对象或信息的创建、销毁、增加、修改、删除等动作，然后做出相应的响应处理。当对象的状态发生变化时，服务器自动调用监听器的方法。具体应用有统计在线用户人数、在结用户、系统加载时的信息初始化等。</p>
+<p>Servlet 中的监听器分为以下类型：</p>
+<ul>
+<li><p>监听<code>ServletContext</code>、<code>Request</code>、<code>Session</code>作用域的创建和销毁；</p>
+<ul>
+<li><p><code>ServletContextListener</code>；</p>
+</li>
+<li><p><code>HttpSessionListener</code>；</p>
+</li>
+<li><p><code>ServletRequestListener</code>；</p>
+</li>
+</ul>
+</li>
+<li><p>监听<code>ServletContext</code>、<code>Request</code>、<code>Session</code>作用域中属性的变化（增加、修改、删除）；</p>
+<ul>
+<li><p><code>ServletContextAttributeListener</code>；</p>
+</li>
+<li><p><code>HttpSessionAttributeListener</code>；</p>
+</li>
+<li><p><code>ServletRequestAttributeListener</code>；</p>
+</li>
+</ul>
+</li>
+<li><p>监听<code>HttpSession</code>作用域中对象状态的改变（被绑定、解除绑走、钝化、活化）；</p>
+<ul>
+<li><p><code>HttpSessionBindingListener</code>；</p>
+</li>
+<li><p><code>HttpSessionActivationListener</code>；</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>定义一个监听器应当：</p>
+<ul>
+<li><p>实现上述任意类型的监听器接口；</p>
+</li>
+<li><p>实现监听器接口中对应的方法；</p>
+</li>
+<li><p>使用<code>@WebListener</code>注解标注；</p>
+</li>
+<li><p>使用<code>＠ServletComponentScan</code>注解标注启动类。</p>
+</li>
+</ul>
+<h3 id="4-5-5-异常"><a href="#4-5-5-异常" class="headerlink" title="4.5.5 异常"></a>4.5.5 异常</h3><p>Spring提供的异常处理方案是利用切面技术实现的，会将异常处理切面织入到目标控制器中。</p>
+<ul>
+<li><p>异常类一般需要包含以下信息：</p>
+<ul>
+<li>唯一标示异常的 code；</li>
+<li>HTTP状态码；</li>
+<li>错误路径；</li>
+<li>发生错误的时间戳；</li>
+<li>错误的具体信息。</li>
+</ul>
+</li>
+<li><p><code>RuntimeException</code></p>
+<ul>
+<li><p>一般处理的异常都是<code>RuntimeException</code>；</p>
+</li>
+<li><p>可以通过继承<code>RuntimeException</code>或新建<code>ResponseStatusException</code>（通过构造器来注入属性值）来定义自己的异常类型。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ControllerAdvice</code>或<code>@RestControllerAdvice</code></p>
+<ul>
+<li><p>可以用于定义异常处理类，默认对所有的<code>Controller</code>都有效；</p>
+</li>
+<li><p><code>@ControllerAdvice(annotations = &#123;RestController.class&#125;)</code>可以指定特定的注解，使得异常处理类只处理特定注解所标记的类抛出的异常；</p>
+</li>
+<li><p><code>@ControllerAdvice(&quot;&quot;)</code>可以指定特定的包名，使得异常处理类只处理特定包内抛出的异常；</p>
+</li>
+<li><p><code>@ControllerAdvice(assignableTypes = &#123;ExceptionController.class&#125;)</code>可以指定特定的<code>Controller</code>，使得异常处理类只处理特定<code>Controller</code>抛出的异常。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ExceptionHandler</code></p>
+<ul>
+<li><p>可以用于定义异常处理方法，可以拦截控制器中发生的异常；</p>
+</li>
+<li><p><code>@ExceptionHandler(value = XXXException.class)</code>可以指定特定的异常类型，使得异常处理方法只处理特定的异常类型。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="5、ORM"><a href="#5、ORM" class="headerlink" title="5、ORM"></a>5、ORM</h1><h2 id="5-1-问题与解决"><a href="#5-1-问题与解决" class="headerlink" title="5.1 问题与解决"></a>5.1 问题与解决</h2><p>JDBC（Java Data Base Connectivity）由一组用Java编写的类和接口组成，是Java用于连接数据库的规范，即用于执行数据库SQL语句的Java API，为大部分关系型数据库提供访问接口。JDBC没有指定某种特定数据库，可以为多种数据库提供统一访问的接口，这也更符合程序设计的模式。</p>
+<p>JDBC需要每次进行数据库连接，然后处理SQL语句、传值、关闭数据库。这些步骤繁琐易出错，为了减少这种可能的错误，减少开发人员的工作量，JDBCtemplate就被设计出来了。JDBCtemplate是对JDBC 的封装，更便于程序实现，替开发人员完成所有的JDBC 底层工作。此时，对于数据库的操作不再需要每次都进行连接、打开、关闭了。JDBCtemplate操作简单易学，但依旧不够简洁强大。</p>
+<p>业务实体在内存中表现为对象，在数据库中表现为关系型数据。内存中的对象不会被永久保存，只有关系型数据库（或NoSQ L 数据库，或文件）中的对象会被永久保存。ORM（Object Relation Mapping）将数据库中的表和内存中的对象建立了映射关系。ORM系统一般以中间件的形式存在。目前比较常用的ORM 是国外非常流行的JPA和国内非常流行的MyBatis。</p>
+<h2 id="5-2-Java持久化API"><a href="#5-2-Java持久化API" class="headerlink" title="5.2 Java持久化API"></a>5.2 Java持久化API</h2><p>Java持久化API（JPA，Java Persistence API）是一个将对象映射为关系数据库的标准技术，用于对象的持久化。JPA通过注解或XML描述ORM，并将运行期的实体对象持久化到数据库中。</p>
+<p>无论是哪种持久化存储方式，数据访问对象（Data Access Objects, DAO）都会提供对对象<br>的增加、删除、修改、查询、排序以及分页等方法。</p>
+<ul>
+<li><p><code>@Entity</code>：用于标注数据库持久化实体类。</p>
+</li>
+<li><p><code>@Repository</code> ：用于标注和数据库操作有关的接口。</p>
+</li>
+<li><p><code>@Query</code>：用于指定接口方法的sql语句。</p>
+</li>
+<li><p><code>@Param</code>：用于指定方法参数名称。</p>
+</li>
+<li><p><code>@Async</code>：用于标注异步方法。</p>
+</li>
+</ul>
+<h1 id="6、参考资料"><a href="#6、参考资料" class="headerlink" title="6、参考资料"></a>6、参考资料</h1><ul>
 <li>《Spring In Action，Third Edition》</li>
 <li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
 <li><a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1">https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1</a></li>
@@ -1257,7 +1396,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.4 自动装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.3.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.3.2 自动装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">2.3.3 自动检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E5%9F%BA%E4%BA%8EJava%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3.4 基于Java的配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-5-%E8%A1%A5%E5%85%85%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2.3.5 补充介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-IoC%E7%89%B9%E6%80%A7"><span class="toc-nav-text">2.4 IoC特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-1-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.4.1 工厂Bean</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-2-Bean%E5%B7%A5%E5%8E%82"><span class="toc-nav-text">2.4.2 Bean工厂</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-3-Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">2.4.3 Bean的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-4-%E5%90%8E%E7%BD%AE%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-nav-text">2.4.4 后置处理器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-5-%E5%88%9B%E5%BB%BABean"><span class="toc-nav-text">2.4.5 创建Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">3.2 术语介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.3 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.3.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-2-%E9%85%8D%E7%BD%AE%E5%85%83%E7%B4%A0"><span class="toc-nav-text">3.3.2 配置元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-3-%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-nav-text">3.3.3 切点表达式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.3.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.4 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.4.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-2-%E9%80%9A%E7%9F%A5%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-nav-text">3.4.2 通知拦截器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-3-%E7%B2%BE%E5%87%86%E6%8C%87%E5%AE%9A%E5%88%87%E7%82%B9"><span class="toc-nav-text">3.4.3 精准指定切点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.4.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-AOP%E7%89%B9%E6%80%A7"><span class="toc-nav-text">3.5 AOP特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-1-CGLIB"><span class="toc-nav-text">3.5.1 CGLIB</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-2-%E5%88%9B%E5%BB%BA%E4%BB%A3%E7%90%86Bean"><span class="toc-nav-text">3.5.2 创建代理Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81Spring-MVC"><span class="toc-nav-text">4、Spring MVC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">4.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E8%AF%B7%E6%B1%82%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">4.2 请求的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">4.3 搭建步骤</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-REST%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">4.4 REST功能</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-5-%E5%AE%9A%E4%B9%89%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="toc-nav-text">4.5 定义控制器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-1-%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">4.5.1 常用注解</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-2-HTTP%E6%96%B9%E6%B3%95"><span class="toc-nav-text">4.5.2 HTTP方法</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">5、参考资料</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81IoC"><span class="toc-nav-text">2、IoC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">2.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.2 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.2.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E9%9D%99%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.2 静态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E5%8A%A8%E6%80%81%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.3 动态装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.2.4 自动装配</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">2.3.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-nav-text">2.3.2 自动装配</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-text">2.3.3 自动检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E5%9F%BA%E4%BA%8EJava%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3.4 基于Java的配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-5-%E8%A1%A5%E5%85%85%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2.3.5 补充介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-IoC%E7%89%B9%E6%80%A7"><span class="toc-nav-text">2.4 IoC特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-1-%E5%B7%A5%E5%8E%82Bean"><span class="toc-nav-text">2.4.1 工厂Bean</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-2-Bean%E5%B7%A5%E5%8E%82"><span class="toc-nav-text">2.4.2 Bean工厂</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-3-Bean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">2.4.3 Bean的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-4-%E5%90%8E%E7%BD%AE%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-nav-text">2.4.4 后置处理器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-5-%E5%88%9B%E5%BB%BABean"><span class="toc-nav-text">2.4.5 创建Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81AOP"><span class="toc-nav-text">3、AOP</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">3.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E6%9C%AF%E8%AF%AD%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">3.2 术语介绍</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-XML%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.3 XML配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.3.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-2-%E9%85%8D%E7%BD%AE%E5%85%83%E7%B4%A0"><span class="toc-nav-text">3.3.2 配置元素</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-3-%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-nav-text">3.3.3 切点表达式</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-3-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.3.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.4 注解配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-1-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">3.4.1 使用步骤</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-2-%E9%80%9A%E7%9F%A5%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-nav-text">3.4.2 通知拦截器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-3-%E7%B2%BE%E5%87%86%E6%8C%87%E5%AE%9A%E5%88%87%E7%82%B9"><span class="toc-nav-text">3.4.3 精准指定切点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-4-4-%E5%BC%95%E5%85%A5%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">3.4.4 引入新功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-AOP%E7%89%B9%E6%80%A7"><span class="toc-nav-text">3.5 AOP特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-1-CGLIB"><span class="toc-nav-text">3.5.1 CGLIB</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-5-2-%E5%88%9B%E5%BB%BA%E4%BB%A3%E7%90%86Bean"><span class="toc-nav-text">3.5.2 创建代理Bean</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81MVC"><span class="toc-nav-text">4、MVC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">4.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E8%AF%B7%E6%B1%82%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-nav-text">4.2 请求的生命周期</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4"><span class="toc-nav-text">4.3 搭建步骤</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-REST%E5%8A%9F%E8%83%BD"><span class="toc-nav-text">4.4 REST功能</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-5-%E7%9B%B8%E5%85%B3%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">4.5 相关组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-1-%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="toc-nav-text">4.5.1 控制器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-2-Servlet"><span class="toc-nav-text">4.5.2 Servlet</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-3-%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-nav-text">4.5.3 过滤器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-4-%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-nav-text">4.5.4 监听器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-5-5-%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">4.5.5 异常</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81ORM"><span class="toc-nav-text">5、ORM</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">5.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-Java%E6%8C%81%E4%B9%85%E5%8C%96API"><span class="toc-nav-text">5.2 Java持久化API</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">6、参考资料</span></a></li></ol>
     
   </div>
 </aside>

@@ -179,7 +179,7 @@
 <li><p>还可以通过<code>@EnableAutoConfiguration(exclude = &#123;...&#125;)</code>来指定禁用的自动配置。</p>
 </li>
 </ul>
-<p><code>@SpringBootApplication</code>可以看作是以下三个注解的集合：</p>
+<p><code>@SpringBootApplication</code>等同于以下三个注解的集合：</p>
 <ul>
 <li><p><code>@Configuration</code>：允许在上下文中注册额外的 bean 或导入其他配置类；</p>
 </li>
@@ -333,54 +333,6 @@
 <p>通过以下方式获得记录器，从而使用日志功能</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//记录器</span></span><br><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(getClass());</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-7-异常处理"><a href="#2-7-异常处理" class="headerlink" title="2.7 异常处理"></a>2.7 异常处理</h2><ul>
-<li><p>异常类一般需要包含以下信息：</p>
-<ul>
-<li>唯一标示异常的 code；</li>
-<li>HTTP状态码；</li>
-<li>错误路径；</li>
-<li>发生错误的时间戳；</li>
-<li>错误的具体信息。</li>
-</ul>
-</li>
-<li><p><code>RuntimeException</code>：</p>
-<ul>
-<li><p>一般处理的异常都是<code>RuntimeException</code>；</p>
-</li>
-<li><p>可以通过继承<code>RuntimeException</code>或新建<code>ResponseStatusException</code>（通过构造器来注入属性值）来定义自己的异常类型。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@ControllerAdvice</code>：</p>
-<ul>
-<li><p>可以用于定义异常处理类；</p>
-</li>
-<li><p><code>@ControllerAdvice(assignableTypes = &#123;ExceptionController.class&#125;)</code>可以指定特定的<code>Controller</code>类，使得异常处理类只处理特定类抛出的异常。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@ExceptionHandler</code>：</p>
-<ul>
-<li><p>可以用于定义异常处理方法；</p>
-</li>
-<li><p><code>@ExceptionHandler(value = XXXException.class)</code>可以指定特定的异常类型，使得异常处理方法只处理特定的异常类型。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="2-8-Java持久化API"><a href="#2-8-Java持久化API" class="headerlink" title="2.8 Java持久化API"></a>2.8 Java持久化API</h2><p>Java持久化API（JPA，Java Persistence API）是一个将对象映射为关系数据库的标准技术。JPA通过注解或XML描述ORM（Object Relationship Mapping，对象-关系表的映射关系），并将运行期的实体对象持久化到数据库中。</p>
-<ul>
-<li><p><code>@Entity</code>：用于标注数据库持久化实体类。</p>
-</li>
-<li><p><code>@Repository</code> ：用于标注和数据库操作有关的接口。</p>
-</li>
-<li><p><code>@Query</code>：用于指定接口方法的sql语句。</p>
-</li>
-<li><p><code>@Param</code>：用于指定方法参数名称。</p>
-</li>
-<li><p><code>@Async</code>：用于标注异步方法。</p>
-</li>
-</ul>
 <h1 id="3、源码学习"><a href="#3、源码学习" class="headerlink" title="3、源码学习"></a>3、源码学习</h1><p>SpringBoot具有以下子modules：</p>
 <ul>
 <li>spring-boot：核心工程。</li>
@@ -391,7 +343,7 @@
 <li>spring-boot-cli：命令行交互工具。</li>
 <li>spring-boot-devtools：为开发者服务，其中最重要的功能就是热部署。</li>
 </ul>
-<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的<code>run</code>方法。</p>
+<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的静态<code>run</code>方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorldApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      SpringApplication.run(HelloWorldApplication.class, args);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在spring-boot模块中，<code>SpringApplication</code>类的<code>run</code>方法是一个可以通过默认设置和用户约定来从具体source运行Spring项目的静态帮助器。</p>
@@ -466,7 +418,7 @@
 
 <h2 id="3-2-自动配置"><a href="#3-2-自动配置" class="headerlink" title="3.2 自动配置"></a>3.2 自动配置</h2><p>启动类使用<code>@SpringBootApplication</code>注解标注，而<code>@SpringBootApplication</code>注解包含了<code>@EnableAutoConfiguration</code>注解。</p>
 <p>在spring-boot-autoconfigure模块中，<code>@EnableAutoConfiguration</code>注解会启用 SpringBoot 的自动装配机制（自动扫描+条件装配）。</p>
-<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
+<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，会将符合条件的配置类都加载到IoC容器中，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Import(AutoConfigurationImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAutoConfiguration &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <p>2）在<code>AutoConfigurationImportSelector</code>类的<code>selectImports</code>方法中，调用了<code>getAutoConfigurationEntry</code>方法，完整代码如下；</p>
@@ -543,13 +495,20 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2022/05/17/java-concurrency/">
+      <a class="nav-left" href="/2022/05/08/design-patterns/">
         <span class="nav-arrow">← </span>
         
-          Java Concurrency
+          Design Patterns
         
       </a>
     
+    
+      <a class="nav-right" href="/2022/06/17/java-language/">
+        
+          Java Language
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
@@ -579,7 +538,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2、使用介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="toc-nav-text">2.1 启动类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E9%BB%98%E8%AE%A4%E7%BA%A6%E5%AE%9A"><span class="toc-nav-text">2.2 默认约定</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E4%BC%98%E5%85%88%E7%BA%A7%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 优先级配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-nav-text">2.4 读取配置信息</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E8%BF%87%E6%BB%A4%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-nav-text">2.5 过滤配置类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-6-%E6%97%A5%E5%BF%97%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">2.6 日志使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-7-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-nav-text">2.7 异常处理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-8-Java%E6%8C%81%E4%B9%85%E5%8C%96API"><span class="toc-nav-text">2.8 Java持久化API</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0"><span class="toc-nav-text">3、源码学习</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E5%90%AF%E5%8A%A8"><span class="toc-nav-text">3.1 启动</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.2 自动配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-Web%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.3 Web配置</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">4、参考资料</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%80%BB%E6%A6%82"><span class="toc-nav-text">1、总概</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E4%BD%BF%E7%94%A8%E4%BB%8B%E7%BB%8D"><span class="toc-nav-text">2、使用介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="toc-nav-text">2.1 启动类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E9%BB%98%E8%AE%A4%E7%BA%A6%E5%AE%9A"><span class="toc-nav-text">2.2 默认约定</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E4%BC%98%E5%85%88%E7%BA%A7%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">2.3 优先级配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-nav-text">2.4 读取配置信息</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E8%BF%87%E6%BB%A4%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="toc-nav-text">2.5 过滤配置类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-6-%E6%97%A5%E5%BF%97%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">2.6 日志使用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0"><span class="toc-nav-text">3、源码学习</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E5%90%AF%E5%8A%A8"><span class="toc-nav-text">3.1 启动</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.2 自动配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-Web%E9%85%8D%E7%BD%AE"><span class="toc-nav-text">3.3 Web配置</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">4、参考资料</span></a></li></ol>
     
   </div>
 </aside>

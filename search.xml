@@ -671,43 +671,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Git</title>
-    <url>/2022/05/06/git/</url>
-    <content><![CDATA[<h1 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h1><p>将每一次文件变更的时间，作者，内容都记录下来，并更新版本号。通过记录文件内容的变更，从而<strong>追踪文件的变更</strong>。此外，由于软件开发往往是多人协同作业，那么版本间的同步问题以及开发者间的通信问题都需要通过版本控制来解决，也就是说，版本控制的另一功能是<strong>并行开发</strong>。在开发过程中，首先需要设定开发基线，确定各个配置项的开发初始版本，开发人员再基于开发基线的版本，开发出所需的目标版本，并行开发中的许多错误都可以通过版本控制中分支与合并的方法来解决。</p>
-<h1 id="集中式版本控制系统"><a href="#集中式版本控制系统" class="headerlink" title="集中式版本控制系统"></a>集中式版本控制系统</h1><p>集中式版本控制系统（Centralized Version Control Systems），简称 CVCS。项目的历史记录均被保存在单一位置，<strong>有丢失风险</strong>，且<strong>必须联网</strong>才能工作。</p>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系统（Distributed Version Control System），简称 DVCS。客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
-<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git属于DVCS，Git与其他版本控制系统的主要区别在于对待数据的方式。大多数版本控制系统都是以文件变更列表的方式存储信息，这类系统将它们保存的信息看作一组基本文件和每个文件随时间逐步累积的差异，而Git采用直接记录快照的方式，而非差异比较。每次提交更新或者保存项目状态时，Git对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git不再重新存储该文件，而是保留一个链接指向之前存储的文件。Git仓库和Github中心服务器之间的传输是通过SSH加密的。</p>
-<h1 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（<code>.git</code> directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个<code>HEAD</code>指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
-<img src="工作流图.jpg" alt="工作流图" style="zoom:100%;" />
-
-<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
-<li><p>每个提交通过指针连接成一条时间线。</p>
-</li>
-<li><p>创建仓库时，<code>master</code>指针指向主分支，<code>HEAD</code>指针始终指向当前分支，当前分支可能是主分支也可能是新建的分支。</p>
-</li>
-<li><p>新建分支就是新建一个指针指向时间线的最后一个节点。</p>
-</li>
-<li><p>切换分支就是让<code>HEAD</code>指针指向新分支，表示新分支成为当前分支。</p>
-</li>
-<li><p>每次提交只会让当前分支指针向后移动，而其他分支指针不会移动。</p>
-</li>
-<li><p>当新建分支开发完毕后，就合并到主分支上，合并分支只需要改变指针即可。</p>
-</li>
-</ul>
-<img src="分支.jpg" alt="分支" style="zoom:100%;" />
-
-<h1 id="命令速查表"><a href="#命令速查表" class="headerlink" title="命令速查表"></a>命令速查表</h1><p><a href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><p><a href="https://www.liaoxuefeng.com/wiki/896043488029600">https://www.liaoxuefeng.com/wiki/896043488029600</a></p>
-</li>
-<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/Git.html">http://www.cyc2018.xyz/其他/编码实践/Git.html</a></p>
-</li>
-<li><p><a href="https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro">https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro</a></p>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
     <title>Effective Java</title>
     <url>/2022/05/06/effective-java/</url>
     <content><![CDATA[<h1 id="1、引言"><a href="#1、引言" class="headerlink" title="1、引言"></a>1、引言</h1><p>仅仅学会语言的结构及如何使用是不够的，还需要学习如何以<strong>惯用和高效的方式</strong>来表达；仅仅编写出能够有效工作能够被别人理解的代码是不够的，还必须把代码组织成<strong>易于修改的形式</strong>。本书关心如何编写出<strong>清晰、正确、可用、健壮、灵活和可维护的程序</strong>。</p>
@@ -1313,98 +1276,45 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Maven</title>
-    <url>/2022/05/07/maven/</url>
-    <content><![CDATA[<p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
-<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下：</p>
-<ul>
-<li><p><code>pom.xml</code>：项目描述文件；</p>
-</li>
-<li><p><code>src/main/java</code>：Java源码；</p>
-</li>
-<li><p><code>src/main/resources</code>：资源文件；</p>
-</li>
-<li><p><code>src/test/java</code>：测试源码；</p>
-</li>
-<li><p><code>src/test/resources</code>：测试资源文件；</p>
-</li>
-<li><p><code>target</code>：所有编译、打包生成的文件。</p>
-</li>
-</ul>
-<p>注：</p>
-<ul>
-<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>定义隶属的实际项目；<code>artifactId</code>定义项目中的一个模块；</p>
-</li>
-<li><p>一个Maven工程是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量来唯一定位要依赖的jar包。</p>
-</li>
-</ul>
-<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven会自动解析并判断真正需要的依赖，避免了繁琐的人工管理。Maven定义了几种依赖关系（scope）如下：</p>
-<ul>
-<li>compile：编译、运行和测试时需要用到的jar包（最常用的，直接放入classpath），打包时也要包含进去；</li>
-<li>test：编译UT时需要用到的jar包，不会随项目发布，比如junit；</li>
-<li>runtime：编译时不需要，但运行和测试时需要用到的jar包，比如mysql；</li>
-<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），打包时不需要包含进去，比如servlet-api。</li>
-</ul>
-<h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
-<li><p>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</p>
-</li>
-<li><p>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</p>
-</li>
-<li><p>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
-</li>
-<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种开发版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
-</li>
-<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要在用户主目录的<code>.m2</code>目录创建一个<code>settings.xml</code>配置文件，进行配置；</p>
-</li>
-<li><p>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</p>
-</li>
-</ul>
-<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><ul>
-<li><p>Maven有两个生命周期（lifecycle）： <code>default</code>和<code>clean</code>，每个lifecycle都由一系列阶段（phase）构成；</p>
-</li>
-<li><p>mvn命令后面的参数是指phase；</p>
-</li>
-<li><p>当命令中只有一个phase时，就运行<code>default</code>这个lifecycle，并运行到指定的phase；</p>
-</li>
-<li><p>当命令中有两个phase时，就依次先后运行<code>clean</code>和<code>default</code>这两个lifecycle到分别指定的phase；</p>
-</li>
-<li><p>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</p>
-</li>
-<li><p>每执行一个phase，又会触发一个或多个goal，goal是最小任务单元，goal的名称是<code>a:b</code>这种形式；</p>
-</li>
-<li><p>大多数情况下只要指定phase，就默认执行这些phase默认绑定的goal，只有少数情况可以直接指定运行一个goal，例如，启动Tomcat服务器的命令是<code>mvn tomcat:run</code>；</p>
-</li>
-<li><p>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</p>
-</li>
-<li><p>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件。</p>
-<ul>
-<li><p>maven-source-plugin插件用于创建源码</p>
-</li>
-<li><p>maven-javadoc-plugin插件用于创建javadoc</p>
-</li>
-<li><p>spring-boot-maven-plugin插件用于将应用打包成一个可执行的jar包或war包（可直接使用<code>java -jar</code>命令执行）</p>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="模块管理"><a href="#模块管理" class="headerlink" title="模块管理"></a>模块管理</h1><ul>
-<li><p>将一个项目拆分为多个模块可以降低软件复杂度，拆分后的项目中的每个模块都有自己的<code>pom.xml</code>和<code>src</code>，可以把每个模块当做独立的Maven项目，每个模块也可以在<code>pom.xml</code>引入其他模块；</p>
-</li>
-<li><p>当模块之间存在大量重复时，可以提取出公共的部分作为parent，parent的<code>&lt;packaging&gt;</code>是<code>pom</code>，module的<code>&lt;packaging&gt;</code>是<code>jar</code>，parent本身不含任何Java代码；</p>
-</li>
-<li><p>在根目录输入命令<code>mvn clean package</code>，即可将包括parent在内的所有module一次性全部编译打包。</p>
-</li>
-</ul>
-<img src="模块结构.jpg" alt="模块结构" style="zoom:100%;" />
+    <title>Git</title>
+    <url>/2022/05/06/git/</url>
+    <content><![CDATA[<h1 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h1><p>将每一次文件变更的时间，作者，内容都记录下来，并更新版本号。通过记录文件内容的变更，从而<strong>追踪文件的变更</strong>。此外，由于软件开发往往是多人协同作业，那么版本间的同步问题以及开发者间的通信问题都需要通过版本控制来解决，也就是说，版本控制的另一功能是<strong>并行开发</strong>。在开发过程中，首先需要设定开发基线，确定各个配置项的开发初始版本，开发人员再基于开发基线的版本，开发出所需的目标版本，并行开发中的许多错误都可以通过版本控制中分支与合并的方法来解决。</p>
+<h1 id="集中式版本控制系统"><a href="#集中式版本控制系统" class="headerlink" title="集中式版本控制系统"></a>集中式版本控制系统</h1><p>集中式版本控制系统（Centralized Version Control Systems），简称 CVCS。项目的历史记录均被保存在单一位置，<strong>有丢失风险</strong>，且<strong>必须联网</strong>才能工作。</p>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系统（Distributed Version Control System），简称 DVCS。客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git属于DVCS，Git与其他版本控制系统的主要区别在于对待数据的方式。大多数版本控制系统都是以文件变更列表的方式存储信息，这类系统将它们保存的信息看作一组基本文件和每个文件随时间逐步累积的差异，而Git采用直接记录快照的方式，而非差异比较。每次提交更新或者保存项目状态时，Git对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git不再重新存储该文件，而是保留一个链接指向之前存储的文件。Git仓库和Github中心服务器之间的传输是通过SSH加密的。</p>
+<h1 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（<code>.git</code> directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个<code>HEAD</code>指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
+<img src="工作流图.jpg" alt="工作流图" style="zoom:100%;" />
 
+<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
+<li><p>每个提交通过指针连接成一条时间线。</p>
+</li>
+<li><p>创建仓库时，<code>master</code>指针指向主分支，<code>HEAD</code>指针始终指向当前分支，当前分支可能是主分支也可能是新建的分支。</p>
+</li>
+<li><p>新建分支就是新建一个指针指向时间线的最后一个节点。</p>
+</li>
+<li><p>切换分支就是让<code>HEAD</code>指针指向新分支，表示新分支成为当前分支。</p>
+</li>
+<li><p>每次提交只会让当前分支指针向后移动，而其他分支指针不会移动。</p>
+</li>
+<li><p>当新建分支开发完毕后，就合并到主分支上，合并分支只需要改变指针即可。</p>
+</li>
+</ul>
+<img src="分支.jpg" alt="分支" style="zoom:100%;" />
+
+<h1 id="命令速查表"><a href="#命令速查表" class="headerlink" title="命令速查表"></a>命令速查表</h1><p><a href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></li>
+<li><p><a href="https://www.liaoxuefeng.com/wiki/896043488029600">https://www.liaoxuefeng.com/wiki/896043488029600</a></p>
+</li>
+<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/Git.html">http://www.cyc2018.xyz/其他/编码实践/Git.html</a></p>
+</li>
+<li><p><a href="https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro">https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro</a></p>
+</li>
 </ul>
 ]]></content>
   </entry>
   <entry>
     <title>Java Concurrency</title>
-    <url>/2022/05/17/java-concurrency/</url>
+    <url>/2022/06/17/java-concurrency/</url>
     <content><![CDATA[<h1 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h1><h2 id="1-1-进程与线程"><a href="#1-1-进程与线程" class="headerlink" title="1.1 进程与线程"></a>1.1 进程与线程</h2><p>现代操作系统（Windows、macOS、Linux）执行多任务实际就是让CPU对多个任务<strong>轮流交替执行</strong>，通常任务数量远远多于CPU的核数。</p>
 <ul>
 <li>在计算机中，一个任务称为一个进程（Process），某些进程内部还需要同时执行多个子任务，这些子任务称为线程（Thread）。</li>
@@ -2007,6 +1917,244 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Java Language</title>
+    <url>/2022/06/17/java-language/</url>
+    <content><![CDATA[<h1 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h1><h2 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h2><p>元注解是Java提供的可以用于定义注解的基本注解。</p>
+<ul>
+<li><p><code>@Target</code></p>
+<ul>
+<li><p>用于告知Java将自定义的注解放在何处，比如类、万法、构造器、变量上等，是一个枚举类型，有如下属性值；</p>
+</li>
+<li><p><code>ElementType.CONSTRUCTOR</code>代表用于描述构造器；</p>
+</li>
+<li><p><code>ElementType.FIELD</code>代表用于描述成员变量、对象、属性（包括<code>enum</code>实例）；</p>
+</li>
+<li><p><code>ElementType.LOCAL_VARIABLE</code>代表用于描述局部变量；</p>
+</li>
+<li><p><code>ElementType.METHOD</code>代表用于描述万法；</p>
+</li>
+<li><p><code>ElementType.PACKAGE</code>代表用于描述包；</p>
+</li>
+<li><p><code>ElementType.PARAMETER</code>代表用于描述参数；</p>
+</li>
+<li><p><code>ElementType.TYPE</code>代表用于描述类、接口（包括注解类型）或<code>enum</code>声明。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Retention</code></p>
+<ul>
+<li><p>用于说明自定义注解的生命周期，在注解中有三个生命周期，是一个枚举类型，有如下属性值；</p>
+</li>
+<li><p><code>RetentionPolicy.RUNTIME</code> 代表始终不会丢弃，运行期也保留该注解，通常使用这种方式；</p>
+</li>
+<li><p><code>RetentionPolicy.CLASS</code>代表类加载时丢弃，默认使用这种方式；</p>
+</li>
+<li><p><code>RetentionPolicy.SOURCE</code>代表编译阶段丢弃，所以不会写入字节码，<code>＠Override</code>、<code>＠SuppressWarnings</code>都属于这类注解。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Inherited</code></p>
+<ul>
+<li><p>用于标记被标注的类型是可以被继承的；</p>
+</li>
+<li><p>如果一个使用了<code>＠lnherited</code>修饰的注解类型被用于一个类，则这个注解将继续被用于该类的子类。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Documented</code></p>
+<ul>
+<li>用于标记是否将信息添加到Java文档当中。</li>
+</ul>
+</li>
+<li><p><code>@interface</code></p>
+<ul>
+<li><p>用于声明一个注解；</p>
+</li>
+<li><p>其中的每一个方法实际上是声明了一个配置参数;</p>
+</li>
+<li><p>方法的名称就是参数的名称，返回类型就是参数的类型;</p>
+</li>
+<li><p>返回值类型只能是基本类型、<code>Class</code>、<code>String</code>、<code>enum</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h2><p>1）声明自定义注解</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy. RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation &#123;</span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）自定义注解的逻辑实现（AOP）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnotationAspect</span> &#123;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;@annotation(com.example.annotation.MyAnnotation)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">myAnnotationPointCut</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before(&quot;myAnnotationPointCut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint joinPoint)</span> &#123;</span><br><span class="line">        <span class="type">MethodSignature</span> <span class="variable">methodSignature</span> <span class="operator">=</span> (MethodSignature)joinPoint.getSignature();</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> methodSignature.getMethod();</span><br><span class="line">        <span class="type">MyAnnotation</span> <span class="variable">myAnnotation</span> <span class="operator">=</span> method.getAnnotation(MyAnnotation.class);</span><br><span class="line">        System.out.println(<span class="string">&quot;自定义注解 MyAnnotation 起作用了&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;MyAnnotation 的参数为：&quot;</span>);</span><br><span class="line">        System.out.println(myAnnotation.value());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）使用自定义注解</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationUser</span> &#123;</span><br><span class="line">    <span class="meta">@MyAnnotation(&quot;测试自定义注解的参数&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fun</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）测试自定义注解</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testMyAnnotation</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line">        <span class="type">MyAnnotationUser</span> <span class="variable">myAnnotationUser</span> <span class="operator">=</span> context.getBean(MyAnnotationUser.class);</span><br><span class="line">        myAnnotationUser.fun();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）测试结果</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">自定义注解 MyAnnotation 起作用了</span><br><span class="line">MyAnnotation 的参数为：</span><br><span class="line">测试自定义注解的参数</span><br></pre></td></tr></table></figure>
+
+<h1 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h1><p>单元测试（unit test）是为了检验程序的正确性。一个单元可能是单个程序、类、对象、方法等，它是应用程序的最小可测试部件。Java平台使用的测试框架是JUnit，JUnit是白盒测试，知道测试如何完成功能和完成什么样的功能。</p>
+<p>在编写UT时，应当遵循一些规范：</p>
+<ul>
+<li>代码简单易懂，不可能再为测试代码编写测试；</li>
+<li>每个测试都互相独立，不依赖运行顺序；</li>
+<li>注意测试边界条件。</li>
+</ul>
+<p>JUnit提供了以下注解：</p>
+<ul>
+<li><p><code>@Test</code></p>
+<ul>
+<li><p>用于标注测试方法；</p>
+</li>
+<li><p>每次运行一个<code>@Test</code>方法前，JUnit首先创建一个<code>XxxTest</code>实例；</p>
+</li>
+<li><p>每个<code>@Test</code>方法内部的成员变量都是独立的，不能也无法把成员变量的状态从一个<code>@Test</code>方法带到另一个<code>@Test</code>方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Test(expected=Exception.class)</code></p>
+<ul>
+<li><p>指定测试单元期望得到的异常类;；</p>
+</li>
+<li><p>只有执行完成后抛出指定的异常，才测试成功。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@BeforeEach</code>和<code>@AfterEach</code></p>
+<ul>
+<li><p>这两个注解标注的方法会在运行每个<code>@Test</code>方法前后自动运行；</p>
+</li>
+<li><p>用于初始化和清理实例变量，在各个<code>@Test</code>方法中互不影响（是不同的实例）；</p>
+</li>
+<li><p>编写测试前准备、测试后清理的固定代码（称之为Fixture）。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@BeforeAll</code>和<code>@AfterAll</code></p>
+<ul>
+<li><p>这两个注解标注的方法会在运行所有<code>@Test</code>方法前后运行；</p>
+</li>
+<li><p>用于初始化和清理静态变量，也只能标注静态方法；</p>
+</li>
+<li><p>在各个<code>@Test</code>方法中均是唯一实例，会影响各个<code>@Test</code>方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RunWith</code></p>
+<ul>
+<li><p>在JUnit中有很多Runner负责调用测试代码；</p>
+</li>
+<li><p>每个Runner都有特殊功能，应根据需要选择不同的Runner来运行测试代码。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Transactional</code></p>
+<ul>
+<li>测试完成后就会回滚，不会产生垃圾数据。</li>
+</ul>
+</li>
+<li><p><code>@lgnore</code></p>
+<ul>
+<li>执行测试时将忽略掉此方法；</li>
+<li>如果用于修饰类，则忽略整个类。 </li>
+</ul>
+</li>
+</ul>
+<p>Mockito 框架可以与JUnit结合使用，用于创建和配置Mock对象。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Maven</title>
+    <url>/2022/05/07/maven/</url>
+    <content><![CDATA[<p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
+<h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下：</p>
+<ul>
+<li><p><code>pom.xml</code>：项目描述文件；</p>
+</li>
+<li><p><code>src/main/java</code>：Java源码；</p>
+</li>
+<li><p><code>src/main/resources</code>：资源文件；</p>
+</li>
+<li><p><code>src/test/java</code>：测试源码；</p>
+</li>
+<li><p><code>src/test/resources</code>：测试资源文件；</p>
+</li>
+<li><p><code>target</code>：所有编译、打包生成的文件。</p>
+</li>
+</ul>
+<p>注：</p>
+<ul>
+<li><p>在<code>pom.xml</code>文件中，<code>groupId</code>定义隶属的实际项目；<code>artifactId</code>定义项目中的一个模块；</p>
+</li>
+<li><p>一个Maven工程是由<code>groupId</code>，<code>artifactId</code>和<code>version</code>作为唯一标识，在引用其他第三方库的时候，也是通过这3个变量来唯一定位要依赖的jar包。</p>
+</li>
+</ul>
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven会自动解析并判断真正需要的依赖，避免了繁琐的人工管理。Maven定义了几种依赖关系（scope）如下：</p>
+<ul>
+<li>compile：编译、运行和测试时需要用到的jar包（最常用的，直接放入classpath），打包时也要包含进去；</li>
+<li>test：编译UT时需要用到的jar包，不会随项目发布，比如junit；</li>
+<li>runtime：编译时不需要，但运行和测试时需要用到的jar包，比如mysql；</li>
+<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），打包时不需要包含进去，比如servlet-api。</li>
+</ul>
+<h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
+<li><p>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</p>
+</li>
+<li><p>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</p>
+</li>
+<li><p>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
+</li>
+<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种开发版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
+</li>
+<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要在用户主目录的<code>.m2</code>目录创建一个<code>settings.xml</code>配置文件，进行配置；</p>
+</li>
+<li><p>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</p>
+</li>
+</ul>
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><ul>
+<li><p>Maven有两个生命周期（lifecycle）： <code>default</code>和<code>clean</code>，每个lifecycle都由一系列阶段（phase）构成；</p>
+</li>
+<li><p>mvn命令后面的参数是指phase；</p>
+</li>
+<li><p>当命令中只有一个phase时，就运行<code>default</code>这个lifecycle，并运行到指定的phase；</p>
+</li>
+<li><p>当命令中有两个phase时，就依次先后运行<code>clean</code>和<code>default</code>这两个lifecycle到分别指定的phase；</p>
+</li>
+<li><p>常用的phase按运行顺序分别是clean（清理所有生成的class和jar）、compile（编译）、test（运行测试）、package（打包）；</p>
+</li>
+<li><p>每执行一个phase，又会触发一个或多个goal，goal是最小任务单元，goal的名称是<code>a:b</code>这种形式；</p>
+</li>
+<li><p>大多数情况下只要指定phase，就默认执行这些phase默认绑定的goal，只有少数情况可以直接指定运行一个goal，例如，启动Tomcat服务器的命令是<code>mvn tomcat:run</code>；</p>
+</li>
+<li><p>执行每个phase，都是通过某个插件（plugin）来执行的，maven只是负责找到phase对应的plugin；</p>
+</li>
+<li><p>maven内置了一些常用的标准插件，当标准插件无法满足要求时，还可以通过在<code>pom.xml</code>文件中声明并配置自定义的插件。</p>
+<ul>
+<li><p>maven-source-plugin插件用于创建源码</p>
+</li>
+<li><p>maven-javadoc-plugin插件用于创建javadoc</p>
+</li>
+<li><p>spring-boot-maven-plugin插件用于将应用打包成一个可执行的jar包或war包（可直接使用<code>java -jar</code>命令执行）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="模块管理"><a href="#模块管理" class="headerlink" title="模块管理"></a>模块管理</h1><ul>
+<li><p>将一个项目拆分为多个模块可以降低软件复杂度，拆分后的项目中的每个模块都有自己的<code>pom.xml</code>和<code>src</code>，可以把每个模块当做独立的Maven项目，每个模块也可以在<code>pom.xml</code>引入其他模块；</p>
+</li>
+<li><p>当模块之间存在大量重复时，可以提取出公共的部分作为parent，parent的<code>&lt;packaging&gt;</code>是<code>pom</code>，module的<code>&lt;packaging&gt;</code>是<code>jar</code>，parent本身不含任何Java代码；</p>
+</li>
+<li><p>在根目录输入命令<code>mvn clean package</code>，即可将包括parent在内的所有module一次性全部编译打包。</p>
+</li>
+</ul>
+<img src="模块结构.jpg" alt="模块结构" style="zoom:100%;" />
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Spring Boot</title>
     <url>/2022/05/22/spring-boot/</url>
     <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
@@ -2027,7 +2175,7 @@
 <li><p>还可以通过<code>@EnableAutoConfiguration(exclude = &#123;...&#125;)</code>来指定禁用的自动配置。</p>
 </li>
 </ul>
-<p><code>@SpringBootApplication</code>可以看作是以下三个注解的集合：</p>
+<p><code>@SpringBootApplication</code>等同于以下三个注解的集合：</p>
 <ul>
 <li><p><code>@Configuration</code>：允许在上下文中注册额外的 bean 或导入其他配置类；</p>
 </li>
@@ -2181,54 +2329,6 @@
 <p>通过以下方式获得记录器，从而使用日志功能</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//记录器</span></span><br><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(getClass());</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-7-异常处理"><a href="#2-7-异常处理" class="headerlink" title="2.7 异常处理"></a>2.7 异常处理</h2><ul>
-<li><p>异常类一般需要包含以下信息：</p>
-<ul>
-<li>唯一标示异常的 code；</li>
-<li>HTTP状态码；</li>
-<li>错误路径；</li>
-<li>发生错误的时间戳；</li>
-<li>错误的具体信息。</li>
-</ul>
-</li>
-<li><p><code>RuntimeException</code>：</p>
-<ul>
-<li><p>一般处理的异常都是<code>RuntimeException</code>；</p>
-</li>
-<li><p>可以通过继承<code>RuntimeException</code>或新建<code>ResponseStatusException</code>（通过构造器来注入属性值）来定义自己的异常类型。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@ControllerAdvice</code>：</p>
-<ul>
-<li><p>可以用于定义异常处理类；</p>
-</li>
-<li><p><code>@ControllerAdvice(assignableTypes = &#123;ExceptionController.class&#125;)</code>可以指定特定的<code>Controller</code>类，使得异常处理类只处理特定类抛出的异常。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@ExceptionHandler</code>：</p>
-<ul>
-<li><p>可以用于定义异常处理方法；</p>
-</li>
-<li><p><code>@ExceptionHandler(value = XXXException.class)</code>可以指定特定的异常类型，使得异常处理方法只处理特定的异常类型。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="2-8-Java持久化API"><a href="#2-8-Java持久化API" class="headerlink" title="2.8 Java持久化API"></a>2.8 Java持久化API</h2><p>Java持久化API（JPA，Java Persistence API）是一个将对象映射为关系数据库的标准技术。JPA通过注解或XML描述ORM（Object Relationship Mapping，对象-关系表的映射关系），并将运行期的实体对象持久化到数据库中。</p>
-<ul>
-<li><p><code>@Entity</code>：用于标注数据库持久化实体类。</p>
-</li>
-<li><p><code>@Repository</code> ：用于标注和数据库操作有关的接口。</p>
-</li>
-<li><p><code>@Query</code>：用于指定接口方法的sql语句。</p>
-</li>
-<li><p><code>@Param</code>：用于指定方法参数名称。</p>
-</li>
-<li><p><code>@Async</code>：用于标注异步方法。</p>
-</li>
-</ul>
 <h1 id="3、源码学习"><a href="#3、源码学习" class="headerlink" title="3、源码学习"></a>3、源码学习</h1><p>SpringBoot具有以下子modules：</p>
 <ul>
 <li>spring-boot：核心工程。</li>
@@ -2239,7 +2339,7 @@
 <li>spring-boot-cli：命令行交互工具。</li>
 <li>spring-boot-devtools：为开发者服务，其中最重要的功能就是热部署。</li>
 </ul>
-<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的<code>run</code>方法。</p>
+<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的静态<code>run</code>方法。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorldApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      SpringApplication.run(HelloWorldApplication.class, args);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在spring-boot模块中，<code>SpringApplication</code>类的<code>run</code>方法是一个可以通过默认设置和用户约定来从具体source运行Spring项目的静态帮助器。</p>
@@ -2314,7 +2414,7 @@
 
 <h2 id="3-2-自动配置"><a href="#3-2-自动配置" class="headerlink" title="3.2 自动配置"></a>3.2 自动配置</h2><p>启动类使用<code>@SpringBootApplication</code>注解标注，而<code>@SpringBootApplication</code>注解包含了<code>@EnableAutoConfiguration</code>注解。</p>
 <p>在spring-boot-autoconfigure模块中，<code>@EnableAutoConfiguration</code>注解会启用 SpringBoot 的自动装配机制（自动扫描+条件装配）。</p>
-<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
+<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，会将符合条件的配置类都加载到IoC容器中，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import(AutoConfigurationImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAutoConfiguration &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <p>2）在<code>AutoConfigurationImportSelector</code>类的<code>selectImports</code>方法中，调用了<code>getAutoConfigurationEntry</code>方法，完整代码如下；</p>
@@ -3198,7 +3298,7 @@
 
 
 
-<h1 id="4、Spring-MVC"><a href="#4、Spring-MVC" class="headerlink" title="4、Spring MVC"></a>4、Spring MVC</h1><h2 id="4-1-问题与解决"><a href="#4-1-问题与解决" class="headerlink" title="4.1 问题与解决"></a>4.1 问题与解决</h2><p>由于HTTP协议的无状态性，基于Web的应用程序在状态管理、工作流等问题上面临着重大挑战，Spring MVC就是为了解决这些问题而设计的。</p>
+<h1 id="4、MVC"><a href="#4、MVC" class="headerlink" title="4、MVC"></a>4、MVC</h1><h2 id="4-1-问题与解决"><a href="#4-1-问题与解决" class="headerlink" title="4.1 问题与解决"></a>4.1 问题与解决</h2><p>由于HTTP协议的无状态性，基于Web的应用程序在状态管理、工作流等问题上面临着重大挑战，Spring MVC就是为了解决这些问题而设计的。</p>
 <p>Spring MVC基于模型-视图-控制器（Model-View-Controller, MVC）模式实现，核心思想在于将业务逻辑、数据、显示分离，有助于构建灵活、松耦合的Web应用程序。</p>
 <p>整个MVC相当于三层架构中的UI表现层，通过MVC对UI层又进一步进行了分层。</p>
 <ul>
@@ -3294,7 +3394,7 @@
 </ul>
 <p>Spring对REST的支持是构建在Spring MVC之上的，控制器可以处理所有的HTTP方法，包含四个主要的REST方法：GET、PUT、DELETE以及POST，分别对应对资源的检索、更新、删除和创建。通过适当设置<code>@RequestMapping</code>注解的<code>method</code>属性，就可以让<code>DispatcherServlet</code>把不同的HTTP方法的请求定向到特定的控制器方法上。</p>
 <p>RESTful Web 服务与传统的 MVC 开发一个关键区别是返回给客户端的内容的创建方式：<strong>传统的 MVC 模式开发会直接返回给客户端一个视图，但是 RESTful Web 服务一般会将返回的数据以 JSON 的形式返回，实现前后端分离开发。</strong></p>
-<h2 id="4-5-定义控制器"><a href="#4-5-定义控制器" class="headerlink" title="4.5 定义控制器"></a>4.5 定义控制器</h2><h3 id="4-5-1-常用注解"><a href="#4-5-1-常用注解" class="headerlink" title="4.5.1 常用注解"></a>4.5.1 常用注解</h3><ul>
+<h2 id="4-5-相关组件"><a href="#4-5-相关组件" class="headerlink" title="4.5 相关组件"></a>4.5 相关组件</h2><h3 id="4-5-1-控制器"><a href="#4-5-1-控制器" class="headerlink" title="4.5.1 控制器"></a>4.5.1 控制器</h3><ul>
 <li><p><code>@Controller</code></p>
 <ul>
 <li>用于类，表明该类是MVC的控制器。</li>
@@ -3359,7 +3459,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="4-5-2-HTTP方法"><a href="#4-5-2-HTTP方法" class="headerlink" title="4.5.2 HTTP方法"></a>4.5.2 HTTP方法</h3><ul>
+<p>可处理的HTTP方法如下：</p>
+<ul>
 <li><p>GET</p>
 <ul>
 <li><p>可只直接使用<code>@GetMapping</code>注解；</p>
@@ -3425,7 +3526,145 @@
 </ul>
 </li>
 </ul>
-<h1 id="5、参考资料"><a href="#5、参考资料" class="headerlink" title="5、参考资料"></a>5、参考资料</h1><ul>
+<h3 id="4-5-2-Servlet"><a href="#4-5-2-Servlet" class="headerlink" title="4.5.2 Servlet"></a>4.5.2 Servlet</h3><p>Servlet 是<code>javax.servlet</code>包中定义的一个接口，除了Controller以外，有时也需要使用Servlet来实现拦截和监昕功能。</p>
+<ul>
+<li><p><code>@WebServlet(urlPattern = &quot;&quot;)</code></p>
+<ul>
+<li><p>用于注册Servlet实现类；</p>
+</li>
+<li><p>使得<code>DispatcherServlet</code>核心控制器知道它的作用，以及处理请求<code>urlpattern</code>。</p>
+</li>
+</ul>
+</li>
+<li><p><code>＠ServletComponentScan</code></p>
+<ul>
+<li><p>用于启动类；</p>
+</li>
+<li><p>以扫描注册指定包内的所有Servlet、Filter以及监听器。</p>
+</li>
+</ul>
+</li>
+<li><p><code>HttpServlet</code></p>
+<ul>
+<li><p>Servlet抽象类；</p>
+</li>
+<li><p>自定义的Servlet需要继承<code>HttpServlet</code>，并重写<code>doGet</code>方法。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-5-3-过滤器"><a href="#4-5-3-过滤器" class="headerlink" title="4.5.3 过滤器"></a>4.5.3 过滤器</h3><p>对于多个页面都需要进行的例如参数校验等功能，可以通过过滤器来实现，从而避免重复代码。定义一个过滤器应当：</p>
+<ul>
+<li><p>实现<code>Filter</code>接口；</p>
+</li>
+<li><p>实现<code>init</code>、<code>doFilter</code>、<code>destory</code>方法；</p>
+</li>
+<li><p>使用<code>@WebFilter(urlPatterns = &quot;&quot;)</code>注解标注；</p>
+</li>
+<li><p>使用<code>＠ServletComponentScan</code>注解标注启动类。</p>
+</li>
+</ul>
+<h3 id="4-5-4-监听器"><a href="#4-5-4-监听器" class="headerlink" title="4.5.4 监听器"></a>4.5.4 监听器</h3><p>监听器用于监听Web应用程序中某些对象或信息的创建、销毁、增加、修改、删除等动作，然后做出相应的响应处理。当对象的状态发生变化时，服务器自动调用监听器的方法。具体应用有统计在线用户人数、在结用户、系统加载时的信息初始化等。</p>
+<p>Servlet 中的监听器分为以下类型：</p>
+<ul>
+<li><p>监听<code>ServletContext</code>、<code>Request</code>、<code>Session</code>作用域的创建和销毁；</p>
+<ul>
+<li><p><code>ServletContextListener</code>；</p>
+</li>
+<li><p><code>HttpSessionListener</code>；</p>
+</li>
+<li><p><code>ServletRequestListener</code>；</p>
+</li>
+</ul>
+</li>
+<li><p>监听<code>ServletContext</code>、<code>Request</code>、<code>Session</code>作用域中属性的变化（增加、修改、删除）；</p>
+<ul>
+<li><p><code>ServletContextAttributeListener</code>；</p>
+</li>
+<li><p><code>HttpSessionAttributeListener</code>；</p>
+</li>
+<li><p><code>ServletRequestAttributeListener</code>；</p>
+</li>
+</ul>
+</li>
+<li><p>监听<code>HttpSession</code>作用域中对象状态的改变（被绑定、解除绑走、钝化、活化）；</p>
+<ul>
+<li><p><code>HttpSessionBindingListener</code>；</p>
+</li>
+<li><p><code>HttpSessionActivationListener</code>；</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>定义一个监听器应当：</p>
+<ul>
+<li><p>实现上述任意类型的监听器接口；</p>
+</li>
+<li><p>实现监听器接口中对应的方法；</p>
+</li>
+<li><p>使用<code>@WebListener</code>注解标注；</p>
+</li>
+<li><p>使用<code>＠ServletComponentScan</code>注解标注启动类。</p>
+</li>
+</ul>
+<h3 id="4-5-5-异常"><a href="#4-5-5-异常" class="headerlink" title="4.5.5 异常"></a>4.5.5 异常</h3><p>Spring提供的异常处理方案是利用切面技术实现的，会将异常处理切面织入到目标控制器中。</p>
+<ul>
+<li><p>异常类一般需要包含以下信息：</p>
+<ul>
+<li>唯一标示异常的 code；</li>
+<li>HTTP状态码；</li>
+<li>错误路径；</li>
+<li>发生错误的时间戳；</li>
+<li>错误的具体信息。</li>
+</ul>
+</li>
+<li><p><code>RuntimeException</code></p>
+<ul>
+<li><p>一般处理的异常都是<code>RuntimeException</code>；</p>
+</li>
+<li><p>可以通过继承<code>RuntimeException</code>或新建<code>ResponseStatusException</code>（通过构造器来注入属性值）来定义自己的异常类型。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ControllerAdvice</code>或<code>@RestControllerAdvice</code></p>
+<ul>
+<li><p>可以用于定义异常处理类，默认对所有的<code>Controller</code>都有效；</p>
+</li>
+<li><p><code>@ControllerAdvice(annotations = &#123;RestController.class&#125;)</code>可以指定特定的注解，使得异常处理类只处理特定注解所标记的类抛出的异常；</p>
+</li>
+<li><p><code>@ControllerAdvice(&quot;&quot;)</code>可以指定特定的包名，使得异常处理类只处理特定包内抛出的异常；</p>
+</li>
+<li><p><code>@ControllerAdvice(assignableTypes = &#123;ExceptionController.class&#125;)</code>可以指定特定的<code>Controller</code>，使得异常处理类只处理特定<code>Controller</code>抛出的异常。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ExceptionHandler</code></p>
+<ul>
+<li><p>可以用于定义异常处理方法，可以拦截控制器中发生的异常；</p>
+</li>
+<li><p><code>@ExceptionHandler(value = XXXException.class)</code>可以指定特定的异常类型，使得异常处理方法只处理特定的异常类型。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="5、ORM"><a href="#5、ORM" class="headerlink" title="5、ORM"></a>5、ORM</h1><h2 id="5-1-问题与解决"><a href="#5-1-问题与解决" class="headerlink" title="5.1 问题与解决"></a>5.1 问题与解决</h2><p>JDBC（Java Data Base Connectivity）由一组用Java编写的类和接口组成，是Java用于连接数据库的规范，即用于执行数据库SQL语句的Java API，为大部分关系型数据库提供访问接口。JDBC没有指定某种特定数据库，可以为多种数据库提供统一访问的接口，这也更符合程序设计的模式。</p>
+<p>JDBC需要每次进行数据库连接，然后处理SQL语句、传值、关闭数据库。这些步骤繁琐易出错，为了减少这种可能的错误，减少开发人员的工作量，JDBCtemplate就被设计出来了。JDBCtemplate是对JDBC 的封装，更便于程序实现，替开发人员完成所有的JDBC 底层工作。此时，对于数据库的操作不再需要每次都进行连接、打开、关闭了。JDBCtemplate操作简单易学，但依旧不够简洁强大。</p>
+<p>业务实体在内存中表现为对象，在数据库中表现为关系型数据。内存中的对象不会被永久保存，只有关系型数据库（或NoSQ L 数据库，或文件）中的对象会被永久保存。ORM（Object Relation Mapping）将数据库中的表和内存中的对象建立了映射关系。ORM系统一般以中间件的形式存在。目前比较常用的ORM 是国外非常流行的JPA和国内非常流行的MyBatis。</p>
+<h2 id="5-2-Java持久化API"><a href="#5-2-Java持久化API" class="headerlink" title="5.2 Java持久化API"></a>5.2 Java持久化API</h2><p>Java持久化API（JPA，Java Persistence API）是一个将对象映射为关系数据库的标准技术，用于对象的持久化。JPA通过注解或XML描述ORM，并将运行期的实体对象持久化到数据库中。</p>
+<p>无论是哪种持久化存储方式，数据访问对象（Data Access Objects, DAO）都会提供对对象<br>的增加、删除、修改、查询、排序以及分页等方法。</p>
+<ul>
+<li><p><code>@Entity</code>：用于标注数据库持久化实体类。</p>
+</li>
+<li><p><code>@Repository</code> ：用于标注和数据库操作有关的接口。</p>
+</li>
+<li><p><code>@Query</code>：用于指定接口方法的sql语句。</p>
+</li>
+<li><p><code>@Param</code>：用于指定方法参数名称。</p>
+</li>
+<li><p><code>@Async</code>：用于标注异步方法。</p>
+</li>
+</ul>
+<h1 id="6、参考资料"><a href="#6、参考资料" class="headerlink" title="6、参考资料"></a>6、参考资料</h1><ul>
 <li>《Spring In Action，Third Edition》</li>
 <li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
 <li><a href="https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1">https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1</a></li>

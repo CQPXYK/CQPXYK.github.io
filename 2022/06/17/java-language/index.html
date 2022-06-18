@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <!--
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  -->  
+<meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Java Language | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Java Language</h2>
+  <!--
+  <p class="post-date">2022-06-17</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+  -->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h1><h2 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h2><p>元注解是Java提供的可以用于定义注解的基本注解。</p>
+<ul>
+<li><p><code>@Target</code></p>
+<ul>
+<li><p>用于告知Java将自定义的注解放在何处，比如类、万法、构造器、变量上等，是一个枚举类型，有如下属性值；</p>
+</li>
+<li><p><code>ElementType.CONSTRUCTOR</code>代表用于描述构造器；</p>
+</li>
+<li><p><code>ElementType.FIELD</code>代表用于描述成员变量、对象、属性（包括<code>enum</code>实例）；</p>
+</li>
+<li><p><code>ElementType.LOCAL_VARIABLE</code>代表用于描述局部变量；</p>
+</li>
+<li><p><code>ElementType.METHOD</code>代表用于描述万法；</p>
+</li>
+<li><p><code>ElementType.PACKAGE</code>代表用于描述包；</p>
+</li>
+<li><p><code>ElementType.PARAMETER</code>代表用于描述参数；</p>
+</li>
+<li><p><code>ElementType.TYPE</code>代表用于描述类、接口（包括注解类型）或<code>enum</code>声明。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Retention</code></p>
+<ul>
+<li><p>用于说明自定义注解的生命周期，在注解中有三个生命周期，是一个枚举类型，有如下属性值；</p>
+</li>
+<li><p><code>RetentionPolicy.RUNTIME</code> 代表始终不会丢弃，运行期也保留该注解，通常使用这种方式；</p>
+</li>
+<li><p><code>RetentionPolicy.CLASS</code>代表类加载时丢弃，默认使用这种方式；</p>
+</li>
+<li><p><code>RetentionPolicy.SOURCE</code>代表编译阶段丢弃，所以不会写入字节码，<code>＠Override</code>、<code>＠SuppressWarnings</code>都属于这类注解。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Inherited</code></p>
+<ul>
+<li><p>用于标记被标注的类型是可以被继承的；</p>
+</li>
+<li><p>如果一个使用了<code>＠lnherited</code>修饰的注解类型被用于一个类，则这个注解将继续被用于该类的子类。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Documented</code></p>
+<ul>
+<li>用于标记是否将信息添加到Java文档当中。</li>
+</ul>
+</li>
+<li><p><code>@interface</code></p>
+<ul>
+<li><p>用于声明一个注解；</p>
+</li>
+<li><p>其中的每一个方法实际上是声明了一个配置参数;</p>
+</li>
+<li><p>方法的名称就是参数的名称，返回类型就是参数的类型;</p>
+</li>
+<li><p>返回值类型只能是基本类型、<code>Class</code>、<code>String</code>、<code>enum</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h2><p>1）声明自定义注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy. RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation &#123;</span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）自定义注解的逻辑实现（AOP）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnotationAspect</span> &#123;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;@annotation(com.example.annotation.MyAnnotation)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">myAnnotationPointCut</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before(&quot;myAnnotationPointCut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint joinPoint)</span> &#123;</span><br><span class="line">        <span class="type">MethodSignature</span> <span class="variable">methodSignature</span> <span class="operator">=</span> (MethodSignature)joinPoint.getSignature();</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> methodSignature.getMethod();</span><br><span class="line">        <span class="type">MyAnnotation</span> <span class="variable">myAnnotation</span> <span class="operator">=</span> method.getAnnotation(MyAnnotation.class);</span><br><span class="line">        System.out.println(<span class="string">&quot;自定义注解 MyAnnotation 起作用了&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;MyAnnotation 的参数为：&quot;</span>);</span><br><span class="line">        System.out.println(myAnnotation.value());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）使用自定义注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationUser</span> &#123;</span><br><span class="line">    <span class="meta">@MyAnnotation(&quot;测试自定义注解的参数&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fun</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）测试自定义注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testMyAnnotation</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line">        <span class="type">MyAnnotationUser</span> <span class="variable">myAnnotationUser</span> <span class="operator">=</span> context.getBean(MyAnnotationUser.class);</span><br><span class="line">        myAnnotationUser.fun();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）测试结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">自定义注解 MyAnnotation 起作用了</span><br><span class="line">MyAnnotation 的参数为：</span><br><span class="line">测试自定义注解的参数</span><br></pre></td></tr></table></figure>
+
+<h1 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h1><p>单元测试（unit test）是为了检验程序的正确性。一个单元可能是单个程序、类、对象、方法等，它是应用程序的最小可测试部件。Java平台使用的测试框架是JUnit，JUnit是白盒测试，知道测试如何完成功能和完成什么样的功能。</p>
+<p>在编写UT时，应当遵循一些规范：</p>
+<ul>
+<li>代码简单易懂，不可能再为测试代码编写测试；</li>
+<li>每个测试都互相独立，不依赖运行顺序；</li>
+<li>注意测试边界条件。</li>
+</ul>
+<p>JUnit提供了以下注解：</p>
+<ul>
+<li><p><code>@Test</code></p>
+<ul>
+<li><p>用于标注测试方法；</p>
+</li>
+<li><p>每次运行一个<code>@Test</code>方法前，JUnit首先创建一个<code>XxxTest</code>实例；</p>
+</li>
+<li><p>每个<code>@Test</code>方法内部的成员变量都是独立的，不能也无法把成员变量的状态从一个<code>@Test</code>方法带到另一个<code>@Test</code>方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Test(expected=Exception.class)</code></p>
+<ul>
+<li><p>指定测试单元期望得到的异常类;；</p>
+</li>
+<li><p>只有执行完成后抛出指定的异常，才测试成功。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@BeforeEach</code>和<code>@AfterEach</code></p>
+<ul>
+<li><p>这两个注解标注的方法会在运行每个<code>@Test</code>方法前后自动运行；</p>
+</li>
+<li><p>用于初始化和清理实例变量，在各个<code>@Test</code>方法中互不影响（是不同的实例）；</p>
+</li>
+<li><p>编写测试前准备、测试后清理的固定代码（称之为Fixture）。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@BeforeAll</code>和<code>@AfterAll</code></p>
+<ul>
+<li><p>这两个注解标注的方法会在运行所有<code>@Test</code>方法前后运行；</p>
+</li>
+<li><p>用于初始化和清理静态变量，也只能标注静态方法；</p>
+</li>
+<li><p>在各个<code>@Test</code>方法中均是唯一实例，会影响各个<code>@Test</code>方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RunWith</code></p>
+<ul>
+<li><p>在JUnit中有很多Runner负责调用测试代码；</p>
+</li>
+<li><p>每个Runner都有特殊功能，应根据需要选择不同的Runner来运行测试代码。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Transactional</code></p>
+<ul>
+<li>测试完成后就会回滚，不会产生垃圾数据。</li>
+</ul>
+</li>
+<li><p><code>@lgnore</code></p>
+<ul>
+<li>执行测试时将忽略掉此方法；</li>
+<li>如果用于修饰类，则忽略整个类。 </li>
+</ul>
+</li>
+</ul>
+<p>Mockito 框架可以与JUnit结合使用，用于创建和配置Mock对象。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/05/22/spring-boot/">
+        <span class="nav-arrow">← </span>
+        
+          Spring Boot
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2022/06/17/java-concurrency/">
+        
+          Java Concurrency
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">注解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%85%83%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">元注解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">自定义注解</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">单元测试</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/06/17/java-language/';
+    <!--
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+    -->
+    $('#article-banner').geopattern(url);
+    $('.header').removeClass('fixed-header');
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <!--
+<footer class="app-footer">
+  <p class="copyright">
+    &copy; 2022 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+-->
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

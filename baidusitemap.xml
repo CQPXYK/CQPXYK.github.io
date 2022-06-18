@@ -2,11 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://example.com/2022/05/07/spring/</loc>
-    <lastmod>2022-06-15</lastmod>
+    <lastmod>2022-06-18</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/06/17/java-language/</loc>
+    <lastmod>2022-06-18</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
-    <lastmod>2022-06-15</lastmod>
+    <lastmod>2022-06-17</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/06/17/java-concurrency/</loc>
+    <lastmod>2022-06-17</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/07/maven/</loc>
@@ -15,10 +23,6 @@
   <url>
     <loc>http://example.com/2022/05/06/effective-java/</loc>
     <lastmod>2022-06-14</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/17/java-concurrency/</loc>
-    <lastmod>2022-05-22</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/08/design-patterns/</loc>
