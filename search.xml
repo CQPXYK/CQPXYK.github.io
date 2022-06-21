@@ -2155,336 +2155,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Spring Boot</title>
-    <url>/2022/05/22/spring-boot/</url>
-    <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
-<ul>
-<li>Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置；</li>
-<li>Spring 3.0 引入了基于 Java 的配置，这是一种比XML更加安全的配置方式；</li>
-<li>但在使用Spring的过程中，依旧无法避免基于XML的配置方式。</li>
-</ul>
-<p>Spring Boot是以<strong>简化Spring的配置</strong>为目标而创建的，是约定优先于配置理念下的产物。</p>
-<h1 id="2、使用介绍"><a href="#2、使用介绍" class="headerlink" title="2、使用介绍"></a>2、使用介绍</h1><h2 id="2-1-启动类"><a href="#2-1-启动类" class="headerlink" title="2.1 启动类"></a>2.1 启动类</h2><p>Spring Boot要求<code>main()</code>方法所在的启动类：</p>
-<ul>
-<li><p>必须放到根package下；</p>
-</li>
-<li><p>命名不做要求，但一般是以Application为后缀命名；</p>
-</li>
-<li><p>使用<code>@SpringBootApplication</code>注解标注；</p>
-</li>
-<li><p>还可以通过<code>@EnableAutoConfiguration(exclude = &#123;...&#125;)</code>来指定禁用的自动配置。</p>
-</li>
-</ul>
-<p><code>@SpringBootApplication</code>等同于以下三个注解的集合：</p>
-<ul>
-<li><p><code>@Configuration</code>：允许在上下文中注册额外的 bean 或导入其他配置类；</p>
-</li>
-<li><p><code>@EnableAutoConfiguration</code>：启用 SpringBoot 的自动装配机制（自动扫描+条件装配），详细介绍见3.1节；</p>
-</li>
-<li><p><code>@ComponentScan</code>：扫描被声明为JavaBean的类。</p>
-</li>
-</ul>
-<h2 id="2-2-默认约定"><a href="#2-2-默认约定" class="headerlink" title="2.2 默认约定"></a>2.2 默认约定</h2><p>1）Spring Boot默认约定采用Maven的目录结构。</p>
-<p>2）Spring Boot默认内置了嵌入式的Web容器，支持四种嵌入式Web容器：Tomcat、Jetty、Undertow、Reactor。</p>
-<p>3）Spring Boot默认约定的配置文件是<code>application.yml</code>：</p>
-<ul>
-<li><p>Spring Boot几乎所有的配置项都可以在这个文件中配置，如果不配置，则使用默认项；</p>
-</li>
-<li><p>文件位于<code>src/main/resources</code>目录下；</p>
-</li>
-<li><p>文件名必须是<code>application</code>而不是其他名称;</p>
-</li>
-<li><p>文件后缀采用<code>.yml</code>（<a href="https://yaml.org/">YAML</a>）或者<code>.properties</code>，后者的优先级更高；</p>
-</li>
-<li><p>层级格式的<code>.yml</code>文件比<code>key=value</code>格式的<code>.properties</code>文件更易读；</p>
-</li>
-<li><p>使用<code>.yml</code>时：</p>
-<ul>
-<li><p>属性名的值和冒号中间必须有空格；</p>
-</li>
-<li><p>大小写敏感；</p>
-</li>
-<li><p>使用空格缩进表示层级关系；</p>
-</li>
-<li><p>缩进时不能使用tab，只能空格；</p>
-</li>
-<li><p>缩进的空格数目不重要，只要相同层级的元素左侧对齐即可；</p>
-</li>
-<li><p><code>#</code>表示注释，从这个字符一直到行尾，都会被解析器忽略。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="2-3-优先级配置"><a href="#2-3-优先级配置" class="headerlink" title="2.3 优先级配置"></a>2.3 优先级配置</h2><p>Spring Boot提供了一种优先级配置的机制，优先级高的配置会覆盖优先级低的配置。</p>
-<ul>
-<li><p>优先级最高的是命令行参数配置；</p>
-<ul>
-<li><p>命令行参数的优先级之所以被设置为最高，是因为可以方便我们在测试或生产环境中快速地修改配置参数值，而不需要重新打包和部署应用；</p>
-</li>
-<li><p>以<code>--</code>开头的命令行参数会被转化成应用中可以使用的配置参数，如<code>--name = Alex</code> 会设置配置参数<code>name</code> 的值为<code>Alex</code>；</p>
-</li>
-</ul>
-</li>
-<li><p>不同位置的配置文件的优先级从高到低依次为：</p>
-<ul>
-<li><p>项目目录的<code>/config</code>子目录；</p>
-</li>
-<li><p>项目目录；</p>
-</li>
-<li><p><code>src/main/resources/config</code>子目录；</p>
-</li>
-<li><p><code>src/main/resources</code>子目录（默认配置）；</p>
-</li>
-</ul>
-</li>
-<li><p>配置文件的优先级高于应用Java配置类：</p>
-<ul>
-<li><p>任何<code>@Component</code>或<code>@Configuration</code>都能注解<code>@Profile</code>，从而限制加载它的环境；</p>
-</li>
-<li><p>通常的应用部署会包含开发、测试、预发和生产等若干个环境。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Profile(&quot;production&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductionConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<h2 id="2-4-读取配置信息"><a href="#2-4-读取配置信息" class="headerlink" title="2.4 读取配置信息"></a>2.4 读取配置信息</h2><p>Spring Boot可以通过以下方式来读取配置信息：</p>
-<ul>
-<li><p><code>@Value(&quot;$&#123;property&#125;&quot;)</code>：适用于只需获取某单一配置项的值的场景；</p>
-</li>
-<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类或者<code>getXXXProperties</code>方法，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
-<ul>
-<li><p>配合<code>@Validated</code>注解可以对参数实现校验功能。</p>
-</li>
-<li><p><code>XXXProperties </code>类配合<code>@Component</code>注解或者<code>getXXXProperties</code>方法配合<code>@Bean </code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
-</li>
-<li><p>如果不使用<code>@Component</code>或则<code>@Bean </code>注解将其声明为Bean，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的<code>.properties</code> 文件中的信息（<code>.yml</code>文件不行），同样可以将该类声明为一个JavaBean。</p>
-</li>
-</ul>
-<h2 id="2-5-过滤配置类"><a href="#2-5-过滤配置类" class="headerlink" title="2.5 过滤配置类"></a>2.5 过滤配置类</h2><p>可以通过<code>@Conditional</code>及其派生注解来判断是否过滤候选的配置类，被过滤的配置类不会被SpringBoot 的自动装配机制加载，详细介绍见3.1节</p>
-<table>
-<thead>
-<tr>
-<th align="center"><code>@Conditional</code>派生注解</th>
-<th align="center">判断条件</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>@ConditionalOnJava</code></td>
-<td align="center">系统的java版本是否符合要求</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnBean</code></td>
-<td align="center">容器中存在指定Bean</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnMissingBean</code></td>
-<td align="center">容器中不存在指定Bean</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnExpression</code></td>
-<td align="center">满足SpEL表达式指定</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnClass</code></td>
-<td align="center">系统中有指定的类</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnMissingClass</code></td>
-<td align="center">系统中没有指定的类</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnSingleCandidate</code></td>
-<td align="center">容器中只有一个指定的Bean，或者这个Bean是首选Bean</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnProperty</code></td>
-<td align="center">系统中指定的属性是否有指定的值</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnResource</code></td>
-<td align="center">类路径下是否存在指定资源文件</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnWebApplication</code></td>
-<td align="center">当前是web环境</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnNotWebApplication</code></td>
-<td align="center">当前不是web环境</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnJndi</code></td>
-<td align="center">JNDI存在指定项</td>
-</tr>
-</tbody></table>
-<h2 id="2-6-日志使用"><a href="#2-6-日志使用" class="headerlink" title="2.6 日志使用"></a>2.6 日志使用</h2><p>SpringBoot能自动适配所有的日志，底层使用slf4j+logback的方式记录日志，通过如下依赖来使用日志功能</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在引入其他框架的时候，需要把这个框架的默认日志依赖移除掉，比如Spring框架用的是commons-logging</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring‐core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons‐logging<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons‐logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>通过以下方式获得记录器，从而使用日志功能</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//记录器</span></span><br><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(getClass());</span><br></pre></td></tr></table></figure>
-
-<h1 id="3、源码学习"><a href="#3、源码学习" class="headerlink" title="3、源码学习"></a>3、源码学习</h1><p>SpringBoot具有以下子modules：</p>
-<ul>
-<li>spring-boot：核心工程。</li>
-<li>spring-boot-starters：启动服务工程，可减少第三方jar的依赖。</li>
-<li>spring-boot-autoconfigure：实现自动配置的核心工程。</li>
-<li>spring-boot-actuator：外围支撑性功能。</li>
-<li>spring-boot-tools：开发者的常用工具集。</li>
-<li>spring-boot-cli：命令行交互工具。</li>
-<li>spring-boot-devtools：为开发者服务，其中最重要的功能就是热部署。</li>
-</ul>
-<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的静态<code>run</code>方法。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorldApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      SpringApplication.run(HelloWorldApplication.class, args);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在spring-boot模块中，<code>SpringApplication</code>类的<code>run</code>方法是一个可以通过默认设置和用户约定来从具体source运行Spring项目的静态帮助器。</p>
-<p>1）在<code>SpringApplication</code>类的<code>run</code>方法中，依次调用了<code>SpringApplication</code>类的构造方法和<code>run</code>方法，完整代码如下</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(Class&lt;?&gt;[] primarySources, String[] args)</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(primarySources).run(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）在<code>SpringApplication</code>类的构造方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第8行，将不为空的<code>primarySources</code>加入到一个<code>LinkedHashSet</code>中；</p>
-</li>
-<li><p>以下代码的第9行，调用<code>deduceFromClasspath</code>方法得到Web环境类型（NONE、SERVLET、REACTIVE）；</p>
-</li>
-<li><p>以下代码的第10、11、12行，调用<code>getSpringFactoriesInstances</code>方法，从而设置<code>BootstrapRegistryInitializer</code>列表、<code>ApplicationContextInitializer</code>列表以及<code>ApplicationListener</code>列表；</p>
-</li>
-<li><p>以下代码的第13行，调用<code>deduceMainApplicationClass</code>方法获取当前方法调用栈，找到<code>main</code>函数所在的类；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">   <span class="built_in">this</span>(<span class="literal">null</span>, primarySources);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.resourceLoader = resourceLoader;</span><br><span class="line">    Assert.notNull(primarySources, <span class="string">&quot;PrimarySources must not be null&quot;</span>);</span><br><span class="line">    <span class="built_in">this</span>.primarySources = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line">    <span class="built_in">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">    <span class="built_in">this</span>.bootstrapRegistryInitializers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;( getSpringFactoriesInstances(BootstrapRegistryInitializer.class));</span><br><span class="line">    setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">    setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">    <span class="built_in">this</span>.mainApplicationClass = deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3）在<code>getSpringFactoriesInstances</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第4行，调用<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法，读取<code>resources/META-INF/spring.factories</code>文件中的配置项的value值（key为上一级方法调用入参，value是一些类名），并放入到一个<code>LinkedHashSet</code>中去重；</p>
-</li>
-<li><p>以下代码的第5行，调用<code>createSpringFactoriesInstances</code>方法进行初始化；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; Collection&lt;T&gt; <span class="title function_">getSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes, Object... args)</span> &#123;</span><br><span class="line">   <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> getClassLoader();</span><br><span class="line">   <span class="comment">// Use names and ensure unique to protect against duplicates</span></span><br><span class="line">   Set&lt;String&gt; names = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(SpringFactoriesLoader.loadFactoryNames(type, classLoader));</span><br><span class="line">   List&lt;T&gt; instances = createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);</span><br><span class="line">   AnnotationAwareOrderComparator.sort(instances);</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4）在<code>createSpringFactoriesInstances</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第4行，遍历刚刚加载得到的类名；</p>
-</li>
-<li><p>以下代码的6~10行，依次调用类名所对应类的构造器进行初始化并加入到一个<code>List</code>当中；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; List&lt;T&gt; <span class="title function_">createSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes,</span></span><br><span class="line"><span class="params">      ClassLoader classLoader, Object[] args, Set&lt;String&gt; names)</span> &#123;</span><br><span class="line">   List&lt;T&gt; instances = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(names.size());</span><br><span class="line">   <span class="keyword">for</span> (String name : names) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         Class&lt;?&gt; instanceClass = ClassUtils.forName(name, classLoader);</span><br><span class="line">         Assert.isAssignable(type, instanceClass);</span><br><span class="line">         Constructor&lt;?&gt; constructor = instanceClass.getDeclaredConstructor(parameterTypes);</span><br><span class="line">         <span class="type">T</span> <span class="variable">instance</span> <span class="operator">=</span> (T) BeanUtils.instantiateClass(constructor, args);</span><br><span class="line">         instances.add(instance);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Cannot instantiate &quot;</span> + type + <span class="string">&quot; : &quot;</span> + name, ex);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>5）在<code>SpringApplication</code>类的<code>run</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第5行，调用<code>configureHeadlessProperty</code>方法，将<code>java.awt.headless</code>属性设置为<code>true</code>，表示运行在服务器端；</p>
-</li>
-<li><p>以下代码的第6行，依次调用了<code>getRunListeners</code>方法 –&gt; <code>getSpringFactoriesInstances</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法 –&gt; 读取<code>resources/META-INF/spring.factories</code>文件中的配置项的value值，从而设置<code>SpringApplicationRunListener</code>列表，这里只有一个value值（<code>EventPublishingRunListener</code>）；</p>
-</li>
-<li><p>以下代码的第7行，依次调用了<code>SpringApplicationRunListener</code>列表的<code>starting</code>方法 –&gt; <code>EventPublishingRunListener</code>类的<code>starting</code>方法 –&gt; <code>SimpleApplicationEventMulticaster</code>类的<code>multicastEvent</code>方法 –&gt; <code>invokeListener</code>方法 –&gt; <code>doInvokeListener</code>方法 –&gt; <code>ApplicationListener</code>接口的<code>onApplicationEvent</code>方法；</p>
-</li>
-<li><p>以下代码的第9行，依次调用了<code>DefaultApplicationArguments</code>的构造方法 –&gt; <code>Source</code>的构造方法 –&gt; <code>SimpleCommandLinePropertySource</code>的构造方法和<code>parse</code>方法 –&gt; <code>CommandLinePropertySource</code>的构造方法 –&gt; <code>EnumerablePropertySource</code>的构造方法 –&gt; <code>PropertySource</code>的构造方法，封装了命令行参数；</p>
-</li>
-<li><p>以下代码的第10行，调用了<code>prepareEnvironment</code>方法，从中逐步</p>
-<ul>
-<li><p>通过<code>getOrCreateEnvironment</code>方法获取或创建了<code>ConfigurableEnvironment</code>；</p>
-</li>
-<li><p>通过<code>configureEnvironment</code>方法配置了<code>ConfigurableEnvironment</code></p>
-</li>
-<li><p>通过<code>SpringApplicationRunListener</code>列表的<code>environmentPrepared</code>方法通知所有的观察者环境已经准备好了，可以进行后续操作；</p>
-</li>
-</ul>
-</li>
-<li><p>以下代码的第12行，调用了<code>printBanner</code>方法，打印<code>banner</code>；</p>
-</li>
-<li><p>以下代码的第13行，调用了<code>createApplicationContext</code>方法，根据当前环境类型（在<code>SpringApplication</code>类的构造方法中确定）来创建对应类型的上下文；</p>
-</li>
-<li><p>以下代码的第15行，依次调用了<code>prepareContext</code>方法 –&gt; <code>ApplicationContextInitializer</code>列表的<code>initialize</code>方法和<code>SpringApplicationRunListener</code>列表的<code>contextPrepared</code>方法和<code>contextLoaded</code>方法；</p>
-</li>
-<li><p>以下代码的第16行，调用了<code>refreshContext</code>方法，实现IoC容器的初始化及Bean的生命周期中的部分过程，具体可参见 <a href="../../07/spring/">Spring Framework</a> 的2.4节，如果是web应用还会创建嵌入式的Tomcat；</p>
-</li>
-<li><p>以下代码的26、27、34、35行，调用了<code>handleRunFailure</code>方法来处理异常并抛出<code>IllegalStateException</code>异常；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">   <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">   <span class="type">DefaultBootstrapContext</span> <span class="variable">bootstrapContext</span> <span class="operator">=</span> createBootstrapContext();</span><br><span class="line">   <span class="type">ConfigurableApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">   configureHeadlessProperty();</span><br><span class="line">   <span class="type">SpringApplicationRunListeners</span> <span class="variable">listeners</span> <span class="operator">=</span> getRunListeners(args);</span><br><span class="line">   listeners.starting(bootstrapContext, <span class="built_in">this</span>.mainApplicationClass);</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">ApplicationArguments</span> <span class="variable">applicationArguments</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultApplicationArguments</span>(args);</span><br><span class="line">      <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> prepareEnvironment(listeners, bootstrapContext, applicationArguments);</span><br><span class="line">      configureIgnoreBeanInfo(environment);</span><br><span class="line">      <span class="type">Banner</span> <span class="variable">printedBanner</span> <span class="operator">=</span> printBanner(environment);</span><br><span class="line">      context = createApplicationContext();</span><br><span class="line">      context.setApplicationStartup(<span class="built_in">this</span>.applicationStartup);</span><br><span class="line">      prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">      refreshContext(context);</span><br><span class="line">      afterRefresh(context, applicationArguments);</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToStartup</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">         <span class="keyword">new</span> <span class="title class_">StartupInfoLogger</span>(<span class="built_in">this</span>.mainApplicationClass).logStarted(getApplicationLog(), timeTakenToStartup);</span><br><span class="line">      &#125;</span><br><span class="line">      listeners.started(context, timeTakenToStartup);</span><br><span class="line">      callRunners(context, applicationArguments);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, listeners);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToReady</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      listeners.ready(context, timeTakenToReady);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, <span class="literal">null</span>);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="3-2-自动配置"><a href="#3-2-自动配置" class="headerlink" title="3.2 自动配置"></a>3.2 自动配置</h2><p>启动类使用<code>@SpringBootApplication</code>注解标注，而<code>@SpringBootApplication</code>注解包含了<code>@EnableAutoConfiguration</code>注解。</p>
-<p>在spring-boot-autoconfigure模块中，<code>@EnableAutoConfiguration</code>注解会启用 SpringBoot 的自动装配机制（自动扫描+条件装配）。</p>
-<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，会将符合条件的配置类都加载到IoC容器中，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import(AutoConfigurationImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAutoConfiguration &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）在<code>AutoConfigurationImportSelector</code>类的<code>selectImports</code>方法中，调用了<code>getAutoConfigurationEntry</code>方法，完整代码如下；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> NO_IMPORTS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AutoConfigurationEntry</span> <span class="variable">autoConfigurationEntry</span> <span class="operator">=</span> getAutoConfigurationEntry(annotationMetadata);</span><br><span class="line">    <span class="keyword">return</span> StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3）在<code>AutoConfigurationImportSelector</code>类的<code>getAutoConfigurationEntry</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第5行，会调用<code>getAttributes</code>方法来获取元注解中的属性；</p>
-</li>
-<li><p>以下代码的第6行，会依次调用<code>getCandidateConfigurations</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法；</p>
-</li>
-<li><p>以下代码的第11行，会根据候选配置类上的<code>@ConditionalOnClass</code>注解来判断是否过滤该候选类，被过滤的候选类不会被加载；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> AutoConfigurationEntry <span class="title function_">getAutoConfigurationEntry</span><span class="params">(AnnotationMetadata annotationMetadata)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> EMPTY_ENTRY;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AnnotationAttributes</span> <span class="variable">attributes</span> <span class="operator">=</span> getAttributes(annotationMetadata);</span><br><span class="line">    List&lt;String&gt; configurations = getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">    configurations = removeDuplicates(configurations);</span><br><span class="line">    Set&lt;String&gt; exclusions = getExclusions(annotationMetadata, attributes);</span><br><span class="line">    checkExcludedClasses(configurations, exclusions);</span><br><span class="line">    configurations.removeAll(exclusions);</span><br><span class="line">    configurations = getConfigurationClassFilter().filter(configurations);</span><br><span class="line">    fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">AutoConfigurationEntry</span>(configurations, exclusions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4）在<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法中，会读取<code>resources/META-INF/spring.factories</code>文件中key为<code>EnableAutoConfiguration</code>的全限定名的value；</p>
-<ul>
-<li><p><code>EnableAutoConfiguration</code>的全限定名所对应的value有很多（一百多个），每个value都是一个配置类的全限定名；</p>
-</li>
-<li><p>SpringBoot 的自动装配机制并不会加载全部value所对应的配置类，而是会根据配置类的<code>@ConditionalOnClass</code>注解所确定的条件来判断是否加载该配置类；</p>
-</li>
-</ul>
-<p>5）因此，如果需要<code>@EnableAutoConfiguration</code>注解去加载自定义jar包中的Bean，就应该确保：</p>
-<ul>
-<li><p>该jar包的配置类中编写了标注了<code>@Bean</code>的方法来创建并返回该Bean；</p>
-</li>
-<li><p>该jar包的<code>src/main/resources/META-INF</code>目录下存在<code>spring.factories</code>文件，并在<code>spring.factories</code>文件配置了key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项；</p>
-</li>
-</ul>
-<p>6）在jar包的<code>src/main/resources/META-INF/spring.factories</code>文件中，还可以通过配置key为配置类的全限定名.ConditionalOnClass，value为指定classpath下的指定类这一配置项，这里起到的作用是：只有指定classpath下确实存在指定类，<code>@EnableAutoConfiguration</code>注解才会加载该配置类。</p>
-<h2 id="3-3-Web配置"><a href="#3-3-Web配置" class="headerlink" title="3.3 Web配置"></a>3.3 Web配置</h2><p>在3.2节中学习到了<code>@EnableAutoConfiguration</code>注解会加载<code>spring.factories</code>文件中所配置的key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项。</p>
-<p>本节以<code>WebMvcAutoConfiguration</code>这一自动配置类为例，介绍Spring Boot的Web配置。</p>
-<p>1）通过<code>@Conditional</code>及其派生注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载条件，<code>@AutoConfigureOrder</code>和<code>@AutoConfigureAfter</code>注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载顺序；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication(type = Type.SERVLET)</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(&#123; Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class &#125;)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(WebMvcConfigurationSupport.class)</span></span><br><span class="line"><span class="meta">@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)</span></span><br><span class="line"><span class="meta">@AutoConfigureAfter(&#123; DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,</span></span><br><span class="line"><span class="meta">      ValidationAutoConfiguration.class &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebMvcAutoConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）<code>WebMvcAutoConfiguration</code>配置类内部有一些静态内部类</p>
-<ul>
-<li><p><code>EnableWebMvcConfiguration</code>配置类</p>
-<ul>
-<li><p>相当于<code>@EnableWebMvc</code>注解的功能；</p>
-</li>
-<li><p>通过<code>@EnableConfigurationProperties(WebProperties.class)</code>注册了<code>WebProperties</code>，</p>
-</li>
-<li><p>重写了一些<code>WebMvcConfigurationSupport</code>父类中的方法实现并声明为Bean方法；</p>
-</li>
-</ul>
-</li>
-<li><p><code>ResourceChainCustomizerConfiguration</code>配置类</p>
-<ul>
-<li><p>由<code>OnEnabledResourceChainCondition</code>来判断是否加载；</p>
-</li>
-<li><p>默认是不进行加载的；</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>3）<code>WebMvcAutoConfiguration</code>配置类中声明了两个Bean方法，注册条件如下</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(HiddenHttpMethodFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.hiddenmethod.filter&quot;, name = &quot;enabled&quot;)</span></span><br><span class="line"><span class="keyword">public</span> OrderedHiddenHttpMethodFilter <span class="title function_">hiddenHttpMethodFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedHiddenHttpMethodFilter</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(FormContentFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.formcontent.filter&quot;, name = &quot;enabled&quot;, matchIfMissing = true)</span></span><br><span class="line"><span class="keyword">public</span> OrderedFormContentFilter <span class="title function_">formContentFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedFormContentFilter</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><ul>
-<li><a href="https://www.jianshu.com/p/f3337a836faf">https://www.jianshu.com/p/f3337a836faf</a></li>
-<li><a href="https://snailclimb.gitee.io/springboot-guide/#/">https://snailclimb.gitee.io/springboot-guide/#/</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464">https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464</a></li>
-<li><a href="https://blog.csdn.net/qq_26000415/category_9271293.html">https://blog.csdn.net/qq_26000415/category_9271293.html</a></li>
-<li>《Spring Boot实战派》</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
     <title>Spring Framework</title>
     <url>/2022/05/07/spring/</url>
     <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是一个取代了EJB的轻量级框架，它提供了一系列底层和基础设施，是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
@@ -2804,7 +2474,7 @@
 </tbody></table>
 </li>
 </ul>
-<h3 id="2-3-4-基于Java的配置"><a href="#2-3-4-基于Java的配置" class="headerlink" title="2.3.4 基于Java的配置"></a>2.3.4 基于Java的配置</h3><p>在基于XML文件的配置中，Bean的类型和ID都是由字符串来标示的，这就导致它们无法进行编译期检查，写起来也很繁琐，而<strong>在基于Java的配置中，则可以进行编译期检查来确保Bean的类型是合法类型</strong>。</p>
+<h3 id="2-3-4-基于Java的配置"><a href="#2-3-4-基于Java的配置" class="headerlink" title="2.3.4 基于Java的配置"></a>2.3.4 基于Java的配置</h3><p>在基于XML文件的配置中，Bean的类型和ID都是由字符串来标示的，这就导致它们无法进行编译期检查，写起来也很繁琐，而<strong>在基于Java的配置中，则可以进行编译期检查来确保Bean的类型是合法类型</strong>。Spring Boot偏向使用基于Java的配置。</p>
 <ul>
 <li><p><code>@Configuration</code></p>
 <ul>
@@ -2830,15 +2500,23 @@
 <ul>
 <li><p>用于类，告知容器自动搜索当前类所在的包以及子包，可代替<code>&lt;context:component-scan&gt;</code>元素；</p>
 </li>
-<li><p>将所有标注为<code>@Component</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
+<li><p>将所有标注为<code>@Component</code>、<code>@Controller</code>、<code>@Service</code>、<code>@Repository</code>的Bean自动创建出来，并根据<code>@Autowired</code>进行装配。</p>
 </li>
 </ul>
 </li>
 <li><p><code>@Import</code></p>
 <ul>
-<li><p>import就是把多个分开的容器配置合并在一个配置中；</p>
+<li><p>不需要把所有的配置都放到一个配置类中；</p>
 </li>
-<li><p><code>@Configuration</code>标注的配置类可以通过<code>@Import</code>来导入其他的配置类。</p>
+<li><p><code>@Configuration</code>标注的配置类可以通过<code>@Import</code>来导入其他的配置类，把多个分开的容器配置合并在一个配置中。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ImportResource</code></p>
+<ul>
+<li><p>用于导入Spring的配置文件，让配置文件里面的内容生效；</p>
+</li>
+<li><p>如果必须要使用基于XML的配置，依旧定义一个<code>@Configuration</code>配置类，然后通过<code>@ImportResource</code>来加载XML配置文件。</p>
 </li>
 </ul>
 </li>
@@ -3206,13 +2884,13 @@
 </ul>
 <h3 id="3-4-3-精准指定切点"><a href="#3-4-3-精准指定切点" class="headerlink" title="3.4.3 精准指定切点"></a>3.4.3 精准指定切点</h3><p>除了使用AspectJ切点表达式，还可以考虑通过注解来标注需要拦截的方法，从而精准指定需要在何处织入切面。</p>
 <ul>
-<li><p>使用<code>@Transactional</code>注解去标注需要拦截的业务方法，即可精准指定需要在何处织入事务处理切面，实现声明式事务（</p>
+<li><p>使用<code>@Transactional</code>注解去标注需要拦截的业务方法，即可精准指定需要在何处织入事务处理切面，实现声明式事务</p>
 <ul>
 <li><p>事务往往在service层进行控制；</p>
 </li>
 <li><p><code>@Transactional</code>注解只有在使用基于接口的代理时才会生效；</p>
 </li>
-<li><p>如果异常被catch了，则事务就不回滚了，如果想让事务回滚，则必须在catch之后再往外throw异常；</p>
+<li><p>如果异常被catch了，则事务就不回滚了，如果想让事务回滚，则必须在catch块中进行相关处理之后再往外throw异常；</p>
 </li>
 </ul>
 </li>
@@ -3389,77 +3067,12 @@
 <h2 id="4-4-REST功能"><a href="#4-4-REST功能" class="headerlink" title="4.4 REST功能"></a>4.4 REST功能</h2><p>以信息为中心的表属性状态转移（Representational State Transfer, REST）已成为替换传统SOAP Web服务的流行方案，REST就是将资源的状态以最合适的形式从服务器端转移到客户端（或者反之），RESTful交互是同步的。</p>
 <ul>
 <li>表述性（Representational）：REST资源可以用各种形式来进行表述，比如XML、JSON以及HTML；</li>
-<li>状态（State）：使用REST时，我们更关注资源的状态而不是对资源采取的行为；</li>
-<li>转移（Transfer）：REST涉及转移资源数据，它以某一中表述形式从一个应用转移到另一个应用</li>
+<li>状态（State）：使用REST时，我们更关注资源的状态而不是对资源采取的行为，所有的资源都可以通过URI 定位，而且这个定位与其他资源无关，也不会因为其他资源的变化而变化；</li>
+<li>转移（Transfer）：REST涉及转移资源数据，它以某一种表述形式从一个应用转移到另一个应用</li>
 </ul>
 <p>Spring对REST的支持是构建在Spring MVC之上的，控制器可以处理所有的HTTP方法，包含四个主要的REST方法：GET、PUT、DELETE以及POST，分别对应对资源的检索、更新、删除和创建。通过适当设置<code>@RequestMapping</code>注解的<code>method</code>属性，就可以让<code>DispatcherServlet</code>把不同的HTTP方法的请求定向到特定的控制器方法上。</p>
 <p>RESTful Web 服务与传统的 MVC 开发一个关键区别是返回给客户端的内容的创建方式：<strong>传统的 MVC 模式开发会直接返回给客户端一个视图，但是 RESTful Web 服务一般会将返回的数据以 JSON 的形式返回，实现前后端分离开发。</strong></p>
-<h2 id="4-5-相关组件"><a href="#4-5-相关组件" class="headerlink" title="4.5 相关组件"></a>4.5 相关组件</h2><h3 id="4-5-1-控制器"><a href="#4-5-1-控制器" class="headerlink" title="4.5.1 控制器"></a>4.5.1 控制器</h3><ul>
-<li><p><code>@Controller</code></p>
-<ul>
-<li>用于类，表明该类是MVC的控制器。</li>
-</ul>
-</li>
-<li><p><code>@RequestBody</code></p>
-<ul>
-<li><p>用于请求方法参数；</p>
-</li>
-<li><p>可以将请求中的(JSON/XML）字符串绑走到相应的Bean 上，也可以将其分别绑定到对应的字符串上。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@ResponseBody</code></p>
-<ul>
-<li><p>用于方法；</p>
-</li>
-<li><p>将请求方法返回的对象转换为指定格式（JSON/XML）后，再写入<code>Response</code>对象的<code>body</code>数据区。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@RestController</code></p>
-<ul>
-<li><p>是Spring 4.0之后才有的注解；</p>
-</li>
-<li><p>是<code>@Controller</code>和<code>@ResponseBody</code>的结合；</p>
-</li>
-<li><p>用于标注REST风格的控制器。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@RequestMapping</code></p>
-<ul>
-<li><p>用于类时，定义了这个控制器所处理的根URL路径；</p>
-</li>
-<li><p>用于方法时，表明该方法是一个请求处理方法，要处理指定URL下的请求；</p>
-</li>
-<li><p>请求处理方法的签名可以将任何事物作为入参；</p>
-</li>
-<li><p><code>value</code>属性用于指定请求的地址；</p>
-</li>
-<li><p><code>method</code>属性用于指定请求的类型（GET、HEAD、POST、PUT、PATCH、DELETE、OPTIONS、TRACE）；</p>
-</li>
-<li><p><code>consumes</code>属性用于指定请求的内容类型；</p>
-</li>
-<li><p><code>produces</code>属性用于指定返回的内容类型；</p>
-</li>
-<li><p><code>params</code>属性用于指定请求中必须包含的参数值；</p>
-</li>
-<li><p><code>headers</code>属性用于指定请求中必须包含的header值。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@RequestParam</code></p>
-<ul>
-<li>用于请求方法参数，当查询参数与方法参数名不匹配时，可以通过该注解将两者绑定。</li>
-</ul>
-</li>
-<li><p><code>@PathVariable</code></p>
-<ul>
-<li>用于请求方法参数，将请求中的变量映射到请求处理方法的参数上。</li>
-</ul>
-</li>
-</ul>
-<p>可处理的HTTP方法如下：</p>
+<p>可处理的HTTP方法具体介绍如下：</p>
 <ul>
 <li><p>GET</p>
 <ul>
@@ -3517,12 +3130,89 @@
 </li>
 <li><p>OPTIONS</p>
 <ul>
-<li>用于获取当前URL。</li>
+<li><p>用于获取当前URL所支持的方法；</p>
+</li>
+<li><p>返回的响应消患会在HTTP 头中包含“Allow”的信息，其值是所支持的方法， 如GET。</p>
+</li>
+</ul>
+</li>
+<li><p>HEAD</p>
+<ul>
+<li>代表发送HTTP 头消息，GET其实也带了HTTP 头消息。</li>
 </ul>
 </li>
 <li><p>TRACE</p>
 <ul>
 <li>用于显示服务器收到的请求，从而进行测试或诊断。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-5-相关组件"><a href="#4-5-相关组件" class="headerlink" title="4.5 相关组件"></a>4.5 相关组件</h2><h3 id="4-5-1-控制器"><a href="#4-5-1-控制器" class="headerlink" title="4.5.1 控制器"></a>4.5.1 控制器</h3><ul>
+<li><p><code>@Controller</code></p>
+<ul>
+<li>用于类，表明该类是MVC的控制器。</li>
+</ul>
+</li>
+<li><p><code>@RequestBody</code></p>
+<ul>
+<li><p>用于请求方法参数；</p>
+</li>
+<li><p>可以将请求中的(JSON/XML）字符串绑走到相应的Bean 上，也可以将其分别绑定到对应的字符串上。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@ResponseBody</code></p>
+<ul>
+<li><p>用于方法；</p>
+</li>
+<li><p>将请求方法返回的对象转换为指定格式（JSON/XML）后，再写入<code>Response</code>对象的<code>body</code>数据区。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RestController</code></p>
+<ul>
+<li><p>是Spring 4.0之后才有的注解；</p>
+</li>
+<li><p>是<code>@Controller</code>和<code>@ResponseBody</code>的结合；</p>
+</li>
+<li><p>用于标注REST风格的控制器；</p>
+</li>
+<li><p>告诉Spring将结果字符串直接呈现给调用者。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RequestMapping</code></p>
+<ul>
+<li><p>提供了“路由”信息，告诉Spring任何带有/路径的HTTP请求都应该映射到home方法；</p>
+</li>
+<li><p>用于类时，定义了这个控制器所处理的根URL路径；</p>
+</li>
+<li><p>用于方法时，表明该方法是一个请求处理方法，要处理指定URL下的请求；</p>
+</li>
+<li><p>请求处理方法的签名可以将任何事物作为入参；</p>
+</li>
+<li><p><code>value</code>属性用于指定请求的地址；</p>
+</li>
+<li><p><code>method</code>属性用于指定请求的类型（GET、HEAD、POST、PUT、PATCH、DELETE、OPTIONS、TRACE）；</p>
+</li>
+<li><p><code>consumes</code>属性用于指定请求的内容类型；</p>
+</li>
+<li><p><code>produces</code>属性用于指定返回的内容类型；</p>
+</li>
+<li><p><code>params</code>属性用于指定请求中必须包含的参数值；</p>
+</li>
+<li><p><code>headers</code>属性用于指定请求中必须包含的header值。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RequestParam</code></p>
+<ul>
+<li>用于请求方法参数，当查询参数与方法参数名不匹配时，可以通过该注解将两者绑定。</li>
+</ul>
+</li>
+<li><p><code>@PathVariable</code></p>
+<ul>
+<li>用于请求方法参数，将请求中的变量映射到请求处理方法的参数上。</li>
 </ul>
 </li>
 </ul>
@@ -3647,28 +3337,344 @@
 </ul>
 </li>
 </ul>
-<h1 id="5、ORM"><a href="#5、ORM" class="headerlink" title="5、ORM"></a>5、ORM</h1><h2 id="5-1-问题与解决"><a href="#5-1-问题与解决" class="headerlink" title="5.1 问题与解决"></a>5.1 问题与解决</h2><p>JDBC（Java Data Base Connectivity）由一组用Java编写的类和接口组成，是Java用于连接数据库的规范，即用于执行数据库SQL语句的Java API，为大部分关系型数据库提供访问接口。JDBC没有指定某种特定数据库，可以为多种数据库提供统一访问的接口，这也更符合程序设计的模式。</p>
-<p>JDBC需要每次进行数据库连接，然后处理SQL语句、传值、关闭数据库。这些步骤繁琐易出错，为了减少这种可能的错误，减少开发人员的工作量，JDBCtemplate就被设计出来了。JDBCtemplate是对JDBC 的封装，更便于程序实现，替开发人员完成所有的JDBC 底层工作。此时，对于数据库的操作不再需要每次都进行连接、打开、关闭了。JDBCtemplate操作简单易学，但依旧不够简洁强大。</p>
-<p>业务实体在内存中表现为对象，在数据库中表现为关系型数据。内存中的对象不会被永久保存，只有关系型数据库（或NoSQ L 数据库，或文件）中的对象会被永久保存。ORM（Object Relation Mapping）将数据库中的表和内存中的对象建立了映射关系。ORM系统一般以中间件的形式存在。目前比较常用的ORM 是国外非常流行的JPA和国内非常流行的MyBatis。</p>
-<h2 id="5-2-Java持久化API"><a href="#5-2-Java持久化API" class="headerlink" title="5.2 Java持久化API"></a>5.2 Java持久化API</h2><p>Java持久化API（JPA，Java Persistence API）是一个将对象映射为关系数据库的标准技术，用于对象的持久化。JPA通过注解或XML描述ORM，并将运行期的实体对象持久化到数据库中。</p>
-<p>无论是哪种持久化存储方式，数据访问对象（Data Access Objects, DAO）都会提供对对象<br>的增加、删除、修改、查询、排序以及分页等方法。</p>
-<ul>
-<li><p><code>@Entity</code>：用于标注数据库持久化实体类。</p>
-</li>
-<li><p><code>@Repository</code> ：用于标注和数据库操作有关的接口。</p>
-</li>
-<li><p><code>@Query</code>：用于指定接口方法的sql语句。</p>
-</li>
-<li><p><code>@Param</code>：用于指定方法参数名称。</p>
-</li>
-<li><p><code>@Async</code>：用于标注异步方法。</p>
-</li>
-</ul>
 <h1 id="6、参考资料"><a href="#6、参考资料" class="headerlink" title="6、参考资料"></a>6、参考资料</h1><ul>
 <li>《Spring In Action，Third Edition》</li>
 <li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
 <li><a href="https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1">https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1</a></li>
 <li><a href="https://www.cnblogs.com/zrtqsk/p/3735273.html">https://www.cnblogs.com/zrtqsk/p/3735273.html</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Spring Boot</title>
+    <url>/2022/05/22/spring-boot/</url>
+    <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
+<ul>
+<li>Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置；</li>
+<li>Spring 3.0 引入了基于 Java 的配置，这是一种比XML更加安全的配置方式；</li>
+<li>但在使用Spring的过程中，依旧无法避免基于XML的配置方式。</li>
+</ul>
+<p>Spring Boot是以<strong>简化Spring的配置</strong>为目标而创建的，是约定优先于配置理念下的产物。</p>
+<h1 id="2、使用介绍"><a href="#2、使用介绍" class="headerlink" title="2、使用介绍"></a>2、使用介绍</h1><h2 id="2-1-启动类"><a href="#2-1-启动类" class="headerlink" title="2.1 启动类"></a>2.1 启动类</h2><p>Spring Boot要求<code>main()</code>方法所在的启动类：</p>
+<ul>
+<li><p>必须放到根package下；</p>
+</li>
+<li><p>命名不做要求，但一般是以Application为后缀命名；</p>
+</li>
+<li><p>使用<code>@SpringBootApplication</code>注解标注；</p>
+</li>
+<li><p>可以通过<code>@SpringBootApplication(exclude = &#123;...&#125;)</code>或者<code>@EnableAutoConfiguration(exclude = &#123;...&#125;)</code>来指定禁用的自动配置。</p>
+</li>
+</ul>
+<p><code>@SpringBootApplication</code>等同于以下三个注解的集合：</p>
+<ul>
+<li><p><code>@SpringBootConfiguration</code>：支持在上下文中注册额外的Bean或导入额外的配置类，是Spring的标准的<code>@Configuration</code>的替代，有助于在集成测试中进行配置检测；</p>
+</li>
+<li><p><code>@EnableAutoConfiguration</code>：启用 SpringBoot 的自动装配机制（自动扫描+条件装配），详细介绍见3.1节；</p>
+</li>
+<li><p><code>@ComponentScan</code>：扫描被声明为JavaBean的类。</p>
+</li>
+</ul>
+<h2 id="2-2-默认约定"><a href="#2-2-默认约定" class="headerlink" title="2.2 默认约定"></a>2.2 默认约定</h2><p>1）Spring Boot默认约定采用Maven的目录结构。</p>
+<p>2）Spring Boot默认内置了嵌入式的Web容器，支持四种嵌入式Web容器：Tomcat、Jetty、Undertow、Reactor。</p>
+<p>3）Spring Boot默认约定的配置文件是<code>application.yml</code>：</p>
+<ul>
+<li><p>Spring Boot几乎所有的配置项都可以在这个文件中配置，如果不配置，则使用默认项；</p>
+</li>
+<li><p>文件位于<code>src/main/resources</code>目录下；</p>
+</li>
+<li><p>文件名必须是<code>application</code>而不是其他名称;</p>
+</li>
+<li><p>文件后缀采用<code>.yml</code>（<a href="https://yaml.org/">YAML</a>）或者<code>.properties</code>，后者的优先级更高；</p>
+</li>
+<li><p>层级格式的<code>.yml</code>文件比<code>key=value</code>格式的<code>.properties</code>文件更易读；</p>
+</li>
+<li><p>使用<code>.yml</code>时：</p>
+<ul>
+<li><p>属性名的值和冒号中间必须有空格；</p>
+</li>
+<li><p>大小写敏感；</p>
+</li>
+<li><p>使用空格缩进表示层级关系；</p>
+</li>
+<li><p>缩进时不能使用tab，只能空格；</p>
+</li>
+<li><p>缩进的空格数目不重要，只要相同层级的元素左侧对齐即可；</p>
+</li>
+<li><p><code>#</code>表示注释，从这个字符一直到行尾，都会被解析器忽略。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-3-优先级配置"><a href="#2-3-优先级配置" class="headerlink" title="2.3 优先级配置"></a>2.3 优先级配置</h2><p>Spring Boot提供了一种优先级配置的机制，优先级高的配置会覆盖优先级低的配置。</p>
+<ul>
+<li><p>优先级最高的是命令行参数配置；</p>
+<ul>
+<li><p>命令行参数的优先级之所以被设置为最高，是因为可以方便我们在测试或生产环境中快速地修改配置参数值，而不需要重新打包和部署应用；</p>
+</li>
+<li><p>以<code>--</code>开头的命令行参数会被转化成应用中可以使用的配置参数，如<code>--name = Alex</code> 会设置配置参数<code>name</code> 的值为<code>Alex</code>；</p>
+</li>
+</ul>
+</li>
+<li><p>不同位置的配置文件的优先级从高到低依次为：</p>
+<ul>
+<li><p>项目目录的<code>/config</code>子目录；</p>
+</li>
+<li><p>项目目录；</p>
+</li>
+<li><p><code>src/main/resources/config</code>子目录；</p>
+</li>
+<li><p><code>src/main/resources</code>子目录（默认配置）；</p>
+</li>
+</ul>
+</li>
+<li><p>配置文件的优先级高于应用Java配置类：</p>
+<ul>
+<li><p>任何<code>@Component</code>或<code>@Configuration</code>都能注解<code>@Profile</code>，从而限制加载它的环境；</p>
+</li>
+<li><p>通常的应用部署会包含开发、测试、预发和生产等若干个环境。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Profile(&quot;production&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductionConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-4-读取配置信息"><a href="#2-4-读取配置信息" class="headerlink" title="2.4 读取配置信息"></a>2.4 读取配置信息</h2><p>Spring Boot可以通过以下方式来读取配置信息：</p>
+<ul>
+<li><p><code>@Value(&quot;$&#123;property&#125;&quot;)</code>：适用于只需获取某单一配置项的值的场景；</p>
+</li>
+<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类或者<code>getXXXProperties</code>方法，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
+<ul>
+<li><p>配合<code>@Validated</code>注解可以对参数实现校验功能。</p>
+</li>
+<li><p><code>XXXProperties </code>类配合<code>@Component</code>注解或者<code>getXXXProperties</code>方法配合<code>@Bean </code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
+</li>
+<li><p>如果不使用<code>@Component</code>或则<code>@Bean </code>注解将其声明为Bean，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的<code>.properties</code> 文件中的信息（<code>.yml</code>文件不行），同样可以将该类声明为一个JavaBean。</p>
+</li>
+</ul>
+<h2 id="2-5-过滤配置类"><a href="#2-5-过滤配置类" class="headerlink" title="2.5 过滤配置类"></a>2.5 过滤配置类</h2><p>可以通过<code>@Conditional</code>及其派生注解来判断是否过滤候选的配置类，被过滤的配置类不会被SpringBoot 的自动装配机制加载，详细介绍见3.1节</p>
+<table>
+<thead>
+<tr>
+<th align="center"><code>@Conditional</code>派生注解</th>
+<th align="center">判断条件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>@ConditionalOnJava</code></td>
+<td align="center">系统的java版本是否符合要求</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnBean</code></td>
+<td align="center">容器中存在指定Bean</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnMissingBean</code></td>
+<td align="center">容器中不存在指定Bean</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnExpression</code></td>
+<td align="center">满足SpEL表达式指定</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnClass</code></td>
+<td align="center">系统中有指定的类</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnMissingClass</code></td>
+<td align="center">系统中没有指定的类</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnSingleCandidate</code></td>
+<td align="center">容器中只有一个指定的Bean，或者这个Bean是首选Bean</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnProperty</code></td>
+<td align="center">系统中指定的属性是否有指定的值</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnResource</code></td>
+<td align="center">类路径下是否存在指定资源文件</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnWebApplication</code></td>
+<td align="center">当前是web环境</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnNotWebApplication</code></td>
+<td align="center">当前不是web环境</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnJndi</code></td>
+<td align="center">JNDI存在指定项</td>
+</tr>
+</tbody></table>
+<h1 id="3、源码学习"><a href="#3、源码学习" class="headerlink" title="3、源码学习"></a>3、源码学习</h1><p>SpringBoot具有以下子modules：</p>
+<ul>
+<li>spring-boot：核心工程。</li>
+<li>spring-boot-starters：启动服务工程，可减少第三方jar的依赖。</li>
+<li>spring-boot-autoconfigure：实现自动配置的核心工程。</li>
+<li>spring-boot-actuator：外围支撑性功能。</li>
+<li>spring-boot-tools：开发者的常用工具集。</li>
+<li>spring-boot-cli：命令行交互工具。</li>
+<li>spring-boot-devtools：为开发者服务，其中最重要的功能就是热部署。</li>
+</ul>
+<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的静态<code>run</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorldApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      SpringApplication.run(HelloWorldApplication.class, args);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在spring-boot模块中，<code>SpringApplication</code>类的静态<code>run</code>方法是一个可以通过默认设置和用户约定来从具体source运行Spring项目的静态帮助器。</p>
+<p>1）在<code>SpringApplication</code>类的静态<code>run</code>方法中，依次调用了<code>SpringApplication</code>类的构造方法和对象的<code>run</code>方法，完整代码如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(Class&lt;?&gt;[] primarySources, String[] args)</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(primarySources).run(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）在<code>SpringApplication</code>类的构造方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第8行，将不为空的<code>primarySources</code>加入到一个<code>LinkedHashSet</code>中；</p>
+</li>
+<li><p>以下代码的第9行，调用<code>deduceFromClasspath</code>方法得到Web环境类型（<code>NONE</code>、<code>SERVLET</code>、<code>REACTIVE</code>），当在JUnit测试中使用<code>SpringApplication</code>时，通常需要调用<code>setWebApplicationType(WebApplicationType.NONE)</code>；</p>
+</li>
+<li><p>以下代码的第10、11、12行，调用<code>getSpringFactoriesInstances</code>方法，从而设置<code>BootstrapRegistryInitializer</code>列表、<code>ApplicationContextInitializer</code>列表以及<code>ApplicationListener</code>列表；</p>
+</li>
+<li><p>以下代码的第13行，调用<code>deduceMainApplicationClass</code>方法获取当前方法调用栈，找到<code>main</code>函数所在的类；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">   <span class="built_in">this</span>(<span class="literal">null</span>, primarySources);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.resourceLoader = resourceLoader;</span><br><span class="line">    Assert.notNull(primarySources, <span class="string">&quot;PrimarySources must not be null&quot;</span>);</span><br><span class="line">    <span class="built_in">this</span>.primarySources = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line">    <span class="built_in">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">    <span class="built_in">this</span>.bootstrapRegistryInitializers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;( getSpringFactoriesInstances(BootstrapRegistryInitializer.class));</span><br><span class="line">    setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">    setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">    <span class="built_in">this</span>.mainApplicationClass = deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）在<code>getSpringFactoriesInstances</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第4行，调用<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法，读取<code>resources/META-INF/spring.factories</code>文件中的配置项的value值（key为上一级方法调用入参，value是一些类名），并放入到一个<code>LinkedHashSet</code>中去重；</p>
+</li>
+<li><p>以下代码的第5行，调用<code>createSpringFactoriesInstances</code>方法进行初始化；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; Collection&lt;T&gt; <span class="title function_">getSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes, Object... args)</span> &#123;</span><br><span class="line">   <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> getClassLoader();</span><br><span class="line">   <span class="comment">// Use names and ensure unique to protect against duplicates</span></span><br><span class="line">   Set&lt;String&gt; names = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(SpringFactoriesLoader.loadFactoryNames(type, classLoader));</span><br><span class="line">   List&lt;T&gt; instances = createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);</span><br><span class="line">   AnnotationAwareOrderComparator.sort(instances);</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）在<code>createSpringFactoriesInstances</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第4行，遍历刚刚加载得到的类名；</p>
+</li>
+<li><p>以下代码的6~10行，依次调用类名所对应类的构造器进行初始化并加入到一个<code>List</code>当中；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; List&lt;T&gt; <span class="title function_">createSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes,</span></span><br><span class="line"><span class="params">      ClassLoader classLoader, Object[] args, Set&lt;String&gt; names)</span> &#123;</span><br><span class="line">   List&lt;T&gt; instances = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(names.size());</span><br><span class="line">   <span class="keyword">for</span> (String name : names) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         Class&lt;?&gt; instanceClass = ClassUtils.forName(name, classLoader);</span><br><span class="line">         Assert.isAssignable(type, instanceClass);</span><br><span class="line">         Constructor&lt;?&gt; constructor = instanceClass.getDeclaredConstructor(parameterTypes);</span><br><span class="line">         <span class="type">T</span> <span class="variable">instance</span> <span class="operator">=</span> (T) BeanUtils.instantiateClass(constructor, args);</span><br><span class="line">         instances.add(instance);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Cannot instantiate &quot;</span> + type + <span class="string">&quot; : &quot;</span> + name, ex);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）在<code>SpringApplication</code>类对象的<code>run</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第5行，调用<code>configureHeadlessProperty</code>方法，将<code>java.awt.headless</code>属性设置为<code>true</code>，表示运行在服务器端；</p>
+</li>
+<li><p>以下代码的第6行，依次调用了<code>getRunListeners</code>方法 –&gt; <code>getSpringFactoriesInstances</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法 –&gt; 读取<code>resources/META-INF/spring.factories</code>文件中的配置项的value值，从而设置<code>SpringApplicationRunListener</code>列表，这里只有一个value值（<code>EventPublishingRunListener</code>）；</p>
+</li>
+<li><p>以下代码的第7行，依次调用了<code>SpringApplicationRunListener</code>列表的<code>starting</code>方法 –&gt; <code>EventPublishingRunListener</code>类的<code>starting</code>方法 –&gt; <code>SimpleApplicationEventMulticaster</code>类的<code>multicastEvent</code>方法 –&gt; <code>invokeListener</code>方法 –&gt; <code>doInvokeListener</code>方法 –&gt; <code>ApplicationListener</code>接口的<code>onApplicationEvent</code>方法；</p>
+</li>
+<li><p>以下代码的第9行，依次调用了<code>DefaultApplicationArguments</code>的构造方法 –&gt; <code>Source</code>的构造方法 –&gt; <code>SimpleCommandLinePropertySource</code>的构造方法和<code>parse</code>方法 –&gt; <code>CommandLinePropertySource</code>的构造方法 –&gt; <code>EnumerablePropertySource</code>的构造方法 –&gt; <code>PropertySource</code>的构造方法，封装了命令行参数；</p>
+</li>
+<li><p>以下代码的第10行，调用了<code>prepareEnvironment</code>方法，从中逐步</p>
+<ul>
+<li><p>通过<code>getOrCreateEnvironment</code>方法获取或创建了<code>ConfigurableEnvironment</code>；</p>
+</li>
+<li><p>通过<code>configureEnvironment</code>方法配置了<code>ConfigurableEnvironment</code></p>
+</li>
+<li><p>通过<code>SpringApplicationRunListener</code>列表的<code>environmentPrepared</code>方法通知所有的观察者环境已经准备好了，可以进行后续操作；</p>
+</li>
+</ul>
+</li>
+<li><p>以下代码的第12行，调用了<code>printBanner</code>方法，打印<code>banner</code>；</p>
+</li>
+<li><p>以下代码的第13行，调用了<code>createApplicationContext</code>方法，根据当前环境类型（在<code>SpringApplication</code>类的构造方法中确定）来创建对应类型的上下文；</p>
+</li>
+<li><p>以下代码的第15行，依次调用了<code>prepareContext</code>方法 –&gt; <code>ApplicationContextInitializer</code>列表的<code>initialize</code>方法和<code>SpringApplicationRunListener</code>列表的<code>contextPrepared</code>方法和<code>contextLoaded</code>方法；</p>
+</li>
+<li><p>以下代码的第16行，调用了<code>refreshContext</code>方法，实现IoC容器的初始化及Bean的生命周期中的部分过程，具体可参见 <a href="../../07/spring/">Spring Framework</a> 的2.4节，如果是web应用还会创建嵌入式的Tomcat；</p>
+</li>
+<li><p>以下代码的26、27、34、35行，调用了<code>handleRunFailure</code>方法来处理异常并抛出<code>IllegalStateException</code>异常；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">   <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">   <span class="type">DefaultBootstrapContext</span> <span class="variable">bootstrapContext</span> <span class="operator">=</span> createBootstrapContext();</span><br><span class="line">   <span class="type">ConfigurableApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">   configureHeadlessProperty();</span><br><span class="line">   <span class="type">SpringApplicationRunListeners</span> <span class="variable">listeners</span> <span class="operator">=</span> getRunListeners(args);</span><br><span class="line">   listeners.starting(bootstrapContext, <span class="built_in">this</span>.mainApplicationClass);</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">ApplicationArguments</span> <span class="variable">applicationArguments</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultApplicationArguments</span>(args);</span><br><span class="line">      <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> prepareEnvironment(listeners, bootstrapContext, applicationArguments);</span><br><span class="line">      configureIgnoreBeanInfo(environment);</span><br><span class="line">      <span class="type">Banner</span> <span class="variable">printedBanner</span> <span class="operator">=</span> printBanner(environment);</span><br><span class="line">      context = createApplicationContext();</span><br><span class="line">      context.setApplicationStartup(<span class="built_in">this</span>.applicationStartup);</span><br><span class="line">      prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">      refreshContext(context);</span><br><span class="line">      afterRefresh(context, applicationArguments);</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToStartup</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">         <span class="keyword">new</span> <span class="title class_">StartupInfoLogger</span>(<span class="built_in">this</span>.mainApplicationClass).logStarted(getApplicationLog(), timeTakenToStartup);</span><br><span class="line">      &#125;</span><br><span class="line">      listeners.started(context, timeTakenToStartup);</span><br><span class="line">      callRunners(context, applicationArguments);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, listeners);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToReady</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      listeners.ready(context, timeTakenToReady);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, <span class="literal">null</span>);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-自动配置"><a href="#3-2-自动配置" class="headerlink" title="3.2 自动配置"></a>3.2 自动配置</h2><p>启动类使用<code>@SpringBootApplication</code>注解标注，而<code>@SpringBootApplication</code>注解包含了<code>@EnableAutoConfiguration</code>注解。</p>
+<p>在spring-boot-autoconfigure模块中，<code>@EnableAutoConfiguration</code>注解会启用 SpringBoot 的自动装配机制（自动扫描+条件装配）。</p>
+<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，会将符合条件的配置类都加载到IoC容器中，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import(AutoConfigurationImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAutoConfiguration &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）在<code>AutoConfigurationImportSelector</code>类的<code>selectImports</code>方法中，调用了<code>getAutoConfigurationEntry</code>方法，完整代码如下；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> NO_IMPORTS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AutoConfigurationEntry</span> <span class="variable">autoConfigurationEntry</span> <span class="operator">=</span> getAutoConfigurationEntry(annotationMetadata);</span><br><span class="line">    <span class="keyword">return</span> StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）在<code>AutoConfigurationImportSelector</code>类的<code>getAutoConfigurationEntry</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第5行，会调用<code>getAttributes</code>方法来获取元注解中的属性；</p>
+</li>
+<li><p>以下代码的第6行，会依次调用<code>getCandidateConfigurations</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法；</p>
+</li>
+<li><p>以下代码的第11行，会根据候选配置类上的<code>@ConditionalOnClass</code>注解来判断是否过滤该候选类，被过滤的候选类不会被加载；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> AutoConfigurationEntry <span class="title function_">getAutoConfigurationEntry</span><span class="params">(AnnotationMetadata annotationMetadata)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> EMPTY_ENTRY;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AnnotationAttributes</span> <span class="variable">attributes</span> <span class="operator">=</span> getAttributes(annotationMetadata);</span><br><span class="line">    List&lt;String&gt; configurations = getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">    configurations = removeDuplicates(configurations);</span><br><span class="line">    Set&lt;String&gt; exclusions = getExclusions(annotationMetadata, attributes);</span><br><span class="line">    checkExcludedClasses(configurations, exclusions);</span><br><span class="line">    configurations.removeAll(exclusions);</span><br><span class="line">    configurations = getConfigurationClassFilter().filter(configurations);</span><br><span class="line">    fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">AutoConfigurationEntry</span>(configurations, exclusions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）在<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法中，会读取<code>resources/META-INF/spring.factories</code>文件中key为<code>EnableAutoConfiguration</code>的全限定名的value；</p>
+<ul>
+<li><p><code>EnableAutoConfiguration</code>的全限定名所对应的value有很多（一百多个），每个value都是一个配置类的全限定名；</p>
+</li>
+<li><p>SpringBoot 的自动装配机制并不会加载全部value所对应的配置类，而是会根据配置类的<code>@ConditionalOnClass</code>等注解所确定的条件来判断是否加载该配置类；</p>
+</li>
+</ul>
+<p>5）因此，如果需要<code>@EnableAutoConfiguration</code>注解去加载自定义jar包中的Bean，就应该确保：</p>
+<ul>
+<li><p>该jar包的配置类中编写了标注了<code>@Bean</code>的方法来创建并返回该Bean；</p>
+</li>
+<li><p>该jar包的<code>src/main/resources/META-INF</code>目录下存在<code>spring.factories</code>文件，并在<code>spring.factories</code>文件配置了key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项；</p>
+</li>
+</ul>
+<p>6）总结与注意事项</p>
+<ul>
+<li><p>Spring Boot会根据<code>@EnableAutoConfiguration</code>注解来猜测开发者想要如何配置Spring并实现自动配置；</p>
+</li>
+<li><p>自动配置被设计成与“starter”一起工作，但是这两个概念并没有直接联系在一起，开发者可以在启动器之外自由选择jar包；</p>
+</li>
+<li><p>自动配置是非侵入性的，开发者在任何时候都可以开始定义自己的配置来替换自动配置的特定部分；</p>
+</li>
+<li><p>在jar包的<code>src/main/resources/META-INF/spring.factories</code>文件中，开发者还可以添加配置项来指定自动配置类的加载条件，<code>@EnableAutoConfiguration</code>会根据加载条件来判断是否加载某配置类；</p>
+</li>
+<li><p>这些自动配置类被设置为<code>public</code>只是为了方便禁用它，实际上这些自动配置类是仅供内部使用的，不建议直接使用这些类的实际内容（例如嵌套的配置类或Bean方法）。</p>
+</li>
+</ul>
+<h2 id="3-3-Web配置"><a href="#3-3-Web配置" class="headerlink" title="3.3 Web配置"></a>3.3 Web配置</h2><p>添加了Spring -boot-starter-web依赖项后，Spring Boot会自动添加Tomcat和Spring MVC，自动配置会假定正在开发一个web应用程序，并相应地设置Spring。</p>
+<p>在3.2节中学习到了<code>@EnableAutoConfiguration</code>注解会加载<code>spring.factories</code>文件中所配置的key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项。</p>
+<p>本节以<code>WebMvcAutoConfiguration</code>这一自动配置类为例，介绍Spring Boot的Web配置。</p>
+<p>1）通过<code>@Conditional</code>及其派生注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载条件，<code>@AutoConfigureOrder</code>和<code>@AutoConfigureAfter</code>注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载顺序；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication(type = Type.SERVLET)</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(&#123; Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class &#125;)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(WebMvcConfigurationSupport.class)</span></span><br><span class="line"><span class="meta">@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)</span></span><br><span class="line"><span class="meta">@AutoConfigureAfter(&#123; DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,</span></span><br><span class="line"><span class="meta">      ValidationAutoConfiguration.class &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebMvcAutoConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）<code>WebMvcAutoConfiguration</code>配置类内部有一些静态内部类</p>
+<ul>
+<li><p><code>EnableWebMvcConfiguration</code>配置类</p>
+<ul>
+<li><p>相当于<code>@EnableWebMvc</code>注解的功能；</p>
+</li>
+<li><p>通过<code>@EnableConfigurationProperties(WebProperties.class)</code>注册了<code>WebProperties</code>，</p>
+</li>
+<li><p>重写了一些<code>WebMvcConfigurationSupport</code>父类中的方法实现并声明为Bean方法；</p>
+</li>
+</ul>
+</li>
+<li><p><code>ResourceChainCustomizerConfiguration</code>配置类</p>
+<ul>
+<li><p>由<code>OnEnabledResourceChainCondition</code>来判断是否加载；</p>
+</li>
+<li><p>默认是不进行加载的；</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>3）<code>WebMvcAutoConfiguration</code>配置类中声明了两个Bean方法，注册条件如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(HiddenHttpMethodFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.hiddenmethod.filter&quot;, name = &quot;enabled&quot;)</span></span><br><span class="line"><span class="keyword">public</span> OrderedHiddenHttpMethodFilter <span class="title function_">hiddenHttpMethodFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedHiddenHttpMethodFilter</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(FormContentFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.formcontent.filter&quot;, name = &quot;enabled&quot;, matchIfMissing = true)</span></span><br><span class="line"><span class="keyword">public</span> OrderedFormContentFilter <span class="title function_">formContentFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedFormContentFilter</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><ul>
+<li><a href="https://www.jianshu.com/p/f3337a836faf">https://www.jianshu.com/p/f3337a836faf</a></li>
+<li><a href="https://snailclimb.gitee.io/springboot-guide/#/">https://snailclimb.gitee.io/springboot-guide/#/</a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464">https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464</a></li>
+<li><a href="https://blog.csdn.net/qq_26000415/category_9271293.html">https://blog.csdn.net/qq_26000415/category_9271293.html</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/2.7.0/reference/html/">https://docs.spring.io/spring-boot/docs/2.7.0/reference/html/</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/2.7.0/api/">https://docs.spring.io/spring-boot/docs/2.7.0/api/</a></li>
 </ul>
 ]]></content>
   </entry>

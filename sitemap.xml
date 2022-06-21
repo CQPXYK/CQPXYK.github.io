@@ -4,7 +4,16 @@
   <url>
     <loc>http://example.com/2022/05/07/spring/</loc>
     
-    <lastmod>2022-06-18</lastmod>
+    <lastmod>2022-06-21</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/22/spring-boot/</loc>
+    
+    <lastmod>2022-06-21</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -14,15 +23,6 @@
     <loc>http://example.com/2022/06/17/java-language/</loc>
     
     <lastmod>2022-06-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/05/22/spring-boot/</loc>
-    
-    <lastmod>2022-06-17</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -103,7 +103,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2022-06-18</lastmod>
+    <lastmod>2022-06-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
