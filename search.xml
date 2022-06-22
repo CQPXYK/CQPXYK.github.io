@@ -338,6 +338,43 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Git</title>
+    <url>/2022/05/06/git/</url>
+    <content><![CDATA[<h1 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h1><p>将每一次文件变更的时间，作者，内容都记录下来，并更新版本号。通过记录文件内容的变更，从而<strong>追踪文件的变更</strong>。此外，由于软件开发往往是多人协同作业，那么版本间的同步问题以及开发者间的通信问题都需要通过版本控制来解决，也就是说，版本控制的另一功能是<strong>并行开发</strong>。在开发过程中，首先需要设定开发基线，确定各个配置项的开发初始版本，开发人员再基于开发基线的版本，开发出所需的目标版本，并行开发中的许多错误都可以通过版本控制中分支与合并的方法来解决。</p>
+<h1 id="集中式版本控制系统"><a href="#集中式版本控制系统" class="headerlink" title="集中式版本控制系统"></a>集中式版本控制系统</h1><p>集中式版本控制系统（Centralized Version Control Systems），简称 CVCS。项目的历史记录均被保存在单一位置，<strong>有丢失风险</strong>，且<strong>必须联网</strong>才能工作。</p>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系统（Distributed Version Control System），简称 DVCS。客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
+<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git属于DVCS，Git与其他版本控制系统的主要区别在于对待数据的方式。大多数版本控制系统都是以文件变更列表的方式存储信息，这类系统将它们保存的信息看作一组基本文件和每个文件随时间逐步累积的差异，而Git采用直接记录快照的方式，而非差异比较。每次提交更新或者保存项目状态时，Git对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git不再重新存储该文件，而是保留一个链接指向之前存储的文件。Git仓库和Github中心服务器之间的传输是通过SSH加密的。</p>
+<h1 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（<code>.git</code> directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个<code>HEAD</code>指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
+<img src="工作流图.jpg" alt="工作流图" style="zoom:100%;" />
+
+<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
+<li><p>每个提交通过指针连接成一条时间线。</p>
+</li>
+<li><p>创建仓库时，<code>master</code>指针指向主分支，<code>HEAD</code>指针始终指向当前分支，当前分支可能是主分支也可能是新建的分支。</p>
+</li>
+<li><p>新建分支就是新建一个指针指向时间线的最后一个节点。</p>
+</li>
+<li><p>切换分支就是让<code>HEAD</code>指针指向新分支，表示新分支成为当前分支。</p>
+</li>
+<li><p>每次提交只会让当前分支指针向后移动，而其他分支指针不会移动。</p>
+</li>
+<li><p>当新建分支开发完毕后，就合并到主分支上，合并分支只需要改变指针即可。</p>
+</li>
+</ul>
+<img src="分支.jpg" alt="分支" style="zoom:100%;" />
+
+<h1 id="命令速查表"><a href="#命令速查表" class="headerlink" title="命令速查表"></a>命令速查表</h1><p><a href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p><a href="https://www.liaoxuefeng.com/wiki/896043488029600">https://www.liaoxuefeng.com/wiki/896043488029600</a></p>
+</li>
+<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/Git.html">http://www.cyc2018.xyz/其他/编码实践/Git.html</a></p>
+</li>
+<li><p><a href="https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro">https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro</a></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Design Patterns</title>
     <url>/2022/05/08/design-patterns/</url>
     <content><![CDATA[<h1 id="1、类图"><a href="#1、类图" class="headerlink" title="1、类图"></a>1、类图</h1><h2 id="1-1-泛化关系（Generalization）"><a href="#1-1-泛化关系（Generalization）" class="headerlink" title="1.1 泛化关系（Generalization）"></a>1.1 泛化关系（Generalization）</h2><p>用于描述非抽象类的继承关系，关键字为<code>extends</code>。</p>
@@ -508,17 +545,17 @@
 <li><p>对于简单的对象模型，用一个<code>String</code>就可以表示其状态，对于复杂的对象模型，通常会使用JSON、XML等复杂格式。</p>
 </li>
 </ul>
-<h3 id="2-2-7-观察者（Observer）"><a href="#2-2-7-观察者（Observer）" class="headerlink" title="2.2.7 观察者（Observer）"></a>2.2.7 观察者（Observer）</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动被更新，又称发布-订阅（Publish-Subscribe）模式，发布方和订阅方彼此分离，互不影响。</p>
+<h3 id="2-2-7-观察者-监听者（Observer-Listener）"><a href="#2-2-7-观察者-监听者（Observer-Listener）" class="headerlink" title="2.2.7 观察者/监听者（Observer/Listener）"></a>2.2.7 观察者/监听者（Observer/Listener）</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动被更新，又称发布-订阅（Publish-Subscribe）模式，发布方和订阅方彼此分离，互不影响。</p>
 <p>如下所示，观察者<code>Admin</code>和<code>Customer</code>与被观察者<code>Store</code>彼此分离，互不影响，被观察者将通知变成一个<code>Event</code>对象，观察者自己从<code>Event</code>对象中读取通知类型和通知数据。</p>
 <img src="观察者.png" alt="观察者" style="zoom:70%;" />
 
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observable</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">registerObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">removeObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">onEvent</span><span class="params">(Event event)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Store</span> implemets Observable &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Admin</span> implemets Observer &#123;...&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Customer</span> implemets Observer &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Store</span> <span class="variable">store</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Store</span>();</span><br><span class="line">        store.registerObserver(<span class="keyword">new</span> <span class="title class_">Admin</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observable</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">registerObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">removeObserver</span><span class="params">(Observer observer)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">notifyObservers</span><span class="params">(Event event)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Observer</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">onEvent</span><span class="params">(Event event)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 商店是被观察者</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Store</span> implemets Observable &#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Observer&gt; observers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">registerObserver</span><span class="params">(Observer observer)</span> &#123;</span><br><span class="line">        observers.add(observer);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">removeObserver</span><span class="params">(Observer observer)</span> &#123;</span><br><span class="line">        observers.remove(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">notifyObservers</span><span class="params">(Event event)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (Observer observer : observers) &#123;</span><br><span class="line">            observer.onEvent(event);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 管理员是观察者</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Admin</span> implemets Observer &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onEvent</span><span class="params">(Event event)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Admin 接收到 &quot;</span> + event.toString() + <span class="string">&quot;事件&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 客户是观察者</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Customer</span> implemets Observer &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Store</span> <span class="variable">store</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Store</span>();</span><br><span class="line">        store.registerObserver(<span class="keyword">new</span> <span class="title class_">Admin</span>());</span><br><span class="line">        store.registerObserver(<span class="keyword">new</span> <span class="title class_">Customer</span>());</span><br><span class="line">        <span class="comment">// 商店给注册的管理员和客户发送商品消息</span></span><br><span class="line">        store.notifyObservers(<span class="string">&quot;来自 Store 的商品消息&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>总结：</p>
 <ul>
 <li><p>不推荐借助Java标准库中的<code>java.util.Observable</code>类和<code>Observer</code>接口来实现观察者模式；</p>
 </li>
-<li><p>不同的<code>Event</code>对象有着不同的通知Topic，观察者可以自行订阅自己感兴趣的Topic。</p>
+<li><p>不同的<code>Event</code>对象可以有着不同的通知Topic，观察者可以自行订阅自己感兴趣的Topic。</p>
 </li>
 </ul>
 <h3 id="2-2-8-状态（State）"><a href="#2-2-8-状态（State）" class="headerlink" title="2.2.8 状态（State）"></a>2.2.8 状态（State）</h3><p>将不同状态下的行为逻辑分拆到不同的状态类中，允许对象在其内部状态改变时改变其行为。</p>
@@ -667,6 +704,758 @@
 </li>
 <li><p><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528">https://www.liaoxuefeng.com/wiki/1252599548343744/1264742167474528</a></p>
 </li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Java Language</title>
+    <url>/2022/06/17/java-language/</url>
+    <content><![CDATA[<h1 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h1><h2 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h2><p>元注解是Java提供的可以用于定义注解的基本注解。</p>
+<ul>
+<li><p><code>@Target</code></p>
+<ul>
+<li><p>用于告知Java将自定义的注解放在何处，比如类、万法、构造器、变量上等，是一个枚举类型，有如下属性值；</p>
+</li>
+<li><p><code>ElementType.CONSTRUCTOR</code>代表用于描述构造器；</p>
+</li>
+<li><p><code>ElementType.FIELD</code>代表用于描述成员变量、对象、属性（包括<code>enum</code>实例）；</p>
+</li>
+<li><p><code>ElementType.LOCAL_VARIABLE</code>代表用于描述局部变量；</p>
+</li>
+<li><p><code>ElementType.METHOD</code>代表用于描述万法；</p>
+</li>
+<li><p><code>ElementType.PACKAGE</code>代表用于描述包；</p>
+</li>
+<li><p><code>ElementType.PARAMETER</code>代表用于描述参数；</p>
+</li>
+<li><p><code>ElementType.TYPE</code>代表用于描述类、接口（包括注解类型）或<code>enum</code>声明。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Retention</code></p>
+<ul>
+<li><p>用于说明自定义注解的生命周期，在注解中有三个生命周期，是一个枚举类型，有如下属性值；</p>
+</li>
+<li><p><code>RetentionPolicy.RUNTIME</code> 代表始终不会丢弃，运行期也保留该注解，通常使用这种方式；</p>
+</li>
+<li><p><code>RetentionPolicy.CLASS</code>代表类加载时丢弃，默认使用这种方式；</p>
+</li>
+<li><p><code>RetentionPolicy.SOURCE</code>代表编译阶段丢弃，所以不会写入字节码，<code>＠Override</code>、<code>＠SuppressWarnings</code>都属于这类注解。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Inherited</code></p>
+<ul>
+<li><p>用于标记被标注的类型是可以被继承的；</p>
+</li>
+<li><p>如果一个使用了<code>＠lnherited</code>修饰的注解类型被用于一个类，则这个注解将继续被用于该类的子类。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Documented</code></p>
+<ul>
+<li>用于标记是否将信息添加到Java文档当中。</li>
+</ul>
+</li>
+<li><p><code>@interface</code></p>
+<ul>
+<li><p>用于声明一个注解；</p>
+</li>
+<li><p>其中的每一个方法实际上是声明了一个配置参数;</p>
+</li>
+<li><p>方法的名称就是参数的名称，返回类型就是参数的类型;</p>
+</li>
+<li><p>返回值类型只能是基本类型、<code>Class</code>、<code>String</code>、<code>enum</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h2><p>1）声明自定义注解</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy. RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation &#123;</span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）自定义注解的逻辑实现（AOP）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnotationAspect</span> &#123;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;@annotation(com.example.annotation.MyAnnotation)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">myAnnotationPointCut</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before(&quot;myAnnotationPointCut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint joinPoint)</span> &#123;</span><br><span class="line">        <span class="type">MethodSignature</span> <span class="variable">methodSignature</span> <span class="operator">=</span> (MethodSignature)joinPoint.getSignature();</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> methodSignature.getMethod();</span><br><span class="line">        <span class="type">MyAnnotation</span> <span class="variable">myAnnotation</span> <span class="operator">=</span> method.getAnnotation(MyAnnotation.class);</span><br><span class="line">        System.out.println(<span class="string">&quot;自定义注解 MyAnnotation 起作用了&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;MyAnnotation 的参数为：&quot;</span>);</span><br><span class="line">        System.out.println(myAnnotation.value());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）使用自定义注解</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationUser</span> &#123;</span><br><span class="line">    <span class="meta">@MyAnnotation(&quot;测试自定义注解的参数&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fun</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）测试自定义注解</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testMyAnnotation</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line">        <span class="type">MyAnnotationUser</span> <span class="variable">myAnnotationUser</span> <span class="operator">=</span> context.getBean(MyAnnotationUser.class);</span><br><span class="line">        myAnnotationUser.fun();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）测试结果</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">自定义注解 MyAnnotation 起作用了</span><br><span class="line">MyAnnotation 的参数为：</span><br><span class="line">测试自定义注解的参数</span><br></pre></td></tr></table></figure>
+
+<h1 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h1><p>单元测试（unit test）是为了检验程序的正确性。一个单元可能是单个程序、类、对象、方法等，它是应用程序的最小可测试部件。Java平台使用的测试框架是JUnit，JUnit是白盒测试，知道测试如何完成功能和完成什么样的功能。</p>
+<p>在编写UT时，应当遵循一些规范：</p>
+<ul>
+<li>代码简单易懂，不可能再为测试代码编写测试；</li>
+<li>每个测试都互相独立，不依赖运行顺序；</li>
+<li>注意测试边界条件。</li>
+</ul>
+<p>JUnit提供了以下注解：</p>
+<ul>
+<li><p><code>@Test</code></p>
+<ul>
+<li><p>用于标注测试方法；</p>
+</li>
+<li><p>每次运行一个<code>@Test</code>方法前，JUnit首先创建一个<code>XxxTest</code>实例；</p>
+</li>
+<li><p>每个<code>@Test</code>方法内部的成员变量都是独立的，不能也无法把成员变量的状态从一个<code>@Test</code>方法带到另一个<code>@Test</code>方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Test(expected=Exception.class)</code></p>
+<ul>
+<li><p>指定测试单元期望得到的异常类;；</p>
+</li>
+<li><p>只有执行完成后抛出指定的异常，才测试成功。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@BeforeEach</code>和<code>@AfterEach</code></p>
+<ul>
+<li><p>这两个注解标注的方法会在运行每个<code>@Test</code>方法前后自动运行；</p>
+</li>
+<li><p>用于初始化和清理实例变量，在各个<code>@Test</code>方法中互不影响（是不同的实例）；</p>
+</li>
+<li><p>编写测试前准备、测试后清理的固定代码（称之为Fixture）。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@BeforeAll</code>和<code>@AfterAll</code></p>
+<ul>
+<li><p>这两个注解标注的方法会在运行所有<code>@Test</code>方法前后运行；</p>
+</li>
+<li><p>用于初始化和清理静态变量，也只能标注静态方法；</p>
+</li>
+<li><p>在各个<code>@Test</code>方法中均是唯一实例，会影响各个<code>@Test</code>方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@RunWith</code></p>
+<ul>
+<li><p>在JUnit中有很多Runner负责调用测试代码；</p>
+</li>
+<li><p>每个Runner都有特殊功能，应根据需要选择不同的Runner来运行测试代码。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@Transactional</code></p>
+<ul>
+<li>测试完成后就会回滚，不会产生垃圾数据。</li>
+</ul>
+</li>
+<li><p><code>@lgnore</code></p>
+<ul>
+<li>执行测试时将忽略掉此方法；</li>
+<li>如果用于修饰类，则忽略整个类。 </li>
+</ul>
+</li>
+</ul>
+<p>Mockito 框架可以与JUnit结合使用，用于创建和配置Mock对象。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Java Concurrency</title>
+    <url>/2022/06/17/java-concurrency/</url>
+    <content><![CDATA[<h1 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h1><h2 id="1-1-进程与线程"><a href="#1-1-进程与线程" class="headerlink" title="1.1 进程与线程"></a>1.1 进程与线程</h2><p>现代操作系统（Windows、macOS、Linux）执行多任务实际就是让CPU对多个任务<strong>轮流交替执行</strong>，通常任务数量远远多于CPU的核数。</p>
+<ul>
+<li>在计算机中，一个任务称为一个进程（Process），某些进程内部还需要同时执行多个子任务，这些子任务称为线程（Thread）。</li>
+<li>对于Java程序来说，执行多任务是指<strong>多线程并发执行</strong>。</li>
+<li>进程和线程存在以下区别：<ul>
+<li>进程和线程是包含关系，一个进程有一个或多个线程，线程是操作系统调度的最小单元；</li>
+<li>创建进程的开销比创建线程大；</li>
+<li>进程间通信比线程间通信要慢，这是因为线程间通信就是读写同一个变量，速度很快；</li>
+<li>进程间不会相互干扰，一个进程崩溃不会影响其他进程，但是任何一个线程的崩溃就会导致整个进程崩溃；</li>
+<li>多线程编程的复杂度比多进程更高。</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-2-上下文切换"><a href="#1-2-上下文切换" class="headerlink" title="1.2 上下文切换"></a>1.2 上下文切换</h2><p>CPU会给每个线程分配时间片，因此，即使是单核CPU也支持多线程并发执行代码。</p>
+<ul>
+<li>当前线程执行一个时间片之后会切换到下一个任务，任务切换前后需要保存上一个任务的状态并加载下一个任务的状态，这种任务从保存到再加载的过程就是一次上下文切换。</li>
+<li>由于上下文切换存在开销，因此：<ul>
+<li>当上下文切换过于频繁时，并发执行会比串行执行更慢；</li>
+<li>原本设置为并发执行的程序在受限于资源而串行执行时，会比直接串行执行更慢；</li>
+<li>需要根据实际情况来调整程序的并发程度。</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-3-并发模型"><a href="#1-3-并发模型" class="headerlink" title="1.3 并发模型"></a>1.3 并发模型</h2><ul>
+<li><p>并发编程需要关注两个关键问题：</p>
+<ul>
+<li>线程之间如何通信，指线程之间交换信息的机制；</li>
+<li>线程之间如何同步，指控制线程操作发生相对顺序的机制。</li>
+</ul>
+</li>
+<li><p>线程间的通信有两种方式：</p>
+<ul>
+<li>消息传递，隐式的线程同步；</li>
+<li>共享内存，显示的线程同步。</li>
+</ul>
+</li>
+<li><p>Java并发采用的是共享内存模型，由Java内存模型（JMM）控制线程间的通信。</p>
+</li>
+<li><p>线程间的共享变量（实例域、静态域和数组元素）存储在主内存中，线程自身有一个私有的本地内存（缓存、写缓冲区、寄存器等）。</p>
+</li>
+<li><p>JMM控制下的线程间通信就是通过主内存与线程的本地内存之间的交互完成。</p>
+</li>
+<li><p>JMM屏蔽了不同处理器内存模型的差异，它在不同的处理器平台之上为Java程序员呈现了一个一致的内存模型。</p>
+</li>
+</ul>
+<h1 id="2、底层原理"><a href="#2、底层原理" class="headerlink" title="2、底层原理"></a>2、底层原理</h1><h2 id="2-1-volatile和可见性"><a href="#2-1-volatile和可见性" class="headerlink" title="2.1 volatile和可见性"></a>2.1 volatile和可见性</h2><p>Java程序使用<code>volatile</code>关键字来保证可见性。</p>
+<ul>
+<li><p><code>volatile</code>保证了多线程共享变量的<strong>可见性</strong>：</p>
+<ul>
+<li>线程每次修改变量后，立即回写到主内存当中；</li>
+<li>线程每次访问该变量时总是获取主内存中的最新值。</li>
+</ul>
+</li>
+<li><p><code>volatile</code>写操作比读操作的开销更大，这是因为执行时的屏障开销有所不同。</p>
+</li>
+<li><p><code>volatile</code>不会引起上下文切换和调度，使用成本低。</p>
+</li>
+</ul>
+<h2 id="2-2-原子操作和原子性"><a href="#2-2-原子操作和原子性" class="headerlink" title="2.2 原子操作和原子性"></a>2.2 原子操作和原子性</h2><p>Java程序通过循环CAS和锁来实保证原子性。</p>
+<ul>
+<li><p>CAS指：</p>
+<ul>
+<li><p>当类的当前值是<code>prev</code>时，更新为<code>next</code>，并返回<code>true</code>；</p>
+</li>
+<li><p>当类的当前值不是<code>prev</code>时，返回<code>false</code>。</p>
+</li>
+</ul>
+</li>
+<li><p>通过循环CAS实现原子操作存在以下问题：</p>
+<ul>
+<li>ABA问题，解决思路是使用版本号；</li>
+<li>循环时间长、开销大；</li>
+<li>只能保证一个共享变量的原子操作，解决思路是将多个共享变量合并成一个共享变量。</li>
+</ul>
+</li>
+<li><p>除了偏向锁，JVM实现锁的方式都用了循环CAS。</p>
+</li>
+<li><p>JVM规范规定除了<code>long</code>和<code>double</code>以外的数据类型的<strong>单条赋值操作</strong>均为原子操作（即为不可中断的操作），满足原子性。</p>
+</li>
+<li><p>自增自减这样的复合操作不是原子操作，不具有原子性。</p>
+</li>
+</ul>
+<h2 id="2-3-synchronized锁"><a href="#2-3-synchronized锁" class="headerlink" title="2.3 synchronized锁"></a>2.3 synchronized锁</h2><p>Java程序使用<code>synchronized</code>关键字进行加锁。</p>
+<ul>
+<li><p><code>synchronized</code>有三种加锁方式：</p>
+<ul>
+<li><p>对于普通方法，锁是当前实例对象<code>this</code>；</p>
+</li>
+<li><p>对于静态方法，锁是当前类的Class对象；</p>
+</li>
+<li><p>对于同步代码块，锁是<code>synchronized</code>括号里配置的对象。</p>
+</li>
+</ul>
+</li>
+<li><p>在使用<code>synchronized</code>时，获取到的是哪个锁非常重要，这关系到代码逻辑是否正确以及执行是否高效。</p>
+</li>
+<li><p>无论<code>synchronized</code>代码块中是否抛出异常，都会在<code>synchronized</code>结束处正确释放锁。</p>
+</li>
+<li><p><code>synchronized</code>获取的锁是可重入的锁（能被同一个线程反复获取的锁），因此每次加锁和解锁时，需要记录这是第几次加锁和解锁，直到记录变为第0次时才会真正释放锁。</p>
+</li>
+<li><p>由于<code>synchronized</code>代码块无法并发执行，且加锁和解锁也需要消耗一定的时间，故<code>synchronized</code>会降低程序的执行效率。</p>
+</li>
+<li><p><code>synchronized</code>是JVM实现的，不可中断，非公平。</p>
+</li>
+</ul>
+<h2 id="2-4-锁升级和对比"><a href="#2-4-锁升级和对比" class="headerlink" title="2.4 锁升级和对比"></a>2.4 锁升级和对比</h2><p>JVM通过引入偏向锁和轻量级锁来对<code>synchronized</code>进行优化，降低了获得锁和释放锁带来的性能消耗，此时，锁一共有四种状态：无锁、偏向锁、轻量级锁和重量级锁。</p>
+<img src="锁升级.png" alt="锁升级" style="zoom:100%;" />
+
+<ul>
+<li> 为了提高获得锁和释放锁的效率，锁可以升级但不能降级。</li>
+<li>在大多数情况下，锁不存在多线程竞争，即总是由同一个线程多次获取，因此引入偏向锁：<ul>
+<li>加锁和解锁不需要额外的消耗，与执行非同步代码相比，性能差距很小；</li>
+<li>存在锁竞争时，会带来额外的锁撤销的消耗；</li>
+<li>适用于只有一个线程获取锁的场景。</li>
+</ul>
+</li>
+<li>存在多个线程竞争偏向锁时，锁会升级为轻量级锁：<ul>
+<li>竞争线程不会阻塞，提高了程序的响应速度；</li>
+<li>自旋会消耗CPU，要避免无用的自旋；</li>
+<li>适用于追求响应速度的场景。</li>
+</ul>
+</li>
+<li>自旋获取轻量级锁失败时，锁就会膨胀为重量级锁：<ul>
+<li>不适用自旋，不消耗CPU；</li>
+<li>线程阻塞，响应时间缓慢；</li>
+<li>适用于追求吞吐量的场景。</li>
+</ul>
+</li>
+<li>偏向锁在Java 6和Java 7里是默认启用的，如果确认锁通常情况下处理竞争状态，可以关闭偏向锁，偏向锁关闭后，程序默认会进入轻量级锁状态。</li>
+</ul>
+<h2 id="2-5-final"><a href="#2-5-final" class="headerlink" title="2.5 final"></a>2.5 final</h2><ul>
+<li><p><code>final</code>域与普通域的区别在于：</p>
+<ul>
+<li><p>写<code>final</code>域时，只有在对象的<code>final</code>域已经被正确初始化过了之后，对象引用才会为任何线程可见；</p>
+</li>
+<li><p>读<code>final</code>域时，一定会确保先读包含这个<code>final</code>域的对象的引用，再读该对象的<code>final</code>域；</p>
+</li>
+<li><p>在构造函数返回前，被构造对象的引用不能为其他线程所见，即<code>this</code>引用不能溢出。</p>
+</li>
+</ul>
+</li>
+<li><p>只要对象是正确构造的（<code>this</code>引用没有溢出），那么不需要使用同步（<code>volatile</code>或者锁）就可以确保任意线程都能看到这个<code>final</code>域在构造函数中被初始化之后的值。</p>
+</li>
+</ul>
+<h1 id="3、线程基础"><a href="#3、线程基础" class="headerlink" title="3、线程基础"></a>3、线程基础</h1><h2 id="3-1-启动新线程"><a href="#3-1-启动新线程" class="headerlink" title="3.1 启动新线程"></a>3.1 启动新线程</h2><ul>
+<li><p>一个Java程序实际上是一个JVM进程，JVM进程用一个主线程来执行<code>main</code>方法，除此之外，JVM还有负责垃圾回收的其他线程运行。</p>
+</li>
+<li><p>在<code>main</code>方法内部，程序员通过编写代码又可以启动其他新线程，启动新线程有以下三种方式：</p>
+<ul>
+<li><p>泛化<code>Thread</code>类；</p>
+</li>
+<li><p>实现<code>Runnable</code>接口；</p>
+</li>
+<li><p>直接使用lambda表达式。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        t1.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">MyRunnable</span>());</span><br><span class="line">        t2.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;...&#125;);</span><br><span class="line">        t3.start ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-2-线程调度"><a href="#3-2-线程调度" class="headerlink" title="3.2 线程调度"></a>3.2 线程调度</h2><ul>
+<li><p>现代操作系统基本采用时分的形式调度运行的线程。</p>
+</li>
+<li><p>如何调度线程完全由操作系统决定，程序自身无法决定线程间的执行顺序，但可以通过<code>Thread.setPriority</code>方法来设定线程的优先级。</p>
+</li>
+<li><p>线程优先级就是决定线程需要多或者少分配一些处理器资源的线程属性。</p>
+</li>
+<li><p>优先级高的线程会被操作系统调度的更加频繁，但不能确保优先级高的线程一定会先执行。</p>
+</li>
+<li><p>针对频繁阻塞（休眠或者I/O操作）的线程需要设置较高优先级，而偏重计算（需要较多CPU时间）的线程则设置较低优先级，确保线程不会被独占。</p>
+</li>
+<li><p>在不同的JVM以及操作系统上，线程规划会存在差异，有的操作系统甚至会忽略对线程优先级的设定，因此，<strong>程序正确性不能依赖线程的优先级高低。</strong></p>
+</li>
+</ul>
+<h2 id="3-3-线程的状态"><a href="#3-3-线程的状态" class="headerlink" title="3.3 线程的状态"></a>3.3 线程的状态</h2><ul>
+<li><p>New：新创建的线程，尚未调用<code>start</code>方法；</p>
+</li>
+<li><p>Runnable：运行中的线程，正在执行<code>run</code>方法中的代码；</p>
+</li>
+<li><p>Waiting：运行中的线程，但因为某些操作而需要等待其他线程的通知才能返回到Runnable；</p>
+</li>
+<li><p>Blocked：运行中的线程，但因为某些操作（调用同步方法但是没有获得锁）被阻塞而挂起；</p>
+<ul>
+<li><p>线程阻塞在<code>synchronized</code>修饰的同步区才会进入Blocked；</p>
+</li>
+<li><p>线程阻塞在JUC中<code>Lock</code>接口会进入Waiting。</p>
+</li>
+</ul>
+</li>
+<li><p>Timed Waiting：运行中的线程，但可以在指定的时间内自行返回到Runnable；</p>
+</li>
+<li><p>Terminated：已终止的线程。</p>
+</li>
+</ul>
+<img src="线程状态转移.png" alt="线程状态转移" style="zoom:100%;" />
+
+<h2 id="3-4-线程的行为"><a href="#3-4-线程的行为" class="headerlink" title="3.4 线程的行为"></a>3.4 线程的行为</h2><ul>
+<li><p><code>Thread.start()</code></p>
+<ul>
+<li><p>调用<code>start</code>方法后，新线程启动；</p>
+</li>
+<li><p>启动一个线程之前最后设置该线程的名称，便于分析排查；</p>
+</li>
+<li><p>一个线程对象只能调用一次<code>start</code>方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.run()</code></p>
+<ul>
+<li><p>在新线程启动后会立即执行<code>run</code>方法；</p>
+</li>
+<li><p>直接调用<code>run</code>方法并不会执行新线程，而是在主线程中执行<code>run</code>方法；</p>
+</li>
+<li><p><code>run</code>方法正常执行完毕或者因未捕获的异常而终止后该线程都会进入Terminated。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.yield()</code></p>
+<ul>
+<li><p>调用<code>yield</code>方法声明了当前线程已经完成了生命周期中最重要的部分，可以切换给其它线程来执行；</p>
+</li>
+<li><p>可以切换给其它线程只是对线程调度器的一个建议，而且也只是建议具有相同优先级的其它线程可以运行。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.join()</code></p>
+<ul>
+<li><p>线程调用<code>join</code>方法后，其他线程都进入Waiting，直到当前线程进入Terminated；</p>
+</li>
+<li><p>处于Terminated的的线程调用<code>join</code>方法时会立即返回。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.interrupt()</code></p>
+<ul>
+<li><p>对目标线程调用<code>interrupt</code>方法可以向目标线程发出中断请求；</p>
+</li>
+<li><p>目标线程是否能够立即响应该中断请求，取决于目标线程的<code>run</code>方法中的具体设置；</p>
+</li>
+<li><p>目标线程的<code>run</code>方法可以通过检测<code>isInterrupted</code>方法是否返回<code>true</code>来中断自身；</p>
+</li>
+<li><p>处于Terminated的的线程调用<code>isInterrupted</code>方法会返回<code>fasle</code>。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.sleep()</code></p>
+<ul>
+<li><p><code>sleep</code>方法是<code>Thread</code>的静态方法；</p>
+</li>
+<li><p><code>sleep</code>方法不会释放锁，即便在非同步区也可以直接调用。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.setPriority()</code></p>
+<ul>
+<li><p>调用<code>setPriority(int)</code>方法可以设定线程的优先级；</p>
+</li>
+<li><p>优先级的范围是1~10，默认是5。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.stop()</code></p>
+<ul>
+<li><p>线程调用<code>stop</code>方法后会进入Terminated；</p>
+</li>
+<li><p>不建议使用<code>stop</code>方法，该方法在调用后不会释放已经占有的资源，容易引发死锁；</p>
+</li>
+<li><p>除了<code>stop</code>方法，还有<code>suspend</code>方法、<code>resume</code>方法都是已经过期的方法。</p>
+</li>
+</ul>
+</li>
+<li><p><code>Thread.setDaemon()</code></p>
+<ul>
+<li><p>在调用<code>start</code>方法之前执行<code>setDaemon (true)</code>可以将线程设置为守护线程；</p>
+</li>
+<li><p>守护线程指为其他线程服务的线程，对于需要无限循环运行（不终止）的线程应设置为守护线程；</p>
+</li>
+<li><p>在JVM中，所有非守护线程都执行完毕后，JVM会自动退出，而不关心守护线程是否结束；</p>
+</li>
+<li><p>守护线程不能持有任何需要关闭的资源（例如打开文件），也不能通过<code>finally</code>块来执行任何逻辑。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-5-死锁的发生及预防"><a href="#3-5-死锁的发生及预防" class="headerlink" title="3.5 死锁的发生及预防"></a>3.5 死锁的发生及预防</h2><ul>
+<li>死锁发生的四个条件：<ul>
+<li>互斥：每一时刻仅有一个线程能访问共享数据或共享资源；</li>
+<li>上锁及等待：每个线程都对其他线程需要的资源上锁并等待其他线程释放锁；</li>
+<li>无抢先机制；线程无法抢夺其他线程已经上锁的资源；</li>
+<li>循环等待：多个线程间循环等待其他线程释放锁。</li>
+</ul>
+</li>
+<li><strong>死锁一旦发生之后，没有任何机制能解除死锁，只能强制结束JVM进程，因此，只能通过破坏死锁发生的条件来预防</strong>。</li>
+<li>预防死锁的四个方式：<ul>
+<li>使用允许同时使用的资源，或者增加资源数量，获取资源前检查是否可用等；</li>
+<li>遇到资源不可用时，就释放已经获取的资源重新来过，但这很可能会导致线程饥饿和活锁问题；</li>
+<li>满足抢先机制；</li>
+<li>所有线程都以同一种资源获取次序来获取资源。</li>
+</ul>
+</li>
+<li>限定资源：并发环境中有着固定尺寸或数量的资源，例如数据库连接和固定尺寸读/写缓存等。</li>
+<li>线程饥饿：线程在很长时间内无法抢到时间片去执行就会“挨饿”。</li>
+<li>活锁：线程因无法获取全部资源而选择释放已经获取的资源，并等待能够获取全部资源从而执行，执行次序一致的线程，每个都想要起步，但发现其他线程已经在“路上”，以致很长时间甚至永远都无法启动。</li>
+</ul>
+<h1 id="4、线程同步"><a href="#4、线程同步" class="headerlink" title="4、线程同步"></a>4、线程同步</h1><p>多个线程同时读写可变的共享变量时，需要通过线程同步来实现线程间可靠的通信。</p>
+<p>正确地使用同步可以保证<strong>没有任何线程会看到数据处于不一致的状态中（原子性），并且进入同步的每个线程都能看到由同一个锁保护的之前的所有修改效果（可见性）。</strong></p>
+<h2 id="4-1-锁和临界区"><a href="#4-1-锁和临界区" class="headerlink" title="4.1 锁和临界区"></a>4.1 锁和临界区</h2><ul>
+<li><p>对于JVM规范定义的<strong>单个原子操作</strong>，不需要加锁，再通过<code>volatile</code>关键字来解决可见性问题后，即可实现同步。</p>
+</li>
+<li><p>对于单行非原子操作和多行原子操作（均无法保证原子性），代码原子性和数据可见性是通过加锁和解锁实现的。</p>
+</li>
+<li><p>加锁和解锁之间的代码块称为临界区（Critical Section），任何时候临界区最多只有一个线程能够执行。</p>
+</li>
+<li><p>线程获取锁时会把线程对应的本地内存中的共享变量置为无效，使得临界区代码必须从主内存中读取共享变量。</p>
+</li>
+<li><p>线程释放锁时会把线程中对应的本地内存中的共享变量刷新到主内存中。</p>
+</li>
+</ul>
+<h2 id="4-2-等待-通知机制"><a href="#4-2-等待-通知机制" class="headerlink" title="4.2 等待/通知机制"></a>4.2 等待/通知机制</h2><p>Java程序使用<code>synchronized</code>解决多线程竞争问题，使用<code>wait</code>、<code>notify</code>和<code>notifyAll</code>解决多线程协调问题。</p>
+<ul>
+<li><p><code>wait</code>方法不是一个普通的Java方法，而是定义在<code>Object</code>类的一个<code>native</code>方法，也就是由JVM的C代码实现的。</p>
+</li>
+<li><p><code>wait</code>方法调用时，会<strong>释放</strong>线程获得的锁，<code>wait</code>方法返回后，线程又会重新试图获得锁，因此必须在<code>synchronized</code>块中才能调用<code>wait</code>方法。</p>
+</li>
+<li><p>调用<code>wait</code>方法后，线程进入Waiting状态，但<code>wait</code>方法不会返回，直到将来某个时刻，线程从等待状态被其他线程唤醒并唤醒线程释放锁后，<code>wait</code>方法才会返回，然后继续执行下一条语句。</p>
+</li>
+<li><p>当某个线程调用锁对象的<code>wait</code>方法后，需要其他线程调用相同的锁对象的<code>notify</code>方法，该<code>wait</code>方法才能返回，因此必须在<code>synchronized</code>块中才能调用<code>notify</code>方法。</p>
+</li>
+<li><p><code>notify</code>和<code>notifyAll</code>的区别在于：<code>notify</code>只随机唤醒一个等待线程，而<code>notifyAll</code>会唤醒全部由相同锁对象调用<code>wait</code>而等待的线程，故<code>notifyAll</code>更安全。</p>
+</li>
+<li><p>多个线程被唤醒后，只有一个线程能够重新获得锁并继续执行，而其他线程将继续等待。</p>
+</li>
+</ul>
+<h2 id="4-3-线程安全级别"><a href="#4-3-线程安全级别" class="headerlink" title="4.3 线程安全级别"></a>4.3 线程安全级别</h2><p>“线程安全”（thread-safe）代表是否允许多线程正确同步，没有特殊说明的类默认不是thread-safe的，但<code>java.lang.StringBuffer</code>、不可变类以及只提供静态方法而无成员变量的类都是线程安全的。</p>
+<p>线程安全并不是要么全有要么全无的属性，而是具有以下多种级别：</p>
+<ul>
+<li>不可变的（immutable）：这个类是不可变的，不需要外部同步。</li>
+<li>无条件的线程安全（unconditionally thread-safe）：这个类是可变的，但是这个类有着足够的内部同步，不需要任何外部同步即可并发使用。</li>
+<li>有条件的线程安全（conditionally thread-safe）：这个类是可变的，有部分方法需要外部同步，并需要在文档中指明。</li>
+<li>非线程安全（not thread-safe）：这个类是可变的，需要外部同步来包围这个类的每个方法调用。</li>
+<li>线程对立的（thread-hostile）：这个类是可变的，并且无法安全地被多线程并发使用，这种类要么需要进行修正，要么标注为弃用。</li>
+</ul>
+<h2 id="4-4-线程状态传递"><a href="#4-4-线程状态传递" class="headerlink" title="4.4 线程状态传递"></a>4.4 线程状态传递</h2><p>在一个线程中，横跨若干方法调用，需要传递的对象，称之为上下文（Context），Context是一种状态，可以是用户身份、任务信息等。Java标准库提供了<code>ThreadLocal</code>用于在一个线程中传递同一个Context。</p>
+<ul>
+<li><p>ThreadLocal表示线程的“局部变量”。</p>
+</li>
+<li><p><code>ThreadLocal</code>实例通常是静态变量。</p>
+</li>
+<li><p>通过<code>ThreadLocal</code>的<code>set</code>方法可以将需要的Context变量关联到<code>ThreadLocal</code>实例当中，通过<code>remove</code>方法可以将Context变量从<code>ThreadLocal</code>实例中移除。</p>
+</li>
+<li><p>关联到<code>ThreadLocal</code>中的Context变量在移除之前，所有方法都可以通过<code>ThreadLocal</code>的<code>get</code>方法随时获取到<code>Context</code>变量。</p>
+</li>
+<li><p>可以把<code>ThreadLocal</code>看成一个全局<code>Map&lt;Thread, Object&gt;</code>，每个线程获取<code>ThreadLocal</code>中的Context变量时，总是使用Thread自身作为<code>key</code>。</p>
+</li>
+<li><p><code>ThreadLocal</code>相当于给每个线程都开辟了一个独立的存储空间，各个线程的<code>ThreadLocal</code>关联的Context变量互不干扰。</p>
+</li>
+<li><p><code>ThreadLocal</code>一定要在<code>finally</code>块中清除Context变量，否则该Context变量所关联的线程在执行下一个任务时，会把上一次的状态带进去。</p>
+</li>
+</ul>
+<h1 id="5、高效并发（JUC）"><a href="#5、高效并发（JUC）" class="headerlink" title="5、高效并发（JUC）"></a>5、高效并发（JUC）</h1><p>在Java 5中引入了<code>java.util.concurrent</code>包，该包提供了一系列底层锁、线程安全的并发集合、原子操作的封装类以及同步器来实现高效的并发。</p>
+<h2 id="5-1-并发锁"><a href="#5-1-并发锁" class="headerlink" title="5.1 并发锁"></a>5.1 并发锁</h2><h3 id="5-1-1-Lock"><a href="#5-1-1-Lock" class="headerlink" title="5.1.1 Lock"></a>5.1.1 Lock</h3><ul>
+<li><p><code>Lock</code>接口提供了与<code>synchronized</code>关键字类似的同步功能。</p>
+</li>
+<li><p>不同于<code>synchronized</code>只需隐式获取释放锁，<code>Lock</code>接口需要显示地获取和释放锁。</p>
+</li>
+<li><p>虽然缺少了一些便捷性，但<code>Lock</code>接口拥有了锁获取和释放的可操作性、可中断的获取锁以及超时获取锁等多种<code>synchronized</code>不具备的同步特性。</p>
+</li>
+<li><p>不要在<code>try</code>块中获取锁，否则如果在获取锁时发生了异常，异常抛出时也会导致锁无故释放。</p>
+</li>
+<li><p>在<code>finally</code>块中释放锁，保证在获取到锁之后，最终能够被释放。</p>
+</li>
+<li><p><code>Lock</code>接口的实现基本都是聚合了一个同步器的子类来完成线程访问控制。</p>
+</li>
+</ul>
+<h3 id="5-1-2-ReentrantLock"><a href="#5-1-2-ReentrantLock" class="headerlink" title="5.1.2 ReentrantLock"></a>5.1.2 ReentrantLock</h3><p><code>synchronized</code>关键字加的锁很重，且没有额外的尝试机制，<code>ReentrantLock</code>类可用于代替<code>synchronized</code>加锁。</p>
+<p><code>ReentrantLock</code>与<code>synchronized</code>之间的区别在于：</p>
+<ul>
+<li><p><code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去。</p>
+</li>
+<li><p><strong><code>ReentrantLock</code>需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
+</li>
+<li><p><code>ReentrantLock</code>比直接使用<code>synchronized</code>更安全，线程在<code>tryLock</code>失败时不会导致死锁。</p>
+</li>
+<li><p><code>ReentrantLock</code>是JDK实现的，可中断，默认是非公平的，也可以是公平的。</p>
+</li>
+</ul>
+<h3 id="5-1-3-ReadWriteLock"><a href="#5-1-3-ReadWriteLock" class="headerlink" title="5.1.3 ReadWriteLock"></a>5.1.3 ReadWriteLock</h3><ul>
+<li><p><code>ReentrantLock</code>保证任何时候只有一个线程可以执行临界区代码，与<code>ReentrantLock</code>相比，<code>ReadWriteLock</code>允许多个读线程同时执行临界区代码，但不允许读线程和写线程同时执行。</p>
+</li>
+<li><p>从<code>ReadWriteLock</code>对象可以分别获取读锁和写锁（<code>Lock</code>类型），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>ReadWriteLock</code>依旧是可重入锁。</p>
+</li>
+<li><p><strong><code>ReadWriteLock</code>同样需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
+</li>
+<li><p><code>ReadWriteLock</code>类适用于读多写少的场景，可以提高读取效率。</p>
+</li>
+</ul>
+<h3 id="5-1-4-StampedLock"><a href="#5-1-4-StampedLock" class="headerlink" title="5.1.4 StampedLock"></a>5.1.4 StampedLock</h3><ul>
+<li><p>与<code>ReadWriteLock</code>相比，<code>StampedLock</code>允许在读线程获取读锁并执行的过程中，写线程获取写锁并执行。</p>
+</li>
+<li><p>从<code>StampedLock</code>对象可以分别获取读锁和写锁（<code>long</code>类型，其实是版本号），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>StampedLock</code>是不可重入锁。</p>
+</li>
+<li><p><code>ReadWriteLock</code>提供的读锁是悲观锁，<code>StampedLock</code>提供的读锁是乐观锁，乐观锁的并发效率更高，但一旦有小概率的写入导致读取的数据不一致，检测出来后需要再读一遍。</p>
+</li>
+<li><p><code>StampedLock</code>加写锁的操作与<code>ReadWriteLock</code>是一致的，但加读锁时，首先获取读锁（版本号）并直接读取需要的值（读取时不保证原子性），接着通过<code>validate</code>方法验证版本号，验证失败时从<code>StampedLock</code>对象获取悲观读锁，接着重新读取（加锁保证原子性）。</p>
+</li>
+<li><p><strong><code>StampedLock</code>的写锁和悲观读锁需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
+</li>
+<li><p><code>StampedLock</code>通过将读锁细分为乐观锁和悲观锁，进一步提升并发效率。</p>
+</li>
+</ul>
+<h2 id="5-2-同步器"><a href="#5-2-同步器" class="headerlink" title="5.2 同步器"></a>5.2 同步器</h2><p>锁是面向使用者的，它定义了使用者与锁交互的接口，隐藏了实现细节；同步器是面向锁的实现者的，它简化了锁的实现方式，屏蔽了同步状态管理、线程的排列、等待与唤醒等底层操作。</p>
+<p>锁和同步器很好地隔离了使用者和实现者所关注的领域，可以实现更加灵活的线程同步。</p>
+<h3 id="5-2-1-AQS"><a href="#5-2-1-AQS" class="headerlink" title="5.2.1 AQS"></a>5.2.1 AQS</h3><ul>
+<li><p><code>AbstractQueuedSynchronizer</code>是同步器框架，本质是一个抽象同步队列，简称AQS。</p>
+</li>
+<li><p>AQS使用了一个<code>int</code>型的<code>volatile</code>变量<code>state</code>来维护同步状态，通过内置的FIFO双向队列来完成资源获取线程的排队工作。</p>
+</li>
+<li><p>AQS实现了同步状态的原子性管理、线程的阻塞和解除阻塞并提供阻塞线程的存储队列。</p>
+</li>
+<li><p>同步器的设计是基于模板方法模式的，可以通过继承AQS并重写<code>tryAcquire</code>和<code>tryRelease</code>方法来实现自己的同步器。</p>
+</li>
+<li><p>自定义的同步器推荐被定义为同步组件的静态内部类，同步器本身没有实现任何同步接口。</p>
+</li>
+<li><p>同步器可分为独占状态的同步器和共享状态的同步器，共享模式下的同步器还需实现<code>tryAcquireShared</code>和<code>tryReleaseShared</code>方法。</p>
+</li>
+<li><p>使用独占模式同步器的主要类库有可重入锁<code>ReentrantLock</code>以及读写锁<code>ReentrantReadWriteLock</code>中的写锁<code>WriteLock</code>。</p>
+</li>
+<li><p>使用共享模式同步器的主要类库有信号量<code>Semaphore</code>以及倒数栅栏<code>CountDownLatch</code>。</p>
+</li>
+</ul>
+<h3 id="5-2-2-Condition"><a href="#5-2-2-Condition" class="headerlink" title="5.2.2 Condition"></a>5.2.2 Condition</h3><p><code>synchronized</code>可以配合<code>wait</code>和<code>notify</code>来协调线程工作，当用<code>ReentrantLock</code>类代替<code>synchronized</code>时，可以使用<code>Condition</code>类来代替<code>wait</code>和<code>notify</code>。</p>
+<ul>
+<li><p><code>Condition</code>对象由<code>ReentrantLock</code>对象的<code>newCondition</code>方法返回得到。</p>
+</li>
+<li><p><code>Condition</code>类提供<code>await</code>、<code>singal</code>、<code>signalAll</code>方法分别代替<code>wait</code>、<code>notify</code>、<code>notifyAll</code>，方法的原理和行为都是一致的。</p>
+</li>
+<li><p><code>await</code>和<code>tryLock</code>类似的是：在等待指定时间后，如果还没有被<code>singal</code>或<code>signalAll</code>唤醒，可以自己醒来。</p>
+</li>
+<li><p>通过<code>ReentrantLock</code>和<code>Condition</code>可以实现更加灵活的线程同步。</p>
+</li>
+</ul>
+<h3 id="5-2-3-CountDownLatch"><a href="#5-2-3-CountDownLatch" class="headerlink" title="5.2.3 CountDownLatch"></a>5.2.3 CountDownLatch</h3><ul>
+<li><p>通过参数<code>count</code>来新建<code>CountDownLatch</code>实例，<code>count</code>为计数器初始值。</p>
+</li>
+<li><p>每当有一个线程达到同步点（屏障）时，调用<code>CountDownLatch</code>的<code>countDown</code>方法使得计数器减1，调用<code>CountDownLatch</code>的<code>await</code>方法使得该线程进入<code>Blocked</code>状态，当计数器等于0时，所有被挂起的线程才继续执行。</p>
+</li>
+<li><p><code>CountDownLatch</code>在计数器等于0并触发门闩打开后，就不能再次重复使用了，除非新建新的<code>CountDownLatch</code>。</p>
+</li>
+</ul>
+<h3 id="5-2-4-CyclicBarrier"><a href="#5-2-4-CyclicBarrier" class="headerlink" title="5.2.4 CyclicBarrier"></a>5.2.4 CyclicBarrier</h3><ul>
+<li><p>通过参数<code>count</code>和<code>Runnable</code>实现类来新建<code>CyclicBarrier</code>实例，计数器初始值为0，<code>Runnable</code>实现类定义了屏障打开之后要执行的内容。</p>
+</li>
+<li><p>每当有一个线程达到同步点（屏障）时计数器自动加1，调用<code>CyclicBarrier</code>的<code>await</code>方法使得该线程进入Blocked状态，当计数器达到<code>count</code>值时，所有线程才继续执行。</p>
+</li>
+<li><p><code>CyclicBarrier</code>在计数器达到足够数量并打开屏障之后依旧能够再次重复使用。</p>
+</li>
+</ul>
+<h3 id="5-2-5-Semaphore"><a href="#5-2-5-Semaphore" class="headerlink" title="5.2.5 Semaphore"></a>5.2.5 Semaphore</h3><p>通过<code>Semaphore</code>可以实现多副本资源的并发控制。</p>
+<ul>
+<li><p>通过参数<code>permits</code>和<code>fair</code>来新建<code>Semaphore</code>实例，<code>permits</code>代表资源数量，<code>fair</code>代表等待队列是否采用FIFO。</p>
+</li>
+<li><p>每当有一个线程要访问共享资源时，通过<code>Semaphore</code>的<code>acquire</code>方法来获取资源：</p>
+<ul>
+<li>如果信号量的计数器大于1，则意味着有共享资源可以使用，接着令计数器减1，然后该线程获得一份共享资源；</li>
+<li>如果计数器小于1，则线程进入排队队列。</li>
+</ul>
+</li>
+<li><p>每当有线程要释放共享资源时，通过<code>Semaphore</code>的<code>release</code>方法来释放资源，接着令信号量的计数器加1。</p>
+</li>
+</ul>
+<h2 id="5-3-内部同步类"><a href="#5-3-内部同步类" class="headerlink" title="5.3 内部同步类"></a>5.3 内部同步类</h2><h3 id="5-3-1-Concurrent集合"><a href="#5-3-1-Concurrent集合" class="headerlink" title="5.3.1 Concurrent集合"></a>5.3.1 Concurrent集合</h3><ul>
+<li><p><code>java.util.concurrent</code>包提供了<strong>线程安全</strong>的并发集合类，这些并发集合与使用非线程安全的集合类完全相同，但多线程同时读写并发集合是安全的，因此可以大大简化多线程编程。</p>
+</li>
+<li><p>使用这些线程安全的并发集合类时，会重新拷贝整个底层数组，并在拷贝的数组上实现写操作。</p>
+</li>
+<li><p>并发集合在内部自己管理同步，因此在使用并发集合时，不需要在外部将其锁定，这样只会拖累性能。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">interface</th>
+<th align="center">non-thread-safe</th>
+<th align="center">thread-safe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>List</code></td>
+<td align="center"><code>ArrayList</code></td>
+<td align="center"><code>CopyOnWriteArrayList</code></td>
+</tr>
+<tr>
+<td align="center"><code>Map</code></td>
+<td align="center"><code>HashMap</code></td>
+<td align="center"><code>ConcurrentHashMap</code></td>
+</tr>
+<tr>
+<td align="center"><code>Set</code></td>
+<td align="center"><code>HashSet</code> / <code>TreeSet</code></td>
+<td align="center"><code>CopyOnWriteArraySet</code></td>
+</tr>
+<tr>
+<td align="center"><code>Queue</code></td>
+<td align="center"><code>ArrayDeque</code> / <code>LinkedList</code></td>
+<td align="center"><code>ArrayBlockingQueue</code> / <code>LinkedBlockingQueue</code></td>
+</tr>
+<tr>
+<td align="center"><code>Deque</code></td>
+<td align="center"><code>ArrayDeque</code> / <code>LinkedList</code></td>
+<td align="center"><code>LinkedBlockingQueue</code></td>
+</tr>
+</tbody></table>
+<h3 id="5-3-2-Atomic类"><a href="#5-3-2-Atomic类" class="headerlink" title="5.3.2 Atomic类"></a>5.3.2 Atomic类</h3><ul>
+<li><p><code>java.util.concurrent.atomic</code>包提供了一组<strong>原子操作</strong>的封装类（<code>Atomic</code>），<code>Atomic</code>类是通过无锁的方式实现线程安全的，主要原理是利用了CAS（Compare and Set）。</p>
+</li>
+<li><p><code>Atomic</code>适用于计数器、累加器等。</p>
+</li>
+</ul>
+<h2 id="5-4-线程池"><a href="#5-4-线程池" class="headerlink" title="5.4 线程池"></a>5.4 线程池</h2><p>为了避免频繁创建和销毁线程，考虑复用一组线程来执行多个任务，而不是每个任务都对应一个新线程。这种能够接收大量任务并进行分发处理的一组线程就是线程池，线程池内部维护了若干个线程，没有任务时，这些线程都处于Waiting状态。</p>
+<h3 id="5-4-1-线程池类"><a href="#5-4-1-线程池类" class="headerlink" title="5.4.1 线程池类"></a>5.4.1 线程池类</h3><p>Java标准库提供了<code>ExecutorService</code>接口表示线程池，<code>ExecutorService</code>接口的常用实现类有：</p>
+<ul>
+<li><p><code>FixedThreadPool</code>：线程数固定的线程池。</p>
+</li>
+<li><p><code>CachedThreadPool</code>：线程数根据任务动态调整的线程池。</p>
+</li>
+<li><p><code>SingleThreadExecutor</code>：仅单线程执行的线程池。</p>
+</li>
+<li><p><code>ThreadPoolExecutor</code>：可以指定动态线程数范围的线程池。</p>
+</li>
+<li><p><code>ScheduledThreadPool</code>：用于执行需要定期反复执行的任务。</p>
+</li>
+</ul>
+<p><strong>线程池中线程的数量并不是越多越好，具体的数量需要评估每个任何的处理时间以及当前计算机的处理器能力和数量。</strong>使用的线程过少，无法发挥处理器的性能；使用的线程过多，将会增加系统的无故开销，起到相反的作用。</p>
+<h3 id="5-4-2-线程池方法"><a href="#5-4-2-线程池方法" class="headerlink" title="5.4.2 线程池方法"></a>5.4.2 线程池方法</h3><p>创建线程池类的方法（静态工厂方法）都被封装到<code>Executors</code>类（静态工具类）中。</p>
+<ul>
+<li><p>线程池的<code>submit</code>方法用于提交要执行的任务，该方法的入参是一个<code>Runnable</code>接口的实现类。</p>
+</li>
+<li><p>线程池的<code>shutdown</code>、<code>shutdownNow</code>方法都可以用于程序结束时关闭线程池，<code>shutdown</code>会等待线程池中正在执行的任务先完成，然后再关闭，<code>shutdownNow</code>会立即停止正在执行的任务。</p>
+</li>
+<li><p><code>awaitTermination</code>方法通常放在<code>shutdown</code>方法后面用来判断固定时间后线程池是否关闭。</p>
+</li>
+<li><p>针对<code>ScheduledThreadPool</code>类线程池，通过<code>schedule</code>方法来提交只执行一次的任务，通过<code>scheduleAtFixedRate</code>或<code>scheduleWithFixedDelay</code>方法来提交需要多次反复执行的任务，这三个方法均可设置任务的延迟，<code>scheduleAtFixedRate</code>和<code>scheduleWithFixedDelay</code>均可设置任务执行次数。</p>
+</li>
+<li><p><code>FixedRate</code>和<code>FixedDelay</code>的区别在于：<code>FixedRate</code>是指任务总是以固定时间间隔触发，不管任务执行多长时间；<code>FixedDelay</code>是指上一次任务执行完毕后，等待固定的时间间隔，再执行下一次任务。</p>
+</li>
+<li><p>在<code>FixedRate</code>模式下，假设每秒触发，如果某次任务执行时间超过1秒，后续任务执行可能会延迟开始，但不会并发执行。</p>
+</li>
+<li><p>如果任务抛出了异常，将禁止后续任务的执行。</p>
+</li>
+</ul>
+<h3 id="5-4-3-任务执行结果"><a href="#5-4-3-任务执行结果" class="headerlink" title="5.4.3 任务执行结果"></a>5.4.3 任务执行结果</h3><p>用线程池执行任务时，提交的任务只需实现<code>Runnable</code>接口即可。与<code>Runnable</code>接口不同的是，<code>Callable</code>接口有返回值并且可以返回指定类型的结果。<strong>向<code>ExecutorService.submit</code>方法传入一个实现了<code>Callable</code>接口的任务时，方法会返回一个<code>Future</code>类型的实例</strong>（代表一个<strong>未来</strong>能获取结果的对象）。</p>
+<ul>
+<li><p>返回的<code>Future</code>类型的泛型与<code>Callable</code>接口的泛型一致，从而达到指定类型的目的；</p>
+</li>
+<li><p><code>Future.get()</code>用于获取指定类型的结果实例<code>result</code>，可能会阻塞，需要等待；</p>
+</li>
+<li><p><code>Future.get(long timeout, TimeUnit unit)</code>只等待指定的时间；</p>
+</li>
+<li><p><code>Future.cancel(boolean mayInterruptIfRunning)</code>用于取消当前任务；</p>
+</li>
+<li><p><code>Future.isDone()</code>用于判断任务是否已完成。</p>
+</li>
+</ul>
+<p><code>Future.get</code>方法和轮询<code>Future.isDone</code>方法都会导致主线程被迫等待，而<code>CompletableFuture</code>做出了改进：</p>
+<ul>
+<li><p><code>CompletableFuture</code>可以<strong>传入</strong>一个实现了<code>Supplier</code>接口的<strong>回调对象</strong>；</p>
+</li>
+<li><p>当异步任务完成或者发生异常时，能够自动调用回调对象的回调方法；</p>
+</li>
+<li><p>当主线程设置好回调之后，不需再关心异步任务的执行；</p>
+</li>
+<li><p>多个<code>CompletableFuture</code>可以串行执行或者并行执行。</p>
+</li>
+</ul>
+<p><code>CompletableFuture</code>类有以下方法用于指定异步处理流程：</p>
+<ul>
+<li><p><code>thenAccept()</code>处理正常结果；</p>
+</li>
+<li><p><code>exceptional()</code>处理异常结果；</p>
+</li>
+<li><p><code>thenApplyAsync()</code>用于异步串行化另一个<code>CompletableFuture</code>；</p>
+</li>
+<li><p><code>anyOf()</code>和<code>allOf()</code>用于并行化多个<code>CompletableFuture</code>。</p>
+</li>
+</ul>
+<h3 id="5-4-4-任务拆解"><a href="#5-4-4-任务拆解" class="headerlink" title="5.4.4 任务拆解"></a>5.4.4 任务拆解</h3><p>Java 7开始引入了<code>Fork/Join</code>线程池：基于“分治”思想将大任务分解成小任务，并行执行。</p>
+<ul>
+<li><p><code>Fork/Join</code>线程池由<code>ForkJoinPool.commonPool()</code>方法创建得到；</p>
+</li>
+<li><p>线程池的<code>invoke</code>方法用于提交要执行的任务；</p>
+</li>
+<li><p>任务类必须继承自<code>RecursiveTask</code>或<code>RecursiveAction</code>类。</p>
+</li>
+</ul>
+<h1 id="6、参考资料"><a href="#6、参考资料" class="headerlink" title="6、参考资料"></a>6、参考资料</h1><ul>
+<li>《Java并发编程的艺术》</li>
+<li>《Effective Java (Third Edition)》</li>
+<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255943750561472">https://www.liaoxuefeng.com/wiki/1252599548343744/1255943750561472</a></li>
+<li><a href="https://juejin.cn/post/6854573217244413966">https://juejin.cn/post/6854573217244413966</a></li>
+<li><a href="http://www.cyc2018.xyz/Java/Java%20%E5%B9%B6%E5%8F%91.html">http://www.cyc2018.xyz/Java/Java%20并发.html</a></li>
 </ul>
 ]]></content>
   </entry>
@@ -1276,795 +2065,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Git</title>
-    <url>/2022/05/06/git/</url>
-    <content><![CDATA[<h1 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h1><p>将每一次文件变更的时间，作者，内容都记录下来，并更新版本号。通过记录文件内容的变更，从而<strong>追踪文件的变更</strong>。此外，由于软件开发往往是多人协同作业，那么版本间的同步问题以及开发者间的通信问题都需要通过版本控制来解决，也就是说，版本控制的另一功能是<strong>并行开发</strong>。在开发过程中，首先需要设定开发基线，确定各个配置项的开发初始版本，开发人员再基于开发基线的版本，开发出所需的目标版本，并行开发中的许多错误都可以通过版本控制中分支与合并的方法来解决。</p>
-<h1 id="集中式版本控制系统"><a href="#集中式版本控制系统" class="headerlink" title="集中式版本控制系统"></a>集中式版本控制系统</h1><p>集中式版本控制系统（Centralized Version Control Systems），简称 CVCS。项目的历史记录均被保存在单一位置，<strong>有丢失风险</strong>，且<strong>必须联网</strong>才能工作。</p>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系统（Distributed Version Control System），简称 DVCS。客户端不仅提取最新版本的文件快照，还把代码仓库完整的克隆备份下来，<strong>不存在丢失风险</strong>，<strong>不需要联网</strong>就能工作。DVCS通过一个中心服务器来方便的交换修改。没有中心服务器时DVCS也能工作，但只是不方便交换修改而已。Github就是一个中心服务器。</p>
-<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>Git属于DVCS，Git与其他版本控制系统的主要区别在于对待数据的方式。大多数版本控制系统都是以文件变更列表的方式存储信息，这类系统将它们保存的信息看作一组基本文件和每个文件随时间逐步累积的差异，而Git采用直接记录快照的方式，而非差异比较。每次提交更新或者保存项目状态时，Git对当时的全部文件制作一个快照并保存这个快照的索引。为了高效，如果文件没有修改，Git不再重新存储该文件，而是保留一个链接指向之前存储的文件。Git仓库和Github中心服务器之间的传输是通过SSH加密的。</p>
-<h1 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h1><p>新建或克隆一个仓库后，当前目录为工作区（Working area），开发人员在工作区修改文件内容。工作区下有一个隐藏目录（<code>.git</code> directory）为Git仓库，Git仓库中存储有所有分支信息，使用一个<code>HEAD</code>指针指向当前分支。暂存区（Staging area）用于暂存修改后的文件快照，暂存区和Git仓库组成Git版本库。</p>
-<img src="工作流图.jpg" alt="工作流图" style="zoom:100%;" />
-
-<h1 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h1><ul>
-<li><p>每个提交通过指针连接成一条时间线。</p>
-</li>
-<li><p>创建仓库时，<code>master</code>指针指向主分支，<code>HEAD</code>指针始终指向当前分支，当前分支可能是主分支也可能是新建的分支。</p>
-</li>
-<li><p>新建分支就是新建一个指针指向时间线的最后一个节点。</p>
-</li>
-<li><p>切换分支就是让<code>HEAD</code>指针指向新分支，表示新分支成为当前分支。</p>
-</li>
-<li><p>每次提交只会让当前分支指针向后移动，而其他分支指针不会移动。</p>
-</li>
-<li><p>当新建分支开发完毕后，就合并到主分支上，合并分支只需要改变指针即可。</p>
-</li>
-</ul>
-<img src="分支.jpg" alt="分支" style="zoom:100%;" />
-
-<h1 id="命令速查表"><a href="#命令速查表" class="headerlink" title="命令速查表"></a>命令速查表</h1><p><a href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf">http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf</a></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><p><a href="https://www.liaoxuefeng.com/wiki/896043488029600">https://www.liaoxuefeng.com/wiki/896043488029600</a></p>
-</li>
-<li><p><a href="http://www.cyc2018.xyz/%E5%85%B6%E5%AE%83/%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5/Git.html">http://www.cyc2018.xyz/其他/编码实践/Git.html</a></p>
-</li>
-<li><p><a href="https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro">https://snailclimb.gitee.io/javaguide/#/./docs/tools/git/git-intro</a></p>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Java Concurrency</title>
-    <url>/2022/06/17/java-concurrency/</url>
-    <content><![CDATA[<h1 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h1><h2 id="1-1-进程与线程"><a href="#1-1-进程与线程" class="headerlink" title="1.1 进程与线程"></a>1.1 进程与线程</h2><p>现代操作系统（Windows、macOS、Linux）执行多任务实际就是让CPU对多个任务<strong>轮流交替执行</strong>，通常任务数量远远多于CPU的核数。</p>
-<ul>
-<li>在计算机中，一个任务称为一个进程（Process），某些进程内部还需要同时执行多个子任务，这些子任务称为线程（Thread）。</li>
-<li>对于Java程序来说，执行多任务是指<strong>多线程并发执行</strong>。</li>
-<li>进程和线程存在以下区别：<ul>
-<li>进程和线程是包含关系，一个进程有一个或多个线程，线程是操作系统调度的最小单元；</li>
-<li>创建进程的开销比创建线程大；</li>
-<li>进程间通信比线程间通信要慢，这是因为线程间通信就是读写同一个变量，速度很快；</li>
-<li>进程间不会相互干扰，一个进程崩溃不会影响其他进程，但是任何一个线程的崩溃就会导致整个进程崩溃；</li>
-<li>多线程编程的复杂度比多进程更高。</li>
-</ul>
-</li>
-</ul>
-<h2 id="1-2-上下文切换"><a href="#1-2-上下文切换" class="headerlink" title="1.2 上下文切换"></a>1.2 上下文切换</h2><p>CPU会给每个线程分配时间片，因此，即使是单核CPU也支持多线程并发执行代码。</p>
-<ul>
-<li>当前线程执行一个时间片之后会切换到下一个任务，任务切换前后需要保存上一个任务的状态并加载下一个任务的状态，这种任务从保存到再加载的过程就是一次上下文切换。</li>
-<li>由于上下文切换存在开销，因此：<ul>
-<li>当上下文切换过于频繁时，并发执行会比串行执行更慢；</li>
-<li>原本设置为并发执行的程序在受限于资源而串行执行时，会比直接串行执行更慢；</li>
-<li>需要根据实际情况来调整程序的并发程度。</li>
-</ul>
-</li>
-</ul>
-<h2 id="1-3-并发模型"><a href="#1-3-并发模型" class="headerlink" title="1.3 并发模型"></a>1.3 并发模型</h2><ul>
-<li><p>并发编程需要关注两个关键问题：</p>
-<ul>
-<li>线程之间如何通信，指线程之间交换信息的机制；</li>
-<li>线程之间如何同步，指控制线程操作发生相对顺序的机制。</li>
-</ul>
-</li>
-<li><p>线程间的通信有两种方式：</p>
-<ul>
-<li>消息传递，隐式的线程同步；</li>
-<li>共享内存，显示的线程同步。</li>
-</ul>
-</li>
-<li><p>Java并发采用的是共享内存模型，由Java内存模型（JMM）控制线程间的通信。</p>
-</li>
-<li><p>线程间的共享变量（实例域、静态域和数组元素）存储在主内存中，线程自身有一个私有的本地内存（缓存、写缓冲区、寄存器等）。</p>
-</li>
-<li><p>JMM控制下的线程间通信就是通过主内存与线程的本地内存之间的交互完成。</p>
-</li>
-<li><p>JMM屏蔽了不同处理器内存模型的差异，它在不同的处理器平台之上为Java程序员呈现了一个一致的内存模型。</p>
-</li>
-</ul>
-<h1 id="2、底层原理"><a href="#2、底层原理" class="headerlink" title="2、底层原理"></a>2、底层原理</h1><h2 id="2-1-volatile和可见性"><a href="#2-1-volatile和可见性" class="headerlink" title="2.1 volatile和可见性"></a>2.1 volatile和可见性</h2><p>Java程序使用<code>volatile</code>关键字来保证可见性。</p>
-<ul>
-<li><p><code>volatile</code>保证了多线程共享变量的<strong>可见性</strong>：</p>
-<ul>
-<li>线程每次修改变量后，立即回写到主内存当中；</li>
-<li>线程每次访问该变量时总是获取主内存中的最新值。</li>
-</ul>
-</li>
-<li><p><code>volatile</code>写操作比读操作的开销更大，这是因为执行时的屏障开销有所不同。</p>
-</li>
-<li><p><code>volatile</code>不会引起上下文切换和调度，使用成本低。</p>
-</li>
-</ul>
-<h2 id="2-2-原子操作和原子性"><a href="#2-2-原子操作和原子性" class="headerlink" title="2.2 原子操作和原子性"></a>2.2 原子操作和原子性</h2><p>Java程序通过循环CAS和锁来实保证原子性。</p>
-<ul>
-<li><p>CAS指：</p>
-<ul>
-<li><p>当类的当前值是<code>prev</code>时，更新为<code>next</code>，并返回<code>true</code>；</p>
-</li>
-<li><p>当类的当前值不是<code>prev</code>时，返回<code>false</code>。</p>
-</li>
-</ul>
-</li>
-<li><p>通过循环CAS实现原子操作存在以下问题：</p>
-<ul>
-<li>ABA问题，解决思路是使用版本号；</li>
-<li>循环时间长、开销大；</li>
-<li>只能保证一个共享变量的原子操作，解决思路是将多个共享变量合并成一个共享变量。</li>
-</ul>
-</li>
-<li><p>除了偏向锁，JVM实现锁的方式都用了循环CAS。</p>
-</li>
-<li><p>JVM规范规定除了<code>long</code>和<code>double</code>以外的数据类型的<strong>单条赋值操作</strong>均为原子操作（即为不可中断的操作），满足原子性。</p>
-</li>
-<li><p>自增自减这样的复合操作不是原子操作，不具有原子性。</p>
-</li>
-</ul>
-<h2 id="2-3-synchronized锁"><a href="#2-3-synchronized锁" class="headerlink" title="2.3 synchronized锁"></a>2.3 synchronized锁</h2><p>Java程序使用<code>synchronized</code>关键字进行加锁。</p>
-<ul>
-<li><p><code>synchronized</code>有三种加锁方式：</p>
-<ul>
-<li><p>对于普通方法，锁是当前实例对象<code>this</code>；</p>
-</li>
-<li><p>对于静态方法，锁是当前类的Class对象；</p>
-</li>
-<li><p>对于同步代码块，锁是<code>synchronized</code>括号里配置的对象。</p>
-</li>
-</ul>
-</li>
-<li><p>在使用<code>synchronized</code>时，获取到的是哪个锁非常重要，这关系到代码逻辑是否正确以及执行是否高效。</p>
-</li>
-<li><p>无论<code>synchronized</code>代码块中是否抛出异常，都会在<code>synchronized</code>结束处正确释放锁。</p>
-</li>
-<li><p><code>synchronized</code>获取的锁是可重入的锁（能被同一个线程反复获取的锁），因此每次加锁和解锁时，需要记录这是第几次加锁和解锁，直到记录变为第0次时才会真正释放锁。</p>
-</li>
-<li><p>由于<code>synchronized</code>代码块无法并发执行，且加锁和解锁也需要消耗一定的时间，故<code>synchronized</code>会降低程序的执行效率。</p>
-</li>
-<li><p><code>synchronized</code>是JVM实现的，不可中断，非公平。</p>
-</li>
-</ul>
-<h2 id="2-4-锁升级和对比"><a href="#2-4-锁升级和对比" class="headerlink" title="2.4 锁升级和对比"></a>2.4 锁升级和对比</h2><p>JVM通过引入偏向锁和轻量级锁来对<code>synchronized</code>进行优化，降低了获得锁和释放锁带来的性能消耗，此时，锁一共有四种状态：无锁、偏向锁、轻量级锁和重量级锁。</p>
-<img src="锁升级.png" alt="锁升级" style="zoom:100%;" />
-
-<ul>
-<li> 为了提高获得锁和释放锁的效率，锁可以升级但不能降级。</li>
-<li>在大多数情况下，锁不存在多线程竞争，即总是由同一个线程多次获取，因此引入偏向锁：<ul>
-<li>加锁和解锁不需要额外的消耗，与执行非同步代码相比，性能差距很小；</li>
-<li>存在锁竞争时，会带来额外的锁撤销的消耗；</li>
-<li>适用于只有一个线程获取锁的场景。</li>
-</ul>
-</li>
-<li>存在多个线程竞争偏向锁时，锁会升级为轻量级锁：<ul>
-<li>竞争线程不会阻塞，提高了程序的响应速度；</li>
-<li>自旋会消耗CPU，要避免无用的自旋；</li>
-<li>适用于追求响应速度的场景。</li>
-</ul>
-</li>
-<li>自旋获取轻量级锁失败时，锁就会膨胀为重量级锁：<ul>
-<li>不适用自旋，不消耗CPU；</li>
-<li>线程阻塞，响应时间缓慢；</li>
-<li>适用于追求吞吐量的场景。</li>
-</ul>
-</li>
-<li>偏向锁在Java 6和Java 7里是默认启用的，如果确认锁通常情况下处理竞争状态，可以关闭偏向锁，偏向锁关闭后，程序默认会进入轻量级锁状态。</li>
-</ul>
-<h2 id="2-5-final"><a href="#2-5-final" class="headerlink" title="2.5 final"></a>2.5 final</h2><ul>
-<li><p><code>final</code>域与普通域的区别在于：</p>
-<ul>
-<li><p>写<code>final</code>域时，只有在对象的<code>final</code>域已经被正确初始化过了之后，对象引用才会为任何线程可见；</p>
-</li>
-<li><p>读<code>final</code>域时，一定会确保先读包含这个<code>final</code>域的对象的引用，再读该对象的<code>final</code>域；</p>
-</li>
-<li><p>在构造函数返回前，被构造对象的引用不能为其他线程所见，即<code>this</code>引用不能溢出。</p>
-</li>
-</ul>
-</li>
-<li><p>只要对象是正确构造的（<code>this</code>引用没有溢出），那么不需要使用同步（<code>volatile</code>或者锁）就可以确保任意线程都能看到这个<code>final</code>域在构造函数中被初始化之后的值。</p>
-</li>
-</ul>
-<h1 id="3、线程基础"><a href="#3、线程基础" class="headerlink" title="3、线程基础"></a>3、线程基础</h1><h2 id="3-1-启动新线程"><a href="#3-1-启动新线程" class="headerlink" title="3.1 启动新线程"></a>3.1 启动新线程</h2><ul>
-<li><p>一个Java程序实际上是一个JVM进程，JVM进程用一个主线程来执行<code>main</code>方法，除此之外，JVM还有负责垃圾回收的其他线程运行。</p>
-</li>
-<li><p>在<code>main</code>方法内部，程序员通过编写代码又可以启动其他新线程，启动新线程有以下三种方式：</p>
-<ul>
-<li><p>泛化<code>Thread</code>类；</p>
-</li>
-<li><p>实现<code>Runnable</code>接口；</p>
-</li>
-<li><p>直接使用lambda表达式。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        t1.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">MyRunnable</span>());</span><br><span class="line">        t2.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;...&#125;);</span><br><span class="line">        t3.start ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<h2 id="3-2-线程调度"><a href="#3-2-线程调度" class="headerlink" title="3.2 线程调度"></a>3.2 线程调度</h2><ul>
-<li><p>现代操作系统基本采用时分的形式调度运行的线程。</p>
-</li>
-<li><p>如何调度线程完全由操作系统决定，程序自身无法决定线程间的执行顺序，但可以通过<code>Thread.setPriority</code>方法来设定线程的优先级。</p>
-</li>
-<li><p>线程优先级就是决定线程需要多或者少分配一些处理器资源的线程属性。</p>
-</li>
-<li><p>优先级高的线程会被操作系统调度的更加频繁，但不能确保优先级高的线程一定会先执行。</p>
-</li>
-<li><p>针对频繁阻塞（休眠或者I/O操作）的线程需要设置较高优先级，而偏重计算（需要较多CPU时间）的线程则设置较低优先级，确保线程不会被独占。</p>
-</li>
-<li><p>在不同的JVM以及操作系统上，线程规划会存在差异，有的操作系统甚至会忽略对线程优先级的设定，因此，<strong>程序正确性不能依赖线程的优先级高低。</strong></p>
-</li>
-</ul>
-<h2 id="3-3-线程的状态"><a href="#3-3-线程的状态" class="headerlink" title="3.3 线程的状态"></a>3.3 线程的状态</h2><ul>
-<li><p>New：新创建的线程，尚未调用<code>start</code>方法；</p>
-</li>
-<li><p>Runnable：运行中的线程，正在执行<code>run</code>方法中的代码；</p>
-</li>
-<li><p>Waiting：运行中的线程，但因为某些操作而需要等待其他线程的通知才能返回到Runnable；</p>
-</li>
-<li><p>Blocked：运行中的线程，但因为某些操作（调用同步方法但是没有获得锁）被阻塞而挂起；</p>
-<ul>
-<li><p>线程阻塞在<code>synchronized</code>修饰的同步区才会进入Blocked；</p>
-</li>
-<li><p>线程阻塞在JUC中<code>Lock</code>接口会进入Waiting。</p>
-</li>
-</ul>
-</li>
-<li><p>Timed Waiting：运行中的线程，但可以在指定的时间内自行返回到Runnable；</p>
-</li>
-<li><p>Terminated：已终止的线程。</p>
-</li>
-</ul>
-<img src="线程状态转移.png" alt="线程状态转移" style="zoom:100%;" />
-
-<h2 id="3-4-线程的行为"><a href="#3-4-线程的行为" class="headerlink" title="3.4 线程的行为"></a>3.4 线程的行为</h2><ul>
-<li><p><code>Thread.start()</code></p>
-<ul>
-<li><p>调用<code>start</code>方法后，新线程启动；</p>
-</li>
-<li><p>启动一个线程之前最后设置该线程的名称，便于分析排查；</p>
-</li>
-<li><p>一个线程对象只能调用一次<code>start</code>方法。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.run()</code></p>
-<ul>
-<li><p>在新线程启动后会立即执行<code>run</code>方法；</p>
-</li>
-<li><p>直接调用<code>run</code>方法并不会执行新线程，而是在主线程中执行<code>run</code>方法；</p>
-</li>
-<li><p><code>run</code>方法正常执行完毕或者因未捕获的异常而终止后该线程都会进入Terminated。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.yield()</code></p>
-<ul>
-<li><p>调用<code>yield</code>方法声明了当前线程已经完成了生命周期中最重要的部分，可以切换给其它线程来执行；</p>
-</li>
-<li><p>可以切换给其它线程只是对线程调度器的一个建议，而且也只是建议具有相同优先级的其它线程可以运行。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.join()</code></p>
-<ul>
-<li><p>线程调用<code>join</code>方法后，其他线程都进入Waiting，直到当前线程进入Terminated；</p>
-</li>
-<li><p>处于Terminated的的线程调用<code>join</code>方法时会立即返回。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.interrupt()</code></p>
-<ul>
-<li><p>对目标线程调用<code>interrupt</code>方法可以向目标线程发出中断请求；</p>
-</li>
-<li><p>目标线程是否能够立即响应该中断请求，取决于目标线程的<code>run</code>方法中的具体设置；</p>
-</li>
-<li><p>目标线程的<code>run</code>方法可以通过检测<code>isInterrupted</code>方法是否返回<code>true</code>来中断自身；</p>
-</li>
-<li><p>处于Terminated的的线程调用<code>isInterrupted</code>方法会返回<code>fasle</code>。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.sleep()</code></p>
-<ul>
-<li><p><code>sleep</code>方法是<code>Thread</code>的静态方法；</p>
-</li>
-<li><p><code>sleep</code>方法不会释放锁，即便在非同步区也可以直接调用。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.setPriority()</code></p>
-<ul>
-<li><p>调用<code>setPriority(int)</code>方法可以设定线程的优先级；</p>
-</li>
-<li><p>优先级的范围是1~10，默认是5。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.stop()</code></p>
-<ul>
-<li><p>线程调用<code>stop</code>方法后会进入Terminated；</p>
-</li>
-<li><p>不建议使用<code>stop</code>方法，该方法在调用后不会释放已经占有的资源，容易引发死锁；</p>
-</li>
-<li><p>除了<code>stop</code>方法，还有<code>suspend</code>方法、<code>resume</code>方法都是已经过期的方法。</p>
-</li>
-</ul>
-</li>
-<li><p><code>Thread.setDaemon()</code></p>
-<ul>
-<li><p>在调用<code>start</code>方法之前执行<code>setDaemon (true)</code>可以将线程设置为守护线程；</p>
-</li>
-<li><p>守护线程指为其他线程服务的线程，对于需要无限循环运行（不终止）的线程应设置为守护线程；</p>
-</li>
-<li><p>在JVM中，所有非守护线程都执行完毕后，JVM会自动退出，而不关心守护线程是否结束；</p>
-</li>
-<li><p>守护线程不能持有任何需要关闭的资源（例如打开文件），也不能通过<code>finally</code>块来执行任何逻辑。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="3-5-死锁的发生及预防"><a href="#3-5-死锁的发生及预防" class="headerlink" title="3.5 死锁的发生及预防"></a>3.5 死锁的发生及预防</h2><ul>
-<li>死锁发生的四个条件：<ul>
-<li>互斥：每一时刻仅有一个线程能访问共享数据或共享资源；</li>
-<li>上锁及等待：每个线程都对其他线程需要的资源上锁并等待其他线程释放锁；</li>
-<li>无抢先机制；线程无法抢夺其他线程已经上锁的资源；</li>
-<li>循环等待：多个线程间循环等待其他线程释放锁。</li>
-</ul>
-</li>
-<li><strong>死锁一旦发生之后，没有任何机制能解除死锁，只能强制结束JVM进程，因此，只能通过破坏死锁发生的条件来预防</strong>。</li>
-<li>预防死锁的四个方式：<ul>
-<li>使用允许同时使用的资源，或者增加资源数量，获取资源前检查是否可用等；</li>
-<li>遇到资源不可用时，就释放已经获取的资源重新来过，但这很可能会导致线程饥饿和活锁问题；</li>
-<li>满足抢先机制；</li>
-<li>所有线程都以同一种资源获取次序来获取资源。</li>
-</ul>
-</li>
-<li>限定资源：并发环境中有着固定尺寸或数量的资源，例如数据库连接和固定尺寸读/写缓存等。</li>
-<li>线程饥饿：线程在很长时间内无法抢到时间片去执行就会“挨饿”。</li>
-<li>活锁：线程因无法获取全部资源而选择释放已经获取的资源，并等待能够获取全部资源从而执行，执行次序一致的线程，每个都想要起步，但发现其他线程已经在“路上”，以致很长时间甚至永远都无法启动。</li>
-</ul>
-<h1 id="4、线程同步"><a href="#4、线程同步" class="headerlink" title="4、线程同步"></a>4、线程同步</h1><p>多个线程同时读写可变的共享变量时，需要通过线程同步来实现线程间可靠的通信。</p>
-<p>正确地使用同步可以保证<strong>没有任何线程会看到数据处于不一致的状态中（原子性），并且进入同步的每个线程都能看到由同一个锁保护的之前的所有修改效果（可见性）。</strong></p>
-<h2 id="4-1-锁和临界区"><a href="#4-1-锁和临界区" class="headerlink" title="4.1 锁和临界区"></a>4.1 锁和临界区</h2><ul>
-<li><p>对于JVM规范定义的<strong>单个原子操作</strong>，不需要加锁，再通过<code>volatile</code>关键字来解决可见性问题后，即可实现同步。</p>
-</li>
-<li><p>对于单行非原子操作和多行原子操作（均无法保证原子性），代码原子性和数据可见性是通过加锁和解锁实现的。</p>
-</li>
-<li><p>加锁和解锁之间的代码块称为临界区（Critical Section），任何时候临界区最多只有一个线程能够执行。</p>
-</li>
-<li><p>线程获取锁时会把线程对应的本地内存中的共享变量置为无效，使得临界区代码必须从主内存中读取共享变量。</p>
-</li>
-<li><p>线程释放锁时会把线程中对应的本地内存中的共享变量刷新到主内存中。</p>
-</li>
-</ul>
-<h2 id="4-2-等待-通知机制"><a href="#4-2-等待-通知机制" class="headerlink" title="4.2 等待/通知机制"></a>4.2 等待/通知机制</h2><p>Java程序使用<code>synchronized</code>解决多线程竞争问题，使用<code>wait</code>、<code>notify</code>和<code>notifyAll</code>解决多线程协调问题。</p>
-<ul>
-<li><p><code>wait</code>方法不是一个普通的Java方法，而是定义在<code>Object</code>类的一个<code>native</code>方法，也就是由JVM的C代码实现的。</p>
-</li>
-<li><p><code>wait</code>方法调用时，会<strong>释放</strong>线程获得的锁，<code>wait</code>方法返回后，线程又会重新试图获得锁，因此必须在<code>synchronized</code>块中才能调用<code>wait</code>方法。</p>
-</li>
-<li><p>调用<code>wait</code>方法后，线程进入Waiting状态，但<code>wait</code>方法不会返回，直到将来某个时刻，线程从等待状态被其他线程唤醒并唤醒线程释放锁后，<code>wait</code>方法才会返回，然后继续执行下一条语句。</p>
-</li>
-<li><p>当某个线程调用锁对象的<code>wait</code>方法后，需要其他线程调用相同的锁对象的<code>notify</code>方法，该<code>wait</code>方法才能返回，因此必须在<code>synchronized</code>块中才能调用<code>notify</code>方法。</p>
-</li>
-<li><p><code>notify</code>和<code>notifyAll</code>的区别在于：<code>notify</code>只随机唤醒一个等待线程，而<code>notifyAll</code>会唤醒全部由相同锁对象调用<code>wait</code>而等待的线程，故<code>notifyAll</code>更安全。</p>
-</li>
-<li><p>多个线程被唤醒后，只有一个线程能够重新获得锁并继续执行，而其他线程将继续等待。</p>
-</li>
-</ul>
-<h2 id="4-3-线程安全级别"><a href="#4-3-线程安全级别" class="headerlink" title="4.3 线程安全级别"></a>4.3 线程安全级别</h2><p>“线程安全”（thread-safe）代表是否允许多线程正确同步，没有特殊说明的类默认不是thread-safe的，但<code>java.lang.StringBuffer</code>、不可变类以及只提供静态方法而无成员变量的类都是线程安全的。</p>
-<p>线程安全并不是要么全有要么全无的属性，而是具有以下多种级别：</p>
-<ul>
-<li>不可变的（immutable）：这个类是不可变的，不需要外部同步。</li>
-<li>无条件的线程安全（unconditionally thread-safe）：这个类是可变的，但是这个类有着足够的内部同步，不需要任何外部同步即可并发使用。</li>
-<li>有条件的线程安全（conditionally thread-safe）：这个类是可变的，有部分方法需要外部同步，并需要在文档中指明。</li>
-<li>非线程安全（not thread-safe）：这个类是可变的，需要外部同步来包围这个类的每个方法调用。</li>
-<li>线程对立的（thread-hostile）：这个类是可变的，并且无法安全地被多线程并发使用，这种类要么需要进行修正，要么标注为弃用。</li>
-</ul>
-<h2 id="4-4-线程状态传递"><a href="#4-4-线程状态传递" class="headerlink" title="4.4 线程状态传递"></a>4.4 线程状态传递</h2><p>在一个线程中，横跨若干方法调用，需要传递的对象，称之为上下文（Context），Context是一种状态，可以是用户身份、任务信息等。Java标准库提供了<code>ThreadLocal</code>用于在一个线程中传递同一个Context。</p>
-<ul>
-<li><p>ThreadLocal表示线程的“局部变量”。</p>
-</li>
-<li><p><code>ThreadLocal</code>实例通常是静态变量。</p>
-</li>
-<li><p>通过<code>ThreadLocal</code>的<code>set</code>方法可以将需要的Context变量关联到<code>ThreadLocal</code>实例当中，通过<code>remove</code>方法可以将Context变量从<code>ThreadLocal</code>实例中移除。</p>
-</li>
-<li><p>关联到<code>ThreadLocal</code>中的Context变量在移除之前，所有方法都可以通过<code>ThreadLocal</code>的<code>get</code>方法随时获取到<code>Context</code>变量。</p>
-</li>
-<li><p>可以把<code>ThreadLocal</code>看成一个全局<code>Map&lt;Thread, Object&gt;</code>，每个线程获取<code>ThreadLocal</code>中的Context变量时，总是使用Thread自身作为<code>key</code>。</p>
-</li>
-<li><p><code>ThreadLocal</code>相当于给每个线程都开辟了一个独立的存储空间，各个线程的<code>ThreadLocal</code>关联的Context变量互不干扰。</p>
-</li>
-<li><p><code>ThreadLocal</code>一定要在<code>finally</code>块中清除Context变量，否则该Context变量所关联的线程在执行下一个任务时，会把上一次的状态带进去。</p>
-</li>
-</ul>
-<h1 id="5、高效并发（JUC）"><a href="#5、高效并发（JUC）" class="headerlink" title="5、高效并发（JUC）"></a>5、高效并发（JUC）</h1><p>在Java 5中引入了<code>java.util.concurrent</code>包，该包提供了一系列底层锁、线程安全的并发集合、原子操作的封装类以及同步器来实现高效的并发。</p>
-<h2 id="5-1-并发锁"><a href="#5-1-并发锁" class="headerlink" title="5.1 并发锁"></a>5.1 并发锁</h2><h3 id="5-1-1-Lock"><a href="#5-1-1-Lock" class="headerlink" title="5.1.1 Lock"></a>5.1.1 Lock</h3><ul>
-<li><p><code>Lock</code>接口提供了与<code>synchronized</code>关键字类似的同步功能。</p>
-</li>
-<li><p>不同于<code>synchronized</code>只需隐式获取释放锁，<code>Lock</code>接口需要显示地获取和释放锁。</p>
-</li>
-<li><p>虽然缺少了一些便捷性，但<code>Lock</code>接口拥有了锁获取和释放的可操作性、可中断的获取锁以及超时获取锁等多种<code>synchronized</code>不具备的同步特性。</p>
-</li>
-<li><p>不要在<code>try</code>块中获取锁，否则如果在获取锁时发生了异常，异常抛出时也会导致锁无故释放。</p>
-</li>
-<li><p>在<code>finally</code>块中释放锁，保证在获取到锁之后，最终能够被释放。</p>
-</li>
-<li><p><code>Lock</code>接口的实现基本都是聚合了一个同步器的子类来完成线程访问控制。</p>
-</li>
-</ul>
-<h3 id="5-1-2-ReentrantLock"><a href="#5-1-2-ReentrantLock" class="headerlink" title="5.1.2 ReentrantLock"></a>5.1.2 ReentrantLock</h3><p><code>synchronized</code>关键字加的锁很重，且没有额外的尝试机制，<code>ReentrantLock</code>类可用于代替<code>synchronized</code>加锁。</p>
-<p><code>ReentrantLock</code>与<code>synchronized</code>之间的区别在于：</p>
-<ul>
-<li><p><code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去。</p>
-</li>
-<li><p><strong><code>ReentrantLock</code>需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
-</li>
-<li><p><code>ReentrantLock</code>比直接使用<code>synchronized</code>更安全，线程在<code>tryLock</code>失败时不会导致死锁。</p>
-</li>
-<li><p><code>ReentrantLock</code>是JDK实现的，可中断，默认是非公平的，也可以是公平的。</p>
-</li>
-</ul>
-<h3 id="5-1-3-ReadWriteLock"><a href="#5-1-3-ReadWriteLock" class="headerlink" title="5.1.3 ReadWriteLock"></a>5.1.3 ReadWriteLock</h3><ul>
-<li><p><code>ReentrantLock</code>保证任何时候只有一个线程可以执行临界区代码，与<code>ReentrantLock</code>相比，<code>ReadWriteLock</code>允许多个读线程同时执行临界区代码，但不允许读线程和写线程同时执行。</p>
-</li>
-<li><p>从<code>ReadWriteLock</code>对象可以分别获取读锁和写锁（<code>Lock</code>类型），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>ReadWriteLock</code>依旧是可重入锁。</p>
-</li>
-<li><p><strong><code>ReadWriteLock</code>同样需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
-</li>
-<li><p><code>ReadWriteLock</code>类适用于读多写少的场景，可以提高读取效率。</p>
-</li>
-</ul>
-<h3 id="5-1-4-StampedLock"><a href="#5-1-4-StampedLock" class="headerlink" title="5.1.4 StampedLock"></a>5.1.4 StampedLock</h3><ul>
-<li><p>与<code>ReadWriteLock</code>相比，<code>StampedLock</code>允许在读线程获取读锁并执行的过程中，写线程获取写锁并执行。</p>
-</li>
-<li><p>从<code>StampedLock</code>对象可以分别获取读锁和写锁（<code>long</code>类型，其实是版本号），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>StampedLock</code>是不可重入锁。</p>
-</li>
-<li><p><code>ReadWriteLock</code>提供的读锁是悲观锁，<code>StampedLock</code>提供的读锁是乐观锁，乐观锁的并发效率更高，但一旦有小概率的写入导致读取的数据不一致，检测出来后需要再读一遍。</p>
-</li>
-<li><p><code>StampedLock</code>加写锁的操作与<code>ReadWriteLock</code>是一致的，但加读锁时，首先获取读锁（版本号）并直接读取需要的值（读取时不保证原子性），接着通过<code>validate</code>方法验证版本号，验证失败时从<code>StampedLock</code>对象获取悲观读锁，接着重新读取（加锁保证原子性）。</p>
-</li>
-<li><p><strong><code>StampedLock</code>的写锁和悲观读锁需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
-</li>
-<li><p><code>StampedLock</code>通过将读锁细分为乐观锁和悲观锁，进一步提升并发效率。</p>
-</li>
-</ul>
-<h2 id="5-2-同步器"><a href="#5-2-同步器" class="headerlink" title="5.2 同步器"></a>5.2 同步器</h2><p>锁是面向使用者的，它定义了使用者与锁交互的接口，隐藏了实现细节；同步器是面向锁的实现者的，它简化了锁的实现方式，屏蔽了同步状态管理、线程的排列、等待与唤醒等底层操作。</p>
-<p>锁和同步器很好地隔离了使用者和实现者所关注的领域，可以实现更加灵活的线程同步。</p>
-<h3 id="5-2-1-AQS"><a href="#5-2-1-AQS" class="headerlink" title="5.2.1 AQS"></a>5.2.1 AQS</h3><ul>
-<li><p><code>AbstractQueuedSynchronizer</code>是同步器框架，本质是一个抽象同步队列，简称AQS。</p>
-</li>
-<li><p>AQS使用了一个<code>int</code>型的<code>volatile</code>变量<code>state</code>来维护同步状态，通过内置的FIFO双向队列来完成资源获取线程的排队工作。</p>
-</li>
-<li><p>AQS实现了同步状态的原子性管理、线程的阻塞和解除阻塞并提供阻塞线程的存储队列。</p>
-</li>
-<li><p>同步器的设计是基于模板方法模式的，可以通过继承AQS并重写<code>tryAcquire</code>和<code>tryRelease</code>方法来实现自己的同步器。</p>
-</li>
-<li><p>自定义的同步器推荐被定义为同步组件的静态内部类，同步器本身没有实现任何同步接口。</p>
-</li>
-<li><p>同步器可分为独占状态的同步器和共享状态的同步器，共享模式下的同步器还需实现<code>tryAcquireShared</code>和<code>tryReleaseShared</code>方法。</p>
-</li>
-<li><p>使用独占模式同步器的主要类库有可重入锁<code>ReentrantLock</code>以及读写锁<code>ReentrantReadWriteLock</code>中的写锁<code>WriteLock</code>。</p>
-</li>
-<li><p>使用共享模式同步器的主要类库有信号量<code>Semaphore</code>以及倒数栅栏<code>CountDownLatch</code>。</p>
-</li>
-</ul>
-<h3 id="5-2-2-Condition"><a href="#5-2-2-Condition" class="headerlink" title="5.2.2 Condition"></a>5.2.2 Condition</h3><p><code>synchronized</code>可以配合<code>wait</code>和<code>notify</code>来协调线程工作，当用<code>ReentrantLock</code>类代替<code>synchronized</code>时，可以使用<code>Condition</code>类来代替<code>wait</code>和<code>notify</code>。</p>
-<ul>
-<li><p><code>Condition</code>对象由<code>ReentrantLock</code>对象的<code>newCondition</code>方法返回得到。</p>
-</li>
-<li><p><code>Condition</code>类提供<code>await</code>、<code>singal</code>、<code>signalAll</code>方法分别代替<code>wait</code>、<code>notify</code>、<code>notifyAll</code>，方法的原理和行为都是一致的。</p>
-</li>
-<li><p><code>await</code>和<code>tryLock</code>类似的是：在等待指定时间后，如果还没有被<code>singal</code>或<code>signalAll</code>唤醒，可以自己醒来。</p>
-</li>
-<li><p>通过<code>ReentrantLock</code>和<code>Condition</code>可以实现更加灵活的线程同步。</p>
-</li>
-</ul>
-<h3 id="5-2-3-CountDownLatch"><a href="#5-2-3-CountDownLatch" class="headerlink" title="5.2.3 CountDownLatch"></a>5.2.3 CountDownLatch</h3><ul>
-<li><p>通过参数<code>count</code>来新建<code>CountDownLatch</code>实例，<code>count</code>为计数器初始值。</p>
-</li>
-<li><p>每当有一个线程达到同步点（屏障）时，调用<code>CountDownLatch</code>的<code>countDown</code>方法使得计数器减1，调用<code>CountDownLatch</code>的<code>await</code>方法使得该线程进入<code>Blocked</code>状态，当计数器等于0时，所有被挂起的线程才继续执行。</p>
-</li>
-<li><p><code>CountDownLatch</code>在计数器等于0并触发门闩打开后，就不能再次重复使用了，除非新建新的<code>CountDownLatch</code>。</p>
-</li>
-</ul>
-<h3 id="5-2-4-CyclicBarrier"><a href="#5-2-4-CyclicBarrier" class="headerlink" title="5.2.4 CyclicBarrier"></a>5.2.4 CyclicBarrier</h3><ul>
-<li><p>通过参数<code>count</code>和<code>Runnable</code>实现类来新建<code>CyclicBarrier</code>实例，计数器初始值为0，<code>Runnable</code>实现类定义了屏障打开之后要执行的内容。</p>
-</li>
-<li><p>每当有一个线程达到同步点（屏障）时计数器自动加1，调用<code>CyclicBarrier</code>的<code>await</code>方法使得该线程进入Blocked状态，当计数器达到<code>count</code>值时，所有线程才继续执行。</p>
-</li>
-<li><p><code>CyclicBarrier</code>在计数器达到足够数量并打开屏障之后依旧能够再次重复使用。</p>
-</li>
-</ul>
-<h3 id="5-2-5-Semaphore"><a href="#5-2-5-Semaphore" class="headerlink" title="5.2.5 Semaphore"></a>5.2.5 Semaphore</h3><p>通过<code>Semaphore</code>可以实现多副本资源的并发控制。</p>
-<ul>
-<li><p>通过参数<code>permits</code>和<code>fair</code>来新建<code>Semaphore</code>实例，<code>permits</code>代表资源数量，<code>fair</code>代表等待队列是否采用FIFO。</p>
-</li>
-<li><p>每当有一个线程要访问共享资源时，通过<code>Semaphore</code>的<code>acquire</code>方法来获取资源：</p>
-<ul>
-<li>如果信号量的计数器大于1，则意味着有共享资源可以使用，接着令计数器减1，然后该线程获得一份共享资源；</li>
-<li>如果计数器小于1，则线程进入排队队列。</li>
-</ul>
-</li>
-<li><p>每当有线程要释放共享资源时，通过<code>Semaphore</code>的<code>release</code>方法来释放资源，接着令信号量的计数器加1。</p>
-</li>
-</ul>
-<h2 id="5-3-内部同步类"><a href="#5-3-内部同步类" class="headerlink" title="5.3 内部同步类"></a>5.3 内部同步类</h2><h3 id="5-3-1-Concurrent集合"><a href="#5-3-1-Concurrent集合" class="headerlink" title="5.3.1 Concurrent集合"></a>5.3.1 Concurrent集合</h3><ul>
-<li><p><code>java.util.concurrent</code>包提供了<strong>线程安全</strong>的并发集合类，这些并发集合与使用非线程安全的集合类完全相同，但多线程同时读写并发集合是安全的，因此可以大大简化多线程编程。</p>
-</li>
-<li><p>使用这些线程安全的并发集合类时，会重新拷贝整个底层数组，并在拷贝的数组上实现写操作。</p>
-</li>
-<li><p>并发集合在内部自己管理同步，因此在使用并发集合时，不需要在外部将其锁定，这样只会拖累性能。</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">interface</th>
-<th align="center">non-thread-safe</th>
-<th align="center">thread-safe</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>List</code></td>
-<td align="center"><code>ArrayList</code></td>
-<td align="center"><code>CopyOnWriteArrayList</code></td>
-</tr>
-<tr>
-<td align="center"><code>Map</code></td>
-<td align="center"><code>HashMap</code></td>
-<td align="center"><code>ConcurrentHashMap</code></td>
-</tr>
-<tr>
-<td align="center"><code>Set</code></td>
-<td align="center"><code>HashSet</code> / <code>TreeSet</code></td>
-<td align="center"><code>CopyOnWriteArraySet</code></td>
-</tr>
-<tr>
-<td align="center"><code>Queue</code></td>
-<td align="center"><code>ArrayDeque</code> / <code>LinkedList</code></td>
-<td align="center"><code>ArrayBlockingQueue</code> / <code>LinkedBlockingQueue</code></td>
-</tr>
-<tr>
-<td align="center"><code>Deque</code></td>
-<td align="center"><code>ArrayDeque</code> / <code>LinkedList</code></td>
-<td align="center"><code>LinkedBlockingQueue</code></td>
-</tr>
-</tbody></table>
-<h3 id="5-3-2-Atomic类"><a href="#5-3-2-Atomic类" class="headerlink" title="5.3.2 Atomic类"></a>5.3.2 Atomic类</h3><ul>
-<li><p><code>java.util.concurrent.atomic</code>包提供了一组<strong>原子操作</strong>的封装类（<code>Atomic</code>），<code>Atomic</code>类是通过无锁的方式实现线程安全的，主要原理是利用了CAS（Compare and Set）。</p>
-</li>
-<li><p><code>Atomic</code>适用于计数器、累加器等。</p>
-</li>
-</ul>
-<h2 id="5-4-线程池"><a href="#5-4-线程池" class="headerlink" title="5.4 线程池"></a>5.4 线程池</h2><p>为了避免频繁创建和销毁线程，考虑复用一组线程来执行多个任务，而不是每个任务都对应一个新线程。这种能够接收大量任务并进行分发处理的一组线程就是线程池，线程池内部维护了若干个线程，没有任务时，这些线程都处于Waiting状态。</p>
-<h3 id="5-4-1-线程池类"><a href="#5-4-1-线程池类" class="headerlink" title="5.4.1 线程池类"></a>5.4.1 线程池类</h3><p>Java标准库提供了<code>ExecutorService</code>接口表示线程池，<code>ExecutorService</code>接口的常用实现类有：</p>
-<ul>
-<li><p><code>FixedThreadPool</code>：线程数固定的线程池。</p>
-</li>
-<li><p><code>CachedThreadPool</code>：线程数根据任务动态调整的线程池。</p>
-</li>
-<li><p><code>SingleThreadExecutor</code>：仅单线程执行的线程池。</p>
-</li>
-<li><p><code>ThreadPoolExecutor</code>：可以指定动态线程数范围的线程池。</p>
-</li>
-<li><p><code>ScheduledThreadPool</code>：用于执行需要定期反复执行的任务。</p>
-</li>
-</ul>
-<p><strong>线程池中线程的数量并不是越多越好，具体的数量需要评估每个任何的处理时间以及当前计算机的处理器能力和数量。</strong>使用的线程过少，无法发挥处理器的性能；使用的线程过多，将会增加系统的无故开销，起到相反的作用。</p>
-<h3 id="5-4-2-线程池方法"><a href="#5-4-2-线程池方法" class="headerlink" title="5.4.2 线程池方法"></a>5.4.2 线程池方法</h3><p>创建线程池类的方法（静态工厂方法）都被封装到<code>Executors</code>类（静态工具类）中。</p>
-<ul>
-<li><p>线程池的<code>submit</code>方法用于提交要执行的任务，该方法的入参是一个<code>Runnable</code>接口的实现类。</p>
-</li>
-<li><p>线程池的<code>shutdown</code>、<code>shutdownNow</code>方法都可以用于程序结束时关闭线程池，<code>shutdown</code>会等待线程池中正在执行的任务先完成，然后再关闭，<code>shutdownNow</code>会立即停止正在执行的任务。</p>
-</li>
-<li><p><code>awaitTermination</code>方法通常放在<code>shutdown</code>方法后面用来判断固定时间后线程池是否关闭。</p>
-</li>
-<li><p>针对<code>ScheduledThreadPool</code>类线程池，通过<code>schedule</code>方法来提交只执行一次的任务，通过<code>scheduleAtFixedRate</code>或<code>scheduleWithFixedDelay</code>方法来提交需要多次反复执行的任务，这三个方法均可设置任务的延迟，<code>scheduleAtFixedRate</code>和<code>scheduleWithFixedDelay</code>均可设置任务执行次数。</p>
-</li>
-<li><p><code>FixedRate</code>和<code>FixedDelay</code>的区别在于：<code>FixedRate</code>是指任务总是以固定时间间隔触发，不管任务执行多长时间；<code>FixedDelay</code>是指上一次任务执行完毕后，等待固定的时间间隔，再执行下一次任务。</p>
-</li>
-<li><p>在<code>FixedRate</code>模式下，假设每秒触发，如果某次任务执行时间超过1秒，后续任务执行可能会延迟开始，但不会并发执行。</p>
-</li>
-<li><p>如果任务抛出了异常，将禁止后续任务的执行。</p>
-</li>
-</ul>
-<h3 id="5-4-3-任务执行结果"><a href="#5-4-3-任务执行结果" class="headerlink" title="5.4.3 任务执行结果"></a>5.4.3 任务执行结果</h3><p>用线程池执行任务时，提交的任务只需实现<code>Runnable</code>接口即可。与<code>Runnable</code>接口不同的是，<code>Callable</code>接口有返回值并且可以返回指定类型的结果。<strong>向<code>ExecutorService.submit</code>方法传入一个实现了<code>Callable</code>接口的任务时，方法会返回一个<code>Future</code>类型的实例</strong>（代表一个<strong>未来</strong>能获取结果的对象）。</p>
-<ul>
-<li><p>返回的<code>Future</code>类型的泛型与<code>Callable</code>接口的泛型一致，从而达到指定类型的目的；</p>
-</li>
-<li><p><code>Future.get()</code>用于获取指定类型的结果实例<code>result</code>，可能会阻塞，需要等待；</p>
-</li>
-<li><p><code>Future.get(long timeout, TimeUnit unit)</code>只等待指定的时间；</p>
-</li>
-<li><p><code>Future.cancel(boolean mayInterruptIfRunning)</code>用于取消当前任务；</p>
-</li>
-<li><p><code>Future.isDone()</code>用于判断任务是否已完成。</p>
-</li>
-</ul>
-<p><code>Future.get</code>方法和轮询<code>Future.isDone</code>方法都会导致主线程被迫等待，而<code>CompletableFuture</code>做出了改进：</p>
-<ul>
-<li><p><code>CompletableFuture</code>可以<strong>传入</strong>一个实现了<code>Supplier</code>接口的<strong>回调对象</strong>；</p>
-</li>
-<li><p>当异步任务完成或者发生异常时，能够自动调用回调对象的回调方法；</p>
-</li>
-<li><p>当主线程设置好回调之后，不需再关心异步任务的执行；</p>
-</li>
-<li><p>多个<code>CompletableFuture</code>可以串行执行或者并行执行。</p>
-</li>
-</ul>
-<p><code>CompletableFuture</code>类有以下方法用于指定异步处理流程：</p>
-<ul>
-<li><p><code>thenAccept()</code>处理正常结果；</p>
-</li>
-<li><p><code>exceptional()</code>处理异常结果；</p>
-</li>
-<li><p><code>thenApplyAsync()</code>用于异步串行化另一个<code>CompletableFuture</code>；</p>
-</li>
-<li><p><code>anyOf()</code>和<code>allOf()</code>用于并行化多个<code>CompletableFuture</code>。</p>
-</li>
-</ul>
-<h3 id="5-4-4-任务拆解"><a href="#5-4-4-任务拆解" class="headerlink" title="5.4.4 任务拆解"></a>5.4.4 任务拆解</h3><p>Java 7开始引入了<code>Fork/Join</code>线程池：基于“分治”思想将大任务分解成小任务，并行执行。</p>
-<ul>
-<li><p><code>Fork/Join</code>线程池由<code>ForkJoinPool.commonPool()</code>方法创建得到；</p>
-</li>
-<li><p>线程池的<code>invoke</code>方法用于提交要执行的任务；</p>
-</li>
-<li><p>任务类必须继承自<code>RecursiveTask</code>或<code>RecursiveAction</code>类。</p>
-</li>
-</ul>
-<h1 id="6、参考资料"><a href="#6、参考资料" class="headerlink" title="6、参考资料"></a>6、参考资料</h1><ul>
-<li>《Java并发编程的艺术》</li>
-<li>《Effective Java (Third Edition)》</li>
-<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255943750561472">https://www.liaoxuefeng.com/wiki/1252599548343744/1255943750561472</a></li>
-<li><a href="https://juejin.cn/post/6854573217244413966">https://juejin.cn/post/6854573217244413966</a></li>
-<li><a href="http://www.cyc2018.xyz/Java/Java%20%E5%B9%B6%E5%8F%91.html">http://www.cyc2018.xyz/Java/Java%20并发.html</a></li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Java Language</title>
-    <url>/2022/06/17/java-language/</url>
-    <content><![CDATA[<h1 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h1><h2 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h2><p>元注解是Java提供的可以用于定义注解的基本注解。</p>
-<ul>
-<li><p><code>@Target</code></p>
-<ul>
-<li><p>用于告知Java将自定义的注解放在何处，比如类、万法、构造器、变量上等，是一个枚举类型，有如下属性值；</p>
-</li>
-<li><p><code>ElementType.CONSTRUCTOR</code>代表用于描述构造器；</p>
-</li>
-<li><p><code>ElementType.FIELD</code>代表用于描述成员变量、对象、属性（包括<code>enum</code>实例）；</p>
-</li>
-<li><p><code>ElementType.LOCAL_VARIABLE</code>代表用于描述局部变量；</p>
-</li>
-<li><p><code>ElementType.METHOD</code>代表用于描述万法；</p>
-</li>
-<li><p><code>ElementType.PACKAGE</code>代表用于描述包；</p>
-</li>
-<li><p><code>ElementType.PARAMETER</code>代表用于描述参数；</p>
-</li>
-<li><p><code>ElementType.TYPE</code>代表用于描述类、接口（包括注解类型）或<code>enum</code>声明。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@Retention</code></p>
-<ul>
-<li><p>用于说明自定义注解的生命周期，在注解中有三个生命周期，是一个枚举类型，有如下属性值；</p>
-</li>
-<li><p><code>RetentionPolicy.RUNTIME</code> 代表始终不会丢弃，运行期也保留该注解，通常使用这种方式；</p>
-</li>
-<li><p><code>RetentionPolicy.CLASS</code>代表类加载时丢弃，默认使用这种方式；</p>
-</li>
-<li><p><code>RetentionPolicy.SOURCE</code>代表编译阶段丢弃，所以不会写入字节码，<code>＠Override</code>、<code>＠SuppressWarnings</code>都属于这类注解。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@Inherited</code></p>
-<ul>
-<li><p>用于标记被标注的类型是可以被继承的；</p>
-</li>
-<li><p>如果一个使用了<code>＠lnherited</code>修饰的注解类型被用于一个类，则这个注解将继续被用于该类的子类。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@Documented</code></p>
-<ul>
-<li>用于标记是否将信息添加到Java文档当中。</li>
-</ul>
-</li>
-<li><p><code>@interface</code></p>
-<ul>
-<li><p>用于声明一个注解；</p>
-</li>
-<li><p>其中的每一个方法实际上是声明了一个配置参数;</p>
-</li>
-<li><p>方法的名称就是参数的名称，返回类型就是参数的类型;</p>
-</li>
-<li><p>返回值类型只能是基本类型、<code>Class</code>、<code>String</code>、<code>enum</code>。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h2><p>1）声明自定义注解</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy. RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation &#123;</span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）自定义注解的逻辑实现（AOP）</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnotationAspect</span> &#123;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;@annotation(com.example.annotation.MyAnnotation)&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">myAnnotationPointCut</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before(&quot;myAnnotationPointCut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint joinPoint)</span> &#123;</span><br><span class="line">        <span class="type">MethodSignature</span> <span class="variable">methodSignature</span> <span class="operator">=</span> (MethodSignature)joinPoint.getSignature();</span><br><span class="line">        <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> methodSignature.getMethod();</span><br><span class="line">        <span class="type">MyAnnotation</span> <span class="variable">myAnnotation</span> <span class="operator">=</span> method.getAnnotation(MyAnnotation.class);</span><br><span class="line">        System.out.println(<span class="string">&quot;自定义注解 MyAnnotation 起作用了&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;MyAnnotation 的参数为：&quot;</span>);</span><br><span class="line">        System.out.println(myAnnotation.value());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3）使用自定义注解</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationUser</span> &#123;</span><br><span class="line">    <span class="meta">@MyAnnotation(&quot;测试自定义注解的参数&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fun</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4）测试自定义注解</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyAnnotationTests</span> &#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testMyAnnotation</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line">        <span class="type">MyAnnotationUser</span> <span class="variable">myAnnotationUser</span> <span class="operator">=</span> context.getBean(MyAnnotationUser.class);</span><br><span class="line">        myAnnotationUser.fun();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>5）测试结果</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">自定义注解 MyAnnotation 起作用了</span><br><span class="line">MyAnnotation 的参数为：</span><br><span class="line">测试自定义注解的参数</span><br></pre></td></tr></table></figure>
-
-<h1 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h1><p>单元测试（unit test）是为了检验程序的正确性。一个单元可能是单个程序、类、对象、方法等，它是应用程序的最小可测试部件。Java平台使用的测试框架是JUnit，JUnit是白盒测试，知道测试如何完成功能和完成什么样的功能。</p>
-<p>在编写UT时，应当遵循一些规范：</p>
-<ul>
-<li>代码简单易懂，不可能再为测试代码编写测试；</li>
-<li>每个测试都互相独立，不依赖运行顺序；</li>
-<li>注意测试边界条件。</li>
-</ul>
-<p>JUnit提供了以下注解：</p>
-<ul>
-<li><p><code>@Test</code></p>
-<ul>
-<li><p>用于标注测试方法；</p>
-</li>
-<li><p>每次运行一个<code>@Test</code>方法前，JUnit首先创建一个<code>XxxTest</code>实例；</p>
-</li>
-<li><p>每个<code>@Test</code>方法内部的成员变量都是独立的，不能也无法把成员变量的状态从一个<code>@Test</code>方法带到另一个<code>@Test</code>方法。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@Test(expected=Exception.class)</code></p>
-<ul>
-<li><p>指定测试单元期望得到的异常类;；</p>
-</li>
-<li><p>只有执行完成后抛出指定的异常，才测试成功。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@BeforeEach</code>和<code>@AfterEach</code></p>
-<ul>
-<li><p>这两个注解标注的方法会在运行每个<code>@Test</code>方法前后自动运行；</p>
-</li>
-<li><p>用于初始化和清理实例变量，在各个<code>@Test</code>方法中互不影响（是不同的实例）；</p>
-</li>
-<li><p>编写测试前准备、测试后清理的固定代码（称之为Fixture）。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@BeforeAll</code>和<code>@AfterAll</code></p>
-<ul>
-<li><p>这两个注解标注的方法会在运行所有<code>@Test</code>方法前后运行；</p>
-</li>
-<li><p>用于初始化和清理静态变量，也只能标注静态方法；</p>
-</li>
-<li><p>在各个<code>@Test</code>方法中均是唯一实例，会影响各个<code>@Test</code>方法。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@RunWith</code></p>
-<ul>
-<li><p>在JUnit中有很多Runner负责调用测试代码；</p>
-</li>
-<li><p>每个Runner都有特殊功能，应根据需要选择不同的Runner来运行测试代码。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@Transactional</code></p>
-<ul>
-<li>测试完成后就会回滚，不会产生垃圾数据。</li>
-</ul>
-</li>
-<li><p><code>@lgnore</code></p>
-<ul>
-<li>执行测试时将忽略掉此方法；</li>
-<li>如果用于修饰类，则忽略整个类。 </li>
-</ul>
-</li>
-</ul>
-<p>Mockito 框架可以与JUnit结合使用，用于创建和配置Mock对象。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Maven</title>
     <url>/2022/05/07/maven/</url>
     <content><![CDATA[<p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
@@ -2151,6 +2151,477 @@
 
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200">https://www.liaoxuefeng.com/wiki/1252599548343744/1255945359327200</a></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Spring Boot</title>
+    <url>/2022/05/22/spring-boot/</url>
+    <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
+<ul>
+<li>Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置；</li>
+<li>Spring 3.0 引入了基于 Java 的配置，这是一种比XML更加安全的配置方式；</li>
+<li>但在使用Spring的过程中，依旧无法避免基于XML的配置方式。</li>
+</ul>
+<p>Spring Boot是以<strong>简化Spring的配置</strong>为目标而创建的，是约定优先于配置理念下的产物。</p>
+<h1 id="2、使用介绍"><a href="#2、使用介绍" class="headerlink" title="2、使用介绍"></a>2、使用介绍</h1><h2 id="2-1-启动类"><a href="#2-1-启动类" class="headerlink" title="2.1 启动类"></a>2.1 启动类</h2><p>Spring Boot要求<code>main()</code>方法所在的启动类：</p>
+<ul>
+<li><p>必须放到根package下；</p>
+</li>
+<li><p>命名不做要求，但一般是以Application为后缀命名；</p>
+</li>
+<li><p>使用<code>@SpringBootApplication</code>注解标注；</p>
+</li>
+<li><p>可以通过<code>@SpringBootApplication(exclude = &#123;...&#125;)</code>或者<code>@EnableAutoConfiguration(exclude = &#123;...&#125;)</code>来指定禁用的自动配置。</p>
+</li>
+</ul>
+<p><code>@SpringBootApplication</code>等同于以下三个注解的集合：</p>
+<ul>
+<li><p><code>@SpringBootConfiguration</code>：支持在上下文中注册额外的Bean或导入额外的配置类，是Spring的标准的<code>@Configuration</code>的替代，有助于在集成测试中进行配置检测；</p>
+</li>
+<li><p><code>@EnableAutoConfiguration</code>：启用 SpringBoot 的自动装配机制（自动扫描+条件装配），详细介绍见3.1节；</p>
+</li>
+<li><p><code>@ComponentScan</code>：扫描被声明为JavaBean的类。</p>
+</li>
+</ul>
+<h2 id="2-2-默认约定"><a href="#2-2-默认约定" class="headerlink" title="2.2 默认约定"></a>2.2 默认约定</h2><p>1）Spring Boot默认约定采用Maven的目录结构。</p>
+<p>2）Spring Boot默认内置了嵌入式的Web容器，支持四种嵌入式Web容器：Tomcat、Jetty、Undertow、Reactor。</p>
+<p>3）Spring Boot默认约定的配置文件是<code>application.yml</code>：</p>
+<ul>
+<li><p>Spring Boot几乎所有的配置项都可以在这个文件中配置，如果不配置，则使用默认项；</p>
+</li>
+<li><p>文件位于<code>src/main/resources</code>目录下；</p>
+</li>
+<li><p>文件名必须是<code>application</code>而不是其他名称;</p>
+</li>
+<li><p>文件后缀采用<code>.yml</code>（<a href="https://yaml.org/">YAML</a>）或者<code>.properties</code>，后者的优先级更高；</p>
+</li>
+<li><p>层级格式的<code>.yml</code>文件比<code>key=value</code>格式的<code>.properties</code>文件更易读；</p>
+</li>
+<li><p>使用<code>.yml</code>时：</p>
+<ul>
+<li><p>属性名的值和冒号中间必须有空格；</p>
+</li>
+<li><p>大小写敏感；</p>
+</li>
+<li><p>使用空格缩进表示层级关系；</p>
+</li>
+<li><p>缩进时不能使用tab，只能空格；</p>
+</li>
+<li><p>缩进的空格数目不重要，只要相同层级的元素左侧对齐即可；</p>
+</li>
+<li><p><code>#</code>表示注释，从这个字符一直到行尾，都会被解析器忽略。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-3-优先级配置"><a href="#2-3-优先级配置" class="headerlink" title="2.3 优先级配置"></a>2.3 优先级配置</h2><p>Spring Boot提供了一种优先级配置的机制，优先级高的配置会覆盖优先级低的配置。</p>
+<ul>
+<li><p>优先级最高的是命令行参数配置；</p>
+<ul>
+<li><p>命令行参数的优先级之所以被设置为最高，是因为可以方便我们在测试或生产环境中快速地修改配置参数值，而不需要重新打包和部署应用；</p>
+</li>
+<li><p>以<code>--</code>开头的命令行参数会被转化成应用中可以使用的配置参数，如<code>--name = Alex</code> 会设置配置参数<code>name</code> 的值为<code>Alex</code>；</p>
+</li>
+</ul>
+</li>
+<li><p>不同位置的配置文件的优先级从高到低依次为：</p>
+<ul>
+<li><p>项目目录的<code>/config</code>子目录；</p>
+</li>
+<li><p>项目目录；</p>
+</li>
+<li><p><code>src/main/resources/config</code>子目录；</p>
+</li>
+<li><p><code>src/main/resources</code>子目录（默认配置）；</p>
+</li>
+</ul>
+</li>
+<li><p>配置文件的优先级高于应用Java配置类：</p>
+<ul>
+<li><p>任何<code>@Component</code>或<code>@Configuration</code>都能注解<code>@Profile</code>，从而限制加载它的环境；</p>
+</li>
+<li><p>通常的应用部署会包含开发、测试、预发和生产等若干个环境。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Profile(&quot;production&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductionConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-4-读取配置信息"><a href="#2-4-读取配置信息" class="headerlink" title="2.4 读取配置信息"></a>2.4 读取配置信息</h2><p>Spring Boot可以通过以下方式来读取配置信息：</p>
+<ul>
+<li><p><code>@Value(&quot;$&#123;property&#125;&quot;)</code>：适用于只需获取某单一配置项的值的场景；</p>
+</li>
+<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类或者<code>getXXXProperties</code>方法，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
+<ul>
+<li><p>配合<code>@Validated</code>注解可以对参数实现校验功能。</p>
+</li>
+<li><p><code>XXXProperties </code>类配合<code>@Component</code>注解或者<code>getXXXProperties</code>方法配合<code>@Bean </code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
+</li>
+<li><p>如果不使用<code>@Component</code>或则<code>@Bean </code>注解将其声明为Bean，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
+</li>
+</ul>
+</li>
+<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的<code>.properties</code> 文件中的信息（<code>.yml</code>文件不行），同样可以将该类声明为一个JavaBean。</p>
+</li>
+</ul>
+<h2 id="2-5-过滤配置类"><a href="#2-5-过滤配置类" class="headerlink" title="2.5 过滤配置类"></a>2.5 过滤配置类</h2><p>可以通过<code>@Conditional</code>及其派生注解来判断是否过滤候选的配置类，被过滤的配置类不会被SpringBoot 的自动装配机制加载，详细介绍见3.1节</p>
+<table>
+<thead>
+<tr>
+<th align="center"><code>@Conditional</code>派生注解</th>
+<th align="center">判断条件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>@ConditionalOnJava</code></td>
+<td align="center">系统的java版本是否符合要求</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnBean</code></td>
+<td align="center">容器中存在指定Bean</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnMissingBean</code></td>
+<td align="center">容器中不存在指定Bean</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnExpression</code></td>
+<td align="center">满足SpEL表达式指定</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnClass</code></td>
+<td align="center">系统中有指定的类</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnMissingClass</code></td>
+<td align="center">系统中没有指定的类</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnSingleCandidate</code></td>
+<td align="center">容器中只有一个指定的Bean，或者这个Bean是首选Bean</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnProperty</code></td>
+<td align="center">系统中指定的属性是否有指定的值</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnResource</code></td>
+<td align="center">类路径下是否存在指定资源文件</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnWebApplication</code></td>
+<td align="center">当前是web环境</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnNotWebApplication</code></td>
+<td align="center">当前不是web环境</td>
+</tr>
+<tr>
+<td align="center"><code>@ConditionalOnJndi</code></td>
+<td align="center">JNDI存在指定项</td>
+</tr>
+</tbody></table>
+<h1 id="3、源码学习"><a href="#3、源码学习" class="headerlink" title="3、源码学习"></a>3、源码学习</h1><p>SpringBoot具有以下子modules：</p>
+<ul>
+<li>spring-boot：核心工程。</li>
+<li>spring-boot-starters：启动服务工程，可减少第三方jar的依赖。</li>
+<li>spring-boot-autoconfigure：实现自动配置的核心工程。</li>
+<li>spring-boot-actuator：外围支撑性功能。</li>
+<li>spring-boot-tools：开发者的常用工具集。</li>
+<li>spring-boot-cli：命令行交互工具。</li>
+<li>spring-boot-devtools：为开发者服务，其中最重要的功能就是热部署。</li>
+</ul>
+<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的静态<code>run</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorldApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      SpringApplication.run(HelloWorldApplication.class, args);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在spring-boot模块中，<code>SpringApplication</code>类的静态<code>run</code>方法是一个可以通过默认设置和用户约定来从具体source运行Spring项目的静态帮助器。</p>
+<p>1）在<code>SpringApplication</code>类的静态<code>run</code>方法中，依次调用了<code>SpringApplication</code>类的构造方法和对象的<code>run</code>方法，完整代码如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(Class&lt;?&gt; primarySource, String... args)</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> run(<span class="keyword">new</span> <span class="title class_">Class</span>&lt;?&gt;[] &#123; primarySource &#125;, args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(Class&lt;?&gt;[] primarySources, String[] args)</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(primarySources).run(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）在<code>SpringApplication</code>类的构造方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第8行，将不为空的<code>primarySources</code>加入到一个<code>LinkedHashSet</code>中；</p>
+</li>
+<li><p>以下代码的第9行，调用<code>deduceFromClasspath</code>方法得到Web环境类型（<code>NONE</code>、<code>SERVLET</code>、<code>REACTIVE</code>），当在JUnit测试中使用<code>SpringApplication</code>时，通常需要将环境类型设为<code>NONE</code>来使得测试类启动时只会初始化 Spring 上下文，不再启动 Tomcat 容器，从而达到加速的目的；</p>
+</li>
+<li><p>以下代码的第10、11、12行，调用<code>getSpringFactoriesInstances</code>方法，从而设置<code>BootstrapRegistryInitializer</code>列表、<code>ApplicationContextInitializer</code>列表以及<code>ApplicationListener</code>列表；</p>
+</li>
+<li><p>以下代码的第13行，调用<code>deduceMainApplicationClass</code>方法获取当前方法调用栈，找到<code>main</code>函数所在的类；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">   <span class="built_in">this</span>(<span class="literal">null</span>, primarySources);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.resourceLoader = resourceLoader;</span><br><span class="line">    Assert.notNull(primarySources, <span class="string">&quot;PrimarySources must not be null&quot;</span>);</span><br><span class="line">    <span class="built_in">this</span>.primarySources = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line">    <span class="built_in">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">    <span class="built_in">this</span>.bootstrapRegistryInitializers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;( getSpringFactoriesInstances(BootstrapRegistryInitializer.class));</span><br><span class="line">    setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">    setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">    <span class="built_in">this</span>.mainApplicationClass = deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）在<code>getSpringFactoriesInstances</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第8行，调用<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法来获取传入<code>type</code>所对应的实例名称，并放入到一个<code>LinkedHashSet</code>中去重；</p>
+</li>
+<li><p>以下代码的第9行，调用<code>createSpringFactoriesInstances</code>方法进行初始化；</p>
+</li>
+<li><p>以下代码的第10行，调用<code>AnnotationAwareOrderComparator</code>类的<code>sort</code>方法，根据Order对实例进行排序（@Order注解或者Order接口）；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; Collection&lt;T&gt; <span class="title function_">getSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> getSpringFactoriesInstances(type, <span class="keyword">new</span> <span class="title class_">Class</span>&lt;?&gt;[] &#123;&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> &lt;T&gt; Collection&lt;T&gt; <span class="title function_">getSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes, Object... args)</span> &#123;</span><br><span class="line">   <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> getClassLoader();</span><br><span class="line">   <span class="comment">// Use names and ensure unique to protect against duplicates</span></span><br><span class="line">   Set&lt;String&gt; names = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(SpringFactoriesLoader.loadFactoryNames(type, classLoader));</span><br><span class="line">   List&lt;T&gt; instances = createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);</span><br><span class="line">   AnnotationAwareOrderComparator.sort(instances);</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）在<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码第6行，调用<code>Class</code>的<code>getName</code>方法获取之前传入的<code>factoryType</code>所对应的类名；</p>
+</li>
+<li><p>以下代码的第7行，调用<code>loadSpringFactories</code>方法来读取所有jar包中的<code>META-INF/spring.factories</code>文件中的配置项的value值（key为上一级方法调用入参，value是一些类名）；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;String&gt; <span class="title function_">loadFactoryNames</span><span class="params">(Class&lt;?&gt; factoryType, <span class="meta">@Nullable</span> ClassLoader classLoader)</span> &#123;</span><br><span class="line">   <span class="type">ClassLoader</span> <span class="variable">classLoaderToUse</span> <span class="operator">=</span> classLoader;</span><br><span class="line">   <span class="keyword">if</span> (classLoaderToUse == <span class="literal">null</span>) &#123;</span><br><span class="line">      classLoaderToUse = SpringFactoriesLoader.class.getClassLoader();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="type">String</span> <span class="variable">factoryTypeName</span> <span class="operator">=</span> factoryType.getName();</span><br><span class="line">   <span class="keyword">return</span> loadSpringFactories(classLoaderToUse).getOrDefault(factoryTypeName, Collections.emptyList());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）在<code>SpringApplication</code>类的<code>createSpringFactoriesInstances</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第4行，遍历刚刚加载得到的类名；</p>
+</li>
+<li><p>以下代码的第6行，根据类名获取到类对象；</p>
+</li>
+<li><p>以下代码的第7行，检测获取的类对象类型是否与需要的一致；</p>
+</li>
+<li><p>以下代码的第8行，获取默认的无参构造方法（传入的<code>parameterTypes</code>为空）；</p>
+</li>
+<li><p>以下代码的第9行，通过反射调用类的构造方法来实例化对象；</p>
+</li>
+<li><p>以下代码的第10行，将对象放入<code>List</code>结果集；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; List&lt;T&gt; <span class="title function_">createSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes,</span></span><br><span class="line"><span class="params">      ClassLoader classLoader, Object[] args, Set&lt;String&gt; names)</span> &#123;</span><br><span class="line">   List&lt;T&gt; instances = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(names.size());</span><br><span class="line">   <span class="keyword">for</span> (String name : names) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         Class&lt;?&gt; instanceClass = ClassUtils.forName(name, classLoader);</span><br><span class="line">         Assert.isAssignable(type, instanceClass);</span><br><span class="line">         Constructor&lt;?&gt; constructor = instanceClass.getDeclaredConstructor(parameterTypes);</span><br><span class="line">         <span class="type">T</span> <span class="variable">instance</span> <span class="operator">=</span> (T) BeanUtils.instantiateClass(constructor, args);</span><br><span class="line">         instances.add(instance);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Cannot instantiate &quot;</span> + type + <span class="string">&quot; : &quot;</span> + name, ex);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>6）在<code>SpringApplication</code>类对象的<code>run</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第5行，调用<code>configureHeadlessProperty</code>方法，将JVM系统属性中的<code>java.awt.headless</code>属性设置为<code>true</code>，表示运行在服务器端；</p>
+</li>
+<li><p>以下代码的第6行，依次调用了<code>getRunListeners</code>方法 –&gt; <code>getSpringFactoriesInstances</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法 –&gt; 读取<code>META-INF/spring.factories</code>文件中的配置项的value值，从而设置<code>SpringApplicationRunListener</code>列表，这里列表中只有一个value值（<code>EventPublishingRunListener</code>）；</p>
+</li>
+<li><p>以下代码的第7行，依次调用了<code>SpringApplicationRunListener</code>列表的<code>starting</code>方法 –&gt; <code>EventPublishingRunListener</code>类的<code>starting</code>方法 –&gt; <code>SimpleApplicationEventMulticaster</code>类的<code>multicastEvent</code>方法 –&gt; <code>invokeListener</code>方法 –&gt; <code>doInvokeListener</code>方法 –&gt; <code>ApplicationListener</code>接口的<code>onApplicationEvent</code>方法，广播了<code>ApplicationStartingEvent</code>类型的事件并启动了对此感兴趣的监听器；</p>
+</li>
+<li><p>以下代码的第9行，依次调用了<code>DefaultApplicationArguments</code>的构造方法 –&gt; <code>Source</code>的构造方法 –&gt; <code>SimpleCommandLinePropertySource</code>的构造方法和<code>parse</code>方法 –&gt; <code>CommandLinePropertySource</code>的构造方法 –&gt; <code>EnumerablePropertySource</code>的构造方法 –&gt; <code>PropertySource</code>的构造方法，封装了 <code>main</code> 方法的参数，从而更方便的解析和获取参数中的值；</p>
+</li>
+<li><p>以下代码的第10行，调用了<code>prepareEnvironment</code>方法，从中逐步</p>
+<ul>
+<li><p>通过<code>getOrCreateEnvironment</code>方法获取或创建了<code>ConfigurableEnvironment</code>；</p>
+</li>
+<li><p>通过<code>configureEnvironment</code>方法依次配置了<code>PropertySources</code>和<code>Profile</code>属性；</p>
+</li>
+<li><p>通过<code>ConfigurationPropertySources</code>类的<code>attach</code>方法将<code>application.properties</code>或者<code>application.yml</code>作为一个<code>PropertySource</code>加到<code>PropertySources</code>中；</p>
+</li>
+<li><p>通过<code>SpringApplicationRunListener</code>列表的<code>environmentPrepared</code>方法广播事件，通知所有的观察者环境已经准备好了，可以进行后续操作；</p>
+</li>
+</ul>
+</li>
+<li><p>以下代码的第12行，调用了<code>printBanner</code>方法，打印<code>banner</code>，即每次启动输出的SpringBoot的图标；</p>
+</li>
+<li><p>以下代码的第13行，调用了<code>createApplicationContext</code>方法，根据当前环境类型（在<code>SpringApplication</code>类的构造方法中确定）来创建对应类型的上下文；</p>
+</li>
+<li><p>以下代码的第15行，依次调用了<code>prepareContext</code>方法 –&gt; <code>ApplicationContextInitializer</code>列表的<code>initialize</code>方法和<code>SpringApplicationRunListener</code>列表的<code>contextPrepared</code>方法和<code>contextLoaded</code>方法；</p>
+</li>
+<li><p>以下代码的第16行，调用了<code>refreshContext</code>方法，从中逐步</p>
+<ul>
+<li><p>通过<code>SpringApplicationShutdownHook</code>类的<code>registerApplicationContext</code>方法来注册一个名为”SpringApplicationShutdownHook”的新线程，如果 JVM 意外终止了，这个线程会把当前的上下文关闭；</p>
+</li>
+<li><p>通过<code>refresh</code>方法来调用<code>AbstractApplicationContext</code>类的<code>refresh</code>方法，<strong>实现IoC容器的初始化及Bean的生命周期中的部分过程，具体可参见 <a href="../../07/spring/">Spring Framework</a> 的2.4节</strong>，如果是web应用还会创建嵌入式的Tomcat；</p>
+</li>
+</ul>
+</li>
+<li><p>以下代码的第17行，调用了一个空的<code>afterRefresh</code>的方法，用于之后可能要增加的操作；</p>
+</li>
+<li><p>以下代码的第20行，打印日志，显示启动当前应用所花的时间；</p>
+</li>
+<li><p>以下代码的第22行，调用<code>SpringApplicationRunListener</code>列表的<code>started</code>方法来广播<code>ApplicationStartedEvent</code>类型的事件；</p>
+</li>
+<li><p>以下代码的第23行，依次调用了<code>callRunners</code>方法 –&gt; 所有<code>ApplicationRunner</code>和<code>CommandLineRunner</code>对象的<code>run</code>方法（同步调用，并非开启新线程）；</p>
+</li>
+<li><p>以下代码的26、27、34、35行，调用了<code>handleRunFailure</code>方法来处理异常并抛出<code>IllegalStateException</code>异常；</p>
+</li>
+<li><p>以下代码的31行，调用<code>SpringApplicationRunListener</code>列表的<code>ready</code>方法来广播<code>ApplicationReadyEvent </code>类型的事件，至此整个<code>run</code>方法执行完毕，程序启动完成。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">   <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">   <span class="type">DefaultBootstrapContext</span> <span class="variable">bootstrapContext</span> <span class="operator">=</span> createBootstrapContext();</span><br><span class="line">   <span class="type">ConfigurableApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">   configureHeadlessProperty();</span><br><span class="line">   <span class="type">SpringApplicationRunListeners</span> <span class="variable">listeners</span> <span class="operator">=</span> getRunListeners(args);</span><br><span class="line">   listeners.starting(bootstrapContext, <span class="built_in">this</span>.mainApplicationClass);</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">ApplicationArguments</span> <span class="variable">applicationArguments</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultApplicationArguments</span>(args);</span><br><span class="line">      <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> prepareEnvironment(listeners, bootstrapContext, applicationArguments);</span><br><span class="line">      configureIgnoreBeanInfo(environment);</span><br><span class="line">      <span class="type">Banner</span> <span class="variable">printedBanner</span> <span class="operator">=</span> printBanner(environment);</span><br><span class="line">      context = createApplicationContext();</span><br><span class="line">      context.setApplicationStartup(<span class="built_in">this</span>.applicationStartup);</span><br><span class="line">      prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">      refreshContext(context);</span><br><span class="line">      afterRefresh(context, applicationArguments);</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToStartup</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">         <span class="keyword">new</span> <span class="title class_">StartupInfoLogger</span>(<span class="built_in">this</span>.mainApplicationClass).logStarted(getApplicationLog(), timeTakenToStartup);</span><br><span class="line">      &#125;</span><br><span class="line">      listeners.started(context, timeTakenToStartup);</span><br><span class="line">      callRunners(context, applicationArguments);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, listeners);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToReady</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      listeners.ready(context, timeTakenToReady);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, <span class="literal">null</span>);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-事件监听器"><a href="#3-2-事件监听器" class="headerlink" title="3.2 事件监听器"></a>3.2 事件监听器</h2><p>在3.1节中学习到了Spring Boot启动过程中会发布一系列事件并启动事件监听器，本节进行详细介绍</p>
+<p>1）在<code>SpringApplication</code>类的构造方法中，会调用<code>setListeners</code>方法和<code>getSpringFactoriesInstances</code>方法，来读取到<code>META-INF/spring.factories</code>文件中key为<code>ApplicationListener</code>的全限定名的配置项的value值，从而获取并注册监听器</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br></pre></td></tr></table></figure>
+
+<p>在spring-boot模块中，<code>META-INF/spring.factories</code>文件中存在以下配置项</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"># Application Listeners</span><br><span class="line">org.springframework.context.ApplicationListener=\</span><br><span class="line">org.springframework.boot.ClearCachesApplicationListener,\</span><br><span class="line">org.springframework.boot.builder.ParentContextCloserApplicationListener,\</span><br><span class="line">org.springframework.boot.context.FileEncodingApplicationListener,\</span><br><span class="line">org.springframework.boot.context.config.AnsiOutputApplicationListener,\</span><br><span class="line">org.springframework.boot.context.config.DelegatingApplicationListener,\</span><br><span class="line">org.springframework.boot.context.logging.LoggingApplicationListener,\</span><br><span class="line">org.springframework.boot.env.EnvironmentPostProcessorApplicationListener</span><br></pre></td></tr></table></figure>
+
+<p>2）在<code>SpringApplication</code>类对象的<code>run</code>方法中，会调用<code>getRunListeners</code>方法，完整代码如下</p>
+<ul>
+<li><p>以下代码的第3、4行，调用了<code>SpringApplicationRunListeners</code>类的构造方法和<code>getSpringFactoriesInstances</code>方法，最终会读取到<code>META-INF/spring.factories</code>文件中key为<code>SpringApplicationRunListener</code>的全限定名的配置项的value值，从而设置<code>SpringApplicationRunListener</code>列表；</p>
+</li>
+<li><p>由于spring-boot模块中的<code>META-INF/spring.factories</code>文件中存在以下配置项</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"># Run Listeners</span><br><span class="line">org.springframework.boot.SpringApplicationRunListener=\</span><br><span class="line">org.springframework.boot.context.event.EventPublishingRunListener</span><br></pre></td></tr></table></figure>
+
+<p>因此<code>SpringApplicationRunListener</code>列表中只有<code>EventPublishingRunListener</code>这一个值；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> SpringApplicationRunListeners <span class="title function_">getRunListeners</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">   Class&lt;?&gt;[] types = <span class="keyword">new</span> <span class="title class_">Class</span>&lt;?&gt;[] &#123; SpringApplication.class, String[].class &#125;;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplicationRunListeners</span>(logger,</span><br><span class="line">         getSpringFactoriesInstances(SpringApplicationRunListener.class, types, <span class="built_in">this</span>, args),</span><br><span class="line">         <span class="built_in">this</span>.applicationStartup);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）在<code>SpringApplication</code>类对象的<code>run</code>方法中，会调用<code>SpringApplicationRunListeners</code>类的<code>starting</code>方法，进而调用列表中每一个<code>SpringApplicationRunListener</code>的<code>starting</code>方法，即<code>EventPublishingRunListener</code>类的<code>starting</code>方法，完整代码如下</p>
+<ul>
+<li><p>以下代码的第3行，<code>this.initialMulticaster</code>是一个<code>SimpleApplicationEventMulticaster</code>类型的对象；</p>
+</li>
+<li><p>以下代码的第4行，调用了<code>SimpleApplicationEventMulticaster</code>类的<code>multicastEvent</code>方法，方法入参是<code>ApplicationStartingEvent</code>类型的事件；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">starting</span><span class="params">(ConfigurableBootstrapContext bootstrapContext)</span> &#123;</span><br><span class="line">   <span class="built_in">this</span>.initialMulticaster</span><br><span class="line">         .multicastEvent(<span class="keyword">new</span> <span class="title class_">ApplicationStartingEvent</span>(bootstrapContext, <span class="built_in">this</span>.application, <span class="built_in">this</span>.args));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）在<code>SimpleApplicationEventMulticaster</code>类的<code>multicastEvent</code>方法中，完整代码如下</p>
+<ul>
+<li><p>依次调用了<code>resolveDefaultEventType</code>方法 –&gt; <code>ResolvableType</code>类的<code>forInstance</code>方法来获取事件的类型；</p>
+</li>
+<li><p>继续调用入参中包含事件类型的<code>multicastEvent</code>方法；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">multicastEvent</span><span class="params">(ApplicationEvent event)</span> &#123;</span><br><span class="line">   multicastEvent(event, resolveDefaultEventType(event));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ResolvableType <span class="title function_">resolveDefaultEventType</span><span class="params">(ApplicationEvent event)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> ResolvableType.forInstance(event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5）在<code>ResolvableType</code>类的<code>forInstance</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第3、4行，判断事件<code>instance</code>是否实现了<code>ResolvableTypeProvider</code>接口（该接口表示事件可以被解析），是的话则强转成<code>ResolvableTypeProvider</code>类型，然后获取并返回事件类型；</p>
+</li>
+<li><p>以下代码9行，将传入的<code>instance</code>包装成<code>ResolvableType</code>，并返回一个默认类型；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ResolvableType <span class="title function_">forInstance</span><span class="params">(Object instance)</span> &#123;</span><br><span class="line">   Assert.notNull(instance, <span class="string">&quot;Instance must not be null&quot;</span>);</span><br><span class="line">   <span class="keyword">if</span> (instance <span class="keyword">instanceof</span> ResolvableTypeProvider) &#123;</span><br><span class="line">      <span class="type">ResolvableType</span> <span class="variable">type</span> <span class="operator">=</span> ((ResolvableTypeProvider) instance).getResolvableType();</span><br><span class="line">      <span class="keyword">if</span> (type != <span class="literal">null</span>) &#123;</span><br><span class="line">         <span class="keyword">return</span> type;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> ResolvableType.forClass(instance.getClass());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>6）在<code>SimpleApplicationEventMulticaster</code>类的<code>multicastEvent</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第5行，调用了<code>AbstractApplicationEventMulticaster</code>类的<code>getApplicationListeners</code>方法来获取对当前事件感兴趣的监听器；</p>
+</li>
+<li><p>以下代码的第10行，依次调用了<code>invokeListener</code>方法 –&gt; <code>doInvokeListener</code>方法 –&gt; <code>ApplicationListener</code>接口的<code>onApplicationEvent</code>方法来广播事件并启动监听器；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">multicastEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event, <span class="meta">@Nullable</span> ResolvableType eventType)</span> &#123;</span><br><span class="line">   <span class="type">ResolvableType</span> <span class="variable">type</span> <span class="operator">=</span> (eventType != <span class="literal">null</span> ? eventType : resolveDefaultEventType(event));</span><br><span class="line">   <span class="type">Executor</span> <span class="variable">executor</span> <span class="operator">=</span> getTaskExecutor();</span><br><span class="line">   <span class="keyword">for</span> (ApplicationListener&lt;?&gt; listener : getApplicationListeners(event, type)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (executor != <span class="literal">null</span>) &#123;</span><br><span class="line">         executor.execute(() -&gt; invokeListener(listener, event));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">         invokeListener(listener, event);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>7）在<code>AbstractApplicationEventMulticaster</code>类的<code>getApplicationListeners</code>方法中，完整代码如下</p>
+<ul>
+<li><p>以下代码的第12行，尝试直接从缓存中获取监听器，如果<code>getApplicationListeners</code>方法已经执行过，这里就可以直接拿到缓存，如果是第一次执行<code>getApplicationListeners</code>方法，则只能获取到<code>null</code>；</p>
+</li>
+<li><p>以下代码的第35行，调用了<code>retrieveApplicationListeners</code>方法来获取监听器；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> Collection&lt;ApplicationListener&lt;?&gt;&gt; getApplicationListeners(</span><br><span class="line">      ApplicationEvent event, ResolvableType eventType) &#123;</span><br><span class="line"></span><br><span class="line">   <span class="type">Object</span> <span class="variable">source</span> <span class="operator">=</span> event.getSource();</span><br><span class="line">   Class&lt;?&gt; sourceType = (source != <span class="literal">null</span> ? source.getClass() : <span class="literal">null</span>);</span><br><span class="line">   <span class="type">ListenerCacheKey</span> <span class="variable">cacheKey</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ListenerCacheKey</span>(eventType, sourceType);</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Potential new retriever to populate</span></span><br><span class="line">   <span class="type">CachedListenerRetriever</span> <span class="variable">newRetriever</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Quick check for existing entry on ConcurrentHashMap</span></span><br><span class="line">   <span class="type">CachedListenerRetriever</span> <span class="variable">existingRetriever</span> <span class="operator">=</span> <span class="built_in">this</span>.retrieverCache.get(cacheKey);</span><br><span class="line">   <span class="keyword">if</span> (existingRetriever == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// Caching a new ListenerRetriever if possible</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.beanClassLoader == <span class="literal">null</span> ||</span><br><span class="line">            (ClassUtils.isCacheSafe(event.getClass(), <span class="built_in">this</span>.beanClassLoader) &amp;&amp;</span><br><span class="line">                  (sourceType == <span class="literal">null</span> || ClassUtils.isCacheSafe(sourceType, <span class="built_in">this</span>.beanClassLoader)))) &#123;</span><br><span class="line">         newRetriever = <span class="keyword">new</span> <span class="title class_">CachedListenerRetriever</span>();</span><br><span class="line">         existingRetriever = <span class="built_in">this</span>.retrieverCache.putIfAbsent(cacheKey, newRetriever);</span><br><span class="line">         <span class="keyword">if</span> (existingRetriever != <span class="literal">null</span>) &#123;</span><br><span class="line">            newRetriever = <span class="literal">null</span>;  <span class="comment">// no need to populate it in retrieveApplicationListeners</span></span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (existingRetriever != <span class="literal">null</span>) &#123;</span><br><span class="line">      Collection&lt;ApplicationListener&lt;?&gt;&gt; result = existingRetriever.getApplicationListeners();</span><br><span class="line">      <span class="keyword">if</span> (result != <span class="literal">null</span>) &#123;</span><br><span class="line">         <span class="keyword">return</span> result;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// If result is null, the existing retriever is not fully populated yet by another thread.</span></span><br><span class="line">      <span class="comment">// Proceed like caching wasn&#x27;t possible for this current local attempt.</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> retrieveApplicationListeners(eventType, sourceType, newRetriever);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>8）在<code>retrieveApplicationListeners</code>方法中，截取了部分代码如下</p>
+<ul>
+<li><p>以下代码的第11、12行，获取了所有的监听器实例及其对应的beanName；</p>
+</li>
+<li><p>以下代码的第17行，逐个遍历每个监听器实例；</p>
+</li>
+<li><p>以下代码的第18行，调用了<code>supportsEvent</code>方法来判断监听器是否对当前事件感兴趣；</p>
+</li>
+<li><p>以下代码的第32行，根据Order接口或者注解对监听器进行排序；</p>
+</li>
+<li><p>以下代码的第33~42行，对缓存进行一次刷新，把以前的缓存清空，将这次运行的结果进行缓存；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> Collection&lt;ApplicationListener&lt;?&gt;&gt; retrieveApplicationListeners(</span><br><span class="line">      ResolvableType eventType, <span class="meta">@Nullable</span> Class&lt;?&gt; sourceType, <span class="meta">@Nullable</span> CachedListenerRetriever retriever) &#123;</span><br><span class="line"></span><br><span class="line">   List&lt;ApplicationListener&lt;?&gt;&gt; allListeners = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">   Set&lt;ApplicationListener&lt;?&gt;&gt; filteredListeners = (retriever != <span class="literal">null</span> ? <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;() : <span class="literal">null</span>);</span><br><span class="line">   Set&lt;String&gt; filteredListenerBeans = (retriever != <span class="literal">null</span> ? <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;() : <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">   Set&lt;ApplicationListener&lt;?&gt;&gt; listeners;</span><br><span class="line">   Set&lt;String&gt; listenerBeans;</span><br><span class="line">   <span class="keyword">synchronized</span> (<span class="built_in">this</span>.defaultRetriever) &#123;</span><br><span class="line">      listeners = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(<span class="built_in">this</span>.defaultRetriever.applicationListeners);</span><br><span class="line">      listenerBeans = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(<span class="built_in">this</span>.defaultRetriever.applicationListenerBeans);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Add programmatically registered listeners, including ones coming</span></span><br><span class="line">   <span class="comment">// from ApplicationListenerDetector (singleton beans and inner beans).</span></span><br><span class="line">   <span class="keyword">for</span> (ApplicationListener&lt;?&gt; listener : listeners) &#123;</span><br><span class="line">      <span class="keyword">if</span> (supportsEvent(listener, eventType, sourceType)) &#123;</span><br><span class="line">         <span class="keyword">if</span> (retriever != <span class="literal">null</span>) &#123;</span><br><span class="line">            filteredListeners.add(listener);</span><br><span class="line">         &#125;</span><br><span class="line">         allListeners.add(listener);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Add listeners by bean name, potentially overlapping with programmatically</span></span><br><span class="line">   <span class="comment">// registered listeners above - but here potentially with additional metadata.</span></span><br><span class="line">   <span class="keyword">if</span> (!listenerBeans.isEmpty()) &#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   AnnotationAwareOrderComparator.sort(allListeners);</span><br><span class="line">   <span class="keyword">if</span> (retriever != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (filteredListenerBeans.isEmpty()) &#123;</span><br><span class="line">         retriever.applicationListeners = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(allListeners);</span><br><span class="line">         retriever.applicationListenerBeans = filteredListenerBeans;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">         retriever.applicationListeners = filteredListeners;</span><br><span class="line">         retriever.applicationListenerBeans = filteredListenerBeans;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> allListeners;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>9）在<code>supportsEvent</code>方法中，通过<code>GenericApplicationListener</code>类的<code>supportsEventType</code>和<code>supportsSourceType</code>方法，判断了判断监听器是否支持当前事件以及是否对这个事件的发起来类感兴趣，完整代码如下；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">supportsEvent</span><span class="params">(</span></span><br><span class="line"><span class="params">      ApplicationListener&lt;?&gt; listener, ResolvableType eventType, <span class="meta">@Nullable</span> Class&lt;?&gt; sourceType)</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="type">GenericApplicationListener</span> <span class="variable">smartListener</span> <span class="operator">=</span> (listener <span class="keyword">instanceof</span> GenericApplicationListener ?</span><br><span class="line">         (GenericApplicationListener) listener : <span class="keyword">new</span> <span class="title class_">GenericApplicationListenerAdapter</span>(listener));</span><br><span class="line">   <span class="keyword">return</span> (smartListener.supportsEventType(eventType) &amp;&amp; smartListener.supportsSourceType(sourceType));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>10）至此，完整介绍了<code>ApplicationStartingEvent</code>事件的广播及启动对此感兴趣的监听器的过程，这一逻辑的入口在<code>SpringApplicationRunListeners</code>类的<code>starting</code>方法，该方法是在<code>SpringApplication</code>类对象的<code>run</code>方法中被调用；</p>
+<p>11）在<code>SpringApplication</code>类对象的<code>run</code>方法中</p>
+<ul>
+<li><p>还会调用<code>SpringApplicationRunListeners</code>类的<code>environmentPrepared</code>、<code>contextPrepared</code>、<code>contextLoaded</code>、<code>started</code>和<code>ready</code>方法，如果抛出异常，还会调用<code>failed</code>方法；</p>
+</li>
+<li><p>与上述过程同理，这些方法调用分别会实现<code>ApplicationEnvironmentPreparedEvent</code>、<code>ApplicationContextInitializedEvent</code>、<code>ApplicationPreparedEvent</code>、<code>ApplicationStartedEvent</code>、<code>ApplicationReadyEvent</code>以及<code>ApplicationFailedEvent</code>事件的广播，并启动对此感兴趣的监听器。</p>
+</li>
+</ul>
+<h2 id="3-3-自动配置"><a href="#3-3-自动配置" class="headerlink" title="3.3 自动配置"></a>3.3 自动配置</h2><p>启动类使用<code>@SpringBootApplication</code>注解标注，而<code>@SpringBootApplication</code>注解包含了<code>@EnableAutoConfiguration</code>注解。</p>
+<p>在spring-boot-autoconfigure模块中，<code>@EnableAutoConfiguration</code>注解会启用 SpringBoot 的自动装配机制（自动扫描+条件装配）。</p>
+<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，会将符合条件的配置类都加载到IoC容器中，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import(AutoConfigurationImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAutoConfiguration &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）在<code>AutoConfigurationImportSelector</code>类的<code>selectImports</code>方法中，调用了<code>getAutoConfigurationEntry</code>方法，完整代码如下；</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> NO_IMPORTS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AutoConfigurationEntry</span> <span class="variable">autoConfigurationEntry</span> <span class="operator">=</span> getAutoConfigurationEntry(annotationMetadata);</span><br><span class="line">    <span class="keyword">return</span> StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3）在<code>AutoConfigurationImportSelector</code>类的<code>getAutoConfigurationEntry</code>方法中，会返回需要被加载的自动配置类，完整代码如下</p>
+<ul>
+<li><p>以下代码的第5行，会调用<code>getAttributes</code>方法来获取元注解中的属性；</p>
+</li>
+<li><p>以下代码的第6行，会依次调用<code>getCandidateConfigurations</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法；</p>
+</li>
+<li><p>以下代码的第11行，会根据候选配置类上的<code>@ConditionalOnClass</code>注解来判断是否过滤该候选类，被过滤的候选类不会被加载；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> AutoConfigurationEntry <span class="title function_">getAutoConfigurationEntry</span><span class="params">(AnnotationMetadata annotationMetadata)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> EMPTY_ENTRY;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AnnotationAttributes</span> <span class="variable">attributes</span> <span class="operator">=</span> getAttributes(annotationMetadata);</span><br><span class="line">    List&lt;String&gt; configurations = getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">    configurations = removeDuplicates(configurations);</span><br><span class="line">    Set&lt;String&gt; exclusions = getExclusions(annotationMetadata, attributes);</span><br><span class="line">    checkExcludedClasses(configurations, exclusions);</span><br><span class="line">    configurations.removeAll(exclusions);</span><br><span class="line">    configurations = getConfigurationClassFilter().filter(configurations);</span><br><span class="line">    fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">AutoConfigurationEntry</span>(configurations, exclusions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4）在<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法中，会读取<code>resources/META-INF/spring.factories</code>文件中key为<code>EnableAutoConfiguration</code>的全限定名的value；</p>
+<ul>
+<li><p><code>EnableAutoConfiguration</code>的全限定名所对应的value有很多（一百多个），每个value都是一个配置类的全限定名；</p>
+</li>
+<li><p>SpringBoot 的自动装配机制并不会加载全部value所对应的配置类，而是会根据配置类的<code>@ConditionalOnClass</code>等注解所确定的条件来判断是否加载该配置类；</p>
+</li>
+</ul>
+<p>5）因此，如果需要<code>@EnableAutoConfiguration</code>注解去加载自定义jar包中的Bean，就应该确保：</p>
+<ul>
+<li><p>该jar包的配置类中编写了标注了<code>@Bean</code>的方法来创建并返回该Bean；</p>
+</li>
+<li><p>该jar包的<code>src/main/resources/META-INF</code>目录下存在<code>spring.factories</code>文件，并在<code>spring.factories</code>文件配置了key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项；</p>
+</li>
+</ul>
+<p>6）总结与注意事项</p>
+<ul>
+<li><p>Spring Boot会根据<code>@EnableAutoConfiguration</code>注解来猜测开发者想要如何配置Spring并实现自动配置；</p>
+</li>
+<li><p>自动配置被设计成与“starter”一起工作，但是这两个概念并没有直接联系在一起，开发者可以在启动器之外自由选择jar包；</p>
+</li>
+<li><p>自动配置是非侵入性的，开发者在任何时候都可以开始定义自己的配置来替换自动配置的特定部分；</p>
+</li>
+<li><p>在jar包的<code>src/main/resources/META-INF/spring.factories</code>文件中，开发者还可以添加配置项来指定自动配置类的加载条件，<code>@EnableAutoConfiguration</code>会根据加载条件来判断是否加载某配置类；</p>
+</li>
+<li><p>这些自动配置类被设置为<code>public</code>只是为了方便禁用它，实际上这些自动配置类是仅供内部使用的，不建议直接使用这些类的实际内容（例如嵌套的配置类或Bean方法）。</p>
+</li>
+</ul>
+<h2 id="3-4-Web配置"><a href="#3-4-Web配置" class="headerlink" title="3.4 Web配置"></a>3.4 Web配置</h2><p>添加了Spring -boot-starter-web依赖项后，Spring Boot会自动添加Tomcat和Spring MVC，自动配置会假定正在开发一个web应用程序，并相应地设置Spring。</p>
+<p>在3.2节中学习到了<code>@EnableAutoConfiguration</code>注解会加载<code>spring.factories</code>文件中所配置的key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项。</p>
+<p>本节以<code>WebMvcAutoConfiguration</code>这一自动配置类为例，介绍Spring Boot的Web配置。</p>
+<p>1）<code>WebMvcAutoConfiguration</code>是针对Web配置的自动配置类，截取了部分代码如下</p>
+<ul>
+<li><p>以下代码的1、2、6行，通过<code>@AutoConfigure</code>和<code>@AutoConfigureOrder</code>注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载顺序；</p>
+</li>
+<li><p>以下代码的3~5行，通过<code>@Conditional</code>及其派生注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载条件；</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@AutoConfiguration(after = &#123; DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,</span></span><br><span class="line"><span class="meta">      ValidationAutoConfiguration.class &#125;)</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication(type = Type.SERVLET)</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(&#123; Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class &#125;)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(WebMvcConfigurationSupport.class)</span></span><br><span class="line"><span class="meta">@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebMvcAutoConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）<code>WebMvcAutoConfiguration</code>配置类内部有一些静态内部类</p>
+<ul>
+<li><p><code>EnableWebMvcConfiguration</code>配置类</p>
+<ul>
+<li><p>相当于<code>@EnableWebMvc</code>注解的功能；</p>
+</li>
+<li><p>通过<code>@EnableConfigurationProperties(WebProperties.class)</code>注册了<code>WebProperties</code>，</p>
+</li>
+<li><p>重写了一些<code>WebMvcConfigurationSupport</code>父类中的方法实现并声明为Bean方法；</p>
+</li>
+</ul>
+</li>
+<li><p><code>ResourceChainCustomizerConfiguration</code>配置类</p>
+<ul>
+<li><p>由<code>OnEnabledResourceChainCondition</code>来判断是否加载；</p>
+</li>
+<li><p>默认是不进行加载的；</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>3）<code>WebMvcAutoConfiguration</code>配置类中声明了两个Bean方法，注册条件如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(HiddenHttpMethodFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.hiddenmethod.filter&quot;, name = &quot;enabled&quot;)</span></span><br><span class="line"><span class="keyword">public</span> OrderedHiddenHttpMethodFilter <span class="title function_">hiddenHttpMethodFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedHiddenHttpMethodFilter</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(FormContentFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.formcontent.filter&quot;, name = &quot;enabled&quot;, matchIfMissing = true)</span></span><br><span class="line"><span class="keyword">public</span> OrderedFormContentFilter <span class="title function_">formContentFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedFormContentFilter</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><ul>
+<li><a href="https://www.jianshu.com/p/f3337a836faf">https://www.jianshu.com/p/f3337a836faf</a></li>
+<li><a href="https://snailclimb.gitee.io/springboot-guide/#/">https://snailclimb.gitee.io/springboot-guide/#/</a></li>
+<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464">https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464</a></li>
+<li><a href="https://blog.csdn.net/qq_26000415/category_9271293.html">https://blog.csdn.net/qq_26000415/category_9271293.html</a></li>
+<li><a href="https://juejin.cn/post/6910458302547623944">https://juejin.cn/post/6910458302547623944</a></li>
+<li><a href="https://juejin.cn/post/6844904106843193357">https://juejin.cn/post/6844904106843193357</a></li>
+<li><a href="https://juejin.cn/post/6844904106847371271">https://juejin.cn/post/6844904106847371271</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/2.7.0/reference/html/">https://docs.spring.io/spring-boot/docs/2.7.0/reference/html/</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/2.7.0/api/">https://docs.spring.io/spring-boot/docs/2.7.0/api/</a></li>
 </ul>
 ]]></content>
   </entry>
@@ -3342,339 +3813,6 @@
 <li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032">https://www.liaoxuefeng.com/wiki/1252599548343744/1266263217140032</a></li>
 <li><a href="https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1">https://snailclimb.gitee.io/javaguide/#/?id=springspringboot-%e5%bf%85%e7%9c%8b-1</a></li>
 <li><a href="https://www.cnblogs.com/zrtqsk/p/3735273.html">https://www.cnblogs.com/zrtqsk/p/3735273.html</a></li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Spring Boot</title>
-    <url>/2022/05/22/spring-boot/</url>
-    <content><![CDATA[<h1 id="1、总概"><a href="#1、总概" class="headerlink" title="1、总概"></a>1、总概</h1><p>Spring是以<strong>简化Java EE应用程序的开发</strong>为目标而创建的。</p>
-<ul>
-<li>Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置；</li>
-<li>Spring 3.0 引入了基于 Java 的配置，这是一种比XML更加安全的配置方式；</li>
-<li>但在使用Spring的过程中，依旧无法避免基于XML的配置方式。</li>
-</ul>
-<p>Spring Boot是以<strong>简化Spring的配置</strong>为目标而创建的，是约定优先于配置理念下的产物。</p>
-<h1 id="2、使用介绍"><a href="#2、使用介绍" class="headerlink" title="2、使用介绍"></a>2、使用介绍</h1><h2 id="2-1-启动类"><a href="#2-1-启动类" class="headerlink" title="2.1 启动类"></a>2.1 启动类</h2><p>Spring Boot要求<code>main()</code>方法所在的启动类：</p>
-<ul>
-<li><p>必须放到根package下；</p>
-</li>
-<li><p>命名不做要求，但一般是以Application为后缀命名；</p>
-</li>
-<li><p>使用<code>@SpringBootApplication</code>注解标注；</p>
-</li>
-<li><p>可以通过<code>@SpringBootApplication(exclude = &#123;...&#125;)</code>或者<code>@EnableAutoConfiguration(exclude = &#123;...&#125;)</code>来指定禁用的自动配置。</p>
-</li>
-</ul>
-<p><code>@SpringBootApplication</code>等同于以下三个注解的集合：</p>
-<ul>
-<li><p><code>@SpringBootConfiguration</code>：支持在上下文中注册额外的Bean或导入额外的配置类，是Spring的标准的<code>@Configuration</code>的替代，有助于在集成测试中进行配置检测；</p>
-</li>
-<li><p><code>@EnableAutoConfiguration</code>：启用 SpringBoot 的自动装配机制（自动扫描+条件装配），详细介绍见3.1节；</p>
-</li>
-<li><p><code>@ComponentScan</code>：扫描被声明为JavaBean的类。</p>
-</li>
-</ul>
-<h2 id="2-2-默认约定"><a href="#2-2-默认约定" class="headerlink" title="2.2 默认约定"></a>2.2 默认约定</h2><p>1）Spring Boot默认约定采用Maven的目录结构。</p>
-<p>2）Spring Boot默认内置了嵌入式的Web容器，支持四种嵌入式Web容器：Tomcat、Jetty、Undertow、Reactor。</p>
-<p>3）Spring Boot默认约定的配置文件是<code>application.yml</code>：</p>
-<ul>
-<li><p>Spring Boot几乎所有的配置项都可以在这个文件中配置，如果不配置，则使用默认项；</p>
-</li>
-<li><p>文件位于<code>src/main/resources</code>目录下；</p>
-</li>
-<li><p>文件名必须是<code>application</code>而不是其他名称;</p>
-</li>
-<li><p>文件后缀采用<code>.yml</code>（<a href="https://yaml.org/">YAML</a>）或者<code>.properties</code>，后者的优先级更高；</p>
-</li>
-<li><p>层级格式的<code>.yml</code>文件比<code>key=value</code>格式的<code>.properties</code>文件更易读；</p>
-</li>
-<li><p>使用<code>.yml</code>时：</p>
-<ul>
-<li><p>属性名的值和冒号中间必须有空格；</p>
-</li>
-<li><p>大小写敏感；</p>
-</li>
-<li><p>使用空格缩进表示层级关系；</p>
-</li>
-<li><p>缩进时不能使用tab，只能空格；</p>
-</li>
-<li><p>缩进的空格数目不重要，只要相同层级的元素左侧对齐即可；</p>
-</li>
-<li><p><code>#</code>表示注释，从这个字符一直到行尾，都会被解析器忽略。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="2-3-优先级配置"><a href="#2-3-优先级配置" class="headerlink" title="2.3 优先级配置"></a>2.3 优先级配置</h2><p>Spring Boot提供了一种优先级配置的机制，优先级高的配置会覆盖优先级低的配置。</p>
-<ul>
-<li><p>优先级最高的是命令行参数配置；</p>
-<ul>
-<li><p>命令行参数的优先级之所以被设置为最高，是因为可以方便我们在测试或生产环境中快速地修改配置参数值，而不需要重新打包和部署应用；</p>
-</li>
-<li><p>以<code>--</code>开头的命令行参数会被转化成应用中可以使用的配置参数，如<code>--name = Alex</code> 会设置配置参数<code>name</code> 的值为<code>Alex</code>；</p>
-</li>
-</ul>
-</li>
-<li><p>不同位置的配置文件的优先级从高到低依次为：</p>
-<ul>
-<li><p>项目目录的<code>/config</code>子目录；</p>
-</li>
-<li><p>项目目录；</p>
-</li>
-<li><p><code>src/main/resources/config</code>子目录；</p>
-</li>
-<li><p><code>src/main/resources</code>子目录（默认配置）；</p>
-</li>
-</ul>
-</li>
-<li><p>配置文件的优先级高于应用Java配置类：</p>
-<ul>
-<li><p>任何<code>@Component</code>或<code>@Configuration</code>都能注解<code>@Profile</code>，从而限制加载它的环境；</p>
-</li>
-<li><p>通常的应用部署会包含开发、测试、预发和生产等若干个环境。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Profile(&quot;production&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductionConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<h2 id="2-4-读取配置信息"><a href="#2-4-读取配置信息" class="headerlink" title="2.4 读取配置信息"></a>2.4 读取配置信息</h2><p>Spring Boot可以通过以下方式来读取配置信息：</p>
-<ul>
-<li><p><code>@Value(&quot;$&#123;property&#125;&quot;)</code>：适用于只需获取某单一配置项的值的场景；</p>
-</li>
-<li><p><code>@ConfigurationProperties(prefix = &quot;xxx&quot;)</code>：使用该注解来定义一个<code>XXXProperties </code>类或者<code>getXXXProperties</code>方法，读取以key以<code>xxx</code>为前缀的信息，适用于需要批量获取多个配置项的场景；</p>
-<ul>
-<li><p>配合<code>@Validated</code>注解可以对参数实现校验功能。</p>
-</li>
-<li><p><code>XXXProperties </code>类配合<code>@Component</code>注解或者<code>getXXXProperties</code>方法配合<code>@Bean </code>注解就能像使用普通 JavaBean 一样，将<code>XXXProperties </code>类注入到其他类中使用；</p>
-</li>
-<li><p>如果不使用<code>@Component</code>或则<code>@Bean </code>注解将其声明为Bean，那么需要在启动类或者被加载的配置类上标注<code>@EnableConfigurationProperties(XXXProperties.class)</code>注解来注册<code>XXXProperties </code>。</p>
-</li>
-</ul>
-</li>
-<li><p><code>@PropertySource(&quot;classpath:xxx.properties&quot;)</code>：使用该注解来定义一个类，读取指定的<code>.properties</code> 文件中的信息（<code>.yml</code>文件不行），同样可以将该类声明为一个JavaBean。</p>
-</li>
-</ul>
-<h2 id="2-5-过滤配置类"><a href="#2-5-过滤配置类" class="headerlink" title="2.5 过滤配置类"></a>2.5 过滤配置类</h2><p>可以通过<code>@Conditional</code>及其派生注解来判断是否过滤候选的配置类，被过滤的配置类不会被SpringBoot 的自动装配机制加载，详细介绍见3.1节</p>
-<table>
-<thead>
-<tr>
-<th align="center"><code>@Conditional</code>派生注解</th>
-<th align="center">判断条件</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>@ConditionalOnJava</code></td>
-<td align="center">系统的java版本是否符合要求</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnBean</code></td>
-<td align="center">容器中存在指定Bean</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnMissingBean</code></td>
-<td align="center">容器中不存在指定Bean</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnExpression</code></td>
-<td align="center">满足SpEL表达式指定</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnClass</code></td>
-<td align="center">系统中有指定的类</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnMissingClass</code></td>
-<td align="center">系统中没有指定的类</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnSingleCandidate</code></td>
-<td align="center">容器中只有一个指定的Bean，或者这个Bean是首选Bean</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnProperty</code></td>
-<td align="center">系统中指定的属性是否有指定的值</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnResource</code></td>
-<td align="center">类路径下是否存在指定资源文件</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnWebApplication</code></td>
-<td align="center">当前是web环境</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnNotWebApplication</code></td>
-<td align="center">当前不是web环境</td>
-</tr>
-<tr>
-<td align="center"><code>@ConditionalOnJndi</code></td>
-<td align="center">JNDI存在指定项</td>
-</tr>
-</tbody></table>
-<h1 id="3、源码学习"><a href="#3、源码学习" class="headerlink" title="3、源码学习"></a>3、源码学习</h1><p>SpringBoot具有以下子modules：</p>
-<ul>
-<li>spring-boot：核心工程。</li>
-<li>spring-boot-starters：启动服务工程，可减少第三方jar的依赖。</li>
-<li>spring-boot-autoconfigure：实现自动配置的核心工程。</li>
-<li>spring-boot-actuator：外围支撑性功能。</li>
-<li>spring-boot-tools：开发者的常用工具集。</li>
-<li>spring-boot-cli：命令行交互工具。</li>
-<li>spring-boot-devtools：为开发者服务，其中最重要的功能就是热部署。</li>
-</ul>
-<h2 id="3-1-启动"><a href="#3-1-启动" class="headerlink" title="3.1 启动"></a>3.1 启动</h2><p>生成一个Spring Boot项目时，会有一个以Application为后缀命名的启动类，启动类的<code>main</code>方法中会调用<code>SpringApplication</code>类的静态<code>run</code>方法。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorldApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      SpringApplication.run(HelloWorldApplication.class, args);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在spring-boot模块中，<code>SpringApplication</code>类的静态<code>run</code>方法是一个可以通过默认设置和用户约定来从具体source运行Spring项目的静态帮助器。</p>
-<p>1）在<code>SpringApplication</code>类的静态<code>run</code>方法中，依次调用了<code>SpringApplication</code>类的构造方法和对象的<code>run</code>方法，完整代码如下</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(Class&lt;?&gt;[] primarySources, String[] args)</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SpringApplication</span>(primarySources).run(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）在<code>SpringApplication</code>类的构造方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第8行，将不为空的<code>primarySources</code>加入到一个<code>LinkedHashSet</code>中；</p>
-</li>
-<li><p>以下代码的第9行，调用<code>deduceFromClasspath</code>方法得到Web环境类型（<code>NONE</code>、<code>SERVLET</code>、<code>REACTIVE</code>），当在JUnit测试中使用<code>SpringApplication</code>时，通常需要调用<code>setWebApplicationType(WebApplicationType.NONE)</code>；</p>
-</li>
-<li><p>以下代码的第10、11、12行，调用<code>getSpringFactoriesInstances</code>方法，从而设置<code>BootstrapRegistryInitializer</code>列表、<code>ApplicationContextInitializer</code>列表以及<code>ApplicationListener</code>列表；</p>
-</li>
-<li><p>以下代码的第13行，调用<code>deduceMainApplicationClass</code>方法获取当前方法调用栈，找到<code>main</code>函数所在的类；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">   <span class="built_in">this</span>(<span class="literal">null</span>, primarySources);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">SpringApplication</span><span class="params">(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.resourceLoader = resourceLoader;</span><br><span class="line">    Assert.notNull(primarySources, <span class="string">&quot;PrimarySources must not be null&quot;</span>);</span><br><span class="line">    <span class="built_in">this</span>.primarySources = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line">    <span class="built_in">this</span>.webApplicationType = WebApplicationType.deduceFromClasspath();</span><br><span class="line">    <span class="built_in">this</span>.bootstrapRegistryInitializers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;( getSpringFactoriesInstances(BootstrapRegistryInitializer.class));</span><br><span class="line">    setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">    setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">    <span class="built_in">this</span>.mainApplicationClass = deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3）在<code>getSpringFactoriesInstances</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第4行，调用<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法，读取<code>resources/META-INF/spring.factories</code>文件中的配置项的value值（key为上一级方法调用入参，value是一些类名），并放入到一个<code>LinkedHashSet</code>中去重；</p>
-</li>
-<li><p>以下代码的第5行，调用<code>createSpringFactoriesInstances</code>方法进行初始化；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; Collection&lt;T&gt; <span class="title function_">getSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes, Object... args)</span> &#123;</span><br><span class="line">   <span class="type">ClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> getClassLoader();</span><br><span class="line">   <span class="comment">// Use names and ensure unique to protect against duplicates</span></span><br><span class="line">   Set&lt;String&gt; names = <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>&lt;&gt;(SpringFactoriesLoader.loadFactoryNames(type, classLoader));</span><br><span class="line">   List&lt;T&gt; instances = createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);</span><br><span class="line">   AnnotationAwareOrderComparator.sort(instances);</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4）在<code>createSpringFactoriesInstances</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第4行，遍历刚刚加载得到的类名；</p>
-</li>
-<li><p>以下代码的6~10行，依次调用类名所对应类的构造器进行初始化并加入到一个<code>List</code>当中；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> &lt;T&gt; List&lt;T&gt; <span class="title function_">createSpringFactoriesInstances</span><span class="params">(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes,</span></span><br><span class="line"><span class="params">      ClassLoader classLoader, Object[] args, Set&lt;String&gt; names)</span> &#123;</span><br><span class="line">   List&lt;T&gt; instances = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(names.size());</span><br><span class="line">   <span class="keyword">for</span> (String name : names) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">         Class&lt;?&gt; instanceClass = ClassUtils.forName(name, classLoader);</span><br><span class="line">         Assert.isAssignable(type, instanceClass);</span><br><span class="line">         Constructor&lt;?&gt; constructor = instanceClass.getDeclaredConstructor(parameterTypes);</span><br><span class="line">         <span class="type">T</span> <span class="variable">instance</span> <span class="operator">=</span> (T) BeanUtils.instantiateClass(constructor, args);</span><br><span class="line">         instances.add(instance);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Cannot instantiate &quot;</span> + type + <span class="string">&quot; : &quot;</span> + name, ex);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>5）在<code>SpringApplication</code>类对象的<code>run</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第5行，调用<code>configureHeadlessProperty</code>方法，将<code>java.awt.headless</code>属性设置为<code>true</code>，表示运行在服务器端；</p>
-</li>
-<li><p>以下代码的第6行，依次调用了<code>getRunListeners</code>方法 –&gt; <code>getSpringFactoriesInstances</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法 –&gt; 读取<code>resources/META-INF/spring.factories</code>文件中的配置项的value值，从而设置<code>SpringApplicationRunListener</code>列表，这里只有一个value值（<code>EventPublishingRunListener</code>）；</p>
-</li>
-<li><p>以下代码的第7行，依次调用了<code>SpringApplicationRunListener</code>列表的<code>starting</code>方法 –&gt; <code>EventPublishingRunListener</code>类的<code>starting</code>方法 –&gt; <code>SimpleApplicationEventMulticaster</code>类的<code>multicastEvent</code>方法 –&gt; <code>invokeListener</code>方法 –&gt; <code>doInvokeListener</code>方法 –&gt; <code>ApplicationListener</code>接口的<code>onApplicationEvent</code>方法；</p>
-</li>
-<li><p>以下代码的第9行，依次调用了<code>DefaultApplicationArguments</code>的构造方法 –&gt; <code>Source</code>的构造方法 –&gt; <code>SimpleCommandLinePropertySource</code>的构造方法和<code>parse</code>方法 –&gt; <code>CommandLinePropertySource</code>的构造方法 –&gt; <code>EnumerablePropertySource</code>的构造方法 –&gt; <code>PropertySource</code>的构造方法，封装了命令行参数；</p>
-</li>
-<li><p>以下代码的第10行，调用了<code>prepareEnvironment</code>方法，从中逐步</p>
-<ul>
-<li><p>通过<code>getOrCreateEnvironment</code>方法获取或创建了<code>ConfigurableEnvironment</code>；</p>
-</li>
-<li><p>通过<code>configureEnvironment</code>方法配置了<code>ConfigurableEnvironment</code></p>
-</li>
-<li><p>通过<code>SpringApplicationRunListener</code>列表的<code>environmentPrepared</code>方法通知所有的观察者环境已经准备好了，可以进行后续操作；</p>
-</li>
-</ul>
-</li>
-<li><p>以下代码的第12行，调用了<code>printBanner</code>方法，打印<code>banner</code>；</p>
-</li>
-<li><p>以下代码的第13行，调用了<code>createApplicationContext</code>方法，根据当前环境类型（在<code>SpringApplication</code>类的构造方法中确定）来创建对应类型的上下文；</p>
-</li>
-<li><p>以下代码的第15行，依次调用了<code>prepareContext</code>方法 –&gt; <code>ApplicationContextInitializer</code>列表的<code>initialize</code>方法和<code>SpringApplicationRunListener</code>列表的<code>contextPrepared</code>方法和<code>contextLoaded</code>方法；</p>
-</li>
-<li><p>以下代码的第16行，调用了<code>refreshContext</code>方法，实现IoC容器的初始化及Bean的生命周期中的部分过程，具体可参见 <a href="../../07/spring/">Spring Framework</a> 的2.4节，如果是web应用还会创建嵌入式的Tomcat；</p>
-</li>
-<li><p>以下代码的26、27、34、35行，调用了<code>handleRunFailure</code>方法来处理异常并抛出<code>IllegalStateException</code>异常；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> ConfigurableApplicationContext <span class="title function_">run</span><span class="params">(String... args)</span> &#123;</span><br><span class="line">   <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">   <span class="type">DefaultBootstrapContext</span> <span class="variable">bootstrapContext</span> <span class="operator">=</span> createBootstrapContext();</span><br><span class="line">   <span class="type">ConfigurableApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">   configureHeadlessProperty();</span><br><span class="line">   <span class="type">SpringApplicationRunListeners</span> <span class="variable">listeners</span> <span class="operator">=</span> getRunListeners(args);</span><br><span class="line">   listeners.starting(bootstrapContext, <span class="built_in">this</span>.mainApplicationClass);</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">ApplicationArguments</span> <span class="variable">applicationArguments</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultApplicationArguments</span>(args);</span><br><span class="line">      <span class="type">ConfigurableEnvironment</span> <span class="variable">environment</span> <span class="operator">=</span> prepareEnvironment(listeners, bootstrapContext, applicationArguments);</span><br><span class="line">      configureIgnoreBeanInfo(environment);</span><br><span class="line">      <span class="type">Banner</span> <span class="variable">printedBanner</span> <span class="operator">=</span> printBanner(environment);</span><br><span class="line">      context = createApplicationContext();</span><br><span class="line">      context.setApplicationStartup(<span class="built_in">this</span>.applicationStartup);</span><br><span class="line">      prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">      refreshContext(context);</span><br><span class="line">      afterRefresh(context, applicationArguments);</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToStartup</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">this</span>.logStartupInfo) &#123;</span><br><span class="line">         <span class="keyword">new</span> <span class="title class_">StartupInfoLogger</span>(<span class="built_in">this</span>.mainApplicationClass).logStarted(getApplicationLog(), timeTakenToStartup);</span><br><span class="line">      &#125;</span><br><span class="line">      listeners.started(context, timeTakenToStartup);</span><br><span class="line">      callRunners(context, applicationArguments);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, listeners);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="type">Duration</span> <span class="variable">timeTakenToReady</span> <span class="operator">=</span> Duration.ofNanos(System.nanoTime() - startTime);</span><br><span class="line">      listeners.ready(context, timeTakenToReady);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">      handleRunFailure(context, ex, <span class="literal">null</span>);</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(ex);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-2-自动配置"><a href="#3-2-自动配置" class="headerlink" title="3.2 自动配置"></a>3.2 自动配置</h2><p>启动类使用<code>@SpringBootApplication</code>注解标注，而<code>@SpringBootApplication</code>注解包含了<code>@EnableAutoConfiguration</code>注解。</p>
-<p>在spring-boot-autoconfigure模块中，<code>@EnableAutoConfiguration</code>注解会启用 SpringBoot 的自动装配机制（自动扫描+条件装配）。</p>
-<p>1）<code>@EnableAutoConfiguration</code>引入了<code>AutoConfigurationImportSelector</code>类，这是用于选择给容器导入哪些组件的选择器，会将符合条件的配置类都加载到IoC容器中，<code>AutoConfigurationImportSelector</code>类提供了<code>selectImports</code>方法的具体实现；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Import(AutoConfigurationImportSelector.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAutoConfiguration &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）在<code>AutoConfigurationImportSelector</code>类的<code>selectImports</code>方法中，调用了<code>getAutoConfigurationEntry</code>方法，完整代码如下；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> NO_IMPORTS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AutoConfigurationEntry</span> <span class="variable">autoConfigurationEntry</span> <span class="operator">=</span> getAutoConfigurationEntry(annotationMetadata);</span><br><span class="line">    <span class="keyword">return</span> StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3）在<code>AutoConfigurationImportSelector</code>类的<code>getAutoConfigurationEntry</code>方法中，完整代码如下</p>
-<ul>
-<li><p>以下代码的第5行，会调用<code>getAttributes</code>方法来获取元注解中的属性；</p>
-</li>
-<li><p>以下代码的第6行，会依次调用<code>getCandidateConfigurations</code>方法 –&gt; <code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法；</p>
-</li>
-<li><p>以下代码的第11行，会根据候选配置类上的<code>@ConditionalOnClass</code>注解来判断是否过滤该候选类，被过滤的候选类不会被加载；</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">protected</span> AutoConfigurationEntry <span class="title function_">getAutoConfigurationEntry</span><span class="params">(AnnotationMetadata annotationMetadata)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        <span class="keyword">return</span> EMPTY_ENTRY;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AnnotationAttributes</span> <span class="variable">attributes</span> <span class="operator">=</span> getAttributes(annotationMetadata);</span><br><span class="line">    List&lt;String&gt; configurations = getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">    configurations = removeDuplicates(configurations);</span><br><span class="line">    Set&lt;String&gt; exclusions = getExclusions(annotationMetadata, attributes);</span><br><span class="line">    checkExcludedClasses(configurations, exclusions);</span><br><span class="line">    configurations.removeAll(exclusions);</span><br><span class="line">    configurations = getConfigurationClassFilter().filter(configurations);</span><br><span class="line">    fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">AutoConfigurationEntry</span>(configurations, exclusions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4）在<code>SpringFactoriesLoader</code>类的<code>loadFactoryNames</code>方法中，会读取<code>resources/META-INF/spring.factories</code>文件中key为<code>EnableAutoConfiguration</code>的全限定名的value；</p>
-<ul>
-<li><p><code>EnableAutoConfiguration</code>的全限定名所对应的value有很多（一百多个），每个value都是一个配置类的全限定名；</p>
-</li>
-<li><p>SpringBoot 的自动装配机制并不会加载全部value所对应的配置类，而是会根据配置类的<code>@ConditionalOnClass</code>等注解所确定的条件来判断是否加载该配置类；</p>
-</li>
-</ul>
-<p>5）因此，如果需要<code>@EnableAutoConfiguration</code>注解去加载自定义jar包中的Bean，就应该确保：</p>
-<ul>
-<li><p>该jar包的配置类中编写了标注了<code>@Bean</code>的方法来创建并返回该Bean；</p>
-</li>
-<li><p>该jar包的<code>src/main/resources/META-INF</code>目录下存在<code>spring.factories</code>文件，并在<code>spring.factories</code>文件配置了key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项；</p>
-</li>
-</ul>
-<p>6）总结与注意事项</p>
-<ul>
-<li><p>Spring Boot会根据<code>@EnableAutoConfiguration</code>注解来猜测开发者想要如何配置Spring并实现自动配置；</p>
-</li>
-<li><p>自动配置被设计成与“starter”一起工作，但是这两个概念并没有直接联系在一起，开发者可以在启动器之外自由选择jar包；</p>
-</li>
-<li><p>自动配置是非侵入性的，开发者在任何时候都可以开始定义自己的配置来替换自动配置的特定部分；</p>
-</li>
-<li><p>在jar包的<code>src/main/resources/META-INF/spring.factories</code>文件中，开发者还可以添加配置项来指定自动配置类的加载条件，<code>@EnableAutoConfiguration</code>会根据加载条件来判断是否加载某配置类；</p>
-</li>
-<li><p>这些自动配置类被设置为<code>public</code>只是为了方便禁用它，实际上这些自动配置类是仅供内部使用的，不建议直接使用这些类的实际内容（例如嵌套的配置类或Bean方法）。</p>
-</li>
-</ul>
-<h2 id="3-3-Web配置"><a href="#3-3-Web配置" class="headerlink" title="3.3 Web配置"></a>3.3 Web配置</h2><p>添加了Spring -boot-starter-web依赖项后，Spring Boot会自动添加Tomcat和Spring MVC，自动配置会假定正在开发一个web应用程序，并相应地设置Spring。</p>
-<p>在3.2节中学习到了<code>@EnableAutoConfiguration</code>注解会加载<code>spring.factories</code>文件中所配置的key为<code>EnableAutoConfiguration</code>的全限定名，value为配置类的全限定名的配置项。</p>
-<p>本节以<code>WebMvcAutoConfiguration</code>这一自动配置类为例，介绍Spring Boot的Web配置。</p>
-<p>1）通过<code>@Conditional</code>及其派生注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载条件，<code>@AutoConfigureOrder</code>和<code>@AutoConfigureAfter</code>注解给出了<code>WebMvcAutoConfiguration</code>配置类的加载顺序；</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration(proxyBeanMethods = false)</span></span><br><span class="line"><span class="meta">@ConditionalOnWebApplication(type = Type.SERVLET)</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(&#123; Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class &#125;)</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(WebMvcConfigurationSupport.class)</span></span><br><span class="line"><span class="meta">@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)</span></span><br><span class="line"><span class="meta">@AutoConfigureAfter(&#123; DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,</span></span><br><span class="line"><span class="meta">      ValidationAutoConfiguration.class &#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebMvcAutoConfiguration</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2）<code>WebMvcAutoConfiguration</code>配置类内部有一些静态内部类</p>
-<ul>
-<li><p><code>EnableWebMvcConfiguration</code>配置类</p>
-<ul>
-<li><p>相当于<code>@EnableWebMvc</code>注解的功能；</p>
-</li>
-<li><p>通过<code>@EnableConfigurationProperties(WebProperties.class)</code>注册了<code>WebProperties</code>，</p>
-</li>
-<li><p>重写了一些<code>WebMvcConfigurationSupport</code>父类中的方法实现并声明为Bean方法；</p>
-</li>
-</ul>
-</li>
-<li><p><code>ResourceChainCustomizerConfiguration</code>配置类</p>
-<ul>
-<li><p>由<code>OnEnabledResourceChainCondition</code>来判断是否加载；</p>
-</li>
-<li><p>默认是不进行加载的；</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>3）<code>WebMvcAutoConfiguration</code>配置类中声明了两个Bean方法，注册条件如下</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(HiddenHttpMethodFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.hiddenmethod.filter&quot;, name = &quot;enabled&quot;)</span></span><br><span class="line"><span class="keyword">public</span> OrderedHiddenHttpMethodFilter <span class="title function_">hiddenHttpMethodFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedHiddenHttpMethodFilter</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@ConditionalOnMissingBean(FormContentFilter.class)</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(prefix = &quot;spring.mvc.formcontent.filter&quot;, name = &quot;enabled&quot;, matchIfMissing = true)</span></span><br><span class="line"><span class="keyword">public</span> OrderedFormContentFilter <span class="title function_">formContentFilter</span><span class="params">()</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">OrderedFormContentFilter</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="4、参考资料"><a href="#4、参考资料" class="headerlink" title="4、参考资料"></a>4、参考资料</h1><ul>
-<li><a href="https://www.jianshu.com/p/f3337a836faf">https://www.jianshu.com/p/f3337a836faf</a></li>
-<li><a href="https://snailclimb.gitee.io/springboot-guide/#/">https://snailclimb.gitee.io/springboot-guide/#/</a></li>
-<li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464">https://www.liaoxuefeng.com/wiki/1252599548343744/1266265175882464</a></li>
-<li><a href="https://blog.csdn.net/qq_26000415/category_9271293.html">https://blog.csdn.net/qq_26000415/category_9271293.html</a></li>
-<li><a href="https://docs.spring.io/spring-boot/docs/2.7.0/reference/html/">https://docs.spring.io/spring-boot/docs/2.7.0/reference/html/</a></li>
-<li><a href="https://docs.spring.io/spring-boot/docs/2.7.0/api/">https://docs.spring.io/spring-boot/docs/2.7.0/api/</a></li>
 </ul>
 ]]></content>
   </entry>
