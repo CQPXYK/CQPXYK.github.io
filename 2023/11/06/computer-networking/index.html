@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">-->
+  <meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Computer Networking | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/records" class="item-link">Records</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/scratches/" class="item-link">Scratches</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/records" class="menu-link">Records</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/scratches/" class="menu-link">Scratches</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Computer Networking</h2>
+  <!--<p class="post-date">2023-11-06</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>-->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述"></a>1、概述</h1><p><strong>因特网</strong>是一个世界范围的计算机网络，互联了遍及全世界的数十亿计算设备，是网络的网络。因特网所连接的这些设备（不一定是计算机）称为<strong>主机 host 或端系统</strong>，因特网应用就运行在这些端系统上（分布式应用涉及多个相互交互数据的端系统），端系统提供了一个套接字接口，该接口规定了运行在一个端系统上的应用程序向运行在另一个端系统上的特定应用交付数据的方式。</p>
+<p><strong>端系统</strong>通过<strong>通信链路和分组交换机</strong>的网络连接到一起，通信链路由不同类型的物理媒介（同轴电缆、铜线、光纤和无线电频谱）组成，这些通信链路能够以不同的传输速率（以比特/秒 bps 度量）传输在端系统之间交换报文，发送端系统将报文划分为较小的数据块（称为分组 packet），分组交换机从它的一条入通信链路接收到达的 packet，根据 packet 的目的地的 IP 地址和转发表找到对应的出通信链路，转发该 packet，packets 在目的端系统被装配成初始数据。</p>
+<p>大多数<strong>分组交换机</strong>在链路的输入端使用存储转发传输机制，即交换机在向输出端链路传输该 packet 的第一个比特之前，必须接收到整个 packet。分组交换机对于每条相连的链路都具有一个输出缓存，用于存储准备发往该链路的 packet，因此，除了存储转发时延以外，packet 还要经历输出缓存的排队时延，排队时延是变化的，变化的程度取决于网络的拥塞等级，此外由于缓存的大小是有限的，当缓存空间已满时，新到的 packet 或者已经在排队的 packet 就会被丢弃。如今常见的分组交换机是路由器和链路层交换机，路由器通常用于网络核心，链路层交换机通常用于接入网中。</p>
+<p><strong>接入网</strong>指将端系统物理连接到其边缘路由器（边缘路由器是端系统到任何其他远程端系统的路径上的第一台路由器）的网络。很多公司、校园以及家庭端使用局域网（LAN）将端系统连接到边缘路由器，不过以太网是目前最流行的接入技术。在基于 IEEE 802.11 技术的无线 LAN（又称 WiFi）环境中，无线用户从/到一个接入点发送/接收分组，该接入点与企业网（很可能是有线以太网）连接，企业网再与有线因特网相连，无线 LAN 用户通常必须位于距离接入点几十米的范围内。用户在移动环境中采用广域无线/蜂窝接入网（3G、LTE 4G 和 5G），即通过蜂窝网提供商运营的基站来发送和接收分组，用户仅需位于距离基站数万米范围内。</p>
+<p><strong>因特网服务提供商（ISP）</strong>是一个由多台分组交换机和多段通信链路组成的网络，是端系统和更大的因特网之间的桥梁。每个 ISP 网络都是独立管理的，ISP 与 ISP 之间都是互联的，较低层的 ISP 通过较高层的 ISP 互联，较高层的 ISP 通过高速光纤链路彼此直接互联，接入网就是位于最底层的接入 ISP，各种接入 ISP 为端系统提供了不同类型的网络接入，我国每个城市有接入 ISP，再往上可以是区域 ISP、省级 ISP、国家级 ISP 以及全球传输的第一层 ISP。较低层的 ISP 和较高层的 ISP 之间是客户和提供商之间的付费关系，除第一层 ISP 以外的任何 ISP 都可以通过多宿（与多个提供商 ISP 相连）来增强稳定性，位于相同层级的邻近的一对 ISP 能直接相连实现对等，从而避免它们之间的流量向上层传输，多个 ISP 可以以因特网交换点（IXP）作为汇合点来一起实现对等，对等的 ISP 之间无需付费。</p>
+<p>计算机网络必定要限制在端系统之间的<strong>吞吐量（bps）</strong>，会在端系统之间引入<strong>时延</strong>，且不可避免的会<strong>丢失 packet</strong>。所有的 packet 在每个节点上都经受了几种不同类型的时延，比较重要的是节点处理时延（检查 packet 并找到出链路）、排队时延（排队等待传输，过大则丢包）、传输/发射时延（将 packet 的所有比特推向链路）以及传播时延（比特从起点到下一跳所需要的时间），这些时延累加起来是节点总时延。吞吐量指端与端之间交付比特的速率，为了避免流量在某一个节点上堆积，因此比特从源向目的地的流动速率/吞吐量取决于所有途径的链路中的最小的链路速率以及链路上的干扰流量，今天因特网中对吞吐量的限制因素通常是接入网。</p>
+<p>为了处理这些吞吐量、时延以及丢包问题，所有的因特网部件都要运行多个<strong>协议</strong>，这些协议定义了通信实体之间交换的报文的格式和顺序，以及报文的发送和接收等事件所采取的操作，从而控制着因特网中信息的接收和发送（主要协议统称为 TCP/IP 协议，因特网标准由 IETF 研发，IETF 的标准文档称为 RFC）。网络设计者以分层的方式组织协议，每个协议属于这些层次之一，每层协议通过自身执行某些操作或使用直接下层的服务来向上一层提供服务，各层的所有协议被称为协议栈，因特网的协议栈由物理层、链路层、网络层、运输层和应用层组成。</p>
+<p>应用层是网络应用程序及它们的应用层协议存留的地方，应用层协议分布在多个端系统上，端系统的应用程序使用协议与另一个端系统中的应用程序交换分组，称为报文。运输层在应用程序端点之间传送分组，称为报文段。网络层负责在主机和主机之间传送分组，称为数据报。链路层沿着路径在节点之间传递分组，称为帧。物理层在物理传输媒介上移动帧的一个个比特。一个协议层能够用硬件、软件或两者结合来实现，应用层、运输层这样的高层协议几乎总是在端系统中用软件实现，网络层通常是硬件和软件实现的混合体，数据链路层、物理层通常在给定链路相关联的网络接口卡中实现。主机实现了所有层次的协议，路由器实现了网络层以及以下的协议，链路层交换机实现了链路层及以下的协议。</p>
+<h1 id="2、应用层"><a href="#2、应用层" class="headerlink" title="2、应用层"></a>2、应用层</h1><p>网络应用是计算机网络存在的理由，<strong>虽然网络体系结构是固定的（为应用程序提供了特定的服务集合），但应用体系结构由应用程序研发者设计</strong>，这规定了如何在各种端系统上组织该应用程序，主流的应用体系结构是 C/S（典型例子包括 FTP、电子邮件、Web 应用等，服务器一般设为托管大量主机的数据中心）和 P2P（典型例子是 BitTorrent）。</p>
+<p>网络应用程序由成对的运行在不同端系统（可能具有不同的操作系统）上的进程组成，这些进程通过一个称为<strong>套接字</strong>的软件接口向网络发送报文和从网络接收报文，从而跨越计算机网络交换报文而相互通信。套接字是同一台主机内应用层与运输层之间的可编程接口（也称为应用程序和网络之间的 API），应用程序开发者可以控制套接字在应用层端的一切，但对运输层的控制仅限于选择运输层协议和设定一些如最大缓存和最大报文段长度的运输层参数（此外，应用程序开发者对该套接字的运输层端几乎没有控制权），一旦应用层报文进入套接字，该报文就脱离了应用层控制并进入运输层控制。</p>
+<p><strong>应用层协议</strong>定义了交换的报文类型（例如请求还是响应）、各种报文类型的语法（例如报文的各个字段）、字段的语义、发送和响应报文的规则等，公用的应用层协议由 RFC 文档定义。<strong>应用进程的地址</strong>包含主机的地址和进程标识符，在因特网中，主机的地址为 IP 地址，进程标识符为端口号。</p>
+<p>运输层协议需要为应用程序的数据传输提供<strong>可靠与否、吞吐量、定时和安全性</strong>这四个方面的服务。比如电子邮件、文件传输等应用要求可靠交付，但不要求特定吞吐量（属于弹性应用），多媒体应用则对吞吐量有特殊要求（属于带宽敏感应用），电话、视频会议、多方游戏等应用有严格的时间限制。因特网为应用程序提供 UDP 和 TCP 这两个运输层协议，<strong>UDP 提供尽最大努力不确保可靠交付服务，TCP 提供面向连接服务和可靠交付服务</strong>。因特网通常能够为带宽敏感和时间敏感应用提供满意的服务，但因特网运输层协议<strong>不提供对吞吐量和定时方面的保证性服务</strong>，因特网的 UDP 和 TCP 都没有提供安全性服务，<strong>安全性由应用层的 TLS 提供</strong>，TLS 有它自己的套接字 API，类似于传统的 TCP 套接字 API，当一个应用使用 TLS 时，发送进程向 TLS 套接字传递明文数据，发送主机中的 TLS 则加密该数据，并将加密的数据传递给 TCP 套接字，加密的数据经由因特网传送到接收进程中的 TCP 套接字，该接收套接字将加密数据传递给 TLS，由其进行解密，最后 TLS 套接字将明文数据传递给接收进程。</p>
+<h2 id="2-1-Web-应用"><a href="#2-1-Web-应用" class="headerlink" title="2.1 Web 应用"></a>2.1 Web 应用</h2><p><strong>Web 页面</strong>（又称文档）由对象组成，一个对象就是一个文件（例如 HTML 文件、JPEG 文件、JavaScript 文件、CCS 样式表文件、视频文件等），每个对象文件都可通过一个 URL 寻址，URL 由存放对象的服务器主机名和对象的路径名组成。Web 应用使用 C/S 应用程序体系结构，Web 服务器总是打开的，具有一个固定的 IP 地址。Web 应用使用的应用层协议是 HTTP（[REC 1945]、[REC 7230]、[REC 7540]）。</p>
+<p>HTTP 由运行在不同端系统中的客户程序和服务器程序这两个程序实现，定义了在 Web 浏览器（实现了 HTTP 客户端）和 Web 服务器（实现了 HTTP 服务器端）之间请求和传送 Web 页面的方式，并使用 TCP 作为运输层协议支撑。HTTP 是一个<strong>无状态</strong>协议，即 HTTP 服务器端仅仅只是向客户发送被请求的对象文件，而不存储任何关于该客户的状态信息，这简化了服务器的设计，允许 Web 服务器同时处理数千个 TCP 连接。</p>
+<p>客户端可能以规则的间隔周期性地或者间断性的发出一些列请求，若所有的请求/响应对分别经过一个单独的 TCP 连接发送则称为非持续连接，若所有的请求/响应对都经过同一个 TCP 连接流水线式的发送则称为持续连接，HTTP <strong>默认使用持续连接</strong>，但也能通过配置使用非持续连接。</p>
+<p><strong>HTTP 请求报文</strong>的第一行叫作请求行（request line），请求行有方法、URL 和 HTTP 版本这三个字段；请求行之后是一些首部行（header line），首部行可以指明请求对象所在的主机（这是 Web 代理高速缓存所要求的）、是否使用非持续连接、用户代理（即发送请求的浏览器的类型）等；首部行后为实体体（entity body）。GET 方法的实体体为空，POST 方法的实体体为一些和请求相关的内容（所请求的 Web 页面的特定内容依赖于该实体体中的内容），HEAD 方法并不请求具体 Web 对象，仅仅只需要服务返回一个 HTTP 报文进行响应，常用于调试跟踪，PUT 方法允许上传对象到指定的 Web 服务器上指定的路径，常用于与 Web 发行工具联合使用，DELETE 方法允许删除 Web 服务器上的对象。</p>
+<p><strong>HTTP 响应报文</strong>的第一行叫作初始状态行（status line），状态行有 HTTP 版本、状态码和状态信息这三个字段；初始状态行之后是一些首部行，首部行指明了发送完报文后是否关闭该 TCP 连接，服务器产生并发送响应报文的时间、服务器代理、对象创建或最后修改的时间、被发送对象中的字节数，对象类型等；首部行之后为实体体，实体体是报文的主要部分，包含了所请求的对象本身。301 代表请求的对象已经被永久转移了，新的 URL 定义在响应报文的“Location：”首部行中；400 是一个通用差错代码，服务器不能理解该请求；404 代表请求的文档不在服务器上；505 代表服务器不支持请求报文所使用的 HTTP 版本。</p>
+<p>HTTP 规范中定义了很多<strong>首部行</strong>，这些首部行可以被浏览器、Web 服务器和网络缓存服务器插入，客户端和服务器端的具体使用产品、版本和配置都会影响到首部行的内容。</p>
+<p>HTTP 作为一个无状态协议可以通过 <strong>cookie</strong> 在允许站点对用户进行跟踪，用户首次访问一个站点时，可能需要提供一个用户标识，站点会产生一个唯一识别码并以此作为索引在后端数据库中产生一个表项，接下来会在 HTTP 响应报文中定义一个“Set-cookie：”首部行（包含有该识别码），客户端系统会保留并管理一个 cookie 文件，当接收到包含该识别码的响应报文时，会在其 cookie 文件中添加一行，在后续的 HTTP 请求报文中也都会定义一个“Cookie：”首部行（包含有该识别码），针对后续的请求，服务器端通过查询后端数据库来获取该用户在该站点的历史活动（购物车），因此 cookie 可以在无状态的 HTTP 之上建立一个用户会话层。</p>
+<p><em>电子邮件使用了多个应用层协议</em></p>
+<p><em>DNS 为因特网提供目录服务（从网络名字到网络地址的转换），大多数用户不直接与 DNS 打交道，而是通过其他应用间接使用它</em></p>
+<p><em>P2P 文件共享</em></p>
+<h1 id="X、参考资料"><a href="#X、参考资料" class="headerlink" title="X、参考资料"></a>X、参考资料</h1><ul>
+<li>《Computer Networking, A Top-Down Approach Eighth Edition》</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2023/11/05/history-vocabulary/">
+        <span class="nav-arrow">← </span>
+        
+          History Vocabulary -
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Content START -->
+  
+    <aside class="content-container">
+  <div class="toc-main">
+  
+      
+          <strong class="toc-title">CONTENT</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%A6%82%E8%BF%B0"><span class="toc-nav-text">1、概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-nav-text">2、应用层</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-Web-%E5%BA%94%E7%94%A8"><span class="toc-nav-text">2.1 Web 应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#X%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">X、参考资料</span></a></li></ol>
+      
+  
+  </div>
+</aside>
+  
+  <!-- Content END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2023/11/06/computer-networking/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <!--
+<footer class="app-footer">
+  <p class="copyright">
+    &copy; 2023 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+-->
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

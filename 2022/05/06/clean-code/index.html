@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">-->
+  <meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Clean Code | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/records" class="item-link">Records</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/scratches/" class="item-link">Scratches</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/records" class="menu-link">Records</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/scratches/" class="menu-link">Scratches</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Clean Code</h2>
+  <!--<p class="post-date">2022-05-06</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>-->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="1、整洁代码"><a href="#1、整洁代码" class="headerlink" title="1、整洁代码"></a>1、整洁代码</h1><p>保持高效的唯一做法就是始终保持代码整洁。</p>
+<ul>
+<li><p>代码逻辑应该直截了当；</p>
+</li>
+<li><p>尽量减少依赖关系；</p>
+</li>
+<li><p>不要忽视警告，遵守安全规则；</p>
+</li>
+<li><p>完善错误处理代码；</p>
+</li>
+<li><p>性能调制最优；</p>
+</li>
+<li><p>整洁的代码只做好一件事；</p>
+</li>
+<li><p>干净利落的抽象；</p>
+</li>
+<li><p>所有决定都足够准确，不引人猜忌，消除模糊处理；</p>
+</li>
+<li><p>单元测试和验收测试；</p>
+</li>
+<li><p>明确、清晰、尽可能少的实体（类、API、方法等）；</p>
+</li>
+<li><p>没有重复代码（重复代表遗漏了抽象）；</p>
+</li>
+<li><p>代码应通过其字面表达含义，无需注释亦能容易理解；</p>
+</li>
+<li><p>代码便于作者之外的人阅读和增补；</p>
+</li>
+<li><p>几乎没有改进的余地。</p>
+</li>
+</ul>
+<h1 id="2、有意义的命名"><a href="#2、有意义的命名" class="headerlink" title="2、有意义的命名"></a>2、有意义的命名</h1><p>需要同时关注代码的简洁度和模糊度，可通过有意义的命名来降低模糊度。</p>
+<ul>
+<li><p>名副其实；</p>
+</li>
+<li><p>无误导倾向；</p>
+</li>
+<li><p>有意义的区分；</p>
+</li>
+<li><p>可朗读；</p>
+</li>
+<li><p>可搜索；</p>
+</li>
+<li><p>区分名词和动词；</p>
+</li>
+<li><p>不要起沟通实现的名称，而是起反映类或者函数抽象层级的名称，避免混杂抽象层级；</p>
+</li>
+<li><p>单字母名称仅用于短方法中的本地变量，名称长度应与其作用域大小相对应，但不要在名称中包含类型或者作用范围信息；</p>
+</li>
+<li><p>添加有意义的语境（比如创建一个类，类中包含有多个成员变量，则该类名起到了一个变量名前缀的作用，是一个有意义的语境）。</p>
+</li>
+</ul>
+<h1 id="3、函数"><a href="#3、函数" class="headerlink" title="3、函数"></a>3、函数</h1><p>函数应该做且只做好这一件事，即函数中的语句均在同一抽象层级上。</p>
+<ul>
+<li><p>短小（20行封顶）；</p>
+</li>
+<li><p><code>if</code>、<code>else</code>、<code>while</code>语句中的代码块应该只占一行；</p>
+</li>
+<li><p>函数的缩进层级不应该多于两层；</p>
+</li>
+<li><p>函数输入参数数量越少越好（2个封顶）；</p>
+</li>
+<li><p>多个参数的传入顺序可以隐含在函数名中；</p>
+</li>
+<li><p>函数输出参数比较违反直觉，应避免使用输出参数，如果非要修改变量，就修改函数所在的对象；</p>
+</li>
+<li><p>函数体中不应进行函数名所描述之外的操作，即函数应无副作用；</p>
+</li>
+<li><p>标识参数指布尔值、枚举等任何用于选择函数行为的参数，使用标识参数宣告了函数做了不止一件事，不应该使用标识参数；</p>
+</li>
+<li><p>函数中的语句应处于同一抽象层级上，该层级是函数名称所示操作的下一层；</p>
+</li>
+<li><p>通过多态将<code>switch</code>或者<code>if</code>链语句埋藏在较低的抽象层级（比如抽象工厂）中，而非具体的上层功能函数中；</p>
+</li>
+<li><p>单个<code>switch</code>原则指对于给定的选择类型，不应有多于一个的<code>switch</code>语句，通过这唯一的<code>switch</code>语句来创建多态对象，取代系统中其他类似的<code>switch</code>语句；</p>
+</li>
+<li><p>希望具备多态的函数不应该声明为静态函数，的确需要声明为静态的函数，应确保没机会另其有多态行为；</p>
+</li>
+<li><p>通过模板方法模式或者策略模式修正具体代码不同但算法类似的代码；</p>
+</li>
+<li><p>用异常处理代替返回错误码时的处理，使得错误处理代码从主路径中分离出来；</p>
+</li>
+<li><p>结构化编程指无<code>break</code>，<code>continue</code>，<code>goto</code>，只有一个<code>return</code>，而保持函数短小则比结构化编程更有利。</p>
+</li>
+</ul>
+<h1 id="4、注释"><a href="#4、注释" class="headerlink" title="4、注释"></a>4、注释</h1><p>尽量用代码来代替注释进行表达，注释只应该描述有关代码和设计的技术性信息，而不是传达本该更好地在系统中保存的信息。</p>
+<p>过时及冗余的注释应及时删除，被注释的代码也应当删除，永不调用的代码（类、函数、变量）也应该被删除。</p>
+<p>好注释应：</p>
+<ul>
+<li><p>提供某个决定背后的意图；</p>
+</li>
+<li><p>小心确认注释的正确性；</p>
+</li>
+<li><p>面向读者而非自己；</p>
+</li>
+<li><p>文本简洁正确无冗余描述；</p>
+</li>
+<li><p>解释未能自行解释的代码。</p>
+</li>
+</ul>
+<h1 id="5、格式"><a href="#5、格式" class="headerlink" title="5、格式"></a>5、格式</h1><p>即使代码不复存在，代码的风格和律条也会存活下来，代码风格应始终保持前后一致。</p>
+<ul>
+<li><p>向报纸学习，有主题，有大纲，细节往下依次展开，有许多篇文章而不是一篇大长文；</p>
+</li>
+<li><p>垂直方向上的空白行隔开了代码概念上的紧密程度；</p>
+</li>
+<li><p>尽量不要将关系密切的概念放到不同的文件中，这也是避免使用<code>protected</code>变量的理由之一；</p>
+</li>
+<li><p>解释性的中间变量多一点更好；</p>
+</li>
+<li><p>代码中出现原始形态数字通常来说是坏现象，应该用命名良好的常量来隐藏它；</p>
+</li>
+<li><p>局部变量声明和函数定义应靠近被使用的位置而非顶部，实体变量声明应该在类的顶部；</p>
+</li>
+<li><p>花时间研究代码应该如何排放，不互相依赖的东西不该耦合，比如考虑下成员类是否要移出其外围类，静态函数是否真的应作为该类的静态函数；</p>
+</li>
+<li><p>当存在时序耦合时，代码应体现出这一点，而不是掩蔽；</p>
+</li>
+<li><p>可配置的数据应放置于较高层级上；</p>
+</li>
+<li><p>通过通配符避免过长的导入清单，同时也避免了硬依赖，降低耦合；</p>
+</li>
+<li><p>不要继承常量，这样会使得常量隐藏在继承结构的顶端，而是应该使用静态导入。</p>
+</li>
+</ul>
+<h1 id="6、对象和数据结构"><a href="#6、对象和数据结构" class="headerlink" title="6、对象和数据结构"></a>6、对象和数据结构</h1><ul>
+<li><p>严肃思考对象所包含的数据，不应随意乱加取值器和赋值器；</p>
+</li>
+<li><p>过程式代码便于在不改动既有数据结构的前提下添加新函数，难以添加新数据结构，面向对象代码便于在不改动既有函数的前提下添加新类，难以添加新函数，需根据情况选择编写两种不同的风格的代码；</p>
+</li>
+<li><p>方法不应调用由任何函数所返回的对象的方法，因为会暴露所返回对象的内部结构，即违反德墨忒尔律（模块不应了解它所操作对象的内部）；</p>
+</li>
+<li><p>只有公共变量，没有函数的类（或者所有私有变量均有取值器，且无取值器之外的函数的类）被称为数据传送对象（Data Transfer Objects, DTO），是最精简的数据结构；</p>
+</li>
+<li><p>避免数据结构和对象的混杂使用。</p>
+</li>
+</ul>
+<h1 id="7、错误处理"><a href="#7、错误处理" class="headerlink" title="7、错误处理"></a>7、错误处理</h1><p>错误处理很重要，但凌乱的错误处理可能会搞乱代码逻辑。</p>
+<p>在业务逻辑和错误处理代码之间建立良好的区隔：</p>
+<ul>
+<li><p>使用异常处理而非返回错误码；</p>
+</li>
+<li><p>先写<code>try-catch</code>结构，再写业务代码；</p>
+</li>
+<li><p>使用未检异常（使用已检异常时，抛出异常处和<code>catch</code>语句之间的每个方法签名都需要添加<code>throw</code>子句，这违反了开放/闭合原则）；</p>
+</li>
+<li><p>思考异常如何被捕获，当各种异常被捕获后的处理一致时，对调用API进行打包，确保返回通用异常类型，从而简化代码；</p>
+</li>
+<li><p>不返回也不传递<code>null</code>值。</p>
+</li>
+</ul>
+<h1 id="8、边界"><a href="#8、边界" class="headerlink" title="8、边界"></a>8、边界</h1><p>在使用带三方程序包时，需要保持软件边界整洁，将外来代码干净利落地整合进自身代码中。</p>
+<ul>
+<li><p>避免从公共API中返回边界接口，或者将边界接口作为参数传递给公共API；</p>
+</li>
+<li><p>在使用第三方程序包之前先通过学习性测试来了解该程序包；</p>
+</li>
+<li><p>通过定义并使用接口（即定义未知的边界）来使用尚不存在的代码；</p>
+</li>
+<li><p>追索每种边界条件，边界上的代码需要清晰的分割和定义了期望的测试，应该避免自己的代码去过多了解第三方代码中的特定信息；</p>
+</li>
+<li><p>处理边界条件的代码应集中到一处，不要散落于代码中。</p>
+</li>
+</ul>
+<h1 id="9、单元测试"><a href="#9、单元测试" class="headerlink" title="9、单元测试"></a>9、单元测试</h1><ul>
+<li><p>在编写出无法通过的测试代码之前，不能编写生产代码；</p>
+</li>
+<li><p>只能编写刚好无法通过的测试代码；</p>
+</li>
+<li><p>只能编写刚好通过当前失败测试的生产代码；</p>
+</li>
+<li><p>要像编写生产代码一样编写整洁的测试代码，见前面全部内容；</p>
+</li>
+<li><p>有些事永远不会在生成环境中做，但在测试环境中做却完全没有问题（双重标准）；</p>
+</li>
+<li><p>缺陷趋向于扎堆，当在某个函数中发现一个缺陷时，应当全面测试该函数，可能会发现更多的缺陷</p>
+</li>
+<li><p>单个测试当中的断言个数应当最小化（但也不严苛的追求只能有一个断言），每个测试函数都只测试一个概念；</p>
+</li>
+<li><p>慢速的测试是不会被运行的测试，测试应当能够快速运行，各个测试之间应当相互独立，可以在任何环境重复通过，应当有布尔值输出，实现自足验证，始终要及时编写测试。</p>
+</li>
+</ul>
+<h1 id="10、类"><a href="#10、类" class="headerlink" title="10、类"></a>10、类</h1><ul>
+<li><p>类成员出现顺序：公共静态常量，私有静态变量，私有实体变量，公共函数，由公共函数调用的私有工具函数紧随其后；</p>
+</li>
+<li><p>类成员通常设为<code>private</code>，测试代码需要调用的函数和变量可设置为<code>protected</code>；</p>
+</li>
+<li><p>单一权责原则（SRP）认为类或模块应该只有一条加以修改的理由，臃肿的类应当切分为只有单一权责的去耦式单元，只有一条修改的理由；</p>
+</li>
+<li><p>限制类或者模块中暴露的接口数量，类中的方法越少越好，函数知道的变量越少越好，类拥有的实体变量也越少越好；</p>
+</li>
+<li><p>类的方法应只对其所属的类中的变量和方法感兴趣，不该垂青其他类中的成员；</p>
+</li>
+<li><p>类中的每个方法都应该操作一个或多个实体变量，如果类中的每个实体变量都被每个方法所使用，则该类具有最大的内聚性；</p>
+</li>
+<li><p>创建极大化内聚类一般是不可取也不可能的，但希望类的内聚性保持在较高位置；</p>
+</li>
+<li><p>根据函数应当短小以及类应当高内聚的原则，将大函数拆分为小函数时，也会将类拆分为小类；</p>
+</li>
+<li><p>依赖倒置原则（DIP）认为类应当依赖抽象而不是具体实现代码细节；</p>
+</li>
+<li><p>所有较高层级概念放在基类，所有较低层级概念放在派生类，分离要完整，不要混杂；</p>
+</li>
+<li><p>基类不应依赖派生类，不应派生类的名字，将基类和派生类部署到不同的jar中，不过有个特例是有限状态机，这种情况下基类和派生类紧密耦合。</p>
+</li>
+</ul>
+<h1 id="11、系统"><a href="#11、系统" class="headerlink" title="11、系统"></a>11、系统</h1><ul>
+<li><p>软件系统应将起始过程和起始后的运行过程逻辑分离开（比如延迟性初始化/赋值就违背了这一原则）；</p>
+</li>
+<li><p>通过抽象工厂模式让应用自行控制何时创建对象，将构造细节隔离在应用程序代码之外；</p>
+</li>
+<li><p>依赖者模块不应对被依赖者有假设（这就是逻辑依赖），而是通过向被依赖者询问的方式来确定信息（这就是物理依赖）；</p>
+</li>
+<li><p>依赖注入（Dependency Injection, DI）机制可以分离构造与使用，Spring框架提供了最有名的Java DI容器；</p>
+</li>
+<li><p>恰当切分关注面，面向切面编程（Aspect Oriented Programming），AOP有时会与实现它的技术相混淆，如方法拦截、通过代理做“封包”，但AOP系统的真正价值在于用简洁和模块化的方式指定系统行为；</p>
+</li>
+<li><p>最佳系统架构由模块化的关注面领域组成，每个关注面均用纯面向对象语言实现，不同领域之间用最不具有侵害性的方面或类方面工具整合起来；</p>
+</li>
+<li><p>在理想系统中，通过扩展系统而非修改现有代码来添加新特性。</p>
+</li>
+</ul>
+<h1 id="12、迭进"><a href="#12、迭进" class="headerlink" title="12、迭进"></a>12、迭进</h1><ul>
+<li><p>保持系统可测试并测试通过，可测试的系统会导向保持类短小、单一、低耦合、高内聚的设计方案；</p>
+</li>
+<li><p>消除重复，对于重复代码可以做共性抽取，并遵循SRP原则；</p>
+</li>
+<li><p>保证代码的表达力，使得读者易于理解作者的意图；</p>
+</li>
+<li><p>在做到以上前提的基础上尽可能减少类和方法的数量，即这条是优先级最低的一条。</p>
+</li>
+</ul>
+<h1 id="13、并发"><a href="#13、并发" class="headerlink" title="13、并发"></a>13、并发</h1><p>并发将做什么（目的）和何时（时机）做分解开，从而改进应用程序的吞吐量和结构，依靠于容器的并发处理能力还不能够保证并发程序不会出错。</p>
+<ul>
+<li><p>只有在多个线程或处理器之间能分享大量等待时间的时候能够通过并发来改善性能；</p>
+</li>
+<li><p>并发系统的算法设计与单线程系统极不相同，并发常常需要对设计策略做根本性修改；</p>
+</li>
+<li><p>即便使用具有并发处理能力的容器进行并发编程时，依旧要了解容器在做什么，了解如何应对各种并发问题；</p>
+</li>
+<li><p>分离并发相关代码和其他代码（这也符合单一权责原则），再进行调试；</p>
+</li>
+<li><p>限制数据作用域，谨记数据封装，严格限制对可能被共享的数据的访问；</p>
+</li>
+<li><p>使用类库提供的线程安全群集，需要掌握<code>JUC</code>；</p>
+</li>
+<li><p>使用<code>executor</code>框架执行无关任务，尽量使用非锁定解决方案；</p>
+</li>
+<li><p>警惕同步方法之间的依赖，一个类中不应该有多个同步方法；</p>
+</li>
+<li><p>在出现并发问题时，尽可能修改服务端代码，若服务端无法修改，则采用适配器模式修改服务端提供的API，尽量不修改客户端代码；</p>
+</li>
+<li><p>平静关闭系统很难做到，要预留足够多的时间来编写能够正确关闭的并发代码；</p>
+</li>
+<li><p>不要将并发系统错误归咎于偶发事件；</p>
+</li>
+<li><p>不要同时检查非线程代码和线程代码，先确保代码在线程之外可工作，能放进POJO中的代码越多越好，再由线程直接调用POJO；</p>
+</li>
+<li><p>编写可调整的线程代码，在系统运行时允许线程依据吞吐量和系统使用率来自我调整；</p>
+</li>
+<li><p>运行多于处理器数量的线程（仅用于测试不要用于生产），这会促进频繁的任务交换，进而越有可能找到错过临界区或导致死锁的代码；</p>
+</li>
+<li><p>增加对<code>wait()</code>、<code>sleep()</code>、<code>yield()</code>以及<code>priority()</code>方法的调用（仅用于测试不要用于生产），改变代码执行顺序，则更容易测试出出错的执行顺序。</p>
+</li>
+</ul>
+<h1 id="14、逐步改进（案例一）"><a href="#14、逐步改进（案例一）" class="headerlink" title="14、逐步改进（案例一）"></a>14、逐步改进（案例一）</h1><p><strong>问题：</strong>一份能够完成简单需求的代码，会因为后续的简单需求补充而变得混乱，比如原本针对布尔型元素的功能在后续需要对整型、字符串型等各种类型的元素依旧保持有效，这种简单的需求改进很可能导致复杂的代码改进，使得原本整洁的代码变得混乱。</p>
+<p><strong>应对：</strong>一开始就尽量了解清楚需求的背景、动机、意义，从用户、产品、开发等各种角色来思考需求后续可能会如何迭代，从而设计出尽可能健壮的代码实现方案。</p>
+<p><strong>问题：</strong>初始设计不可能做到绝对周全，后续迭代过程中依旧会遇到需要改动代码结构的情况。</p>
+<p><strong>应对：</strong>改动的过程中要采用TDD，每次修改都必须确保系统能像以前一样工作，具体改动方式参照上文内容。</p>
+<h1 id="15、Junit内幕（案例二）"><a href="#15、Junit内幕（案例二）" class="headerlink" title="15、Junit内幕（案例二）"></a>15、Junit内幕（案例二）</h1><p>应当更清晰地表达代码的意图：</p>
+<ul>
+<li><p>多个连在一起的条件判断应当用一个函数封装起来；</p>
+</li>
+<li><p>正向肯定的判断放在<code>if</code>条件中，而不用if not xxx的逻辑；</p>
+</li>
+<li><p>变量名称中不加难以理解的前缀；</p>
+</li>
+<li><p>函数中的局部变量名不与成员变量一致，此时就不需要使用<code>this</code>来区分；</p>
+</li>
+<li><p>函数调用应良好反映出时序关系；</p>
+</li>
+<li><p>将功能复杂的大函数拆分成功能单一的小函数。</p>
+</li>
+</ul>
+<h1 id="16、重构SerialDate（案例三）"><a href="#16、重构SerialDate（案例三）" class="headerlink" title="16、重构SerialDate（案例三）"></a>16、重构SerialDate（案例三）</h1><ul>
+<li><p>不要继承常量类，而是将常量类改为自己的枚举类型；</p>
+</li>
+<li><p>实现了<code>Serializable</code>接口的类应当显式声明并手动配置序列版本UID变量；</p>
+</li>
+<li><p>类的成员变量应确保是与该类有关的变量，否则该变量就不应该称为该类的成员变量，函数同理；</p>
+</li>
+<li><p>不应由抽象类来提供具体实现信息，这种设计会污染抽象类；</p>
+</li>
+<li><p>基类不应了解派生类的情况，更不应该在基类的行为中创建出派生类实例，如果代码中出现这种情况可以更改为利用抽象工厂来完成创建实例的任务；</p>
+</li>
+<li><p>不要通过整数形式来传递信息（描述不清且修改时易遗漏），而是通过符号形式传递；</p>
+</li>
+<li><p>无需编写默认构造器，因为编译器会自动生成；</p>
+</li>
+<li><p>成员类应当在概念上依赖于外围类并且足够小巧，否则就将成员类移出外围类；</p>
+</li>
+<li><p>类的静态函数的入参不应有类实例，该静态函数更不应该对类的实例进行操作。</p>
+</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/05/06/blog/">
+        <span class="nav-arrow">← </span>
+        
+          搭建个人博客
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2022/05/06/effective-java/">
+        
+          Effective Java
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Content START -->
+  
+    <aside class="content-container">
+  <div class="toc-main">
+  
+      
+          <strong class="toc-title">CONTENT</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%95%B4%E6%B4%81%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">1、整洁代码</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E6%9C%89%E6%84%8F%E4%B9%89%E7%9A%84%E5%91%BD%E5%90%8D"><span class="toc-nav-text">2、有意义的命名</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E5%87%BD%E6%95%B0"><span class="toc-nav-text">3、函数</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E6%B3%A8%E9%87%8A"><span class="toc-nav-text">4、注释</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E6%A0%BC%E5%BC%8F"><span class="toc-nav-text">5、格式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">6、对象和数据结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#7%E3%80%81%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-nav-text">7、错误处理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#8%E3%80%81%E8%BE%B9%E7%95%8C"><span class="toc-nav-text">8、边界</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#9%E3%80%81%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-nav-text">9、单元测试</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#10%E3%80%81%E7%B1%BB"><span class="toc-nav-text">10、类</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#11%E3%80%81%E7%B3%BB%E7%BB%9F"><span class="toc-nav-text">11、系统</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#12%E3%80%81%E8%BF%AD%E8%BF%9B"><span class="toc-nav-text">12、迭进</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#13%E3%80%81%E5%B9%B6%E5%8F%91"><span class="toc-nav-text">13、并发</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#14%E3%80%81%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B%EF%BC%88%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%89"><span class="toc-nav-text">14、逐步改进（案例一）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#15%E3%80%81Junit%E5%86%85%E5%B9%95%EF%BC%88%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%89"><span class="toc-nav-text">15、Junit内幕（案例二）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#16%E3%80%81%E9%87%8D%E6%9E%84SerialDate%EF%BC%88%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%89"><span class="toc-nav-text">16、重构SerialDate（案例三）</span></a></li></ol>
+      
+  
+  </div>
+</aside>
+  
+  <!-- Content END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/05/06/clean-code/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <!--
+<footer class="app-footer">
+  <p class="copyright">
+    &copy; 2023 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+-->
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
