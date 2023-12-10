@@ -4,7 +4,7 @@
   <url>
     <loc>http://example.com/2023/07/23/expression/</loc>
     
-    <lastmod>2023-12-03</lastmod>
+    <lastmod>2023-12-10</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,7 +13,25 @@
   <url>
     <loc>http://example.com/2023/11/05/history-vocabulary/</loc>
     
-    <lastmod>2023-12-03</lastmod>
+    <lastmod>2023-12-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
+    
+    <lastmod>2023-12-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/categories/index.html</loc>
+    
+    <lastmod>2023-12-09</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,7 +40,7 @@
   <url>
     <loc>http://example.com/2023/11/06/computer-networking/</loc>
     
-    <lastmod>2023-12-03</lastmod>
+    <lastmod>2023-12-09</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -50,15 +68,6 @@
     <loc>http://example.com/2022/05/08/java-concurrency/</loc>
     
     <lastmod>2023-11-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/categories/index.html</loc>
-    
-    <lastmod>2023-11-06</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -598,7 +607,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2023-12-03</lastmod>
+    <lastmod>2023-12-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
