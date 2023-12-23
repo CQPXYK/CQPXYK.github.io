@@ -163,10 +163,10 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h1><h2 id="1-1-进程与线程"><a href="#1-1-进程与线程" class="headerlink" title="1.1 进程与线程"></a>1.1 进程与线程</h2><p>现代操作系统（Windows、macOS、Linux）执行多任务实际就是让CPU对多个任务<strong>轮流交替执行</strong>，通常任务数量远远多于CPU的核数。</p>
+    <section class="markdown-content"><h1 id="1、基础概念"><a href="#1、基础概念" class="headerlink" title="1、基础概念"></a>1、基础概念</h1><h2 id="1-1-进程与线程"><a href="#1-1-进程与线程" class="headerlink" title="1.1 进程与线程"></a>1.1 进程与线程</h2><p>由于计算机的运算速度与存储和通信子系统的速度差距太大，大量的时间都花费在磁盘 I/O、网络通信或者数据库访问上，因此不得不加入一层或多层读写速度尽可能接近 CPU 运算速度的高速缓存来作为内存与 CPU 之间的缓冲，此外，还希望通过多任务处理来尽可能避免对运算性能的浪费。现代操作系统（Windows、macOS、Linux）执行多任务实际就是让 CPU 对多个任务<strong>轮流交替执行</strong>（通常任务数量远远多于 CPU 的核数），而基于高速缓存的存储交互虽然很好地解决了 CPU 与内存速度之间的矛盾，但也引入了缓存一致性问题（每个 CPU 都有自己的高速缓存，但又共享同一主内存），为系统带来了更高的复杂度。</p>
 <ul>
-<li>在计算机中，一个任务称为一个进程（Process），某些进程内部还需要同时执行多个子任务，这些子任务称为线程（Thread）。</li>
-<li>对于Java程序来说，执行多任务是指<strong>多线程并发执行</strong>。</li>
+<li>在计算机中，一个任务称为一个进程（Process），某些进程内部还需要同时执行多个子任务，这些子任务称为线程（Thread），对于 Java 程序来说，执行多任务是指<strong>多线程并发执行</strong>。</li>
+<li>Java 线程是映射到操作系统的原生内核线程之上的，如果要阻塞或唤醒一条线程，同样需要操作系统的支持，同样会涉及到用户态到核心态的转换，这种状态转换消耗的时间甚至会比一些简单的用户代码执行的时间还要长，应当避免不必要的频繁的切入核心态。</li>
 <li>进程和线程存在以下区别：<ul>
 <li>进程和线程是包含关系，一个进程有一个或多个线程，线程是操作系统调度的最小单元；</li>
 <li>由于进程是运行在它自己的地址空间内自包容程序，创建进程的开销比创建线程大；</li>
@@ -211,7 +211,7 @@
 <li><p>JMM 屏蔽了不同处理器内存模型的差异，它在不同的处理器平台之上为 Java 程序员呈现了一个一致的内存模型。</p>
 </li>
 </ul>
-<h1 id="2、底层原理"><a href="#2、底层原理" class="headerlink" title="2、底层原理"></a>2、底层原理</h1><h2 id="2-1-volatile和可见性"><a href="#2-1-volatile和可见性" class="headerlink" title="2.1 volatile和可见性"></a>2.1 volatile和可见性</h2><p>Java程序使用<code>volatile</code>关键字来保证可见性。</p>
+<h1 id="2、底层原理"><a href="#2、底层原理" class="headerlink" title="2、底层原理"></a>2、底层原理</h1><h2 id="2-1-volatile和可见性"><a href="#2-1-volatile和可见性" class="headerlink" title="2.1 volatile和可见性"></a>2.1 volatile和可见性</h2><p>Java 程序使用<code>volatile</code>关键字来保证可见性，是 JVM 提供的最轻量级的同步机制。</p>
 <ul>
 <li><p><code>volatile</code>保证了多线程共享变量的<strong>可见性</strong>：</p>
 <ul>
@@ -223,12 +223,12 @@
 </li>
 <li><p><code>volatile</code>不会引起上下文切换和调度，使用成本低。</p>
 </li>
-<li><p>如果一个域可能会被多个任务同时访问，且这些任务重至少有一个是写入任务，那么就应该将这个域设置为<code>volatile</code>或者将可以访问这个<code>private</code>域的方法都加锁。</p>
+<li><p>如果一个域可能会被多个任务同时访问，且这些任务中至少有一个是写入任务，那么就应该将这个域设置为<code>volatile</code>或者将可以访问这个<code>private</code>域的方法都加锁。</p>
 </li>
 </ul>
 <h2 id="2-2-原子操作和原子性"><a href="#2-2-原子操作和原子性" class="headerlink" title="2.2 原子操作和原子性"></a>2.2 原子操作和原子性</h2><p>Java程序通过循环CAS和锁来实保证原子性。因为锁语句产生了一种互相排斥的效果，所以这种机制常常被称为互斥量（mutex）。</p>
 <ul>
-<li><p>CAS指：</p>
+<li><p>CAS 指：</p>
 <ul>
 <li><p>当类的当前值是<code>prev</code>时，更新为<code>next</code>，并返回<code>true</code>；</p>
 </li>
@@ -236,10 +236,10 @@
 </li>
 </ul>
 </li>
-<li><p>通过循环CAS实现原子操作存在以下问题：</p>
+<li><p>通过循环 CAS 实现原子操作存在以下问题：</p>
 <ul>
-<li>ABA问题，解决思路是使用版本号；</li>
 <li>循环时间长、开销大；</li>
+<li>ABA 问题，解决思路是使用版本号，或者直接改成传统的互斥同步（可能更加高效）；</li>
 <li>只能保证一个共享变量的原子操作，解决思路是将多个共享变量合并成一个共享变量。</li>
 </ul>
 </li>
@@ -543,16 +543,16 @@
 <li><p><code>Lock</code>接口的实现基本都是聚合了一个同步器的子类来完成线程访问控制。</p>
 </li>
 </ul>
-<h3 id="5-1-2-ReentrantLock"><a href="#5-1-2-ReentrantLock" class="headerlink" title="5.1.2 ReentrantLock"></a>5.1.2 ReentrantLock</h3><p><code>synchronized</code>关键字加的锁很重，且没有额外的尝试机制，<code>ReentrantLock</code>类可用于代替<code>synchronized</code>加锁。</p>
+<h3 id="5-1-2-ReentrantLock"><a href="#5-1-2-ReentrantLock" class="headerlink" title="5.1.2 ReentrantLock"></a>5.1.2 ReentrantLock</h3><p><code>ReentrantLock</code>在功能上是<code>synchronized</code>的超集，在性能上至少不弱于<code>synchronized</code>，<code>ReentrantLock</code>是 JDK 实现的，可中断，默认是非公平的，也可以是公平的。</p>
 <p><code>ReentrantLock</code>与<code>synchronized</code>之间的区别在于：</p>
 <ul>
-<li><p><code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去。</p>
+<li><p><code>synchronized</code>关键字加的锁没有额外的尝试机制，<code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去。</p>
 </li>
-<li><p><strong><code>ReentrantLock</code>需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
-</li>
-<li><p><code>ReentrantLock</code>是JDK实现的，可中断，默认是非公平的，也可以是公平的。</p>
+<li><p><code>synchronized</code>可以由 JVM 来确保即使发生异常也能自动释放锁，**<code>ReentrantLock</code>需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。**</p>
 </li>
 <li><p>由于<code>synchronized</code>是不可中断的，而<code>ReentrantLock</code>是可中断的，线程在<code>tryLock</code>失败时不会导致死锁，<code>ReentrantLock</code>比直接使用<code>synchronized</code>更安全。</p>
+</li>
+<li><p><code>synchronized</code>经过 JVM 优化后，其实性能与<code>ReentrantLock</code>基本上持平，且从长远看，JVM 更容易对<code>synchronized</code>来进行优化，这是因为 JVM 可以在线程和对象中记录<code>synchronized</code>中锁的相关信息，而使用<code>ReentrantLock</code>的话，JVM 则很难得知具体哪些对象是由特定线程锁持有的</p>
 </li>
 </ul>
 <h3 id="5-1-3-ReadWriteLock"><a href="#5-1-3-ReadWriteLock" class="headerlink" title="5.1.3 ReadWriteLock"></a>5.1.3 ReadWriteLock</h3><ul>
