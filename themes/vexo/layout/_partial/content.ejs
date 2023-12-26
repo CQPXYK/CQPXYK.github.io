@@ -1,0 +1,15 @@
+<aside class="content-container">
+  <div class="toc-main">
+  <% if (page.encrypt) {%>
+      <% if (toc(page.origin) !== "") { %>
+          <strong class="toc-title">CONTENT</strong>
+          <%- toc(page.origin, { "class": "toc-nav", "list_number": false }) %>
+      <% } %>
+  <% } else { %>
+      <% if (toc(page.content) !== "") { %>
+          <strong class="toc-title">CONTENT</strong>
+          <%- toc(page.content, { "class": "toc-nav", "list_number": false }) %>
+      <% } %>
+  <% } %>
+  </div>
+</aside>
