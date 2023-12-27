@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">-->
+  <meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Oracle | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/records" class="item-link">Records</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/scratches/" class="item-link">Scratches</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/records" class="menu-link">Records</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/scratches/" class="menu-link">Scratches</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Oracle</h2>
+  <!--<p class="post-date">2022-12-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>-->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="存储单元"><a href="#存储单元" class="headerlink" title="存储单元"></a>存储单元</h1><ul>
+<li><strong>表空间（Table Space）</strong>是存储例如表、索引、序列等对象的逻辑存储器。每个 Table Space 至少具备一个物理的 Data File 来在操作系统层面真实地存储 Table Space 中的内容，Table Space 和 Data File 是一对多的关系。</li>
+<li><strong>段（Segment）</strong>用于存储 Table Space 中的对象，是一种消耗物理存储空间的任何逻辑单元。一个 Table Space 可以有多个 Segment，但一个 Segment 只属于一个 Table Space，Table Space 和 Segment 是一对多的关系。Segment 和 Data File 没有直接关系，一个 Segment 可能存在于多个 Data File 中。</li>
+<li><strong>扩展（Extent）</strong>是连续的磁盘存储块的逻辑集合。Segment 和 Extent 是一对多的关系，Data File 和 Extent 也是一对多的关系。</li>
+<li><strong>数据块（Block）</strong>是 Oracle 服务器管理数据的最小逻辑单元。Extent 和 Oracle Block 是一对多的关系，Oracle Block 和 OS Block 是一对多的关系，Data File 和 OS Block 是一对多的关系。</li>
+</ul>
+<img src="存储单元.jpg" alt="存储单元" style="zoom:100%;" />
+
+<h1 id="SQL-执行"><a href="#SQL-执行" class="headerlink" title="SQL 执行"></a>SQL 执行</h1><ul>
+<li><strong>Syntax Check</strong>：确保 SQL 符合基本语法规则</li>
+<li><strong>Semantic Check</strong>：确保 SQL 具备意义，比如涉及到的对象、表、列是存在的</li>
+<li><strong>Shared Pool Check</strong>：判断 SQL 执行 Hard Parse 还是 Soft Parse（Soft Parse 会跳过 Optimization 和 Row Source Generation，直接 Execution），DDL 语句始终都会进行 Hard Parse</li>
+<li><strong>Optimization</strong>：对于每个具备唯一哈希值的 DML都至少进行一次 Optimization，但 Oracle 从来不会优化 DDL（除非该 DDL 中存在需要优化的 DML 部分），目前 Oracle 采用的是基于代价的优化器（CBO），这种判断方式非常依赖于数据对象的统计分析信息</li>
+<li><strong>Row Source Generation</strong>：从优化器接收最优执行计划，并生成可供数据库其余部分使用的迭代执行计划</li>
+<li><strong>Execution</strong>：SQL 引擎执行 Row Source Generation 生成的树中的每个 Row Source（这个步骤是DML处理中唯一的强制步骤）</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>Grammar Order</strong></td>
+<td align="center"><strong>Execution Order</strong></td>
+</tr>
+<tr>
+<td align="center">1) SELECT DISTINCT &lt;..&gt;</td>
+<td align="center">1) FROM&lt;..&gt; ON&lt;..&gt; JOIN &lt;..&gt;</td>
+</tr>
+<tr>
+<td align="center">2) FROM &lt;..&gt; JOIN &lt;..&gt; ON &lt;..&gt;</td>
+<td align="center">2) WHERE &lt;..&gt;</td>
+</tr>
+<tr>
+<td align="center">3) WHERE &lt;..&gt;</td>
+<td align="center">3) GROUP BY &lt;..&gt;</td>
+</tr>
+<tr>
+<td align="center">4) GROUP BY &lt;..&gt;</td>
+<td align="center">4) HAVING &lt;..&gt;</td>
+</tr>
+<tr>
+<td align="center">5) HAVING &lt;..&gt;</td>
+<td align="center">5) SELECT DISTINCT &lt;..&gt;</td>
+</tr>
+<tr>
+<td align="center">6) ORDER BY &lt;..&gt;</td>
+<td align="center">6) ORDER BY &lt;..&gt;</td>
+</tr>
+</tbody></table>
+<h1 id="执行计划"><a href="#执行计划" class="headerlink" title="执行计划"></a>执行计划</h1><p>优化器给出的执行计划是一种推荐的用于执行 SQL 的方法，从执行计划中可以得到数据库在执行 SQL 时所采用的访问和连接表的方式。</p>
+<p>执行计划所列出的方式不一定是最高效的，通过观察执行计划中的内容可以判断当前 SQL 的是否能够高效地执行。</p>
+<p>比如可以观察优化器所估计的每一步操作将处理多少行，以及估计的行数（即基数）与实际数量的比较情况</p>
+<ul>
+<li>如果基数估计是错误的，这意味着可以通过改写 SQL 来帮助优化器找到更优的执行计划</li>
+<li>如果基数估计是准确的，但查询仍然太慢，则需要查看是否可以创建一些数据结构来更快地访问数据</li>
+<li>如果表访问方式和表连接方式与期望的方式不同，则基数估计基本就是错误的</li>
+<li>需要注意的是成本（Cost）是优化器用来比较同一 SQL 的不同执行计划的内部度量，不同 SQL 之间的 Cost 的比较是没有意义的，不应通过这种比较来对比 SQL 改写前后的性能优劣</li>
+</ul>
+<p>在遵循执行计划来执行 SQL 时，是根据中序遍历来执行计划中的所有操作的，即从执行计划的顶部开始，沿着树向下执行第一个叶子操作，然后沿着树返回到第一个带有未访问子节点的节点，重复这个过程直到执行了执行计划中的所有操作（UNION 操作是后序遍历，存在子查询时情况有变，详细见参考资料）。</p>
+<h1 id="表访问方式"><a href="#表访问方式" class="headerlink" title="表访问方式"></a>表访问方式</h1><ul>
+<li>TABLE ACCESS FULL（全表扫描）<ul>
+<li>读取表中所有的行，并检查每一行是否满足 SQL 语句中的 WHERE 限制条件</li>
+<li>除非真正需要返回的数据较多，不建议使用全表扫描来读取数据量太大的表</li>
+</ul>
+</li>
+<li>TABLE ACCESS BY ROWID（通过 ROWID 的表存取）<ul>
+<li>ROWID 是由 Oracle 自动加在表中每行最后的一列伪列，表中并不会物理存储 ROWID 的值，因为不能对该列的值进行增删改操作，但是可以进行查询</li>
+<li>行的 ROWID 指出了该行所在的数据文件、数据块以及行在该块中的位置，因此通过 ROWID 来定位目标行是非常高效的，是 Oracle 中存取单行数据最快的方法</li>
+<li>Oracle 要么从WHERE 条件要么从索引扫描来获取需要访问的行的 ROWID </li>
+</ul>
+</li>
+<li>TABLE ACCESS BY INDEX SCAN（索引扫描）<ul>
+<li>索引既存储每个索引的键值，也存储具有该键值的行的ROWID </li>
+<li>索引扫描分两步，先扫描索引得到对应的 ROWID（内存读取，速度较快），再通过 ROWID 定位到具体的行读取数据</li>
+<li>当只需要返回部分行的数据时，对于无范围操作符的唯一索引则使用索引唯一扫描，对于非唯一索引或者有范围操作符的唯一索引则使用索引范围扫描</li>
+<li>当需要返回所有行的数据时，对于排序操作则使用索引全扫描，对于无排序操作则使用索引快速扫描</li>
+</ul>
+</li>
+</ul>
+<h1 id="表连接方式"><a href="#表连接方式" class="headerlink" title="表连接方式"></a>表连接方式</h1><p>在使用 JOIN 关键字来对两张表作连接，表（row source）之间的连接顺序对于查询效率有很大的影响。</p>
+<p>根据连接顺序的不同，将作连接的两张表分别定义为驱动表和匹配表</p>
+<ul>
+<li>驱动表（Driving Table）<ul>
+<li>驱动表指连接时首先存取的表，又称外层表</li>
+<li>驱动表的全表数据集会作为循环基础数据，其中每一条数据都会作为过滤条件到被驱动表中查询数据，最后合并</li>
+<li>如果驱动表返回比较多的数据行，则对所有的后续操作有负面影响</li>
+<li>驱动表需要全表扫描，不走索引，所以建不建索引都无法优化性能</li>
+<li>一般选择小表（应用 WHERE 限制条件后返回较少行数的表）作为驱动表</li>
+</ul>
+</li>
+<li>匹配表（Probed Table）<ul>
+<li>又称内层表</li>
+<li>从驱动表获取一行具体数据后，会到内层表中寻找符合连接条件的行</li>
+<li>可以通过将匹配表中的与驱动表连接的字段建立索引，从而优化性能</li>
+<li>一般选择大表（应用 WHERE 限制条件后返回较多行数的表）作为匹配表</li>
+</ul>
+</li>
+</ul>
+<p>内连接时小表为驱动表，左外连接时左表为驱动表，右外连接时右表为驱动表。</p>
+<p>表连接方式有以下几种</p>
+<ul>
+<li>SORT MERGE JOIN（排序 - 合并连接）<ul>
+<li>一般用于两个表之间的连接条件为不等于条件的情况，例如&lt;、&lt;=、&gt;或&gt;=</li>
+<li>在联合大数据集时，性能比 NESTED LOOPS 更好</li>
+</ul>
+</li>
+<li>NESTED LOOPS（嵌套循环）<ul>
+<li>一般用于联合小数据集且能高效访问匹配表的情况</li>
+<li>可以看作是两个嵌套的 FOR 循环</li>
+</ul>
+</li>
+<li>HASH JOIN（哈希连接）<ul>
+<li>一般用于联合大数据集的情况</li>
+<li>优化器选择两个表中较小的表来在内存中建立哈希表，接着扫描更大的表，并在 JOIN 的列上执行相同的哈希算法</li>
+</ul>
+</li>
+<li>CARTESIAN PRODUCT（笛卡尔积）<ul>
+<li>通常只只用于涉及的表很小，或者语句中一个或多个表没有到任何其他表的连接条件的情况</li>
+<li>优化器将来自一个数据源的每一行与来自另一个数据源的每一行连接起来，创建两个集合的笛卡尔积</li>
+<li>笛卡尔连接并不常见，因此如果它是由于任何其他原因而选择的，那么它可能是基数估计有问题的标志（严格地说，笛卡尔积不是一个连接）</li>
+</ul>
+</li>
+</ul>
+<h1 id="优化技巧"><a href="#优化技巧" class="headerlink" title="优化技巧"></a>优化技巧</h1><ul>
+<li><p>建立数据结构</p>
+<ul>
+<li>当 SQL 很慢且无法通过改写 SQL 来提升性能时，就可以创建一些数据结构来更快地访问数据</li>
+<li>比如创建索引、临时表、实体视图、约束、分区、甚至优化表的设计</li>
+</ul>
+</li>
+<li><p>去掉冗余</p>
+<ul>
+<li>不要 SELECT 不需要的字段</li>
+<li>不要 JOIN 不需要的表</li>
+</ul>
+</li>
+<li><p>尽可能减少需要重复的操作/查询</p>
+</li>
+<li><p>EXISTS 和 IN</p>
+<ul>
+<li><p>两者之间并不一定是前者性能更好，和连接查询类似，这里也存在驱动表和匹配表的关系</p>
+</li>
+<li><p>应当根据表的大小来选择驱动表和匹配表，从而确定使用 EXISTS 还是 IN</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> A <span class="keyword">WHERE</span> id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> id <span class="keyword">FROM</span> B); <span class="comment">-- B 是驱动表</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> A <span class="keyword">WHERE</span> <span class="keyword">EXISTS</span> (<span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> B <span class="keyword">WHERE</span> B.id <span class="operator">=</span> A.id); <span class="comment">-- A 是驱动表</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>使用连接而不是子查询，因为它为优化器提供了更多的空间</p>
+</li>
+<li><p>添加逻辑上多余的过滤条件，这些条件可能仍然有助于搜索最佳执行计划，特别是对于外部连接。</p>
+</li>
+<li><p>避免数据类型的隐式转换，特别是在 WHERE 子句中</p>
+</li>
+<li><p>尽可能避免对条件中的索引列使用&lt;&gt;、NOT IN、NOT EXISTS 和 LIKE 等不带前导 ‘%’ 的比较操作符</p>
+</li>
+<li><p>不要对 WHERE 子句中的索引列应用函数</p>
+</li>
+<li><p>不要在聚合之前滥用 HAVING 过滤行</p>
+</li>
+<li><p>避免不必要的排序，包括当使用 UNION ALL 而不是 UNION 时</p>
+</li>
+<li><p>除非必须使用，否则避免使用DISTINCT</p>
+</li>
+</ul>
+<p>TBC</p>
+<h1 id="语法小抄"><a href="#语法小抄" class="headerlink" title="语法小抄"></a>语法小抄</h1><ul>
+<li><p>不区分 <code>&quot;&quot;</code> 和 null</p>
+</li>
+<li><p>分页 <code>... OFFSET 0 ROWS FETCH NEXT 50 ROWS ONLY</code>（不是使用 <code>LIMIT</code>）</p>
+</li>
+<li><p>针对某一列进行去重（<code>DISTINCT</code>是对返回的所有列进行去重，此时返回的某一列仍旧存在重复列）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">        <span class="keyword">DISTINCT</span> column1,column2,</span><br><span class="line">        <span class="built_in">row_number</span>() <span class="keyword">OVER</span>(<span class="keyword">PARTITION</span> <span class="keyword">BY</span> column1 <span class="keyword">ORDER</span> <span class="keyword">BY</span> column2) <span class="keyword">AS</span> row_cnt </span><br><span class="line">    <span class="keyword">FROM</span> tableA</span><br><span class="line">    ...</span><br><span class="line">) <span class="keyword">WHERE</span> row_cnt <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li><p>排序时忽视大小写 <code>ORDER BY NLSSORT(column1, &#39;NLS_SORT=BINARY_CI&#39;)</code></p>
+</li>
+<li><p>定义一个 SQL 片断 <code>WITH AS</code></p>
+</li>
+<li><p>多行拼接为一行 <code>listagg(column, &#39;;&#39; on overflow truncate)</code></p>
+</li>
+<li><p>查看执行计划 <code>EXPLAIN PLAN FOR SQL; SELECT * FROM table(dbms_xplan.display);</code></p>
+</li>
+<li><p>查看当前 session 锁住的对象</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c.owner, c.object_name, c.object_type, b.sid, b.serial#, b.status, b.osuser, b.machine </span><br><span class="line"><span class="keyword">FROM</span> v$locked_object a, v$session b, dba_objects c </span><br><span class="line"><span class="keyword">WHERE</span> b.sid <span class="operator">=</span> a.session_id <span class="keyword">AND</span> a.object_id <span class="operator">=</span> c.object_id <span class="keyword">ORDER</span> <span class="keyword">BY</span> object_name;</span><br></pre></td></tr></table></figure></li>
+<li><p>kill 当前 session </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> KILL SESSION <span class="string">&#x27;:sid, :serial#, @1&#x27;</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.oracletutorial.com/oracle-administration/oracle-database-architecture">https://www.oracletutorial.com/oracle-administration/oracle-database-architecture</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.oracle.com/database/121/TGSQL/tgsql_sqlproc.htm#TGSQL175">https://docs.oracle.com/database/121/TGSQL/tgsql_sqlproc.htm#TGSQL175</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.oracle.com/database/121/TGSQL/tgsql_optcncpt.htm#TGSQL196">https://docs.oracle.com/database/121/TGSQL/tgsql_optcncpt.htm#TGSQL196</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.oracle.com/database/121/TGSQL/tgsql_interp.htm#TGSQL277">https://docs.oracle.com/database/121/TGSQL/tgsql_interp.htm#TGSQL277</a></li>
+<li><a target="_blank" rel="noopener" href="https://blogs.oracle.com/connect/post/how-to-read-an-execution-plan">https://blogs.oracle.com/connect/post/how-to-read-an-execution-plan</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42156231/article/details/124920365">https://blog.csdn.net/weixin_42156231/article/details/124920365</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42156231/article/details/124749986">https://blog.csdn.net/weixin_42156231/article/details/124749986</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.oracle.com/docs/tech/database/technical-brief-explain-the-explain-plan-052011.pdf">https://www.oracle.com/docs/tech/database/technical-brief-explain-the-explain-plan-052011.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44390164/article/details/119970753">https://blog.csdn.net/weixin_44390164/article/details/119970753</a></li>
+<li><a target="_blank" rel="noopener" href="https://oracle.readthedocs.io/en/latest/sql/hints/optimization.html">https://oracle.readthedocs.io/en/latest/sql/hints/optimization.html</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2022/12/05/week-15/">
+        <span class="nav-arrow">← </span>
+        
+          2022.12.5 - 2022.12.9
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2022/12/15/week-16/">
+        
+          2022.12.12 - 2022.12.16
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Content START -->
+  
+    <aside class="content-container">
+  <div class="toc-main">
+  
+      
+          <strong class="toc-title">CONTENT</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AD%98%E5%82%A8%E5%8D%95%E5%85%83"><span class="toc-nav-text">存储单元</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SQL-%E6%89%A7%E8%A1%8C"><span class="toc-nav-text">SQL 执行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="toc-nav-text">执行计划</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%A1%A8%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">表访问方式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%A1%A8%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F"><span class="toc-nav-text">表连接方式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BC%98%E5%8C%96%E6%8A%80%E5%B7%A7"><span class="toc-nav-text">优化技巧</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%AF%AD%E6%B3%95%E5%B0%8F%E6%8A%84"><span class="toc-nav-text">语法小抄</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+      
+  
+  </div>
+</aside>
+  
+  <!-- Content END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2022/12/15/oracle/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <!--
+<footer class="app-footer">
+  <p class="copyright">
+    &copy; 2023 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+-->
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
