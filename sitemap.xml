@@ -38,15 +38,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/07/29/escape-and-face/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/07/29/week-48/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -66,6 +57,15 @@
   
   <url>
     <loc>http://example.com/2022/09/06/docker/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2023/07/29/escape-and-face/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -101,6 +101,15 @@
   </url>
   
   <url>
+    <loc>http://example.com/2023/11/06/computer-networking/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2023/11/05/history-vocabulary/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -119,7 +128,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/11/06/computer-networking/</loc>
+    <loc>http://example.com/2023/08/20/operating-systems/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -146,15 +155,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/08/20/operating-systems/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2022/12/19/week-17/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -173,6 +173,15 @@
   </url>
   
   <url>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/10/04/week-6/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -182,7 +191,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/11/21/week-13/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -218,7 +227,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/11/21/week-13/</loc>
+    <loc>http://example.com/2022/09/06/week-2/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -228,15 +237,6 @@
   
   <url>
     <loc>http://example.com/2023/06/15/week-42/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/09/06/week-2/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -272,7 +272,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/04/07/week-32/</loc>
+    <loc>http://example.com/2023/02/25/week-26/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -290,7 +290,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/02/25/week-26/</loc>
+    <loc>http://example.com/2023/04/07/week-32/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -380,15 +380,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/06/blog/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2022/12/05/week-15/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -399,6 +390,15 @@
   
   <url>
     <loc>http://example.com/2022/09/19/week-4/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/06/blog/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -452,15 +452,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/07/23/expression/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/07/07/week-45/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -471,6 +462,24 @@
   
   <url>
     <loc>http://example.com/2022/09/27/week-5/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2023/07/23/expression/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/11/10/week-10/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -497,7 +506,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/11/10/week-10/</loc>
+    <loc>http://example.com/2022/09/01/week-1/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -507,15 +516,6 @@
   
   <url>
     <loc>http://example.com/2023/02/11/week-24/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/09/01/week-1/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
