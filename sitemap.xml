@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/05/06/blog/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/categories/index.html</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -65,15 +74,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/01/01/java-web/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/07/29/week-48/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/10/24/week-9/</loc>
+    <loc>http://example.com/2023/01/01/java-web/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -102,6 +102,15 @@
   
   <url>
     <loc>http://example.com/2023/05/19/week-38/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/10/24/week-9/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -155,15 +164,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2022/12/19/week-17/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -182,6 +182,15 @@
   </url>
   
   <url>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/10/04/week-6/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -192,15 +201,6 @@
   
   <url>
     <loc>http://example.com/2022/11/21/week-13/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/09/06/week-2/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -236,7 +236,25 @@
   </url>
   
   <url>
+    <loc>http://example.com/2022/09/06/week-2/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2023/06/15/week-42/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -254,7 +272,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
+    <loc>http://example.com/2023/09/01/week-53/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -282,15 +300,6 @@
   
   <url>
     <loc>http://example.com/2023/04/07/week-32/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2023/09/01/week-53/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -335,6 +344,15 @@
   </url>
   
   <url>
+    <loc>http://example.com/2023/06/03/week-40/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/12/15/oracle/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -362,7 +380,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/06/03/week-40/</loc>
+    <loc>http://example.com/2023/09/04/week-54/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -371,7 +389,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/09/04/week-54/</loc>
+    <loc>http://example.com/2022/07/02/accident/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -398,34 +416,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/07/02/accident/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/05/06/blog/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/07/02/week-44/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2023/03/24/week-30/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -452,7 +443,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/07/07/week-45/</loc>
+    <loc>http://example.com/2023/03/24/week-30/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -479,7 +470,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/11/10/week-10/</loc>
+    <loc>http://example.com/2023/07/07/week-45/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -489,6 +480,15 @@
   
   <url>
     <loc>http://example.com/2023/04/21/week-34/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/11/10/week-10/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -533,15 +533,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/12/29/master-period/</loc>
-    
-    <lastmod>2023-12-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/07/29/gradle/</loc>
     
     <lastmod>2023-12-27</lastmod>
@@ -551,7 +542,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
+    <loc>http://example.com/2022/12/29/master-period/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
@@ -561,6 +552,15 @@
   
   <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
+    
+    <lastmod>2023-12-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
     
     <lastmod>2023-12-27</lastmod>
     
