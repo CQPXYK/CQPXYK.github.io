@@ -163,11 +163,11 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="英文版"><a href="#英文版" class="headerlink" title="英文版"></a><a href="../../../../2023/09/01/week-53/">英文版</a></h1><h1 id="问题与解决"><a href="#问题与解决" class="headerlink" title="问题与解决"></a>问题与解决</h1><p><strong>容器</strong>：应用可以被部署并运行在 VM 上，但是考虑到 VM 需要使用过多的硬件资源来运行一整套操作系统（是对硬件的封装隔离），而容器则仅包含一些应用运行所必要的软件和配置来运行一个进程（是对进程的封装隔离），实现了比 VM 更宽松的隔离特性，更加充分的硬件资源利用以及更快速轻量的应用运行环境。</p>
+    <section class="markdown-content"><h1 id="英文版"><a href="#英文版" class="headerlink" title="英文版"></a><a href="../../../../2023/09/01/week-53/">英文版</a></h1><h1 id="问题与解决"><a href="#问题与解决" class="headerlink" title="问题与解决"></a>问题与解决</h1><p><strong>容器</strong>：应用可以被部署并运行在 VM 上，但是考虑到 VM 需要使用过多的硬件资源来运行一整套操作系统（是对硬件的封装隔离），而容器则仅包含一些应用运行所必要的软件和配置来运行一个进程（是对进程的封装隔离），实现了比 VM 更宽松的隔离特性，更加充分的硬件资源利用以及更快速轻量的应用运行环境，应用在容器中的运行性能接近于在物理平台上的性能。</p>
 <p><strong>云服务</strong>：随着应用变得越来越庞大，流量负载越来越高，则倾向于使用一组互相独立且富余的服务器系统（云服务），而非单体服务来运行应用。</p>
-<p><strong>Docker</strong>：考虑到在每一个服务机器上都进行应用环境配置是很繁琐的工作，版本更新时还需要重新配置，而且不能跨平台。因此，考虑在发布一个项目时，将项目应用带上环境安装一起打包，即发布的 jar 包中是包含环境的，这就是现在的 Docker 镜像（image）。</p>
+<p><strong>Docker</strong>：考虑到在每一个服务机器上都进行应用环境配置是很繁琐的工作，版本更新以及更换平台时还需要重新配置。因此，考虑在发布一个项目时，将项目应用带上环境安装一起打包，即发布的 jar 包中是包含环境的，这就是现在的 Docker 镜像（image）。</p>
 <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><p>Docker 是一个可以在云平台上构建，运行以及管理容器的软件框架，采用了 <code>C/S</code> 架构，包括客户端和服务端。</p>
-<p>Docker 守护进程 （<code>Daemon</code>）作为服务端接受来自客户端的请求，并处理这些请求（创建、运行、分发容器）一般在宿主主机后台运行，Docker 客户端则为用户提供一系列可执行命令，用户用这些命令实现跟 Docker 守护进程交互。客户端和服务端既可以运行在一个机器上，也可通过 <code>socket</code> 或者 <code>RESTful API</code> 来进行通信。</p>
+<p>Docker 守护进程（<code>Daemon</code>）作为服务端接受来自客户端的请求，并处理这些请求（创建、运行、分发容器）一般在宿主主机后台运行，Docker 客户端则为用户提供一系列可执行命令，用户用这些命令实现跟 Docker 守护进程交互。客户端和服务端既可以运行在一个机器上，也可通过 <code>socket</code> 或者 <code>RESTful API</code> 来进行通信。</p>
 <p>基于 Docker：</p>
 <ul>
 <li>不再需要费力配置应用环境、交付、部署、迁移、运维、升级和扩容都变得更加快速便捷；</li>
@@ -175,11 +175,11 @@
 <li>镜像非常小巧，只包含必要的核心环境，生成的容器运行轻便，占据较少的硬件资源，性能接近原生，秒级启动。</li>
 </ul>
 <h1 id="镜像与容器"><a href="#镜像与容器" class="headerlink" title="镜像与容器"></a>镜像与容器</h1><p>镜像就是一个轻量级、可执行的独立软件包，用来打包软件的完整运行环境和基于运行环境开发的软件，它包含某个软件所需的所有内容（代码、库、环境变量和配置文件），但不包含任何动态数据，其内容在构建之后不会被改变。一般使用<code>&lt;仓库名&gt;:&lt;标签&gt;</code>的格式来指定具体是哪个软件哪个版本的镜像。</p>
-<p>Docker镜像实际上由一层一层的文件系统组成，这种层级的文件系统称为联合文件系统（Union File System）。所有的Docker镜像都起始于一个基础镜像层（rootfs），当进行修改或者增加新的内容时，就会在当前镜像层之上，创建新的镜像层，而非修改现有镜像。每一个镜像层与它之下的镜像层都可以组成一个镜像，因此，镜像与镜像之间，可能会复用某些镜像层。</p>
-<p>Docker镜像都是只读的，当通过镜像新建容器（container）并启动时，一个新的可写层被加载到镜像的顶部，这一层就是容器存储层（可用于存储容器运行时产生的临时数据），容器之下都叫镜像层。当开发者对容器存储层的操作结束后，可以将容器层与容器之下的镜像层一起打包发布自己定义的新镜像（但尽量不用使用这种方式来定制镜像）。</p>
-<p>容器是一种对进程进行隔离的软件运行环境，也提供了资源控制的功能。一个应用进程对应一个容器（不建议在一个容器中运行多个应用）。容器能够让应用程序间互不干扰的独立运行，能够对进程在运行中所使用的资源进行干预。运行在容器虚拟化中的应用程序直接运行于宿主机的内核，其运行效率与真实运行在物理平台上的应用程序不相上下，远超虚拟机等其他虚拟化技术实现。</p>
-<h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p><code>Dockerfile</code>是用于自动化构建docker镜像的指令脚本，不管是开发还是运维都能通过<code>Dockerfile</code>来清晰的理解应用运行条件及环境，实现透明化的构建流程，脚本中的每一个指令都对应一层镜像，通过这一个个指令，构建出一层层镜像。</p>
-<p>通过<code>docker build xxx .</code>构建镜像时，并非是在本地构建，而是在服务端（也就是Docker引擎）中构建的。应当将<code>Dockerfile</code>以及构建镜像所需的所有文件都置于上下文目录，构建时会通过指定的上下文路径（<code>.</code>）来将路径下的所有内容打包，上传给Docker引擎，从而使得服务端获得构建时所需的本地文件。</p>
+<p>Docker 镜像实际上由一层一层的文件系统组成，这种层级的文件系统称为联合文件系统（Union File System）。所有的 Docker 镜像都起始于一个基础镜像层（rootfs），当进行修改或者增加新的内容时，就会在当前镜像层之上，创建新的镜像层，而非修改现有镜像。每一个镜像层与它之下的镜像层都可以组成一个镜像，镜像与镜像之间会复用一些镜像层，这也意味着应当尽可能令镜像保持轻量，避免镜像中包含任何不必要的数据。</p>
+<p>Docker 镜像和容器（container）之间的关系就像是类和对象，Docker 镜像是容器的静态定义，容器是镜像的动态运行实例。Docker 镜像都是只读的，当通过镜像新建容器并启动时，一个新的可写层被加载到镜像的顶部，这一层就是容器存储层（可用于存储容器运行时产生的临时数据），容器之下都叫镜像层。当开发者对容器存储层的操作结束后，可以将容器层与容器之下的镜像层一起打包发布自己定义的新镜像（但尽量不用使用这种方式来定制镜像）。</p>
+<p>容器是一种对进程进行隔离的软件运行环境，包含了应用代码以及代码正常运行所需的所有内容，完全隔离并抽象了底层基础设置和操作系统，还提供了对运行进程进行资源控制的功能。一个应用进程对应一个容器（不建议在一个容器中运行多个应用），各个应用程序在各自的容器内互不干扰的独立运行，容器能够对运行中进程所使用的资源进行干预。</p>
+<p>容器化/容器虚拟化是一种对软件进行构建、打包以及部署的方法，运行在容器虚拟化中的应用程序直接运行于宿主机的内核，其运行效率与真实运行在物理平台上的应用程序不相上下，远超虚拟机等其他虚拟化技术实现。</p>
+<h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p><code>Dockerfile</code>是用于自动化构建 Docker 镜像的指令脚本，脚本中的每一个指令都对应一层镜像，不管是开发还是运维都能通过<code>Dockerfile</code>来清晰的理解应用运行条件及环境，实现透明化的构建流程。开发者通过 Dockerfile 来打包 Docker 镜像，可以实现低版本环境的持续集成（CI），基于 Docker 镜像，容器实例的创建成为轻松廉价的行为，可以根据实际需要来进行容器创建和关闭之间的无缝衔接，运维通过 Docker 镜像部署容器内运行的服务，可以实现高版本环境的持续部署（CD）。</p>
 <p>编写<code>Dockerfile</code>脚本指令时：</p>
 <ul>
 <li><p>一般使用空目录或者项目根目录作为上下文目录，仅仅将构建镜像所以的文件放置于上下文目录中，不要引入无关文件</p>
@@ -193,23 +193,31 @@
 <li><p>确保每一层只添加真正需要的添加的东西，任何无关的东西都应该清理掉</p>
 </li>
 </ul>
-<h1 id="容器数据卷"><a href="#容器数据卷" class="headerlink" title="容器数据卷"></a>容器数据卷</h1><p>如果数据放在容器存储层中，那么删除容器时，数据就会丢失。因此，考虑将容器中产生的数据持久化到本地，实现本地与容器，容器与容器之间的数据同步与共享。在 Docker 中，通过挂载来进行数据共享或持久化的文件或目录，都称为容器数据卷（volume）。数据卷的生存周期独立于容器。</p>
+<p>通过<code>docker build xxx .</code>构建镜像时：</p>
+<ul>
+<li><p>在Docker 服务器端（也就是 Docker 引擎）中构建，并非是在本地 Docker 客户端构建</p>
+</li>
+<li><p>当前目录<code>.</code>被指定为上下文目录，目录下的所有内容会被打包发送至 Docker 引擎</p>
+</li>
+<li><p>Docker 引擎就根据上下文目录中的内容来构建 Docker 镜像</p>
+</li>
+</ul>
+<h1 id="容器数据卷"><a href="#容器数据卷" class="headerlink" title="容器数据卷"></a>容器数据卷</h1><p>如果容器存储层中的数据是临时数据，会随着容器的死亡而消失，容器中的临时数据的持久化依赖于挂载，挂载实现了本地与容器，容器与容器之间的数据同步与共享。在 Docker 中，通过挂载来进行数据共享或持久化的文件或目录，都称为容器数据卷（volume），数据卷的生存周期独立于容器，也没有针对数据卷的自动清理机制。</p>
 <p>在挂载时，可以给该挂载指定名字（容器内路径一定要指定），指定名字的挂载称为具名挂载，没有指定名字的挂载称为匿名挂载。没有被任何容器所使用的数据卷可以删除。具名挂载可以通过名字来删除数据卷，而匿名挂载的数据卷可以看成它们与对应的容器产生了绑定，因此可以在容器删除时将它们一并删除。</p>
 <p>可以专门用一个容器来做其他容器之间的数据共享与备份，这个容器称为数据卷容器。数据卷容器没有具体指定的应用，也不需要运行，使用它的目的就是为了定义一个或多个数据卷那并持有它们的引用。</p>
-<h1 id="Docker网络"><a href="#Docker网络" class="headerlink" title="Docker网络"></a>Docker网络</h1><p>对于大部分的程序来说，它们的运行都不会是孤立的，而是要与其他程序进行交互的，网络通讯是目前最常用的一种程序间的数据交换方式。</p>
-<p>当启动Docker服务时，它会创建一个默认的bridge网络，容器在不专门指定网络的情况都会连接到这个网络上。</p>
-<p>Docker可以对每个容器的网络进行配置，可以在容器间建立虚拟网络来包裹多个容器并与其他网络环境隔离，让应用从宿主机操作系统的网络环境中独立出来，形成容器自由的网络设备。</p>
+<h1 id="Docker-网络"><a href="#Docker-网络" class="headerlink" title="Docker 网络"></a>Docker 网络</h1><p>对于大部分的程序来说，它们的运行都不会是孤立的，而是要与其他程序进行交互的，网络通讯是目前最常用的一种程序间的数据交换方式。</p>
+<p>当启动 Docker 服务时，它会创建一个默认的 bridge 网络，容器在不专门指定网络的情况都会连接到这个网络上。</p>
+<p>Docker 可以对每个容器的网络进行配置，可以在容器间建立虚拟网络来包裹多个容器并与其他网络环境隔离，让应用从宿主机操作系统的网络环境中独立出来，形成容器自由的网络设备。</p>
 <h1 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h1><p>一个相对完整的应用系统往往由数十个甚至上百个应用程序或微服务组成，需要多个应用（多个容器）协作完成工作。</p>
-<p>如果说<code>Dockerfile</code>是将容器内运行环境的搭建固化下来，那么Docker Compose就可以理解为一个管理容器的工具，是将多个相关联容器的合作运行的方式和配置固化下来。</p>
-<p>Docker Compose的配置文件是一个基于 YAML 格式的文件，version这一配置代表当前<code>docker-compose.yml</code>文件内容所采用的版本（建议使用最新的版本），services这一配置是整个<code>docker-compose.yml</code>的核心部分，其中每个service里的配置代表的是一个应用集群（多个相同镜像的容器）的配置。</p>
+<p>如果说<code>Dockerfile</code>是将容器内运行环境的搭建固化下来，那么 Docker Compose 就可以理解为一个管理容器的工具，是将多个相关联容器的合作运行的方式和配置固化下来。</p>
+<p>Docker Compose 的配置文件是一个基于 YAML 格式的文件，version 这一配置代表当前<code>docker-compose.yml</code>文件内容所采用的版本（建议使用最新的版本），services 这一配置是整个<code>docker-compose.yml</code>的核心部分，其中每个 service 里的配置代表的是一个应用集群（多个相同镜像的容器）的配置。</p>
 <p>Docker Compose 能够对这个集群做到黑盒效果，让其他的应用和容器无法感知它们的具体结构。</p>
-<h1 id="Docker-Swarm"><a href="#Docker-Swarm" class="headerlink" title="Docker Swarm"></a>Docker Swarm</h1><p>当使用Docker Compose来定义集群时，可以通过Docker Swarm来部署和编排集群。对于Docker Swarm来说，每个Docker daemon实例都可以成为集群中的一个节点。</p>
-<p>在任意一个Docker实例上都可以通过<code>docker swarm init</code>来初始化集群，初始化后，这个Docker实例就自动成为了集群的管理节点，而其他的Docker实例可以通过运行<code>docker swarm join</code>来加入集群，逐渐建立出用于服务开发的Docker集群。</p>
+<h1 id="Docker-Swarm"><a href="#Docker-Swarm" class="headerlink" title="Docker Swarm"></a>Docker Swarm</h1><p>当使用 Docker Compose 来定义集群时，可以通过 Docker Swarm 来部署和编排集群。对于 Docker Swarm 来说，每个 Docker daemon 实例都可以成为集群中的一个节点。</p>
+<p>在任意一个 Docker 实例上都可以通过<code>docker swarm init</code>来初始化集群，初始化后，这个 Docker 实例就自动成为了集群的管理节点，而其他的 Docker 实例可以通过运行<code>docker swarm join</code>来加入集群，逐渐建立出用于服务开发的 Docker 集群。</p>
 <p>在 <code>Swarm</code> 集群中也可以使用 <code>compose</code> 文件 （<code>docker-compose.yml</code>） 来配置、启动多个服务。</p>
-<h1 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h1><p>在分布式系统中，服务集群的部署、调度、伸缩一直是最为重要也最为基础的功能。除了 Docker Swarm，<a href="../../../10/03/kubernetes/">Kubernetes</a> 同样可以解决这一系列容器编排问题。</p>
-<p>K8S 是基于 Docker 的开源容器集群管理系统，目标是管理跨多个主机的容器，提供基本的部署，维护以及应用伸缩。OpenShift 是企业版的 K8S 集成式开发运维平台（集成了 K8S 以及身份验证、网络、安全、监控、日志管理和其他工具），可通过 CI/CD 来构建和部署自动化。</p>
+<p>Docker Swarm 是 Docker 的原生容器集群编排工具，此外，<a href="../../../10/03/kubernetes/">Kubernetes</a> 同样可以解决这一系列的容器编排问题，在 K8S 被设计为与 Docker 配合良好之后，Docker 提供了自己的集成 K8S 发行版来代替 Docker Swarm 作为 Docker Enterprise 的默认容器编排工具。</p>
 <p>一个<code>Dockerfile</code>用于定义一个 Docker 镜像，一个Docker 镜像用于部署基于同一个镜像的多个容器，一个<code>docker-compose.yml</code>用于定义基于不同镜像的一系列互相合作的容器所构成的集群，即一个项目或者说业务单元，Docker Swarm/K8S 用于部署编排各种容器集群。</p>
-<h1 id="CI-CD-Jenkins"><a href="#CI-CD-Jenkins" class="headerlink" title="CI/CD Jenkins"></a>CI/CD Jenkins</h1><p>持续集成(Continuous integration) 是一种软件开发实践，每次集成都通过自动化的构建（包括编译，发布，自动化测试）来验证，从而尽早地发现集成错误。持续部署(continuous deployment) 是通过自动化的构建、测试和部署循环来快速交付高质量的产品。</p>
+<h1 id="CI-CD-Jenkins"><a href="#CI-CD-Jenkins" class="headerlink" title="CI/CD Jenkins"></a>CI/CD Jenkins</h1><p>持续集成 (Continuous integration) 是一种软件开发实践，每次集成都通过自动化的构建（包括编译，发布，自动化测试）来验证，从而尽早地发现集成错误。持续部署 (continuous deployment) 是通过自动化的构建、测试和部署循环来快速交付高质量的产品。</p>
 <p>DevOps 是一个软件开发生命周期，具备 CI/CD 工作流（pipeline），加速了一个想法从开发到部署的过程，可以帮助频繁地向客户交付应用程序，并以最少的人为干预来验证软件质量。</p>
 <p>Jenkins 是一个基于 Java 的 MIT 许可下的开源 CI/CD 工具，Jenkins 本身并不是流水线，不执行任何功能，但能够和许多不同的服务器和工具联合使用并统一安排起来，比如版本控制管理工具 <a href="../../../05/07/git/">Git</a>，自动化构建工具 <a href="../../../05/07/maven/">Maven</a>，网页应用服务器 Tomcat，代码测试框架、代码质量改进工具及 Docker 容器等。</p>
 <p>开发人员可以在低版本环境通过<code>Dockerfile</code>来打包 Docker 镜像，实现持续集成，运维人员可以在高版本的线上环境通过 Docker 镜像来部署容器内运行的服务，实现持续部署。</p>
@@ -478,7 +486,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%8B%B1%E6%96%87%E7%89%88"><span class="toc-nav-text">英文版</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker"><span class="toc-nav-text">Docker</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%95%9C%E5%83%8F%E4%B8%8E%E5%AE%B9%E5%99%A8"><span class="toc-nav-text">镜像与容器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Dockerfile"><span class="toc-nav-text">Dockerfile</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-nav-text">容器数据卷</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker%E7%BD%91%E7%BB%9C"><span class="toc-nav-text">Docker网络</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker-Compose"><span class="toc-nav-text">Docker Compose</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker-Swarm"><span class="toc-nav-text">Docker Swarm</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kubernetes"><span class="toc-nav-text">Kubernetes</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#CI-CD-Jenkins"><span class="toc-nav-text">CI&#x2F;CD Jenkins</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%85%A5%E9%97%A8%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">入门命令</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%8B%B1%E6%96%87%E7%89%88"><span class="toc-nav-text">英文版</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker"><span class="toc-nav-text">Docker</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%95%9C%E5%83%8F%E4%B8%8E%E5%AE%B9%E5%99%A8"><span class="toc-nav-text">镜像与容器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Dockerfile"><span class="toc-nav-text">Dockerfile</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-nav-text">容器数据卷</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker-%E7%BD%91%E7%BB%9C"><span class="toc-nav-text">Docker 网络</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker-Compose"><span class="toc-nav-text">Docker Compose</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Docker-Swarm"><span class="toc-nav-text">Docker Swarm</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#CI-CD-Jenkins"><span class="toc-nav-text">CI&#x2F;CD Jenkins</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%85%A5%E9%97%A8%E5%91%BD%E4%BB%A4"><span class="toc-nav-text">入门命令</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
       
   
   </div>
@@ -549,7 +557,7 @@
     <!--
 <footer class="app-footer">
   <p class="copyright">
-    &copy; 2023 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
     <br>
     Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
     

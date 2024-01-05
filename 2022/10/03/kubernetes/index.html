@@ -163,22 +163,22 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="英文版"><a href="#英文版" class="headerlink" title="英文版"></a><a href="../../../../2023/09/01/week-53/">英文版</a></h1><p>Kubernetes 是基于 Docker 的开源容器集群管理系统，运行在操作系统之上并与<code>Pod</code>进行交互，目标是通过声明式配置和自动化来管理跨多个主机的容器集群。</p>
-<p>用户的工作在于配置 K8S，定义<code>Node</code>，<code>Pod</code>以及容器，K8S 负责提供自动部署、回滚、存储编排、资源分配、配置管理、服务发现、负载均衡和自我修复。</p>
+    <section class="markdown-content"><h1 id="英文版"><a href="#英文版" class="headerlink" title="英文版"></a><a href="../../../../2023/09/01/week-53/">英文版</a></h1><h1 id="问题与解决"><a href="#问题与解决" class="headerlink" title="问题与解决"></a>问题与解决</h1><p><strong>Kubernetes</strong>：在分布式系统中，服务集群的部署、调度、伸缩一直是最为重要也最为基础的功能，这意味着需要根据实际流量情况来动态管理容器集群。Kubernetes 是基于 Docker 的开源容器集群管理系统（如今已经是容器编排的事实标准），运行在操作系统之上并与<code>Pod</code>进行交互，目标是通过声明式配置和自动化来管理跨多个主机的容器集群，提供自动部署、回滚、存储编排、资源分配、配置管理、服务发现、负载均衡和自我修复，而用户的工作就在于配置 K8S，定义<code>Node</code>，<code>Pod</code>以及容器。</p>
+<p><strong>OpenShift</strong>：对于生产环境中的容器来说，仅仅只是安装 K8S 是不够的，Red Hat OpenShift 是企业版的 K8S 集成式开发运维平台，集成了 K8S 以及身份验证、网络、安全、监控、日志管理等其他工具，可通过 CI/CD 来构建和部署自动化。</p>
 <h1 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h1><p>一个<code>Pod</code>由一组容器化应用构成，构成了一个应用所在的逻辑主机。<code>Pod</code>是 K8S 进行创建，编排及管理的最小单位，通常由 K8S 工作负载所创建，而非由用户直接创建。<code>Pod</code>被设计为是一次性可替代的组件，一旦一个<code>Pod</code>被创建后就不可以添加或删除容器，而是应该删除<code>Pod</code>并替换为一个新的<code>Pod</code>。</p>
 <p>一个<code>Pod</code>中的一组容器是紧密耦合的，拥有相同的资源上下文（配置，命名空间，卷，网络等），K8S 通过<code>Pod</code>的 DNS/IP 来暴露一个<code>Pod</code>。一个<code>Pod</code>中的一组容器可以通过<code>localhost</code>来互相通信，但是当和<code>Pod</code>外部通信时，<code>Pod</code>内的容器需要协调如何共享网络资源（比如端口号）。</p>
-<p><code>services</code>是<code>Pod</code>对外的逻辑抽象，自动将服务请求发送到正确的<code>Pod</code>（无论它在集群中的位置，或者它是否被替换），提供对外访问<code>Pod</code>容器组的策略。</p>
-<h1 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h1><p>K8S 会为<code>Pod</code>分配工作机器来在 Linux 环境中执行具体的容器集群调度处理工作，工作机器（虚拟机或者物理机）就称为<code>Node</code>，<code>Node</code>包含了能够运行 Docker 容器所用到的服务，每个<code>Node</code>都运行了一些<code>Pods</code>，一组<code>Node</code>会构成一个 K8S 集群。</p>
-<p><code>Node</code>组件会在每个<code>Node</code>上运行，负责维护运行的<code>Pod</code>并提供 K8S 运行环境。</p>
+<p><code>services</code>是<code>Pod</code>对外的逻辑抽象，服务代理自动将服务请求发送到正确的<code>Pod</code>（无论<code>Pod</code>移动到集群中的哪个位置，或者它是否被替换），提供对外访问<code>Pod</code>容器组的策略。</p>
+<h1 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h1><p>K8S 会为<code>Pod</code>分配工作机器来在 Linux 环境中执行具体的容器集群调度处理工作，K8S 中的工作机器（虚拟机或者物理机）就称为<code>Node</code>，每个<code>Node</code>都运行了一些<code>Pods</code>，一组<code>Node</code>会构成一个 K8S 集群。</p>
+<p><code>Node</code>运行了一些运行<code>Pod</code>所需要的组件，这些组件负责维护运行的<code>Pod</code>并提供 K8S 运行环境。</p>
 <ul>
-<li><p>kubelet 是负责保证容器都处于运行状态且健康的<code>Node</code>组件，会在集群中每个节点上运行</p>
+<li><p>kubelet 是负责保证容器都处于运行状态且健康的<code>Node</code>组件，会在集群中每个节点上运行，kubelet 并不直接管理容器，而是管理<code>Pod</code></p>
 </li>
-<li><p>kube-proxy 是负责维护节点上的网络规则的<code>Node</code>组件，是集群中每个节点上运行的网络代理，它锁维护的网络规则会允许从集群内部或外部的网络会话与<code>Pod</code>进行网络通信</p>
+<li><p>kube-proxy 是负责维护节点上的网络规则的<code>Node</code>组件，是集群中每个节点上运行的网络代理，它所维护的网络规则会允许从集群内部或外部的网络会话与<code>Pod</code>进行网络通信，并且将请求分发到<code>Node</code>中的每个<code>Pod</code></p>
 </li>
-<li><p>容器运行时是负责运行容器的<code>Node</code>组件，docker 就是一个容器运行时，一个<code>Node</code>至少要有一个容器运行时，节点上的 kubelet 会指导容器运行时去创建指定的容器。</p>
+<li><p>容器运行时是负责运行容器的<code>Node</code>组件，Docker 就是一个容器运行时，一个<code>Node</code>至少要安装一个容器运行时，节点上的 kubelet 会指导容器运行时去创建指定的容器，K8S 最常和 Docker 一起使用，但也可以与其他任何容器运行时一起使用</p>
 </li>
 </ul>
-<h1 id="控制平面"><a href="#控制平面" class="headerlink" title="控制平面"></a>控制平面</h1><p>控制平面指容器编排层，会为集群做出全局决策，以及定义、部署和管理集群。控制平面可以在集群中的任何节点上运行。在生产环境中，控制平面通常跨多台计算机运行，一个集群通常运行多个节点，提供容错性和高可用性。</p>
+<h1 id="控制平面"><a href="#控制平面" class="headerlink" title="控制平面"></a>控制平面</h1><p>控制平面指容器编排层，会为集群做出全局决策，以及检测并回应集群中的事件。控制平面可以在集群中的任何节点上运行。在生产环境中，控制平面通常跨多台计算机运行，一个集群通常运行多个节点，提供容错性和高可用性。</p>
 <p>控制面的核心是 API 服务器，API 服务器负责提供 HTTP API，以供用户、集群中的不同部分和集群外部组件互相通信，可用于查询和操纵 K8S API 中对象（例如：Pod、Namespace、ConfigMap 和 Event）的状态。K8S 支持多个 API 版本，每个版本都被称为 API 组，这些 API 组可以被启用或者禁用，在集群升级时需要注意API是否存在不兼容的变更。</p>
 <ul>
 <li><p>kube-apiserver 是负责处理接收请求的前端控制平面组件，是 API 服务器的主要实现，可以通过运行更多的 kube-apiserver 实例来实现请求的负载均衡</p>
@@ -262,7 +262,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%8B%B1%E6%96%87%E7%89%88"><span class="toc-nav-text">英文版</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Pod"><span class="toc-nav-text">Pod</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Node"><span class="toc-nav-text">Node</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-nav-text">控制平面</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">插件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kubernetes-%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">Kubernetes 对象</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%8B%B1%E6%96%87%E7%89%88"><span class="toc-nav-text">英文版</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Pod"><span class="toc-nav-text">Pod</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Node"><span class="toc-nav-text">Node</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-nav-text">控制平面</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">插件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kubernetes-%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">Kubernetes 对象</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
       
   
   </div>
@@ -333,7 +333,7 @@
     <!--
 <footer class="app-footer">
   <p class="copyright">
-    &copy; 2023 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
     <br>
     Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
     
