@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/05/08/java-language/</loc>
+    <lastmod>2024-01-07</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
+    <lastmod>2024-01-07</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/08/20/operating-systems/</loc>
+    <lastmod>2024-01-06</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/11/design-patterns/</loc>
+    <lastmod>2024-01-06</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
+    <lastmod>2024-01-06</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/10/03/kubernetes/</loc>
     <lastmod>2024-01-05</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/09/06/docker/</loc>
     <lastmod>2024-01-05</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/08/java-language/</loc>
-    <lastmod>2024-01-02</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
-    <lastmod>2023-12-30</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/12/19/week-17/</loc>
@@ -57,15 +69,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/11/05/history-vocabulary/</loc>
-    <lastmod>2023-12-30</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2023/11/06/computer-networking/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/08/20/operating-systems/</loc>
+    <loc>http://example.com/2023/11/05/history-vocabulary/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
@@ -102,10 +110,6 @@
   </url>
   <url>
     <loc>http://example.com/2023/08/22/week-52/</loc>
-    <lastmod>2023-12-30</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/11/design-patterns/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
@@ -242,10 +246,6 @@
   </url>
   <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
-    <lastmod>2023-12-30</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
