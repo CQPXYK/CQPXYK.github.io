@@ -389,15 +389,16 @@
 <li><p>能力：容器即存放要使用的对象的地方，比数组更加灵活，具备更多不同的功能，Java 容器类是最具重用性的类库之一，当需要再数组上执行更加复杂的操作的，需要评估到底是使用数组还是更加灵活的容器，只有在已证明性能存在问题，并且切换到数组对性能提高有所帮助时，才应该将程序由容器重构为使用数组。</p>
 </li>
 </ul>
-<h2 id="2-1-Collection-序列"><a href="#2-1-Collection-序列" class="headerlink" title="2.1 Collection 序列"></a>2.1 Collection 序列</h2><p><code>Collection</code>是一个独立元素的序列。</p>
+<p>快速失效（fail-fast）是一种理念，在系统设计中，fail-fast 系统是一种可以立即报告任何可能表明故障的情况的系统，一旦发生故障，直接停止正常操作并以异常的方式上报故障，而不是试图继续可能存在问题的过程。在 Java 容器中有用到 fail-fast 原则进行设计，如果存在多个线程同时修改同一个容器的内容或者是在迭代过程中增加或移除元素，就会触发 fail-fast，抛出<code>CocurrentModificationException</code>。如果需要在遍历时修改集合，可以使用普通的<code>for</code>循环，或者使用迭代器本身的<code>remove</code>，或者使用<code>stream</code>的<code>filter</code>方法。fail-safe 则是为线程安全的并发集合（<code>java.util.concurrent</code>，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a> 的 5.3.1 小节）准备的，这样的集合容器在遍历时不是直接在集合内容上访问的，而是先复制原有集合内容，遍历的是开始遍历那一刻拿到的集合拷贝，避免了触发 fail-fast 导致不断抛出异常，但在遍历期间并不能访问到遍历期间修改的内容。</p>
+<h2 id="2-1-Collection-序列"><a href="#2-1-Collection-序列" class="headerlink" title="2.1 Collection 序列"></a>2.1 Collection 序列</h2><p><code>Collection</code>是一个独立元素的序列接口，<code>Collections</code>是一个工具类，包含有各种关于<code>Collection</code>操作的重载方法。</p>
 <img src="Collection.png" alt="Collection" style="zoom:100%;" />
 
 <ul>
 <li><p><code>Iterator</code></p>
 <ul>
-<li><p><code>Collection</code>扩展了<code>Iterable</code>，所有的<code>Collection</code>都可以通过<code>iterator</code>方法来获取迭代器<code>Iterator</code>，也可以用 foreach 语法遍历</p>
+<li><p><code>Collection</code>扩展了<code>Iterable</code>，<code>Iterable</code>代表其实现是可以遍迭代的，所有的<code>Collection</code>都可以通过<code>iterator</code>方法来获取迭代器<code>Iterator</code>，也可以用 foreach 语法遍历</p>
 </li>
-<li><p><code>Iterator</code>统一了对序列的访问方式，其工作是遍历并选择序列中的对象，客户端程序员不必知道或关心序列底层的结构</p>
+<li><p><code>Iterator</code>代表的是迭代的方式，其工作是遍历并选择序列中的对象，客户端程序员不必知道或关心序列底层的结构，统一了对序列的访问方式</p>
 </li>
 <li><p><code>Iterator</code>工作在一个独立的线程中，并且拥有一个互斥锁，<code>Iterator</code>被创建之后会建立一个指向原来对象的单链索引表，当原来的对象数量发生变化时，这个索引表的内容不会同步改变，按照 fail-fast 原则<code>Iterator</code>会立即抛出<code>CocurrentModificationException</code>，因此，<code>Iterator</code>在工作时不允许改变被迭代的对象序列，但可以使用<code>Iterator</code>本身的<code>remove</code>来删除对象，该方法会在删除当前迭代对象的同时维护索引的一致性</p>
 </li>
@@ -425,11 +426,15 @@
 </li>
 <li><p>确定一个元素是否属于<code>List</code>，发现某个元素的索引，以及移除元素操作都会用到<code>equal</code>方法，因此<code>List</code>的行为根据<code>equal</code>的行为而有所变化</p>
 </li>
-<li><p><code>ArrayList</code>和<code>LinkedList</code>都是<code>List</code>类型，两者的不同之处在于执行某些类型的操作时的性能，以及<code>LinkedList</code>还实现了<code>Deque</code>，具备了<code>List</code>中未包含的额外方法，比如需要栈的行为时，应当使用<code>LinkedList</code></p>
+<li><p><code>ArrayList</code>和<code>LinkedList</code>都是<code>List</code>类型，两者的不同之处在于底层结构和执行某些类型的操作性能，以及<code>LinkedList</code>还实现了<code>Deque</code>，具备了<code>List</code>中未包含的额外方法，比如需要栈的行为时，应当使用<code>LinkedList</code></p>
 </li>
-<li><p>在<code>List</code>中间插入和删除，对于<code>LinkedList</code>来说都是廉价操作，但对于<code>ArrayList</code>来说是昂贵的操作，<code>ArrayList</code>更适用于随机访问元素，而<code>LinkedList</code>在随机访问时相对较慢</p>
+<li><p><code>ArrayList</code>是一个可改变大小的数组，<code>LinkedList</code>是一个双向链表，在<code>List</code>中间插入和删除，对于<code>LinkedList</code>来说都是廉价操作，但对于<code>ArrayList</code>来说是昂贵的操作，<code>ArrayList</code>更适用于随机访问元素，而<code>LinkedList</code>在随机访问时相对较慢</p>
 </li>
-<li><p><code>ArrayList</code>代替了<code>Vector</code></p>
+<li><p><code>ArrayList</code>的<code>subList</code>方法返回的是用<code>SubList</code>类型（<code>ArrayList</code>的内部类）表示的原<code>List</code>的视图，对视图的所有操作其实依旧是在操作原列表，<code>SubList</code>与<code>ArrayList</code>之间没有继承关系，不能强转</p>
+</li>
+<li><p>为了避免在数组存在大量空位的情况下序列化大量 null 元素，<code>ArrayList</code>的底层的<code>Object</code>数组被声明成了<code>transient</code>，在默认的序列化机制中并没有序列化数组数据，而是自定义了<code>writeObject</code>和<code>readObject</code>方法来实现序列化操作</p>
+</li>
+<li><p><code>Vector</code>是线程安全的，读写都加了<code>synchronized</code>锁，多线程并发时无法同时读和写，每次扩容时增加一倍，在单线程环境下<code>ArrayList</code>代替了<code>Vector</code>，<code>ArrayList</code>不是线程安全的，每次扩容时增加 50%，而并发环境下则更推荐使用<code>CopyOnWriteArrayList</code>（可以同时读和写）</p>
 </li>
 </ul>
 </li>
@@ -447,9 +452,11 @@
 </li>
 <li><p><code>TreeSet</code>将元素存储在红黑树数据结构中（元素必须实现<code>Comparable</code>接口），按照比较结果的升序保存对象</p>
 </li>
-<li><p><code>LinkedHashSet</code>因为查询速度的原因也使用了散列，但是还是使用了链表来维护元素的插入顺序，按照被添加的顺序保存对象</p>
+<li><p><code>LinkedHashSet</code>因为查询速度的原因也使用了散列，但是还是使用了双向链表来维护元素的插入顺序，按照被添加的顺序保存对象</p>
 </li>
-<li><p>在迭代访问时维护了顺序的<code>TreeSet</code>和<code>LinkedHashSet</code>反而比<code>HashSet</code>更快，对于插入操作，<code>LinkedHashSet</code>的代价比<code>HashSet</code>更高，这是由维护链表所带来额外开销造成的</p>
+<li><p>在迭代访问时维护了顺序的<code>TreeSet</code>和<code>LinkedHashSet</code>反而比<code>HashSet</code>更快，对于插入操作，<code>LinkedHashSet</code>的代价比<code>HashSet</code>更高，这是由维护双向链表所带来额外开销造成的</p>
+</li>
+<li><p><code>BitSet</code>是位集合，底层数据结构是由一个<code>long</code>型数组所表示的位数组，如果第 n 位为 1，则表明数字 n 在该数组中（只使用一个比特位就完成了数字 n 的存储），一般只用于数字的存储和去重，不适合存储一些差值比较大的数（高位和低位之间的比特位都浪费了），<code>BitSet</code>只是名字中有 Set，但其实既没有实现<code>Collection</code>接口，也没有实现<code>Iterable</code>接口</p>
 </li>
 </ul>
 </li>
@@ -458,13 +465,49 @@
 <img src="Map.png" alt="Map" style="zoom:40%;" />
 
 <ul>
+<li><p><code>Hashtable</code></p>
+<ul>
+<li><p><code>Hashtable</code>是线程安全的，读写都加了<code>synchronized</code>锁，多线程并发时无法同时读和写，锁粒度太大</p>
+</li>
+<li><p><code>Hashtable</code>的默认初始容量为 11，默认的加载因子为 0.75，即当元素个数超过容量的 75% 时，会进行扩容，容量会扩大为原来的两倍加 1，并将原来的元素重新分配到新的桶中</p>
+</li>
+</ul>
+</li>
 <li><p><code>HashMap</code></p>
 <ul>
-<li><p><code>HashMap</code>代替了<code>Hashtable</code>（过时，不应使用）</p>
+<li><p><code>HashMap</code>不是线程安全的，单线程环境下<code>HashMap</code>代替了<code>Hashtable</code>，而并发环境下则更推荐使用<code>ConcurrentHashMap</code>（可以同时读和写）</p>
+</li>
+<li><p><code>HashMap</code>的默认初始容量为 16，默认的加载因子为 <a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/qq99gipzlvhzcuer">0.75</a>，扩容时容量会扩大为原来的两倍，并将原来的元素重新分配到新的桶中</p>
+</li>
+<li><p><code>HashMap</code>的键和值都允许为 null，可以通过<code>containsKey</code>方法来区分到底是不含有某个键还是某个键映射的值是 null</p>
 </li>
 <li><p>与<code>HashSet</code>一样，<code>HashMap</code>也提供了最快的查找技术，也没有按照任何明显的顺序来保存其元素，是默认的选择</p>
 </li>
-<li><p>当使用自定义类作为<code>HashMap</code>的键时，一定要同时重载<code>hashCode()</code>和<code>equals()</code>方法</p>
+<li><p><code>HashMap</code>的底层是哈希数组（数组是效率最高的存储和随机访问对象引用序列的方式），哈希的价值在于速度，使得查询得以快速进行，数组中每一个存放元素的位置可以看做一个桶，key 的哈希值就是其对应的桶在数组中的下标</p>
+</li>
+<li><p><code>HashMap</code>通过<code>(key.hashCode ^ (key.hashCode &gt;&gt; 16)) &amp; (table.length - 1)</code>来定位 key 应当位于哪个桶</p>
+<ul>
+<li><p>由于<code>X % 2^n = X &amp; (2^n - 1)</code>，<code>&amp;</code>是基于内存的二进制直接运算，比转换成十进制的取模运算快得多，因此使用位运算代替取模运算，这也是<code>HashMap</code>的容量一定要是 2^n 的原因</p>
+</li>
+<li><p>将<code>key.hashCode</code>的高 16 和低 16 进行异或而不是直接使用<code>key.hashCode</code>是为了进行扰动计算，将高位和低位的特征结合起来，尽量令任何一位的变化都能对最终的结果产生影响，降低哈希冲突的概率</p>
+</li>
+<li><p>在自定义生成散列码时，应当更关注生成速度而非唯一性，且必须基于对象的内容而非地址来生成尽可能均匀分布的散列码（<code>int</code>型），由于<code>enum</code>定义了固定数量的实例，所以<code>EnumMap</code>和<code>EnumSet</code>实现了完美的散列函数</p>
+</li>
+</ul>
+</li>
+<li><p>为了解决数组容量固定的问题，不同的键可以产生相同的下标，即可能有<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/pogt662wy87z24dr">冲突</a>，因此每个桶中存放的元素是<code>Entry</code>类型（<code>Map</code>的内部接口）的单个键值对/链表/包含双向链表的<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/zx609g">红黑树</a></p>
+</li>
+<li><p>当散列函数接近完美时，每个桶中存放的就是单个键值对或比较短的链表，当链表长度达到 8 时树化，当树节点个数小于 6 时再退化为链表，红黑树包含双向链表是为了方便退化为链表</p>
+</li>
+<li><p>当使用自定义类作为<code>HashMap</code>的键时，一定要同时重载<code>hashCode()</code>和<code>equals()</code>方法，<code>hashCode()</code>用于定位 key 应当位于哪个桶（这一步的定位很快），<code>equals()</code>用于定位 key 位于桶中链表/红黑树的哪个节点（这一步的定位可能慢一些）</p>
+</li>
+</ul>
+</li>
+<li><p><code>ConcurrentHashMap</code></p>
+<ul>
+<li><p><code>ConcurrentHashMap</code>的默认初始容量为 16，默认的加载因子为 0.75，扩容时容量会扩大为原来的两倍，会使用分段锁和锁分离将锁粒度缩小为单个桶</p>
+</li>
+<li><p><code>ConcurrentHashMap</code>和<code>Hashtable</code>中的键和值都不允许为 null，这是为了避免二义性（不含有某个键还是某个键映射的值是 null），这种二义性在并发情况下无法通过<code>containsKey</code>方法进行区分</p>
 </li>
 </ul>
 </li>
@@ -485,8 +528,6 @@
 </ul>
 </li>
 </ul>
-<p>散列的价值在于速度，使得查询得以快速进行，它将键对象生成的散列码（由<code>hashCode()</code>生成）作为数组的下标，保存在数组中（数组是效率最高的存储和随机访问对象引用序列的方式），为了解决数组容量固定的问题，不同的键可以产生相同的下标，即可能有冲突，冲突由链表处理，即数组并不直接保存键值对，而是保存键值对的<code>LinkedList</code>，然后对<code>LinkedList</code>中的键值对的键用<code>equals()</code>方法进行线性的查询（这一步的查询会比较慢），当散列函数接近完美时，数组所保存的<code>LinkedList</code>就比较短。</p>
-<p>在自定义生成散列码时，应当更关注生成速度而非唯一性，且必须基于对象的内容而非地址来生成尽可能均匀分布的散列码（<code>int</code>型）。由于<code>enum</code>定义了固定数量的实例，所以<code>EnumMap</code>和<code>EnumSet</code>实现了完美的散列函数。</p>
 <h2 id="2-3-类型信息和泛化"><a href="#2-3-类型信息和泛化" class="headerlink" title="2.3 类型信息和泛化"></a>2.3 类型信息和泛化</h2><p>运行时类型信息可以在程序运行时发现和使用类型信息，类型信息是由称为<code>Class</code>对象的特殊对象完成的，它包含了与类有关的信息，每一个 Java 类都有一个<code>Class</code>对象。Java 有两种方式可以在运行时识别类型信息</p>
 <ul>
 <li><p>一种是传统的 RTTI，它假定在编译时就已经知道了所有的类型（Java 的容器和泛型系统会确保这一点），编译器在编译时打开和检查<code>.class</code>文件</p>
@@ -799,6 +840,7 @@
 <li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/694075">https://developer.aliyun.com/article/694075</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/9dragon/p/10901448.html">https://www.cnblogs.com/9dragon/p/10901448.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6973664796709404708">https://juejin.cn/post/6973664796709404708</a></li>
+<li><a target="_blank" rel="noopener" href="https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html">https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html</a></li>
 </ul>
 </section>
     <!-- Tags START -->
