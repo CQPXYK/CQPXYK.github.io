@@ -389,7 +389,7 @@
 <li><p>能力：容器即存放要使用的对象的地方，比数组更加灵活，具备更多不同的功能，Java 容器类是最具重用性的类库之一，当需要再数组上执行更加复杂的操作的，需要评估到底是使用数组还是更加灵活的容器，只有在已证明性能存在问题，并且切换到数组对性能提高有所帮助时，才应该将程序由容器重构为使用数组。</p>
 </li>
 </ul>
-<p>快速失效（fail-fast）是一种理念，在系统设计中，fail-fast 系统是一种可以立即报告任何可能表明故障的情况的系统，一旦发生故障，直接停止正常操作并以异常的方式上报故障，而不是试图继续可能存在问题的过程。在 Java 容器中有用到 fail-fast 原则进行设计，如果存在多个线程同时修改同一个容器的内容或者是在迭代过程中增加或移除元素，就会触发 fail-fast，抛出<code>CocurrentModificationException</code>。如果需要在遍历时修改集合，可以使用普通的<code>for</code>循环，或者使用迭代器本身的<code>remove</code>，或者使用<code>stream</code>的<code>filter</code>方法。fail-safe 则是为线程安全的并发集合（<code>java.util.concurrent</code>，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a> 的 5.3.1 小节）准备的，这样的集合容器在遍历时不是直接在集合内容上访问的，而是先复制原有集合内容，遍历的是开始遍历那一刻拿到的集合拷贝，避免了触发 fail-fast 导致不断抛出异常，但在遍历期间并不能访问到遍历期间修改的内容。</p>
+<p>快速失效（fail-fast）是一种理念，在系统设计中，fail-fast 系统是一种可以立即报告任何可能表明故障的情况的系统，一旦发生故障，直接停止正常操作并以异常的方式上报故障，而不是试图继续可能存在问题的过程。在 Java 容器中有用到 fail-fast 原则进行设计，如果存在多个线程同时修改同一个容器的内容或者是在迭代过程中增加或移除元素，就会触发 fail-fast，抛出<code>CocurrentModificationException</code>。如果需要在遍历时修改集合，可以使用普通的<code>for</code>循环，或者使用迭代器本身的<code>remove</code>，或者使用<code>stream</code>的<code>filter</code>方法。fail-safe 则是为线程安全的并发集合（<code>java.util.concurrent</code>，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a> 的 5.3.1 小节）准备的，这样的集合容器在遍历时不是直接在集合内容上访问的，而是先复制原有集合内容，遍历的是开始遍历那一刻拿到的集合拷贝，避免了触发 fail-fast 导致不断抛出异常，但在遍历期间并不保证能访问到遍历期间修改的内容。</p>
 <h2 id="2-1-Collection-序列"><a href="#2-1-Collection-序列" class="headerlink" title="2.1 Collection 序列"></a>2.1 Collection 序列</h2><p><code>Collection</code>是一个独立元素的序列接口，<code>Collections</code>是一个工具类，包含有各种关于<code>Collection</code>操作的重载方法。</p>
 <img src="Collection.png" alt="Collection" style="zoom:100%;" />
 
@@ -508,6 +508,12 @@
 <li><p><code>ConcurrentHashMap</code>的默认初始容量为 16，默认的加载因子为 0.75，扩容时容量会扩大为原来的两倍，会使用分段锁和锁分离将锁粒度缩小为单个桶</p>
 </li>
 <li><p><code>ConcurrentHashMap</code>和<code>Hashtable</code>中的键和值都不允许为 null，这是为了避免二义性（不含有某个键还是某个键映射的值是 null），这种二义性在并发情况下无法通过<code>containsKey</code>方法进行区分</p>
+</li>
+<li><p><code>ConcurrentHashMap</code>在初始化时，首先判断是否有多线程在操作（通过记录当前操作线程数的<code>sizeCtl</code>变量判断），若没有其他线程则通过 CAS 修改<code>sizeCtl</code>变量后进行正常初始化，若存在多线程则通过<code>Thread.yield</code>让出 CPU 时间片，等待下一次唤醒</p>
+</li>
+<li><p><code>ConcurrentHashMap</code>将哈希表分成多个段，在添加元素时，如果这个 key 所在的段为空，则使用 CAS 操作来添加新节点，如果段不为空，则使用<code>synchronized</code>锁住这个段（而不是锁住整个哈希表），尽可能降低了锁粒度和锁竞争</p>
+</li>
+<li><p><code>ConcurrentHashMap</code>在扩容时，并没有一味地通过 CAS 或锁去限制多线程，而是通过 CPU 核数为每个线程划分桶迁移任务，即利用多线程来加速扩容</p>
 </li>
 </ul>
 </li>
@@ -810,7 +816,19 @@
 <p><code>Enum</code>类实现了<code>Comparable</code>和<code>Serializable</code>接口，具备<code>compareTo()</code>方法，枚举实例可以使用==来比较，编译器会自动提供<code>equals()</code>和<code>hashCode()</code>方法。枚举实例虽然可以具有不同的行为，但它们不是类型，不能将其作为方法签名中的参数类型来使用，最好的办法是将枚举用在<code>switch</code>语句中，或者使用<code>EnumMap</code>来实现多路分发，<code>EnumMap</code>是专门为枚举设计的一种性能非常好的<code>Map</code>，详细介绍见 2.2 小节。</p>
 <p>对一个枚举实例进行反序列化是通过<code>java.lang.Enum</code>的<code>values</code>方法来根据名字查找枚举元素的，这个过程并不会使用反射，并且编译器不允许任何对这种序列化与反序列化机制的定制，禁用了<code>writeObject()</code>、<code>readObject()</code>、<code>readObjectNoData</code>、<code>writeReplace</code>和<code>readResolve</code>等方法，因此枚举的反序列化并不存在对单例的破坏。</p>
 <p>对于枚举而言，实现接口是使其子类化的唯一办法，可以在一个接口内部，创建实现该接口的枚举，那么枚举元素依旧保持接口的特性，可以向上转型为接口，因此可以进一步实现枚举的枚举，实现某种程度上的枚举子类化。</p>
-<h2 id="5-7-新特性"><a href="#5-7-新特性" class="headerlink" title="5.7 新特性"></a>5.7 新特性</h2><p>JDK 8 中提供了 Lambda 表达式、Stream、Optional、线程安全的 DateTimeFormatter 等新特性。Lambda 表达式的思想是传递运算，而非传递数据（针对数据很大的场景），是一种语法糖。对于有序的 stream，并发可能会降低性能，此时应该比较使用并发，如果无法避免使用并发，可在使用前通过<code>unorder</code>将该 stream 转为无序的。</p>
+<h2 id="5-7-新特性"><a href="#5-7-新特性" class="headerlink" title="5.7 新特性"></a>5.7 新特性</h2><p>JDK 8 中提供了 Lambda 表达式、Stream、Optional、线程安全的 DateTimeFormatter等新特性，还对 HashMap 进行了一些<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/cgben69hc08cpng7">改变</a></p>
+<ul>
+<li><p>Lambda 表达式的思想是传递运算，而非传递数据（针对数据很大的场景），是一种语法糖</p>
+</li>
+<li><p>Stream 的思想是将要处理的元素集合看作一种流，可以对流进行筛选、排序、聚合等处理</p>
+</li>
+<li><p>Stream 不是一种数据结构，只是某种数据源的一个视图，对 Stream 的任何修改都不会修改其背后的数据源，而是会产生一个新的 Stream</p>
+</li>
+<li><p>Stream 的中间操作（filter, map, limit, sorted, distinct）的结果还是一个 Stream，Stream 最终操作（forEach, count, collect）就是在消费 Stream，Stream 只能被消费一次，消费之后不能再次使用流，也不能再使用任何中间操作</p>
+</li>
+<li><p>对于有序的 stream，并发可能会降低性能，此时应该比较使用并发，如果无法避免使用并发，可在使用前通过<code>unorder</code>将该 stream 转为无序的</p>
+</li>
+</ul>
 <p>JDK 10 中提供了本地变量类型推断，可以通过<code>var</code>声明变量并在赋值的右边提供实现类型，不需要显式地规范变量的类型，是一种语法糖。</p>
 <p>JDK 13 中提供了<code>yield</code>语句来返回一个值并跳出当前<code>switch case</code>块（区别于<code>return</code>跳出当前方法）， 提供了 Text Blocks 文本块预览特性，避免了对大多数转义序列的需要，以可预测的方式自动格式化字符串。</p>
 <p>JDK 14 中提供了<code>instanceOf</code>模式匹配、<code>Records</code>。<code>instanceOf</code>模式匹配允许同时进行类型判断和类型转换，省略了判断之后再显式强制转换的步骤。<code>Records</code>为声明类提供了一种紧凑的语法，用于创建一种只有字段的类，编译器会自动创建所有的方法并让所有字段参与<code>hashCode</code>等方法，使得纯数据类从几行代码简化为一行代码。</p>

@@ -164,7 +164,7 @@
   <!-- Article START -->
   <article class="post-article">
     <section class="markdown-content"><h1 id="英文版"><a href="#英文版" class="headerlink" title="英文版"></a><a href="../../../../2023/09/01/week-53/">英文版</a></h1><h1 id="问题与解决"><a href="#问题与解决" class="headerlink" title="问题与解决"></a>问题与解决</h1><p><strong>容器</strong>：应用可以被部署并运行在 VM 上，但是考虑到 VM 需要使用过多的硬件资源来运行一整套操作系统（是对硬件的封装隔离），而容器则仅包含一些应用运行所必要的软件和配置来运行一个进程（是对进程的封装隔离），实现了比 VM 更宽松的隔离特性，更加充分的硬件资源利用以及更快速轻量的应用运行环境，应用在容器中的运行性能接近于在物理平台上的性能。</p>
-<p><strong>云服务</strong>：随着应用变得越来越庞大，流量负载越来越高，则倾向于使用一组互相独立且富余的服务器系统（云服务），而非单体服务来运行应用。</p>
+<p><strong>云服务</strong>：单体应用是最传统的架构模式，整个系统有一个统一的数据中心，各个功能模块显式进行相互依赖，随着应用变得越来越庞大，流量负载越来越高，单体应用在可扩展性和容错性上都存在致命缺陷，则倾向于使用一组互相独立且富余的服务器系统（云服务），而非单体服务来运行应用。</p>
 <p><strong>Docker</strong>：考虑到在每一个服务机器上都进行应用环境配置是很繁琐的工作，版本更新以及更换平台时还需要重新配置。因此，考虑在发布一个项目时，将项目应用带上环境安装一起打包，即发布的 jar 包中是包含环境的，这就是现在的 Docker 镜像（image）。</p>
 <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><p>Docker 是一个可以在云平台上构建，运行以及管理容器的软件框架，采用了 <code>C/S</code> 架构，包括客户端和服务端。</p>
 <p>Docker 守护进程（<code>Daemon</code>）作为服务端接受来自客户端的请求，并处理这些请求（创建、运行、分发容器）一般在宿主主机后台运行，Docker 客户端则为用户提供一系列可执行命令，用户用这些命令实现跟 Docker 守护进程交互。客户端和服务端既可以运行在一个机器上，也可通过 <code>socket</code> 或者 <code>RESTful API</code> 来进行通信。</p>
@@ -219,8 +219,8 @@
 <p>一个<code>Dockerfile</code>用于定义一个 Docker 镜像，一个Docker 镜像用于部署基于同一个镜像的多个容器，一个<code>docker-compose.yml</code>用于定义基于不同镜像的一系列互相合作的容器所构成的集群，即一个项目或者说业务单元，Docker Swarm/K8S 用于部署编排各种容器集群。</p>
 <h1 id="CI-CD-Jenkins"><a href="#CI-CD-Jenkins" class="headerlink" title="CI/CD Jenkins"></a>CI/CD Jenkins</h1><p>持续集成 (Continuous integration) 是一种软件开发实践，每次集成都通过自动化的构建（包括编译，发布，自动化测试）来验证，从而尽早地发现集成错误。持续部署 (continuous deployment) 是通过自动化的构建、测试和部署循环来快速交付高质量的产品。</p>
 <p>DevOps 是一个软件开发生命周期，具备 CI/CD 工作流（pipeline），加速了一个想法从开发到部署的过程，可以帮助频繁地向客户交付应用程序，并以最少的人为干预来验证软件质量。</p>
-<p>Jenkins 是一个基于 Java 的 MIT 许可下的开源 CI/CD 工具，Jenkins 本身并不是流水线，不执行任何功能，但能够和许多不同的服务器和工具联合使用并统一安排起来，比如版本控制管理工具 <a href="../../../05/07/git/">Git</a>，自动化构建工具 <a href="../../../05/07/maven/">Maven</a>，网页应用服务器 Tomcat，代码测试框架、代码质量改进工具及 Docker 容器等。</p>
-<p>开发人员可以在低版本环境通过<code>Dockerfile</code>来打包 Docker 镜像，实现持续集成，运维人员可以在高版本的线上环境通过 Docker 镜像来部署容器内运行的服务，实现持续部署。</p>
+<p>Jenkins 是一个基于 Java 的 MIT 许可下的开源 CI/CD 工具，Jenkins 本身并不是流水线，不执行任何功能，但能够和许多不同的服务器和工具联合使用并统一安排起来，比如版本控制管理工具 <a href="../../../05/07/git/">Git</a>，自动化构建工具 <a href="../../../05/07/maven/">Maven</a>，网页应用服务器 Tomcat，代码测试框架、代码质量改进工具、Docker 容器以及容器编排工具 <a href="../../../10/03/kubernetes/">Kubernetes</a> 等。</p>
+<p>开发人员可以在低版本环境通过<code>Dockerfile</code>来打包 Docker 镜像，实现持续集成，运维人员可以在高版本的线上环境通过 Docker 镜像来部署容器内运行的服务，实现持续部署，容器编排平台负责容器的管理。</p>
 <h1 id="入门命令"><a href="#入门命令" class="headerlink" title="入门命令"></a>入门命令</h1><ul>
 <li><p><code>docker version</code></p>
 <ul>
@@ -432,6 +432,8 @@
 <li><a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/docker_practice/">Docker — 从入门到实践</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1og4y1q7M4?spm_id_from=333.337.search-card.all.click&amp;vd_source=0b01a9c17ef5ab558386031fc8124c56">https://www.bilibili.com/video/BV1og4y1q7M4?spm_id_from=333.337.search-card.all.click&amp;vd_source=0b01a9c17ef5ab558386031fc8124c56</a></li>
 <li><a target="_blank" rel="noopener" href="https://linux.cn/article-11307-1.html">使用开源工具构建 DevOps 流水线的初学者指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://opensource.com/resources/what-docker">https://opensource.com/resources/what-docker</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/builder/">https://docs.docker.com/engine/reference/builder/</a></li>
 </ul>
 </section>
     <!-- Tags START -->

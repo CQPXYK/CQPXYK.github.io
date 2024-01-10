@@ -164,7 +164,8 @@
   <!-- Article START -->
   <article class="post-article">
     <section class="markdown-content"><h1 id="英文版"><a href="#英文版" class="headerlink" title="英文版"></a><a href="../../../../2023/09/01/week-53/">英文版</a></h1><h1 id="问题与解决"><a href="#问题与解决" class="headerlink" title="问题与解决"></a>问题与解决</h1><p><strong>Kubernetes</strong>：在分布式系统中，服务集群的部署、调度、伸缩一直是最为重要也最为基础的功能，这意味着需要根据实际流量情况来动态管理容器集群。Kubernetes 是基于 Docker 的开源容器集群管理系统（如今已经是容器编排的事实标准），运行在操作系统之上并与<code>Pod</code>进行交互，目标是通过声明式配置和自动化来管理跨多个主机的容器集群，提供自动部署、回滚、存储编排、资源分配、配置管理、服务发现、负载均衡和自我修复，而用户的工作就在于配置 K8S，定义<code>Node</code>，<code>Pod</code>以及容器。</p>
-<p><strong>OpenShift</strong>：对于生产环境中的容器来说，仅仅只是安装 K8S 是不够的，Red Hat OpenShift 是企业版的 K8S 集成式开发运维平台，集成了 K8S 以及身份验证、网络、安全、监控、日志管理等其他工具，可通过 CI/CD 来构建和部署自动化。</p>
+<p><strong>Elastic Container Service</strong>：ECS 在一个产品中提供两个元素：容器编排平台和托管服务（运行该平台并配置硬件资源），K8S 只提供前者，组织机构越来越多地采用 K8S 托管服务而不是直接使用 K8S，这样可以降低 K8S 的使用复杂性并帮助他们更快地实现生产。</p>
+<p><strong>OpenShift</strong>：对于企业级生产环境中的容器来说，仅仅只是安装 K8S 是不够的，Red Hat OpenShift 是企业版的 K8S 集成式开发运维平台，集成了 K8S 以及身份验证、网络、安全、监控、日志管理等其他工具，可通过 CI/CD 来构建和部署自动化。</p>
 <h1 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h1><p>一个<code>Pod</code>由一组容器化应用构成，构成了一个应用所在的逻辑主机。<code>Pod</code>是 K8S 进行创建，编排及管理的最小单位，通常由 K8S 工作负载所创建，而非由用户直接创建。<code>Pod</code>被设计为是一次性可替代的组件，一旦一个<code>Pod</code>被创建后就不可以添加或删除容器，而是应该删除<code>Pod</code>并替换为一个新的<code>Pod</code>。</p>
 <p>一个<code>Pod</code>中的一组容器是紧密耦合的，拥有相同的资源上下文（配置，命名空间，卷，网络等），K8S 通过<code>Pod</code>的 DNS/IP 来暴露一个<code>Pod</code>。一个<code>Pod</code>中的一组容器可以通过<code>localhost</code>来互相通信，但是当和<code>Pod</code>外部通信时，<code>Pod</code>内的容器需要协调如何共享网络资源（比如端口号）。</p>
 <p><code>services</code>是一组一起工作的<code>Pod</code>的对外逻辑抽象，服务代理自动将服务请求发送到正确的<code>Pod</code>（无论<code>Pod</code>移动到集群中的哪个位置，或者它是否被替换），提供对外访问<code>Pod</code>容器组的策略。<code>services</code>可以通过 API/OpenShift/预定义的指令/终端命令等以一种一致的可预测的方式被编排。</p>
@@ -193,6 +194,7 @@
 <h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>命名空间（namespace）是一个 Linux 特性，将同一集群中的资源划分为互相隔离的组，同一命名空间内的资源名称要唯一，但跨命名空间时没有这个要求，命名空间的作用域仅针对与命名空间相关联的对象，这种作用域对集群范围的对象不适用。</p>
 <p>K8S 的用户命名空间将容器内运行的用户与主机中的用户隔离开来，可以将容器中的用户映射到主机中的不同用户，在容器中以 root 身份运行的进程在其用户命名空间内的操作具有完全的权限，但可以在宿主机中以非 root 用户身份运行，此时在命名空间以外的操作时无特权的。</p>
 <p>当创建一个<code>Pod</code>时，默认会有一个网络命名空间来隔离容器网络，一个 PID 命名空间来隔离进程视图，此外也可以通过使用用户命名空间来将容器中的用户与节点中的用户隔离开来，当<code>Pod</code>使用用户命名空间时，不允许该<code>Pod</code>再使用其他 host 命名空间。</p>
+<p>K8S 通过命名空间将多个服务归纳到一个具有逻辑的组中，而无需关心服务到底运行在哪个机器。</p>
 <h1 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h1><p>插件使用 K8S 资源实现集群功能，并非严格意义上的必需组件。</p>
 <ul>
 <li><p>DNS 是负责为 K8S 服务提供 DNS 记录的插件</p>
@@ -211,23 +213,62 @@
 <p>名字空间是提供同一集群中的资源划分为互相隔离的组的机制，同一名字空间内的资源名要唯一，但跨名字空间时没有这个要求。不必使用多个名字空间来分隔仅仅轻微不同的资源，例如同一软件的不同版本（可以使用标签）。</p>
 <p>标签是附加到 K8S 对象上的键值对，用于指定对用户有意义且相关的对象的标识属性，用于组织和选择对象的子集，能够高效地查询和监听，使用户能够以松散耦合的方式将它们组即的组织结构映射到系统对象，而无需客户端存储这些映射。</p>
 <p>与名称和 UID 不同，标签不支持唯一性，反而通常希望许多对象携带相同的标签，此时，可以通过标签选择算法来识别一组对象，一个用例，确定节点集，方便<code>Pod</code>调度。</p>
-<h1 id="Elastic-Container-Service"><a href="#Elastic-Container-Service" class="headerlink" title="Elastic Container Service"></a>Elastic Container Service</h1><p>Amazon Elastic Containe Service (Amazon ECS) 是一个运行并管理 Docker 容器的容器编排服务，在亚马逊云上运行虚拟机集群，同时跨多个可用区（AZ, Availability Zone）管理、扩展和调度这些机器上的容器组。</p>
-<h2 id="AWS-ECS-vs-K8S"><a href="#AWS-ECS-vs-K8S" class="headerlink" title="AWS ECS vs K8S"></a>AWS ECS vs K8S</h2><ul>
-<li>ECS 和 K8S 都允许用户在不需要直接操作虚拟机的情况下去操作容器，ECS 无需用户干预即可部署虚拟机并管理其上的容器，K8S 需要用户配置 K8S 以及定义节点、Pod 以及其中的容器</li>
-<li>与 AWS ECS 不同，K8S 是一个与提供商无关的平台，可以在任何云提供商或本地运行，K8S 工作负载是可移植的，支持混合和多云策略</li>
-<li></li>
+<h1 id="Elastic-Container-Service"><a href="#Elastic-Container-Service" class="headerlink" title="Elastic Container Service"></a>Elastic Container Service</h1><h2 id="单体服务和微服务"><a href="#单体服务和微服务" class="headerlink" title="单体服务和微服务"></a>单体服务和微服务</h2><p>单体应用是最传统的架构模式，整个系统有一个统一的数据中心，各个功能模块显式进行相互依赖，随着应用变得越来越庞大，流量负载越来越高，单体应用在可扩展性和容错性上都存在致命缺陷，则倾向于使用一组互相独立且富余的服务器系统（云服务），而非单体服务来运行应用。</p>
+<p>SOA 是面向服务的架构，将应用根据系统维度、功能维度、读写维度或者模块维度进行划分，成为各个独立的服务组件，组件之间通过一个约定的方式进行通信，并通过一个统一的数据中心或调度中心来基于流量压力实时管理集群容量，这种 SOA 架构利用可拔插的中间件以及消息队列来完成服务与服务之间的解耦，但对总线结构的依赖也使得服务的独立性并没有剥离，没有完全去中心化。</p>
+<p>微服务架构中，每个服务都要去中心化，不存在单点故障问题。单体应用中各个模块间的通信可以直接使用方法调用或通过内部事件发布机制，而当使用微服务架构时，每个服务都有自己独立的数据模型而不依赖于某个中心系统，服务间的通信必须通过网络远程调用，常用的方式是 RESTful API ，而对于一些实时性要求不高，又耗时较长的通信场景，经常使用消息队列。此外，使用数据持久层将业务中使用到的数据进行存储和管理，可以令应用层无状态化，便于应用层进行水平伸缩扩展和实现容错机制（关系型数据库不利于伸缩和业务扩展，利用 NoSQL 数据库可以得到更好的扩展性、可用性和性能）。</p>
+<p>微服务场景中事件驱动模型被实践证明可以用于实现数据的最终一致性，事件驱动模型以订阅者-消费者形式进行应用程序各服务间的解耦，在各个应用不同数据系统的微服务组件之间共享事件流数据。事件驱动模型的核心就是将应用程序每一次状态变化当做一个事件记录下来，数据是通过一连串事件流存储起来的，数据库事务日志和版本控制就是应用事件驱动模型最出名的两个例子，此外还可以用于读写分离场景，提升读写性能</p>
+<p>合理解耦的微服务架构可以独立地进行水平伸缩扩展，可以动态调整机器数量，并且不会陷入单个机器资源上限问题，这相对于传统架构中升级硬件资源这种垂直扩展具备更大的优势，微服务架构的复杂性在于各个服务间的交互以及运维（异步通信、连锁故障、数据一致性、服务发现、授权认证、可伸缩低成本的资源配置、整个系统性能监控、海量日志数据分析等问题）。</p>
+<p>Elastic Containe Service (ECS) 基于虚拟化技术，在云环境中提供了高可用的服务器计算资源，其中包括通用型、计算型、内存型、磁盘型等适用于各种不同应用场景需求的虚拟机实例（运行容器），用户可以根据需要选择，这种资源调整的灵活性和弹性很好的解决了微服务架构所面临的低成本资源伸缩的需求，此外，ECS 还提供了数据备份、安全控制、监控和报警等一系列管理功能，促进了微服务架构的崛起。</p>
+<p>Amazon Elastic Containe Service (Amazon ECS) 是一个运行并管理 Docker 容器的容器编排服务，在亚马逊云平台上运行虚拟机集群，同时跨多个可用区（AZ, Availability Zone）管理、扩展和调度这些机器上的容器组。</p>
+<h2 id="Amazon-ECS-vs-K8S"><a href="#Amazon-ECS-vs-K8S" class="headerlink" title="Amazon ECS vs K8S"></a>Amazon ECS vs K8S</h2><ul>
+<li><p>Amazon ECS 和 K8S 都允许用户在不需要直接操作虚拟机的情况下去操作容器，Amazon ECS 无需用户干预即可部署虚拟机并管理其上的容器，K8S 需要用户配置 K8S 以及定义节点、Pod 以及其中的容器</p>
+</li>
+<li><p>与 Amazon ECS 不同，K8S 是一个与提供商无关的平台，可以在任何云提供商或本地运行，K8S 工作负载是可移植的，支持混合和多云策略，便于迁移，并且运行效果基本上都是相同的</p>
+</li>
+<li><p>Amazon ECS 默认情况下是受到保护的，所有容器都在具有隔离、安全网络的虚拟私有云中启动，K8S 通过自己的隔离、安全网络创建自己的专有网络</p>
+</li>
+<li><p>Amazon ECS 与其他 Amazon 服务顺利集成，这对于容器化工作负载非常有用，K8S 得到了庞大的开源社区的支持，拥有庞大的工具和插件生态系统，K8S 拥有所有容器编排平台中最丰富的生产经验，事实证明，它几乎在任何规模上都是稳健可靠的</p>
+</li>
+<li><p>Amazon ECS 在一个产品中提供两个元素：容器编排平台和托管服务（运行该平台并配置硬件资源），K8S 只提供前者，将 K8S 与 Amazon ECS 进行比较并不公平</p>
+</li>
 </ul>
+<p>组织机构越来越多地采用 K8S 托管服务而不是直接使用 K8S，这样可以降低 K8S 的使用复杂性并帮助他们更快地实现生产，此类托管服务的示例包括 Amazon Elastic Kubernetes (EKS)，Azure Kubernetes Service (AKS) 以及 Google Kubernetes Engine (GKE)。这些托管服务为 K8S 添加了管理层，使其安全可以与 Amazon ECS 相媲美。</p>
+<h2 id="ECS-vs-EKS-vs-Plain-K8S"><a href="#ECS-vs-EKS-vs-Plain-K8S" class="headerlink" title="ECS vs EKS vs Plain K8S"></a>ECS vs EKS vs Plain K8S</h2><p>Amazon Elastic Kubernetes Service (Amazon EKS) 是 Amazon 中用于 K8S 的管理平台，它经过 K8S 项目认证，因此可以保证运行 K8S 生态系统中可能使用的任何现有应用程序、工具或插件</p>
+<ul>
+<li><p>Amazon ECS 本身是免费的，只需要为其使用的 Amazon EC2 资源付费，而 Amazon EKS 管理则会产生额外的费用成本</p>
+</li>
+<li><p>基于 Amazon ECS 的部署是很方便的，EKS 则需要通过 Kops 或 CloudFormation 模板来配置和部署集群，比较复杂</p>
+</li>
+<li><p>EKS 支持多云和混合云部署，而 Amazon ECS 是 Amazon 特定的</p>
+</li>
+<li><p>小型部署更喜欢 Amazon ECS，因为它的无缝部署和配置</p>
+</li>
+<li><p>大型或混合型部署更喜欢 EKS，因为它具有更强的定制性以及云和本地系统之间改进的可移植性</p>
+</li>
+<li><p>过渡到容器化环境的传统工作负载可能会从使用普通 K8S 中获得最大收益，因为它允许在本地构建开发/测试生产环境，然后在需要时将其移动到云中</p>
+</li>
+</ul>
+<p>在部署容器化工作负载时，K8S 和 Amazon ECS 都有一定的限制，这些限制可能会阻碍其在企业级的使用，于是可以考虑 OpenShift。</p>
 <h2 id="OpenShift-vs-K8S"><a href="#OpenShift-vs-K8S" class="headerlink" title="OpenShift vs K8S"></a>OpenShift vs K8S</h2><p>K8S 和 OpenShift 都是容器编排平台/CaaS (Container-as-a-Service) 的提供者</p>
 <ul>
-<li>OpenShift 此外还提供利用 K8S 来管理以及高效运行应用的 PaaS (Platform-as-a-Service)，虽然 OpenShift 也有开源版本，但其核心重点是提供具有附加功能的商业容器管理平台，例如，更加严格的安全策略、商业支持、网络、容器镜像管理等</li>
-<li>OpenShift 是 RedHat Linux 产品，商业版本只能运行在 RedHat Atomic 或 Enterprise Linux (RHEL) 上，开源版本只能运行在 CentOS 上，而 K8S 则受到 AWS、Azure 和 Google Cloud Platform 等大多数云服务提供商的支持，可以在任何 Linux 发行版上运行</li>
-<li>K8S 的部署和管理是一项复杂且资源密集型的任务，而 OpenShift 提供了一个用户界面，可以更加轻松地可视化和管理应用程序集群和容器</li>
-<li>如果有资源去正确管理 K8S 并能充分利用其灵活的部署选择，那么可以选择 K8S，而 OpenShift 则作为一个商业的、包罗万象的解决方案，可以提供持续专门的支持</li>
+<li><p>OpenShift 此外还提供利用 K8S 来管理以及高效运行应用的 PaaS (Platform-as-a-Service)，虽然 OpenShift 也有开源版本，但其核心重点是提供具有附加功能的商业容器管理平台，例如，更加严格的安全策略、商业支持、网络、容器镜像管理等</p>
+</li>
+<li><p>OpenShift 是 RedHat Linux 产品，商业版本只能运行在 RedHat Atomic 或 Enterprise Linux (RHEL) 上，开源版本只能运行在 CentOS 上，而 K8S 则受到 Amazon、Azure 和 Google Cloud Platform 等大多数云服务提供商的支持，可以在任何 Linux 发行版上运行</p>
+</li>
+<li><p>K8S 的部署和管理是一项复杂且资源密集型的任务，而 OpenShift 提供了一个用户界面，可以更加轻松地可视化和管理应用程序集群和容器</p>
+</li>
+<li><p>如果有资源去正确管理 K8S 并能充分利用其灵活的部署选择，那么可以选择 K8S，而 OpenShift 则作为一个商业的、包罗万象的解决方案，可以提供持续专门的支持</p>
+</li>
 </ul>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/">https://kubernetes.io/zh-cn/docs/</a></li>
 <li><a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/docker_practice/kubernetes">https://yeasy.gitbook.io/docker_practice/kubernetes</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.redhat.com/en/topics/containers/what-is-kubernetes">https://www.redhat.com/en/topics/containers/what-is-kubernetes</a></li>
+<li><a target="_blank" rel="noopener" href="https://opensource.com/resources/what-is-kubernetes">https://opensource.com/resources/what-is-kubernetes</a></li>
+<li><a target="_blank" rel="noopener" href="https://aws.amazon.com/cn/blogs/china/microservices-on-amazon-ecs-1/">https://aws.amazon.com/cn/blogs/china/microservices-on-amazon-ecs-1/</a></li>
+<li><a target="_blank" rel="noopener" href="https://aws.amazon.com/cn/blogs/china/microservices-on-amazon-ecs-2/">https://aws.amazon.com/cn/blogs/china/microservices-on-amazon-ecs-2/</a></li>
+<li><a target="_blank" rel="noopener" href="https://bluexp.netapp.com/blog/aws-ecs-vs-kubernetes-an-unfair-comparison">https://bluexp.netapp.com/blog/aws-ecs-vs-kubernetes-an-unfair-comparison</a></li>
+<li><a target="_blank" rel="noopener" href="https://ritza.co/articles/kubernetes-vs-docker-vs-openshift-vs-ecs-vs-jenkins-vs-terraform/">https://ritza.co/articles/kubernetes-vs-docker-vs-openshift-vs-ecs-vs-jenkins-vs-terraform/</a></li>
 </ul>
 </section>
     <!-- Tags START -->
@@ -282,7 +323,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%8B%B1%E6%96%87%E7%89%88"><span class="toc-nav-text">英文版</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Pod"><span class="toc-nav-text">Pod</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Node"><span class="toc-nav-text">Node</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-nav-text">控制平面</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-nav-text">命名空间</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">插件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kubernetes-%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">Kubernetes 对象</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Elastic-Container-Service"><span class="toc-nav-text">Elastic Container Service</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#AWS-ECS-vs-K8S"><span class="toc-nav-text">AWS ECS vs K8S</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#OpenShift-vs-K8S"><span class="toc-nav-text">OpenShift vs K8S</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%8B%B1%E6%96%87%E7%89%88"><span class="toc-nav-text">英文版</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Pod"><span class="toc-nav-text">Pod</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Node"><span class="toc-nav-text">Node</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-nav-text">控制平面</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-nav-text">命名空间</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-nav-text">插件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kubernetes-%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">Kubernetes 对象</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Elastic-Container-Service"><span class="toc-nav-text">Elastic Container Service</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8D%95%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%92%8C%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="toc-nav-text">单体服务和微服务</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Amazon-ECS-vs-K8S"><span class="toc-nav-text">Amazon ECS vs K8S</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ECS-vs-EKS-vs-Plain-K8S"><span class="toc-nav-text">ECS vs EKS vs Plain K8S</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#OpenShift-vs-K8S"><span class="toc-nav-text">OpenShift vs K8S</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
       
   
   </div>
