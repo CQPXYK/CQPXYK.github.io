@@ -4,7 +4,7 @@
   <url>
     <loc>http://example.com/2022/05/08/java-concurrency/</loc>
     
-    <lastmod>2024-01-11</lastmod>
+    <lastmod>2024-01-12</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -13,16 +13,16 @@
   <url>
     <loc>http://example.com/2022/05/08/java-language/</loc>
     
-    <lastmod>2024-01-11</lastmod>
+    <lastmod>2024-01-12</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://example.com/2023/09/01/week-53/</loc>
+    <loc>http://example.com/2022/05/11/design-patterns/</loc>
     
-    <lastmod>2024-01-10</lastmod>
+    <lastmod>2024-01-12</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -30,6 +30,15 @@
   
   <url>
     <loc>http://example.com/2024/01/10/effective-product-control/</loc>
+    
+    <lastmod>2024-01-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2023/09/01/week-53/</loc>
     
     <lastmod>2024-01-10</lastmod>
     
@@ -84,15 +93,6 @@
   
   <url>
     <loc>http://example.com/2023/08/20/operating-systems/</loc>
-    
-    <lastmod>2024-01-06</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/05/11/design-patterns/</loc>
     
     <lastmod>2024-01-06</lastmod>
     
@@ -625,7 +625,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2024-01-11</lastmod>
+    <lastmod>2024-01-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>

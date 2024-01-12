@@ -820,7 +820,7 @@
 <p><code>Enum</code>类实现了<code>Comparable</code>和<code>Serializable</code>接口，具备<code>compareTo()</code>方法，枚举实例可以使用==来比较，编译器会自动提供<code>equals()</code>和<code>hashCode()</code>方法。枚举实例虽然可以具有不同的行为，但它们不是类型，不能将其作为方法签名中的参数类型来使用，最好的办法是将枚举用在<code>switch</code>语句中，或者使用<code>EnumMap</code>来实现多路分发，<code>EnumMap</code>是专门为枚举设计的一种性能非常好的<code>Map</code>，详细介绍见 2.2 小节。</p>
 <p>对一个枚举实例进行反序列化是通过<code>java.lang.Enum</code>的<code>values</code>方法来根据名字查找枚举元素的，这个过程并不会使用反射，并且编译器不允许任何对这种序列化与反序列化机制的定制，禁用了<code>writeObject()</code>、<code>readObject()</code>、<code>readObjectNoData</code>、<code>writeReplace</code>和<code>readResolve</code>等方法，因此枚举的反序列化并不存在对单例的破坏。</p>
 <p>对于枚举而言，实现接口是使其子类化的唯一办法，可以在一个接口内部，创建实现该接口的枚举，那么枚举元素依旧保持接口的特性，可以向上转型为接口，因此可以进一步实现枚举的枚举，实现某种程度上的枚举子类化。</p>
-<h2 id="5-7-新特性"><a href="#5-7-新特性" class="headerlink" title="5.7 新特性"></a>5.7 新特性</h2><p>JDK 1.6 中对<code>synchronized</code>锁进行了很多优化，偏向锁、轻量级锁、锁升级、锁消除、锁粗化等。</p>
+<h2 id="5-7-新特性"><a href="#5-7-新特性" class="headerlink" title="5.7 新特性"></a>5.7 新特性</h2><p>JDK 6/7 中对<code>synchronized</code>锁进行了很多优化，锁消除、锁粗化、锁升级（偏向锁、轻量级锁、适应性自旋）等。</p>
 <p>JDK 8 中提供了 Lambda 表达式（思想是传递运算，而非传递数据，是一种语法糖）、Stream、Optional、线程安全的 DateTimeFormatter等新特性，还对 HashMap 进行了一些<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/cgben69hc08cpng7">改变</a>。</p>
 <p>JDK 10 中提供了本地变量类型推断，可以通过<code>var</code>声明变量并在赋值的右边提供实现类型，不需要显式地规范变量的类型，是一种语法糖。</p>
 <p>JDK 13 中提供了<code>yield</code>语句来返回一个值并跳出当前<code>switch case</code>块（区别于<code>return</code>跳出当前方法）， 提供了 Text Blocks 文本块预览特性，避免了对大多数转义序列的需要，以可预测的方式自动格式化字符串。</p>
@@ -830,13 +830,17 @@
 <p>JDK 21 中提供了虚拟线程，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a>。</p>
 <h2 id="5-8-SPI"><a href="#5-8-SPI" class="headerlink" title="5.8 SPI"></a>5.8 SPI</h2><p>应用开发人员使用 API 定义软件组件之间交互的规则和约定的接口，API 提供方制定接口并完成对接口的不同实现，API 调用方只需调用即可；框架扩展人员使用 SPI 定义应用程序中可拔插的服务实现，SPI 提供方制定服务并提供可拔插的实现方式，SPI 调用方可以选择使用提供方提供的内置实现，也可以自己实现。</p>
 <p>SPI 适用于调用者需要根据实际使用需要来启用、扩展、或者替换框架的实现策略的场景，比如数据库驱动加载接口实现类的加载、JDBC 加载不同类型数据库的驱动、日志门面接口实现类加载、SLF4J 加载不同提供商的日志实现类等，Spring 中也大量使用了 SPI。</p>
-<h2 id="5-9-Unsafe"><a href="#5-9-Unsafe" class="headerlink" title="5.9 Unsafe"></a>5.9 Unsafe</h2><p>在 Java 中，<code>sun.misc.Unsafe</code>类可以进行直接的内存操作，包括内存分配和对象实例化。</p>
+<h2 id="5-9-Unsafe"><a href="#5-9-Unsafe" class="headerlink" title="5.9 Unsafe"></a>5.9 Unsafe</h2><p><code>sun.misc.Unsafe</code>类是 Java 中的一个底层类，提供了硬件级别的原子操作，可以进行直接的内存操作（是 JVM 开的后门），包括内存分配和对象实例化。</p>
 <ul>
 <li><p><code>Unsafe</code>是 Java 的内部 API，并不属于 Java 标准库的一部分，<code>Unsafe</code>的行为在不同的 JDK 版本和不同 JVM 实现中可能会有差异，会引发代码的不可移植性</p>
 </li>
-<li><p><code>Unsafe</code>的功能是强大而危险的，可以绕过 Java 的安全机制，可能会导致内存泄漏、非法访问、数据损坏等安全问题</p>
+<li><p><code>Unsafe</code>包含了很多基础操作，比如数组操作、对象操作、内存操作、CAS 操作、线程操作（park/unpark）、栅栏操作，JUC 包等一些三方框架都使用<code>Unsafe</code>来保证并发安全</p>
 </li>
-<li><p>Java 鼓励使用构造函数和工厂方法来创建对象，以确保对象的正确初始化，并维护对象的不变性，<code>Unsafe</code>并不符合面向对象的原则</p>
+<li><p><code>Unsafe</code>的功能是强大而危险的，可以绕过 Java 的安全机制，它所分配的内存需要手动 free 而不被 GC 回收，可能会导致内存泄漏、非法访问、数据损坏等安全问题</p>
+</li>
+<li><p><code>Unsafe</code>被设计的初衷并不是希望被一般开发者使用，它的构造方法时私有的，所以不能通过<code>new</code>或工厂方法去得到<code>Unsafe</code>实例，可以采用反射获取<code>Unsafe</code>实例</p>
+</li>
+<li><p>Java 鼓励使用构造函数和工厂方法来创建对象，以确保对象的正确初始化，并维护对象的不变性，使用<code>Unsafe</code>创建对象并不符合 Java 面向对象的原则</p>
 </li>
 </ul>
 <p>综上所述，不建议直接在生产环境中使用<code>Unsafe</code>。</p>
