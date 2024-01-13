@@ -167,30 +167,49 @@
 <h2 id="1-1-进程与线程"><a href="#1-1-进程与线程" class="headerlink" title="1.1 进程与线程"></a>1.1 进程与线程</h2><p>在计算机中，一个任务称为一个进程（Process），某些进程内部还需要同时执行多个子任务，这些子任务称为线程（Thread），对于 Java 程序来说，执行多任务是指<strong>多线程并发执行</strong>。Java 线程是映射到操作系统的原生内核线程之上的，如果要阻塞或唤醒一条线程，同样需要操作系统的支持，同样会涉及到用户态到核心态的转换，这种状态转换消耗的时间甚至会比一些简单的用户代码执行的时间还要长，应当避免不必要的频繁的切入核心态。</p>
 <p>进程和线程存在以下区别：</p>
 <ul>
-<li>进程和线程是包含关系，一个进程有一个或多个线程，进程是资源分配的基本单元，线程是操作系统调度的基本单元；</li>
-<li>由于进程是运行在它自己的地址空间内自包容程序，创建进程的开销比创建线程大；</li>
-<li>进程间通信比线程间通信要慢，这是因为线程间通信就是读写同一个变量，速度很快；</li>
-<li>进程间不会相互干扰，一个进程崩溃不会影响其他进程，但是任何一个线程的崩溃就会导致整个进程崩溃；</li>
-<li>多线程编程的复杂度比多进程更高，困难在于协调不同线程驱动的任务之间对共享资源（内存和 I/O）的使用。</li>
+<li><p>进程和线程是包含关系，一个进程有一个或多个线程，进程是资源分配的基本单元，线程是操作系统调度的基本单元</p>
+</li>
+<li><p>由于进程是运行在它自己的地址空间内自包容程序，创建进程的开销比创建线程大</p>
+</li>
+<li><p>进程间通信比线程间通信要慢，这是因为线程间通信就是读写同一个变量，速度很快</p>
+</li>
+<li><p>进程间不会相互干扰，一个进程崩溃不会影响其他进程，但是任何一个线程的崩溃就会导致整个进程崩溃</p>
+</li>
+<li><p>多线程编程的复杂度比多进程更高，困难在于协调不同线程驱动的任务之间对共享资源（内存和 I/O）的使用</p>
+</li>
 </ul>
 <h2 id="1-2-上下文切换"><a href="#1-2-上下文切换" class="headerlink" title="1.2 上下文切换"></a>1.2 上下文切换</h2><p>CPU 会给每个任务分配时间片，因此，即使是单核 CPU 也支持多任务并发执行代码，从而提升单核 CPU 上的程序的性能（在某个任务阻塞时，其他任务依旧可以继续执行，但如果没有任务会阻塞，那么单核 CPU 上使用并发就没有任何意义）。</p>
 <p>上下文切换指的是内核（操作系统的核心）在 CPU 上对进程或者线程进行切换，当前任务执行一个时间片之后会切换到下一个任务，任务切换前后需要保存上一个任务的状态并加载下一个任务的状态，这种任务从保存到再加载的过程就是一次上下文切换。上下文切换的信息被保存在进程控制块（PCB，又称切换桢）中，会被一直保存在 CPU 的内存中，直到被再次使用。Java 中的线程机制是抢占式的，这表示调度机制会周期性地中断线程，将上下文切换到另一个线程，从而为每个线程都提供时间片。 </p>
 <p>由于上下文切换存在开销，因此当上下文切换过于频繁时并发执行会比串行执行更慢，尤其是原本设置为并发执行的程序在受限于资源而串行执行时，会比直接串行执行更慢，应当根据实际情况来调整程序的并发程度。为了避免频繁上下文切换而导致的 CPU 资源浪费，可以</p>
 <ul>
-<li>通过合理的线程池管理来减少线程的创建和销毁，线程数并不是越多越好；</li>
-<li>使用无锁并发编程（比如 CAS），避免线程因等待锁而进入阻塞状态，进而导致的上下文切换；</li>
-<li>使用用户态线程（又称协程或虚拟线程），用户态线程的切换需要在 JVM 层面做一些成本较低的线程状态的保存和恢复，但不需要操作系统的参与，并不会导致上下文切换</li>
-<li>合理使用锁，尽量缩小同步范围，减少线程等待时间，从而避免上下文切换。</li>
+<li><p>通过合理的线程池管理来减少线程的创建和销毁，线程数并不是越多越好</p>
+</li>
+<li><p>使用无锁并发编程（比如 CAS），避免线程因等待锁而进入阻塞状态，进而导致的上下文切换</p>
+</li>
+<li><p>使用用户态线程（又称协程或虚拟线程），用户态线程的切换需要在 JVM 层面做一些成本较低的线程状态的保存和恢复，但不需要操作系统的参与，并不会导致上下文切换</p>
+</li>
+<li><p>合理使用锁，尽量缩小同步范围，减少线程等待时间，从而避免上下文切换</p>
+</li>
 </ul>
-<h2 id="1-3-并发模型"><a href="#1-3-并发模型" class="headerlink" title="1.3 并发模型"></a>1.3 并发模型</h2><ul>
-<li>并发编程需要关注两个关键问题：<ul>
-<li>线程之间如何通信，指线程之间交换信息的机制；</li>
-<li>线程之间如何同步，指控制线程操作发生相对顺序的机制。</li>
+<h2 id="1-3-并发问题"><a href="#1-3-并发问题" class="headerlink" title="1.3 并发问题"></a>1.3 并发问题</h2><ul>
+<li><p>在单线程场景下，CPU 核心的缓存只被一个线程访问，不存在一致性问题；在单核 CPU 多线程场景下，CPU 将某块内存加载到核心缓存后，不同线程访问的都是同样的缓存位置，即便发生线程切换，缓存仍然不会失效；在多核 CPU 多线程场景下，每个 CPU 都会在自己的核心缓存中保留一份共享内存的缓存数据，多线程在多个 CPU 核上并行执行，可能会出现多个线程同时写各自所在的 CPU 缓存的情况，此时各个 CPU 的缓存数据就会出现不一致</p>
+</li>
+<li><p>为了保证缓存一致性，CPU 会使用总线嗅探机制来检测是否有其他处理器修改了共享内存中的变量，如果有，则更新缓存，但是如果多个线程频繁地读写共享变量，就会导致大量的总线通信，从而引发总线风暴，降低系统性能</p>
+</li>
+<li><p>当某个线程正在执行的某个操作做了一部分但还没完成时该线程的 CPU 时间片就结束了，这个操作就会被打断直到该线程下一次获得 CPU 时间片才能继续执行，那么这个操作就不是原子操作，即操作的执行不满足原子性，在该操作被打断的过程中所使用的共享数据可能被其他线程修改，进而导致该操作处理的结果与预期不一致</p>
+</li>
+<li><p>as-if-serial 语义要求不管怎么重排序，单线程程序的执行结果都不能被改变，编译器和处理器如何优化都必须遵守 as-if-serial 语义，因此单线程的执行一定是满足有序性的（Java 中天然的有序性可以总结为：如果在本线程内观察，所有操作都是天然有序的，如果在一个线程内观察另一个线程，所有操作都是无序的），但多线程的执行则无法保证有序性</p>
+</li>
+</ul>
+<h2 id="1-4-并发模型"><a href="#1-4-并发模型" class="headerlink" title="1.4 并发模型"></a>1.4 并发模型</h2><ul>
+<li>并发编程需要关注两个关键问题<ul>
+<li>线程之间如何通信，指线程之间交换信息的机制</li>
+<li>线程之间如何同步，指控制线程操作发生相对顺序的机制</li>
 </ul>
 </li>
-<li>线程间的通信有两种方式：<ul>
-<li>消息传递，隐式的线程同步；</li>
-<li>共享内存，显式的线程同步。</li>
+<li>线程间的通信有两种方式<ul>
+<li>消息传递，隐式的线程同步</li>
+<li>共享内存，显式的线程同步</li>
 </ul>
 </li>
 </ul>
@@ -200,71 +219,66 @@
 </li>
 <li><p>JMM 规定了线程间的共享变量（实例域、静态域和数组元素）存储在主内存（堆和方法区）中，每个线程自身有一个私有的工作内存（缓存、写缓冲区、寄存器等），线程的工作内存中保存该线程中使用到的变量的主内存副本拷贝，线程对变量的所有操作都必须在线程工作内存中进行，而不能直接读写主内存</p>
 </li>
-<li><p>JMM 规定了如何以及何时进行主内存与线程工作内存之间的交互（也就是线程间通信），这个过程中 JMM 限制了处理器优化并使用了内存屏障，解决了线程间通信过程中存在的多 CPU 多级缓存导致的一致性问题、CPU 时间片导致的原子性问题、以及编译器对指令重排、处理器对指令乱序执行导致的有序性问题。</p>
+<li><p>JMM 规定了如何以及何时进行主内存与线程工作内存之间的交互（也就是线程间通信），这个过程中 JMM 使用了<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/kozqs205honv8nso">内存屏障</a>、限制了处理器优化、提供了一系列同步机制，解决了线程间通信过程中存在的多 CPU 多级缓存导致的一致性问题、CPU 时间片导致的原子性问题、以及编译器对指令重排、处理器对指令乱序执行导致的有序性问题</p>
 </li>
-</ul>
-<p>注：</p>
-<ul>
-<li><p>在单线程场景下，CPU 核心的缓存只被一个线程访问，不存在一致性问题；在单核 CPU 多线程场景下，CPU 将某块内存加载到核心缓存后，不同线程访问的都是同样的缓存位置，即便发生线程切换，缓存仍然不会失效；在多核 CPU 多线程场景下，每个 CPU 都会在自己的核心缓存中保留一份共享内存的缓存数据，多线程在多个 CPU 核上并行执行，可能会出现多个线程同时写各自所在的 CPU 缓存的情况，此时各个 CPU 的缓存数据就会出现不一致。</p>
+<li><p>JMM 所使用的<a target="_blank" rel="noopener" href="https://gee.cs.oswego.edu/dl/jmm/cookbook.html">内存屏障</a>是一种 CPU 指令，可以防止 CPU 及编译器对指令序列进行重排序，再加上 JMM 所提供的一系列同步机制则可以一同解决缓存一致性和总线风暴问题</p>
 </li>
-<li><p>当一个操作做了一部分但还没完成时 CPU 时间片就结束了，这个操作就会被打断直到下一次获得 CPU 时间片才能继续执行，那么这个操作就不是原子操作，即操作的执行不满足原子性，在该操作被打断的过程中共享数据可能被其他线程修改，进而导致该操作处理的结果与预期不一致。</p>
-</li>
-<li><p>Java 中天然的有序性可以总结为：如果在本线程内观察，所有操作都是天然有序的，如果在一个线程内观察另一个线程，所有操作都是无序的。</p>
+<li><p>JMM 中的 happens-before 原则要求如果一个操作 A happens-before 另一个操作 B，那么操作 A 的结果对操作 B 是可见的，JMM 通过 happens-before 原则确保了多线程间的可见性和有序性</p>
 </li>
 </ul>
 <h1 id="2、底层原理"><a href="#2、底层原理" class="headerlink" title="2、底层原理"></a>2、底层原理</h1><h2 id="2-1-有序性和可见性"><a href="#2-1-有序性和可见性" class="headerlink" title="2.1 有序性和可见性"></a>2.1 有序性和可见性</h2><p><code>volatile</code>关键字可以用来保证对变量操作的有序性和可见性，是 JVM 提供的最轻量级的同步机制。</p>
 <ul>
-<li><p><code>volatile</code>只能修饰变量，不能修饰方法和代码块。</p>
+<li><p><code>volatile</code>只能修饰变量，不能修饰方法和代码块</p>
 </li>
-<li><p><code>volatile</code>通过内存屏障来禁止指令重排，从而保证了代码执行的有序性。</p>
+<li><p><code>volatile</code>通过内存屏障来禁止指令重排，从而保证了代码执行的有序性</p>
 </li>
-<li><p><code>volatile</code>保证了多线程共享变量的可见性：</p>
+<li><p><code>volatile</code>保证了多线程共享变量的可见性</p>
 <ul>
-<li>线程每次修改变量后，立即回写到主内存当中；</li>
-<li>线程每次访问该变量时总是获取主内存中的最新值。</li>
+<li>线程每次修改变量后，立即回写到主内存当中</li>
+<li>线程每次访问该变量时总是获取主内存中的最新值</li>
 </ul>
 </li>
-<li><p><code>volatile</code>读操作的开销和普通变量几乎无差别，而写操作由于需要插入内存屏障所以开销更大一点。</p>
+<li><p><code>volatile</code>读操作的开销和普通变量几乎无差别，而写操作由于需要插入内存屏障所以开销更大一点</p>
 </li>
-<li><p><code>volatile</code>不会引起上下文切换和调度，使用成本比锁低。</p>
+<li><p><code>volatile</code>不会引起上下文切换和调度，使用成本比锁低</p>
 </li>
-<li><p>如果一个域可能会被多个任务同时访问，且这些任务中至少有一个是写入任务，那么就应该将这个域设置为<code>volatile</code>或者将可以访问这个<code>private</code>域的方法都加锁。</p>
+<li><p>如果一个域可能会被多个任务同时访问，且这些任务中至少有一个是写入任务，那么就应该将这个域设置为<code>volatile</code>或者将可以访问这个<code>private</code>域的方法都加锁</p>
 </li>
 </ul>
-<p><code>final</code>关键字可以用来保证变量的可见性。</p>
+<p><code>final</code>关键字可以用来保证变量的可见性</p>
 <ul>
-<li><p>写<code>final</code>域时，只有在对象的<code>final</code>域已经被正确初始化过了之后，对象引用才会为任何线程可见；</p>
+<li><p>写<code>final</code>域时，只有在对象的<code>final</code>域已经被正确初始化过了之后，对象引用才会为任何线程可见</p>
 </li>
-<li><p>读<code>final</code>域时，一定会确保先读包含这个<code>final</code>域的对象的引用，再读该对象的<code>final</code>域；</p>
+<li><p>读<code>final</code>域时，一定会确保先读包含这个<code>final</code>域的对象的引用，再读该对象的<code>final</code>域</p>
 </li>
-<li><p>在构造函数返回前，被构造对象的引用不能为其他线程所见（即<code>this</code>引用不能溢出），那么不需要使用同步（<code>volatile</code>或者锁）也可以确保任意线程都能看到这个<code>final</code>域在构造函数中被初始化之后的值，这保证了多线程共享<code>final</code>变量的可见性。</p>
+<li><p>在构造函数返回前，被构造对象的引用不能为其他线程所见（即<code>this</code>引用不能溢出），那么不需要使用同步（<code>volatile</code>或者锁）也可以确保任意线程都能看到这个<code>final</code>域在构造函数中被初始化之后的值，这保证了多线程共享<code>final</code>变量的可见性</p>
 </li>
 </ul>
 <h2 id="2-2-原子操作和原子性"><a href="#2-2-原子操作和原子性" class="headerlink" title="2.2 原子操作和原子性"></a>2.2 原子操作和原子性</h2><p>循环 CAS 可以用来保证操作的原子性。</p>
 <ul>
-<li><p>CAS 指：</p>
+<li><p>CAS 指</p>
 <ul>
-<li><p>当类的当前值是<code>prev</code>时，更新为<code>next</code>，并返回<code>true</code>；</p>
+<li><p>当类的当前值是<code>prev</code>时，更新为<code>next</code>，并返回<code>true</code></p>
 </li>
-<li><p>当类的当前值不是<code>prev</code>时，返回<code>false</code>。</p>
+<li><p>当类的当前值不是<code>prev</code>时，返回<code>false</code></p>
 </li>
 </ul>
 </li>
-<li><p>通过循环 CAS 实现原子操作存在以下问题：</p>
+<li><p>通过循环 CAS 实现原子操作存在以下问题</p>
 <ul>
-<li><p>循环时间长的话就会进入忙等待（指 CPU 繁忙却无法前进执行），一旦 CAS 进入忙等待状态一直执行不成功的话，就会造成比较大的 CPU 开销；</p>
+<li><p>循环时间长的话就会进入忙等待（指 CPU 繁忙却无法前进执行），一旦 CAS 进入忙等待状态一直执行不成功的话，就会造成比较大的 CPU 开销</p>
 </li>
-<li><p>ABA 问题，解决思路是使用版本号，或者直接改成传统的互斥同步（可能更加高效）；</p>
+<li><p>ABA 问题，解决思路是使用版本号，或者直接改成传统的互斥同步（可能更加高效）</p>
 </li>
-<li><p>只能保证一个共享变量的原子操作，解决思路是将多个共享变量合并成一个共享变量。</p>
+<li><p>只能保证一个共享变量的原子操作，解决思路是将多个共享变量合并成一个共享变量</p>
 </li>
 </ul>
 </li>
-<li><p>CAS 是乐观锁、锁自旋等非阻塞锁的常见实现方式，在 Java 中，JUC 包就是建立在循环 CAS 之上的。</p>
+<li><p>CAS 是乐观锁、锁自旋等非阻塞锁的常见实现方式，在 Java 中，JUC 包就是建立在循环 CAS 之上的</p>
 </li>
-<li><p>JVM 规范规定除了<code>long</code>和<code>double</code>以外的基本数据类型的读写（单条赋值操作）均为原子操作（即为不可中断的操作），满足原子性，<code>volatile</code>额外保证了<code>long</code>和<code>double</code>读写的原子性。</p>
+<li><p>JVM 规范规定除了<code>long</code>和<code>double</code>以外的基本数据类型的读写（单条赋值操作）均为原子操作（即为不可中断的操作），满足原子性，<code>volatile</code>额外保证了<code>long</code>和<code>double</code>读写的原子性</p>
 </li>
-<li><p>自增自减这样的复合操作不是原子操作，不具有原子性。</p>
+<li><p>自增自减这样的复合操作不是原子操作，不具有原子性</p>
 </li>
 </ul>
 <p>注：</p>
@@ -274,112 +288,117 @@
 <li><p>悲观锁认为数据一般情况下悲并发修改的概率比较大，需要在修改之前先加锁，<code>synchronized</code>就是一种悲观锁，悲观锁会存在加锁解锁导致的性能问题</p>
 </li>
 </ul>
-<h2 id="2-3-synchronized-锁"><a href="#2-3-synchronized-锁" class="headerlink" title="2.3 synchronized 锁"></a>2.3 synchronized 锁</h2><p><code>synchronized</code>关键字可以用来对操作加锁，是 JVM 实现的，不可中断，非公平，可重入，通过单线程独占式执行锁住的操作以及解锁之前先把变量同步回主存中来同时保证了有序性、原子性、可见性。</p>
+<h2 id="2-3-synchronized-锁"><a href="#2-3-synchronized-锁" class="headerlink" title="2.3 synchronized 锁"></a>2.3 synchronized 锁</h2><p><code>synchronized</code>关键字可以用来对操作加锁，是 JVM 实现的，不可中断，非公平，可重入，通过单线程独占式执行锁住的操作以及解锁之前会先把变量同步回主存中来同时保证了有序性、原子性、可见性。</p>
 <ul>
-<li><p><code>synchronized</code>可以对方法和代码块加锁（不能用于修饰变量），有三种加锁方式：</p>
+<li><p><code>synchronized</code>可以对方法和代码块加锁（不能用于修饰变量），有三种加锁方式</p>
 <ul>
-<li><p>对于普通方法，锁是当前实例对象<code>this</code>，此时必须将对象的域设置为<code>private</code>，确保不能直接访问域，只能由方法来访问；</p>
+<li><p>对于普通方法，锁是当前实例对象<code>this</code>，此时必须将对象的域设置为<code>private</code>，确保不能直接访问域，只能由方法来访问</p>
 </li>
-<li><p>对于静态方法，锁是当前类的 Class 对象；</p>
+<li><p>对于静态方法，锁是当前类的 Class 对象</p>
 </li>
-<li><p>对于同步代码块，锁是<code>synchronized</code>括号里配置的对象。</p>
+<li><p>对于同步代码块，锁是<code>synchronized</code>括号里配置的对象</p>
 </li>
 </ul>
 </li>
-<li><p>在使用<code>synchronized</code>时，获取到的是哪个锁非常重要，这关系到代码逻辑是否正确以及执行是否高效。</p>
+<li><p>在使用<code>synchronized</code>时，获取到的是哪个锁非常重要，这关系到代码逻辑是否正确以及执行是否高效</p>
 </li>
-<li><p>无论<code>synchronized</code>代码块中是否抛出异常，都会在<code>synchronized</code>结束处自动正确释放锁。</p>
+<li><p>无论<code>synchronized</code>代码块中是否抛出异常，都会在<code>synchronized</code>结束处自动正确释放锁</p>
 </li>
-<li><p><code>synchronized</code>锁的实现依赖于 Java 对象的监视器 Monitor，当尝试获取对象锁时，其实是对该对象的 Monitor 进行操作，Monitor 会保证同一时间点只能有一个线程可以获取锁。</p>
+<li><p><code>synchronized</code>锁的实现依赖于 Java 对象的监视器 Monitor，当尝试获取对象锁时，其实是对该对象的 Monitor 进行操作，Monitor 会保证同一时间点只能有一个线程可以获取锁</p>
 </li>
-<li><p><code>synchronized</code>获取的锁是可重入的锁（能被同一个线程反复获取的锁），因此每次加锁和解锁时，需要记录这是第几次加锁和解锁，直到记录变为第 0 次时才会真正释放锁（JVM 通过给每个对象设置一个监视器和阻塞队列来实现这一过程）。</p>
+<li><p><code>synchronized</code>获取的锁是可重入的锁（能被同一个线程反复获取的锁），因此每次加锁和解锁时，需要记录这是第几次加锁和解锁，直到记录变为第 0 次时才会真正释放锁（JVM 通过给每个对象设置一个监视器和阻塞队列来实现这一过程）</p>
 </li>
-<li><p>由于<code>synchronized</code>代码块无法并发执行，且加锁和解锁也需要消耗一定的时间，故<code>synchronized</code>会降低程序的执行效率。</p>
+<li><p>由于<code>synchronized</code>代码块无法并发执行，且加锁和解锁也需要消耗一定的时间，故<code>synchronized</code>会降低程序的执行效率</p>
 </li>
-<li><p>如果一个优先级高的线程等待一个优先级低的线程释放锁会导致优先级倒置，引起性能风险。</p>
+<li><p>如果一个优先级高的线程等待一个优先级低的线程释放锁会导致优先级倒置，引起性能风险</p>
 </li>
 </ul>
-<p>由于锁语句产生了一种互相排斥的效果（同一时间点只有一个线程可以获取锁），所以这种机制常常被称为互斥量（mutex）。</p>
-<h2 id="2-4-JVM-锁优化"><a href="#2-4-JVM-锁优化" class="headerlink" title="2.4 JVM 锁优化"></a>2.4 JVM 锁优化</h2><p>在运行期动态编译同步块时， JIT 编译器可以借助一种被称为逃逸分析的技术来判断同步块所使用的锁对象是否会被多个线程访问，如果分析证实同步块锁对象只能够被一个线程访问，那么 JIT 编译器在编译这个同步块的时候就会取消对这部分的代码块的同步，这就是锁消除，主要是防止由于开发者误加了不必要的<code>synchronized</code>锁而导致的性能下降，比如使用<code>StringBuffer</code>作为局部变量。</p>
+<p>注：</p>
+<ul>
+<li><p>由于锁语句产生了一种互相排斥的效果（同一时间点只有一个线程可以获取锁），所以这种机制常常被称为互斥量（mutex）</p>
+</li>
+<li><p>公平锁是指所有希望获得锁的线程都在队列里排队，多个线程按照申请锁的顺序去获得锁，保证队列中的第一个先得到锁，不会饿死，但 CPU 唤醒线程是较大开销，吞吐量会下降很多</p>
+</li>
+<li><p>非公平锁是指线程先直接尝试去获取锁，此时是有可能获取到锁的，如果获取不到再进入队列排队，因此并不保证多个线程一定是按申请顺序获得锁，但 CPU 不必去唤醒所有线程，整体的吞吐量会高点，可能出现线程饿死</p>
+</li>
+</ul>
+<h2 id="2-4-JVM-锁优化"><a href="#2-4-JVM-锁优化" class="headerlink" title="2.4 JVM 锁优化"></a>2.4 JVM 锁优化</h2><p>在运行期动态编译同步块时，JIT 编译器可以借助一种被称为逃逸分析的技术来判断同步块所使用的锁对象是否会被多个线程访问，如果分析证实同步块锁对象只能够被一个线程访问，那么 JIT 编译器在编译这个同步块的时候就会取消对这部分的代码块的同步，这就是锁消除，主要是防止由于开发者误加了不必要的<code>synchronized</code>锁而导致的性能下降，比如使用<code>StringBuffer</code>作为局部变量。</p>
 <p>大部分情况下减小锁的粒度是符合常理的，但是如果在一段代码中连续地对同一个对象反复加锁解锁，甚至加锁操作出现在循环体中，则相对耗费资源，此时应当放宽加锁的范围，从而减少性能消耗，当 JIT 编译器发现这类情况就会将加锁同步的范围粗化到整个操作序列的外部，这就是锁粗化。</p>
 <p>此外，JVM 还引入锁升级来对<code>synchronized</code>进行优化，降低了获得锁和释放锁带来的性能消耗，此时锁一共有四种状态：无锁、偏向锁、轻量级锁和重量级锁，为了提高获得锁和释放锁的效率，锁可以升级但不能降级。</p>
 <img src="锁升级.png" alt="锁升级" style="zoom:100%;" />
 
 <ul>
-<li><p>在大多数情况下，锁不存在多线程竞争，即总是由同一个线程多次获取，因此引入偏向锁：</p>
+<li><p>在大多数情况下，锁不存在多线程竞争，即总是由同一个线程多次获取，因此引入偏向锁</p>
 <ul>
-<li>偏向锁表示锁对象当前偏向第一个访问它的线程；</li>
-<li>加锁和解锁不需要额外的消耗（其实根本没有同步操作），与执行非同步代码相比，性能差距很小；</li>
-<li>存在锁竞争时，会带来额外的锁撤销的消耗；</li>
-<li>适用于只有一个线程获取锁的场景；</li>
-<li>偏向锁在 Java 6 和 Java 7 里是默认启用的，如果确认锁通常情况下处理竞争状态，可以关闭偏向锁，偏向锁关闭后程序默认会进入轻量级锁状态，JDK 15 中废弃了偏向锁。</li>
+<li>偏向锁表示锁对象当前偏向第一个访问它的线程</li>
+<li>加锁和解锁不需要额外的消耗（其实根本没有同步操作），与执行非同步代码相比，性能差距很小</li>
+<li>存在锁竞争时，就需要等到安全点再将偏向锁撤销为无锁或升级为轻量级锁，这会带来额外的消耗，在高并发情况下尤为严重</li>
+<li>适用于只有一个线程获取锁的场景，如果确认锁通常情况下处理竞争状态，可以关闭偏向锁，偏向锁关闭后程序默认会进入轻量级锁状态</li>
+<li>偏向锁在 Java 6 和 Java 7 里是默认启用的，考虑到现代应用程序中只有一个线程获取锁的场景比较少见，且偏向锁的引入比较复杂，给 HotSpot VM 中锁相关部分与其他组件之间的交互也带了复杂性，并且阻碍了一些重大设计更改，JDK 15 中废弃了偏向锁</li>
 </ul>
 </li>
-<li><p>存在多个线程竞争偏向锁时，锁会升级为轻量级锁：</p>
+<li><p>存在多个线程竞争偏向锁时，锁会升级为轻量级锁</p>
 <ul>
-<li>竞争线程不会阻塞，提高了程序的响应速度；</li>
-<li>自旋会消耗 CPU，要避免无用的自旋；</li>
-<li>轻量级锁的自旋默认是开启的；</li>
-<li>自适应性自旋是指通常监控轻量级锁自旋等待的情况来动态调整自旋等待时间；</li>
-<li>适用于追求响应速度的场景。</li>
+<li>竞争线程不会阻塞，提高了程序的响应速度</li>
+<li>自旋会消耗 CPU，要避免无用的自旋</li>
+<li>轻量级锁的自旋默认是开启的</li>
+<li>自适应性自旋是指通常监控轻量级锁自旋等待的情况来动态调整自旋等待时间</li>
+<li>适用于追求响应速度的场景</li>
 </ul>
 </li>
-<li><p>自旋获取轻量级锁失败时，锁就会膨胀为重量级锁：</p>
+<li><p>自旋获取轻量级锁失败时，锁就会膨胀为重量级锁</p>
 <ul>
-<li>不使用自旋，不消耗 CPU；</li>
-<li>重量级锁的自旋默认是关闭的；</li>
-<li>线程阻塞，响应时间缓慢；</li>
-<li>重锁的重就在于加锁解锁所引起的线程阻塞和唤醒都需要操作系统内核的参与，进而导致线程状态转换的时间消耗比用户代码执行的时间还要长；</li>
-<li>适用于追求吞吐量的场景。</li>
+<li>不使用自旋，不消耗 CPU</li>
+<li>重量级锁的自旋默认是关闭的</li>
+<li>线程阻塞，响应时间缓慢</li>
+<li>重锁的重就在于加锁解锁所引起的线程阻塞和唤醒都需要操作系统内核的参与，进而导致线程状态转换的时间消耗比用户代码执行的时间还要长</li>
+<li>适用于追求吞吐量的场景</li>
 </ul>
 </li>
 </ul>
-<h1 id="3、线程基础"><a href="#3、线程基础" class="headerlink" title="3、线程基础"></a>3、线程基础</h1><h2 id="3-1-启动新线程"><a href="#3-1-启动新线程" class="headerlink" title="3.1 启动新线程"></a>3.1 启动新线程</h2><ul>
-<li><p>一个Java程序实际上是一个JVM进程，JVM进程用一个主线程来执行<code>main</code>方法，除此之外，JVM还有负责垃圾回收的其他线程运行。</p>
-</li>
-<li><p>在方法内部，程序员通过编写代码又可以启动其他新线程，启动新线程有泛化<code>Thread</code>类、实现<code>Runnable</code>接口以及直接使用lambda表达式这三种方式，三种方式的共同点在于都在<code>run</code>方法中定义了线程所需执行的任务，并通过调用<code>start</code>方法来显示地启动线程。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        t1.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">MyRunnable</span>());</span><br><span class="line">        t2.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;...&#125;);</span><br><span class="line">        t3.start ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
+<h1 id="3、线程基础"><a href="#3、线程基础" class="headerlink" title="3、线程基础"></a>3、线程基础</h1><h2 id="3-1-启动新线程"><a href="#3-1-启动新线程" class="headerlink" title="3.1 启动新线程"></a>3.1 启动新线程</h2><p>一个Java程序实际上是一个JVM进程，JVM进程用一个主线程来执行<code>main</code>方法，除此之外，JVM还有负责垃圾回收的其他线程运行。在方法内部，程序员通过编写代码又可以启动其他新线程，启动新线程有泛化<code>Thread</code>类、实现<code>Runnable</code>接口以及直接使用lambda表达式这三种方式，三种方式的共同点在于都在<code>run</code>方法中定义了线程所需执行的任务，并通过调用<code>start</code>方法来显示地启动线程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        t1.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">MyRunnable</span>());</span><br><span class="line">        t2.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;...&#125;);</span><br><span class="line">        t3.start ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="3-2-线程调度"><a href="#3-2-线程调度" class="headerlink" title="3.2 线程调度"></a>3.2 线程调度</h2><ul>
-<li><p>现代操作系统基本采用时分的形式调度运行的线程。</p>
+<li><p>给多个并发运行的线程按照特定的机制分配 CPU 的使用权就叫做线程调度，现代操作系统基本采用时分的形式调度运行的线程</p>
 </li>
-<li><p>如何调度线程完全由操作系统决定，程序自身无法决定线程间的执行顺序，但可以通过<code>Thread.setPriority</code>方法来设定线程的优先级。</p>
+<li><p>JVM 定义了抢占式的线程调度模型，如何调度线程完全由操作系统决定，程序自身无法决定线程间的执行顺序</p>
 </li>
-<li><p>线程优先级就是决定线程需要多或者少分配一些处理器资源的线程属性。</p>
+<li><p>可以通过<code>Thread.setPriority</code>方法来设定线程的优先级，线程优先级就是决定线程需要多或者少分配一些处理器资源的线程属性</p>
 </li>
-<li><p>优先级高的线程会被操作系统调度的更加频繁，但不能确保优先级高的线程一定会先执行，也不意味着优先级低的线程得不到执行，即优先级不会导致死锁。</p>
+<li><p>优先级高的线程会被操作系统调度的更加频繁，但不能确保优先级高的线程一定会先执行，也不意味着优先级低的线程得不到执行，即优先级不会导致死锁</p>
 </li>
-<li><p>针对频繁阻塞（休眠或者I/O操作）的线程需要设置较高优先级，而偏重计算（需要较多CPU时间）的线程则设置较低优先级，确保线程不会被独占。</p>
+<li><p>针对频繁阻塞（休眠或者I/O操作）的线程需要设置较高优先级，而偏重计算（需要较多CPU时间）的线程则设置较低优先级，确保线程不会被独占</p>
 </li>
-<li><p>在不同的JVM以及操作系统上，线程规划会存在差异，有的操作系统甚至会忽略对线程优先级的设定，因此，<strong>程序正确性不能依赖线程的优先级高低。</strong></p>
+<li><p>在不同的JVM以及操作系统上，线程规划会存在差异，有的操作系统甚至会忽略对线程优先级的设定，因此，*<em>程序正确性不能依赖线程的优先级高低。</em></p>
 </li>
-<li><p>如果必须控制任务执行的顺序，那么最好使用同步控制，或者编写自己的协作例程（例程会按照执行的顺序在相互之间传递控制权）而不使用线程。</p>
+<li><p>如果必须控制任务执行的顺序，那么最好使用同步控制，或者编写自己的协作例程（例程会按照执行的顺序在相互之间传递控制权）而不使用线程</p>
 </li>
 </ul>
 <h2 id="3-3-线程的状态"><a href="#3-3-线程的状态" class="headerlink" title="3.3 线程的状态"></a>3.3 线程的状态</h2><ul>
-<li><p>New：新创建的线程，尚未调用<code>start</code>方法；</p>
+<li><p>New：新创建的线程，尚未调用<code>start</code>方法</p>
 </li>
-<li><p>Runnable：运行中的线程，正在执行<code>run</code>方法中的代码；</p>
+<li><p>Runnable：运行中的线程，正在执行<code>run</code>方法中的代码</p>
 <ul>
-<li><p>Ready：属于 Runnable，但未获取到 CPU 时间片；</p>
+<li><p>Ready：属于 Runnable，但未获取到 CPU 时间片</p>
 </li>
-<li><p>Running：属于 Runnable，但获取到 CPU 时间片。</p>
+<li><p>Running：属于 Runnable，但获取到 CPU 时间片</p>
 </li>
 </ul>
 </li>
-<li><p>Waiting：因为某些操作而需要等待其他线程的通知才能返回到 Runnable，会让出 CPU；</p>
+<li><p>Waiting：因为某些操作而需要等待其他线程的通知才能返回到 Runnable，会让出 CPU</p>
 </li>
-<li><p>Blocked：因为等待 I/O 操作或等待获取<code>synchronized</code>锁之后才能返回 Runnable，会让出 CPU；</p>
+<li><p>Blocked：因为等待 I/O 操作或等待获取<code>synchronized</code>锁之后才能返回 Runnable，会让出 CPU</p>
 <ul>
-<li><p>线程等待获取<code>synchronized</code>锁才会进入 Blocked；</p>
+<li><p>线程等待获取<code>synchronized</code>锁才会进入 Blocked</p>
 </li>
-<li><p>线程等待获取 JUC 的<code>Lock</code>锁则会进入 Waiting。</p>
+<li><p>线程等待获取 JUC 的<code>Lock</code>锁则会进入 Waiting</p>
 </li>
 </ul>
 </li>
-<li><p>Timed Waiting：可以在指定的时间内自行返回到 Runnable，会让出 CPU；</p>
+<li><p>Timed Waiting：可以在指定的时间内自行返回到 Runnable，会让出 CPU</p>
 </li>
-<li><p>Terminated：已终止的线程。</p>
+<li><p>Terminated：已终止的线程</p>
 </li>
 </ul>
 <p>注：阻塞和挂起是不同的概念，阻塞是指线程为了获得某个结果而不得不暂停执行，挂起是指显式调用某个以暂停为目的的挂起方法令线程暂停执行。</p>
@@ -388,300 +407,314 @@
 <h2 id="3-4-线程的行为"><a href="#3-4-线程的行为" class="headerlink" title="3.4 线程的行为"></a>3.4 线程的行为</h2><ul>
 <li><p><code>Thread.start()</code></p>
 <ul>
-<li><p>调用<code>start</code>方法后，新线程启动；</p>
+<li><p>调用<code>start</code>方法后，新线程启动</p>
 </li>
-<li><p>启动一个线程之前最好设置该线程的名称，便于分析排查；</p>
+<li><p>启动一个线程之前最好设置该线程的名称，便于分析排查</p>
 </li>
-<li><p>一个线程对象只能调用一次<code>start</code>方法。</p>
+<li><p>一个线程对象只能调用一次<code>start</code>方法</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.run()</code></p>
 <ul>
-<li><p>在新线程启动后会立即执行<code>run</code>方法；</p>
+<li><p>在新线程启动后会立即执行<code>run</code>方法</p>
 </li>
-<li><p>直接调用<code>run</code>方法并不会执行新线程，而是在主线程中执行<code>run</code>方法；</p>
+<li><p>直接调用<code>run</code>方法并不会执行新线程，而是在主线程中执行<code>run</code>方法</p>
 </li>
-<li><p><code>run</code>方法正常执行完毕或者因未捕获的异常而终止后该线程都会进入Terminated。</p>
+<li><p><code>run</code>方法正常执行完毕或者因未捕获的异常而终止后该线程都会进入Terminated</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.yield()</code></p>
 <ul>
-<li><p>调用<code>yield</code>方法声明了当前线程已经完成了生命周期中最重要的部分，可以切换给其它线程来执行；</p>
+<li><p>调用<code>yield</code>方法声明了当前线程已经完成了生命周期中最重要的部分，可以切换给其它线程来执行</p>
 </li>
-<li><p>可以切换给其它线程只是对线程调度器的一个建议，而且也只是建议具有相同优先级的其它线程可以运行。</p>
+<li><p>可以切换给其它线程只是对线程调度器的一个建议，而且也只是建议具有相同优先级的其它线程可以运行</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.join()</code></p>
 <ul>
-<li><p>线程调用<code>join</code>方法后，其他线程都进入Waiting，直到当前线程进入Terminated；</p>
+<li><p>线程调用<code>join</code>方法后，其他线程都进入Waiting，直到当前线程进入Terminated</p>
 </li>
-<li><p>处于Terminated的的线程调用<code>join</code>方法时会立即返回。</p>
+<li><p>处于Terminated的的线程调用<code>join</code>方法时会立即返回</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.interrupt()</code></p>
 <ul>
-<li><p>对阻塞中的目标线程调用<code>interrupt</code>方法可以向其发出中断请求，此时目标线程会抛出<code>InterruptedException</code>，其中断标志位会被置为<code>true</code>；</p>
+<li><p>对阻塞中的目标线程调用<code>interrupt</code>方法可以向其发出中断请求，此时目标线程会抛出<code>InterruptedException</code>，其中断标志位会被置为<code>true</code></p>
 </li>
-<li><p>一个可能会进入阻塞操作的线程应当捕获<code>InterruptedException</code>并重置中断标志位或直接声明会抛出<code>InterruptedException</code>（更优）；</p>
+<li><p>一个可能会进入阻塞操作的线程应当捕获<code>InterruptedException</code>并重置中断标志位或直接声明会抛出<code>InterruptedException</code>（更优）</p>
 </li>
-<li><p>方法一旦捕获了<code>InterruptedException</code>，当前线程的中断标志位会被自动置为<code>false</code>，如果此时既不打算抛出<code>InterruptedException</code>，又不希望线程就此终止，则应当通过<code>Thread.currentThread.interrupt()</code>来将中断标志位重置为<code>true</code>，否则线程在方法外部将无法得知自身是否被中断；</p>
+<li><p>方法一旦捕获了<code>InterruptedException</code>，当前线程的中断标志位会被自动置为<code>false</code>，如果此时既不打算抛出<code>InterruptedException</code>，又不希望线程就此终止，则应当通过<code>Thread.currentThread.interrupt()</code>来将中断标志位重置为<code>true</code>，否则线程在方法外部将无法得知自身是否被中断</p>
 </li>
-<li><p>目标线程的<code>run</code>方法可以通过检测<code>isInterrupted</code>方法是否返回<code>true</code>来判断自身是否被中断，处于 Terminated 的的线程调用<code>isInterrupted</code>方法会返回<code>fasle</code>；</p>
+<li><p>目标线程的<code>run</code>方法可以通过检测<code>isInterrupted</code>方法是否返回<code>true</code>来判断自身是否被中断，处于 Terminated 的的线程调用<code>isInterrupted</code>方法会返回<code>fasle</code></p>
 </li>
-<li><p>目标线程是否能够立即响应该中断请求，取决于目标线程的<code>run</code>方法中的具体设置，有设置则对中断请求进行相应的处理，没有设置则直接忽略中断请求；</p>
+<li><p>目标线程是否能够立即响应该中断请求，取决于目标线程的<code>run</code>方法中的具体设置，有设置则对中断请求进行相应的处理，没有设置则直接忽略中断请求</p>
 </li>
-<li><p>试图执行 I/O 操作和试图获取<code>synchronized</code>锁的线程是不可中断的，而当任务以不可中断的方式被阻塞时，那么都会有潜在的死锁的可能；</p>
+<li><p>试图执行 I/O 操作和试图获取<code>synchronized</code>锁的线程是不可中断的，而当任务以不可中断的方式被阻塞时，那么都会有潜在的死锁的可能</p>
 </li>
-<li><p>可中断的锁参见 JUC 包（<code>tryLock</code>），可中断的 I/O 操作参见 NIO 包。</p>
+<li><p>可中断的锁参见 JUC 包（<code>tryLock</code>），可中断的 I/O 操作参见 NIO 包</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.sleep()</code></p>
 <ul>
-<li><p><code>sleep</code>方法是<code>Thread</code>的静态方法；</p>
+<li><p><code>sleep</code>方法是<code>Thread</code>的静态方法</p>
 </li>
-<li><p><code>sleep</code>方法不会释放锁，可以在任何地方（即便非同步区）使用。</p>
+<li><p><code>sleep</code>方法不会释放锁，可以在任何地方（即便非同步区）使用</p>
+</li>
+<li><p><code>sleep</code>方法会释放 CPU 时间片，在一些底层框架中会使用<code>Thread.sleep(0)</code>来让当前线程主动释放一次 CPU，让其他线程可以进行一次公平的争抢</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.setPriority()</code></p>
 <ul>
-<li><p>调用<code>setPriority(int)</code>方法可以设定线程的优先级；</p>
+<li><p>调用<code>setPriority(int)</code>方法可以设定线程的优先级</p>
 </li>
-<li><p>优先级的范围是1~10，默认是5。</p>
+<li><p>优先级的范围是1~10，默认是5</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.stop()</code></p>
 <ul>
-<li><p>线程调用<code>stop</code>方法后会进入Terminated；</p>
+<li><p>线程调用<code>stop</code>方法后会进入Terminated</p>
 </li>
-<li><p>不建议使用<code>stop</code>方法，该方法在调用后不会释放已经占有的资源，容易引发死锁；</p>
+<li><p>不建议使用<code>stop</code>方法，该方法在调用后不会释放已经占有的资源，容易引发死锁</p>
 </li>
-<li><p>除了<code>stop</code>方法，还有<code>suspend</code>方法、<code>resume</code>方法都是已经过期的方法。</p>
+<li><p>除了<code>stop</code>方法，还有<code>suspend</code>方法、<code>resume</code>方法都是已经过期的方法</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.setDaemon()</code></p>
 <ul>
-<li><p>在调用<code>start</code>方法之前执行<code>setDaemon (true)</code>可以将线程设置为守护线程（也就是后台线程），最典型的应用就是 GC；</p>
+<li><p>在调用<code>start</code>方法之前执行<code>setDaemon (true)</code>可以将线程设置为守护线程（也就是后台线程），最典型的应用就是 GC</p>
 </li>
-<li><p>守护线程指为其他线程服务的线程，对于需要无限循环运行（不终止）的线程应设置为守护线程，由守护线程所创建的任何线程都自动被设置为守护线程；</p>
+<li><p>守护线程指为其他线程服务的线程，对于需要无限循环运行（不终止）的线程应设置为守护线程，由守护线程所创建的任何线程都自动被设置为守护线程</p>
 </li>
-<li><p>在 JVM 中，所有非守护线程都执行完毕后（而不关心守护线程是否结束），JVM 会自动退出，并杀死进程中所有的守护线程，守护线程并不能被优雅的关闭；</p>
+<li><p>在 JVM 中，所有非守护线程都执行完毕后（而不关心守护线程是否结束），JVM 会自动退出，并杀死进程中所有的守护线程，守护线程并不能被优雅的关闭</p>
 </li>
-<li><p>守护线程不能持有任何需要关闭的资源（例如打开文件），也不能通过<code>finally</code>块来执行任何逻辑，这是因为守护线程在不执行<code>finally</code>块的情况下就会终止其<code>run</code>方法。</p>
-</li>
-</ul>
+<li><p>守护线程不能持有任何需要关闭的资源（例如打开文件），也不能通过<code>finally</code>块来执行任何逻辑，这是因为守护线程在不执行<code>finally</code>块的情况下就会终止其<code>run</code>方法</p>
 </li>
 </ul>
-<h2 id="3-5-死锁的发生及预防"><a href="#3-5-死锁的发生及预防" class="headerlink" title="3.5 死锁的发生及预防"></a>3.5 死锁的发生及预防</h2><p>死锁是指两个或两个以上的进程或线程在执行过程中，由于资源竞争或者由于彼此通信而造成的一种阻塞现象，若无外力作用，它们都将无法推进下去，此时称系统处于死锁状态或系统产生了死锁。</p>
+</li>
+</ul>
+<h2 id="3-5-死锁及预防"><a href="#3-5-死锁及预防" class="headerlink" title="3.5 死锁及预防"></a>3.5 死锁及预防</h2><p>死锁是指两个或两个以上的进程或线程在执行过程中，由于资源竞争或者由于彼此通信而造成的一种阻塞现象，若无外力作用，它们都将无法推进下去，此时称系统处于死锁状态或系统产生了死锁。</p>
 <ul>
-<li>死锁发生的四个条件：<ul>
-<li>互斥：每一时刻仅有一个线程能访问共享数据或共享资源；</li>
-<li>上锁及等待：每个线程都对其他线程需要的资源上锁并等待其他线程释放锁；</li>
-<li>无抢先机制；线程无法抢夺其他线程已经上锁的资源；</li>
-<li>循环等待：多个线程间循环等待其他线程释放锁。</li>
+<li><p>死锁发生的四个条件</p>
+<ul>
+<li>互斥：每一时刻仅有一个线程能访问共享数据或共享资源</li>
+<li>上锁及等待：每个线程都对其他线程需要的资源上锁并等待其他线程释放锁</li>
+<li>无抢先机制；线程无法抢夺其他线程已经上锁的资源</li>
+<li>循环等待：多个线程间循环等待其他线程释放锁</li>
 </ul>
 </li>
-<li><strong>死锁一旦发生之后，没有任何机制能解除死锁，只能强制结束 JVM 进程，因此，只能通过破坏死锁发生的条件来预防</strong>。</li>
-<li>预防死锁的四个方式：<ul>
-<li>使用允许同时使用的资源，或者增加资源数量，获取资源前检查是否可用等；</li>
-<li>遇到资源不可用时，就释放已经获取的资源重新来过，但这很可能会导致线程饥饿和活锁问题；</li>
-<li>满足抢先机制，比如设置优先级，令优先级高的可以抢占资源；</li>
-<li>所有线程都以同一种资源获取次序来获取资源。</li>
+<li><p><strong>死锁一旦发生之后，没有任何机制能解除死锁，只能强制结束 JVM 进程，因此，只能通过破坏死锁发生的条件来预防</strong></p>
+</li>
+<li><p>预防死锁的四个方式</p>
+<ul>
+<li>使用允许同时使用的资源，或者增加资源数量，获取资源前检查是否可用等</li>
+<li>遇到资源不可用时，就释放已经获取的资源重新来过，但这很可能会导致线程饥饿和活锁问题</li>
+<li>满足抢先机制，比如设置优先级，令优先级高的可以抢占资源</li>
+<li>所有线程都以同一种资源获取次序来获取资源</li>
 </ul>
 </li>
-<li>限定资源：并发环境中有着固定尺寸或数量的资源，例如数据库连接和固定尺寸读/写缓存等。</li>
-<li>线程饥饿：线程在很长时间内无法抢到时间片去执行就会“挨饿”。</li>
-<li>活锁：线程因无法获取全部资源而选择释放已经获取的资源，并等待能够获取全部资源从而执行，执行次序一致的线程，每个都想要起步，但发现其他线程已经在“路上”，以致很长时间甚至永远都无法启动。</li>
+<li><p>限定资源：并发环境中有着固定尺寸或数量的资源，例如数据库连接和固定尺寸读/写缓存等</p>
+</li>
+<li><p>线程饥饿：线程在很长时间内无法抢到时间片去执行就会“挨饿”</p>
+</li>
+<li><p>活锁：线程因无法获取全部资源而选择释放已经获取的资源，并等待能够获取全部资源从而执行，执行次序一致的线程，每个都想要起步，但发现其他线程已经在“路上”，以致很长时间甚至永远都无法启动</p>
+</li>
 </ul>
-<h1 id="4、线程同步"><a href="#4、线程同步" class="headerlink" title="4、线程同步"></a>4、线程同步</h1><p>多个线程同时读写可变的共享变量时，需要通过线程同步来实现线程间可靠的通信。</p>
-<p>正确地使用同步可以保证<strong>没有任何线程会看到数据处于不一致的状态中（原子性），并且进入同步的每个线程都能看到由同一个锁保护的之前的所有修改效果（可见性）。</strong></p>
+<h1 id="4、线程同步"><a href="#4、线程同步" class="headerlink" title="4、线程同步"></a>4、线程同步</h1><p>多个线程同时读写可变的共享变量时，需要通过线程同步来实现线程间可靠的通信。正确地使用同步可以保证<strong>没有任何线程会看到数据处于不一致的状态中（一致性），一个已经进入同步区的线程在离开同步区之前没有其他线程可以一起进入同步区（有序性和原子性），并且进入同步区的每个线程都能看到由同一个锁保护的之前的所有修改效果（可见性）。</strong></p>
 <h2 id="4-1-锁和临界区"><a href="#4-1-锁和临界区" class="headerlink" title="4.1 锁和临界区"></a>4.1 锁和临界区</h2><ul>
-<li><p>对于 JVM 规范定义的<strong>单个原子操作</strong>，不需要加锁，再通过<code>volatile</code>关键字来解决有序性和可见性问题后，即可实现同步。</p>
+<li><p>对于 JVM 规范定义的<strong>单个原子操作</strong>，不需要加锁，再通过<code>volatile</code>关键字来解决有序性和可见性问题后，即可实现同步</p>
 </li>
-<li><p>对于单行非原子操作和多行原子操作（均无法保证原子性），操作原子性、有序性以及数据可见性是通过加锁和解锁实现的。</p>
+<li><p>对于单行非原子操作和多行原子操作（均无法保证原子性），操作原子性、有序性以及数据可见性是通过加锁和解锁实现的</p>
 </li>
-<li><p>加锁和解锁之间的代码块称为临界区（Critical Section），任何时候临界区最多只有一个线程（即获得锁的线程）能够执行。</p>
+<li><p>加锁和解锁之间的代码块称为临界区（Critical Section），任何时候临界区最多只有一个线程（即获得锁的线程）能够执行</p>
 </li>
-<li><p>线程获取锁时会把线程对应的本地内存中的共享变量置为无效，使得临界区代码必须从主内存中读取共享变量。</p>
+<li><p>线程获取锁时会把线程对应的本地内存中的共享变量置为无效，使得临界区代码必须从主内存中读取共享变量</p>
 </li>
 <li><p>线程释放锁时会把线程中对应的本地内存中的共享变量刷新到主内存中。</p>
 </li>
 </ul>
-<h2 id="4-2-等待-通知机制"><a href="#4-2-等待-通知机制" class="headerlink" title="4.2 等待/通知机制"></a>4.2 等待/通知机制</h2><p>Java程序使用<code>synchronized</code>解决多线程竞争问题，使用<code>wait</code>、<code>notify</code>和<code>notifyAll</code>解决多线程协调问题。</p>
+<h2 id="4-2-等待-通知机制"><a href="#4-2-等待-通知机制" class="headerlink" title="4.2 等待/通知机制"></a>4.2 等待/通知机制</h2><p>Java程序使用<code>synchronized</code>解决多线程竞争问题，使用<code>wait</code>、<code>notify</code>、<code>notifyAll</code>、<code>park</code>以及<code>unpark</code>解决多线程协调问题。</p>
 <ul>
-<li><p><code>wait</code>方法不是一个普通的 Java 方法，而是定义在<code>Object</code>类的一个<code>native</code>方法，也就是由 JVM 的 C 代码实现的。</p>
+<li><p><code>wait</code>方法不是一个普通的 Java 方法，而是定义在<code>Object</code>类的一个<code>native</code>方法，也就是由 JVM 的 C 代码实现的</p>
 </li>
-<li><p><code>wait</code>方法调用时，会<strong>释放</strong>线程获得的锁，<code>wait</code>方法返回后，线程又会重新试图获得锁，因此必须在<code>synchronized</code>块中才能调用<code>wait</code>方法。</p>
+<li><p><code>wait</code>方法调用时，会<strong>释放</strong>线程获得的锁，<code>wait</code>方法返回后，线程又会重新试图获得锁，因此必须在<code>synchronized</code>块中才能调用<code>wait</code>方法</p>
 </li>
-<li><p>调用<code>wait</code>方法后，线程进入 Waiting 状态，但<code>wait</code>方法不会返回，直到将来某个时刻，线程从等待状态被其他线程唤醒并唤醒线程释放锁后，<code>wait</code>方法才会返回，然后继续执行下一条语句。</p>
+<li><p>调用<code>wait</code>方法后，线程进入 Waiting 状态，但<code>wait</code>方法不会返回，直到将来某个时刻，线程从等待状态被其他线程唤醒并唤醒线程释放锁后，<code>wait</code>方法才会返回，然后继续执行下一条语句</p>
 </li>
-<li><p>当某个线程调用锁对象的<code>wait</code>方法后，需要其他线程调用相同的锁对象的<code>notify</code>方法，该<code>wait</code>方法才能返回，因此必须在<code>synchronized</code>块中才能调用<code>notify</code>方法。</p>
+<li><p>当某个线程调用锁对象的<code>wait</code>方法后，需要其他线程调用相同的锁对象的<code>notify</code>方法，该<code>wait</code>方法才能返回，因此必须在<code>synchronized</code>块中才能调用<code>notify</code>方法</p>
 </li>
-<li><p><code>notify</code>和<code>notifyAll</code>的区别在于：<code>notify</code>只随机唤醒一个等待线程，而<code>notifyAll</code>会唤醒全部由相同锁对象调用<code>wait</code>而等待的线程，故<code>notifyAll</code>更安全。</p>
+<li><p><code>notify</code>和<code>notifyAll</code>的区别在于：<code>notify</code>只随机唤醒一个等待线程，而<code>notifyAll</code>会唤醒全部由相同锁对象调用<code>wait</code>而等待的线程，故<code>notifyAll</code>更安全</p>
 </li>
-<li><p>多个线程被唤醒后，只有一个线程能够重新获得锁从而有机会被 CPU 调度进而继续执行，而其他没有竞争到锁的线程将继续等待。</p>
+<li><p>多个线程被唤醒后，只有一个线程能够重新获得锁从而有机会被 CPU 调度进而继续执行，而其他没有竞争到锁的线程将继续等待</p>
+</li>
+<li><p><code>park</code>和<code>unpark</code>也是一对用于线程等待和唤醒的方法，一般用于实现锁、信号量、线程池等高级并发组件</p>
+</li>
+<li><p><code>park</code>会使当前线程挂起，进入 Waiting 状态，具体实现会让线程进入等待队列中等待被唤醒，<code>park</code>方法可以不传参也可以传入一个<code>Object</code>类型的参数来标识线程挂起的原因，方便调试和排查问题，<code>Unpark</code>方法需要传入一个<code>Thread</code>类型的参数来标识需要唤醒的线程</p>
 </li>
 </ul>
 <h2 id="4-3-线程安全级别"><a href="#4-3-线程安全级别" class="headerlink" title="4.3 线程安全级别"></a>4.3 线程安全级别</h2><p>“线程安全”（thread-safe）代表是否允许多线程正确同步（即结果和预期的一样），<code>java.lang.StringBuffer</code>、不可变类以及只提供静态方法而无成员变量的工具类都是线程安全的，除此之外没有特殊说明的类默认不是 thread-safe 的。</p>
-<p>线程安全并不是要么全有要么全无的属性，而是具有以下多种级别：</p>
+<p>线程安全并不是要么全有要么全无的属性，而是具有以下多种级别</p>
 <ul>
-<li>不可变的（immutable）：这个类是不可变的，不需要外部同步。</li>
-<li>无条件的线程安全（unconditionally thread-safe）：这个类是可变的，但是这个类有着足够的内部同步，不需要任何外部同步即可并发使用。</li>
-<li>有条件的线程安全（conditionally thread-safe）：这个类是可变的，有部分方法需要外部同步，并需要在文档中指明。</li>
-<li>非线程安全（not thread-safe）：这个类是可变的，需要外部同步来包围这个类的每个方法调用。</li>
-<li>线程对立的（thread-hostile）：这个类是可变的，并且无法安全地被多线程并发使用，这种类要么需要进行修正，要么标注为弃用。</li>
+<li><p>不可变的（immutable）：这个类是不可变的，不需要外部同步</p>
+</li>
+<li><p>无条件的线程安全（unconditionally thread-safe）：这个类是可变的，但是这个类有着足够的内部同步，不需要任何外部同步即可并发使用</p>
+</li>
+<li><p>有条件的线程安全（conditionally thread-safe）：这个类是可变的，有部分方法需要外部同步，并需要在文档中指明</p>
+</li>
+<li><p>非线程安全（not thread-safe）：这个类是可变的，需要外部同步来包围这个类的每个方法调用</p>
+</li>
+<li><p>线程对立的（thread-hostile）：这个类是可变的，并且无法安全地被多线程并发使用，这种类要么需要进行修正，要么标注为弃用</p>
+</li>
 </ul>
 <h2 id="4-4-线程状态传递"><a href="#4-4-线程状态传递" class="headerlink" title="4.4 线程状态传递"></a>4.4 线程状态传递</h2><p>在一个线程中，横跨若干方法调用，需要传递的对象，称之为上下文（Context），Context 是一种状态，可以是用户身份、任务信息等。Java标准库提供了<code>ThreadLocal</code>用于在一个线程中传递同一个 Context。</p>
 <ul>
-<li><p><code>ThreadLocal</code>表示线程的“局部变量”，存放的是线程间互斥线程内共享的 Context 数据，可以避免同一线程内通过通过参数传递 Context，更加优雅。</p>
+<li><p><code>ThreadLocal</code>表示线程的“局部变量”，存放的是线程间互斥线程内共享的 Context 数据，可以避免同一线程内通过参数传递 Context，更加优雅，典型应用场景有用户身份信息存储、线程安全、日志上下文存储、traceId 存储、数据库 Session 等</p>
 </li>
-<li><p>通过<code>ThreadLocal</code>的<code>set</code>方法可以将需要的 Context 关联到<code>ThreadLocal</code>实例当中，通过<code>remove</code>方法可以将 Context 从<code>ThreadLocal</code>实例中移除。</p>
+<li><p>通过<code>ThreadLocal</code>的<code>set</code>方法可以将需要的 Context 关联到<code>ThreadLocal</code>实例当中，通过<code>remove</code>方法可以将 Context 从<code>ThreadLocal</code>实例中移除，关联到<code>ThreadLocal</code>中的 Context 在移除之前，所有方法都可以通过<code>ThreadLocal</code>的<code>get</code>方法随时获取到 Context</p>
 </li>
-<li><p>关联到<code>ThreadLocal</code>中的 Context 在移除之前，所有方法都可以通过<code>ThreadLocal</code>的<code>get</code>方法随时获取到 Context</p>
+<li><p><code>get</code>方法其实是先获取当前线程自身的<code>ThreadLocalMap</code>类型的成员变量，<code>ThreadLocalMap</code>是<code>ThreadLocal</code>的静态内部类，可以通过<code>ThreadLocal</code>对象（<code>this</code>引用）为 key，获取到 Context 数据</p>
 </li>
-<li><p>其实是先获取当前线程自身的<code>ThreadLocalMap</code>类型的成员变量，<code>ThreadLocalMap</code>是<code>ThreadLocal</code>的静态内部类，可以通过<code>ThreadLocal</code>对象（<code>this</code>引用）为 key，获取到 Context 数据。</p>
+<li><p><code>ThreadLocal</code>相当于给每个线程都开辟了一个独立的存储空间，各个线程的<code>ThreadLocal</code>关联的 Context 互不干扰</p>
 </li>
-<li><p><code>ThreadLocal</code>相当于给每个线程都开辟了一个独立的存储空间，各个线程的<code>ThreadLocal</code>关联的 Context 互不干扰。</p>
+<li><p><code>ThreadLocal</code>一定要在<code>finally</code>块中清除 Context，否则该 Context 所关联的线程在执行下一个任务时，会把上一次的状态带进去，时间久了容易内存泄漏，具体细节需要画图分析，等我以后有空再画（<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/bueq7weva8ha9f1p">详细参考</a>）</p>
 </li>
-<li><p><code>ThreadLocal</code>一定要在<code>finally</code>块中清除 Context，否则该 Context 所关联的线程在执行下一个任务时，会把上一次的状态带进去。</p>
+<li><p><code>ThreadLocal</code>中的 context 即便是在父子线程之间也依旧互斥，即子线程无法获取父线程的 context，如果需要在父子线程之间传递 context，可以使用<code>InheritableThreadLocal</code>，父线程在创建子线程时，子线程会创建父线程的<code>InheritableThreadLocal</code>中的 context 的副本作为自身的<code>InheritableThreadLocal</code>中的 context</p>
 </li>
-</ul>
-<p>在使用线程时，出现那些可能看起来极罕见的缺陷，是很寻常并容易发生的事，而且对于到底出了什么错，这些缺陷只能给一个很模糊的概念。</p>
-<h1 id="5、高效并发（JUC）"><a href="#5、高效并发（JUC）" class="headerlink" title="5、高效并发（JUC）"></a>5、高效并发（JUC）</h1><p>在Java 5中引入了<code>java.util.concurrent</code>包，该包提供了一系列底层锁、线程安全的并发集合、原子操作的封装类以及同步器来实现简单高效健壮的并发。</p>
-<h2 id="5-1-并发锁"><a href="#5-1-并发锁" class="headerlink" title="5.1 并发锁"></a>5.1 并发锁</h2><h3 id="5-1-1-Lock"><a href="#5-1-1-Lock" class="headerlink" title="5.1.1 Lock"></a>5.1.1 Lock</h3><ul>
-<li><p><code>Lock</code>接口提供了与<code>synchronized</code>关键字类似的同步功能。</p>
-</li>
-<li><p>不同于<code>synchronized</code>只需隐式获取释放锁，<code>Lock</code>接口需要显示地获取和释放锁。</p>
-</li>
-<li><p>虽然缺少了一些便捷性，但<code>Lock</code>接口拥有了锁获取和释放的可操作性、可中断的获取锁以及超时获取锁等多种<code>synchronized</code>不具备的同步特性。</p>
-</li>
-<li><p>在<code>try</code>中使用<code>return</code>，确保锁释放不会过早发生。</p>
-</li>
-<li><p>不要在<code>try</code>块中获取锁，否则如果在获取锁时发生了异常，异常抛出时也会导致锁无故释放。</p>
-</li>
-<li><p>在<code>finally</code>块中释放锁，保证在获取到锁之后，最终能够被释放。</p>
-</li>
-<li><p><code>Lock</code>接口的实现基本都是聚合了一个同步器的子类来完成线程访问控制。</p>
+<li><p><code>InheritableThreadLocal</code>只适用于在父线程中手动创建的子线程，而大多数时候线程都是通过线程池创建和复用的，此时可以使用<code>TransmittableThreadLocal</code>（<code>InheritableThreadLocal</code>的子类），适用于分布式跟踪系统、全链路压测、日志收集记录系统上下文、Session 级 Cache 等（<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/fucuuyqoqv8rdkpr">详细参考</a>）</p>
 </li>
 </ul>
-<h3 id="5-1-2-ReentrantLock"><a href="#5-1-2-ReentrantLock" class="headerlink" title="5.1.2 ReentrantLock"></a>5.1.2 ReentrantLock</h3><p><code>ReentrantLock</code>在功能上是<code>synchronized</code>的超集，在性能上至少不弱于<code>synchronized</code>，<code>ReentrantLock</code>与<code>synchronized</code>之间的区别在于：</p>
+<p>在使用线程时，出现那些可能看起来极罕见的缺陷，是很寻常并容易发生的事，而且对于到底出了什么错，这些缺陷只能给一个很模糊的概念。在 Java 5中引入了<code>java.util.concurrent</code>包，该包提供了一系列并发锁、线程安全的并发集合、原子操作的封装类以及同步器来实现简单高效健壮的并发。</p>
+<h1 id="5、并发锁"><a href="#5、并发锁" class="headerlink" title="5、并发锁"></a>5、并发锁</h1><h2 id="5-1-Lock"><a href="#5-1-Lock" class="headerlink" title="5.1 Lock"></a>5.1 Lock</h2><ul>
+<li><p><code>Lock</code>接口提供了与<code>synchronized</code>关键字类似的同步功能</p>
+</li>
+<li><p>不同于<code>synchronized</code>只需隐式获取释放锁，<code>Lock</code>接口需要显示地获取和释放锁</p>
+</li>
+<li><p>虽然缺少了一些便捷性，但<code>Lock</code>接口拥有了锁获取和释放的可操作性、可中断的获取锁以及超时获取锁等多种<code>synchronized</code>不具备的同步特性</p>
+</li>
+<li><p>在<code>try</code>中使用<code>return</code>，确保锁释放不会过早发生</p>
+</li>
+<li><p>不要在<code>try</code>块中获取锁，否则如果在获取锁时发生了异常，异常抛出时也会导致锁无故释放</p>
+</li>
+<li><p>在<code>finally</code>块中释放锁，保证在获取到锁之后，最终能够被释放</p>
+</li>
+<li><p><code>Lock</code>接口的实现基本都是聚合了一个同步器的子类来完成线程访问控制</p>
+</li>
+</ul>
+<h2 id="5-2-ReentrantLock"><a href="#5-2-ReentrantLock" class="headerlink" title="5.2 ReentrantLock"></a>5.2 ReentrantLock</h2><p><code>ReentrantLock</code>在功能上是<code>synchronized</code>的超集，在性能上至少不弱于<code>synchronized</code>，<code>ReentrantLock</code>与<code>synchronized</code>之间的区别在于</p>
 <ul>
-<li><p><code>synchronized</code>锁在获取时必须一致等待，没有额外的尝试机制，<code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去。</p>
+<li><p><code>synchronized</code>锁在获取时必须一致等待，没有额外的尝试机制，<code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去</p>
 </li>
-<li><p><code>synchronized</code>可以由 JVM 来确保即使发生异常也能自动释放锁，<code>ReentrantLock</code>需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</p>
+<li><p><code>synchronized</code>可以由 JVM 来确保即使发生异常也能自动释放锁，<code>ReentrantLock</code>需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）</p>
 </li>
-<li><p><code>synchronized</code>是 JVM 实现的，不可中断，非公平，加锁和解锁是隐式地，<code>ReentrantLock</code>是 JDK 实现的，可中断，默认是非公平的，也可以是公平的，加锁和解锁是显式地，两者都是可重入的。</p>
+<li><p><code>synchronized</code>是 JVM 实现的，不可中断，非公平，加锁和解锁是隐式地，<code>ReentrantLock</code>是 JDK 实现的，可中断，默认是非公平的，也可以是公平的，加锁和解锁是显式地，两者都是可重入的</p>
 </li>
-<li><p>由于<code>synchronized</code>是不可中断的，而<code>ReentrantLock</code>是可中断的，线程在<code>tryLock</code>失败时不会导致死锁，<code>ReentrantLock</code>比直接使用<code>synchronized</code>更安全。</p>
+<li><p>由于<code>synchronized</code>是不可中断的，而<code>ReentrantLock</code>是可中断的，线程在<code>tryLock</code>失败时不会导致死锁，<code>ReentrantLock</code>比直接使用<code>synchronized</code>更安全</p>
 </li>
-<li><p><code>synchronized</code>经过 JVM 优化后，其实性能与<code>ReentrantLock</code>基本上持平，且从长远看，JVM 更容易对<code>synchronized</code>来进行优化，这是因为 JVM 可以在线程和对象中记录<code>synchronized</code>中锁的相关信息，而使用<code>ReentrantLock</code>的话，JVM 则很难得知具体哪些对象是由特定线程锁持有的。</p>
-</li>
-</ul>
-<h3 id="5-1-3-ReadWriteLock"><a href="#5-1-3-ReadWriteLock" class="headerlink" title="5.1.3 ReadWriteLock"></a>5.1.3 ReadWriteLock</h3><ul>
-<li><p><code>ReentrantLock</code>保证任何时候只有一个线程可以执行临界区代码，与<code>ReentrantLock</code>相比，<code>ReadWriteLock</code>允许多个读线程同时执行临界区代码，但不允许读线程和写线程同时执行。</p>
-</li>
-<li><p>从<code>ReadWriteLock</code>对象可以分别获取读锁和写锁（<code>Lock</code>类型），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>ReadWriteLock</code>依旧是可重入锁。</p>
-</li>
-<li><p><strong><code>ReadWriteLock</code>同样需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
-</li>
-<li><p><code>ReadWriteLock</code>类适用于读多写少的场景，可以提高读取效率。</p>
+<li><p><code>synchronized</code>经过 JVM 优化后，其实性能与<code>ReentrantLock</code>基本上持平，且从长远看，JVM 更容易对<code>synchronized</code>来进行优化，这是因为 JVM 可以在线程和对象中记录<code>synchronized</code>中锁的相关信息，而使用<code>ReentrantLock</code>的话，JVM 则很难得知具体哪些对象是由特定线程锁持有的</p>
 </li>
 </ul>
-<h3 id="5-1-4-StampedLock"><a href="#5-1-4-StampedLock" class="headerlink" title="5.1.4 StampedLock"></a>5.1.4 StampedLock</h3><ul>
-<li><p>与<code>ReadWriteLock</code>相比，<code>StampedLock</code>允许在读线程获取读锁并执行的过程中，写线程获取写锁并执行。</p>
+<h2 id="5-3-ReadWriteLock"><a href="#5-3-ReadWriteLock" class="headerlink" title="5.3 ReadWriteLock"></a>5.3 ReadWriteLock</h2><ul>
+<li><p><code>ReentrantLock</code>保证任何时候只有一个线程可以执行临界区代码，与<code>ReentrantLock</code>相比，<code>ReadWriteLock</code>允许多个读线程同时执行临界区代码，但不允许读线程和写线程同时执行</p>
 </li>
-<li><p>从<code>StampedLock</code>对象可以分别获取读锁和写锁（<code>long</code>类型，其实是版本号），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>StampedLock</code>是不可重入锁。</p>
+<li><p>从<code>ReadWriteLock</code>对象可以分别获取读锁和写锁（<code>Lock</code>类型），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>ReadWriteLock</code>依旧是可重入锁</p>
 </li>
-<li><p><code>ReadWriteLock</code>提供的读锁是悲观锁，<code>StampedLock</code>提供的读锁是乐观锁，乐观锁的并发效率更高，但一旦有小概率的写入导致读取的数据不一致，检测出来后需要再读一遍。</p>
+<li><p><strong><code>ReadWriteLock</code>同样需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）</strong></p>
 </li>
-<li><p><code>StampedLock</code>加写锁的操作与<code>ReadWriteLock</code>是一致的，但加读锁时，首先获取读锁（版本号）并直接读取需要的值（读取时不保证原子性），接着通过<code>validate</code>方法验证版本号，验证失败时从<code>StampedLock</code>对象获取悲观读锁，接着重新读取（加锁保证原子性）。</p>
-</li>
-<li><p><strong><code>StampedLock</code>的写锁和悲观读锁需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）。</strong></p>
-</li>
-<li><p><code>StampedLock</code>通过将读锁细分为乐观锁和悲观锁，进一步提升并发效率。</p>
+<li><p><code>ReadWriteLock</code>类适用于读多写少的场景，可以提高读取效率</p>
 </li>
 </ul>
-<h2 id="5-2-同步器"><a href="#5-2-同步器" class="headerlink" title="5.2 同步器"></a>5.2 同步器</h2><p>锁是面向使用者的，它定义了使用者与锁交互的接口，隐藏了实现细节；同步器是面向锁的实现者的，它简化了锁的实现方式，屏蔽了同步状态管理、线程的排列、等待与唤醒等底层操作。</p>
-<p>锁和同步器很好地隔离了使用者和实现者所关注的领域，可以实现更加灵活的线程同步。</p>
-<h3 id="5-2-1-AQS"><a href="#5-2-1-AQS" class="headerlink" title="5.2.1 AQS"></a>5.2.1 AQS</h3><ul>
-<li><p><code>AbstractQueuedSynchronizer</code>是很多同步器的基础框架，本质是一个抽象同步队列，简称 AQS，出现在 JDK 1.5 中。</p>
+<h2 id="5-4-StampedLock"><a href="#5-4-StampedLock" class="headerlink" title="5.4 StampedLock"></a>5.4 StampedLock</h2><ul>
+<li><p>与<code>ReadWriteLock</code>相比，<code>StampedLock</code>允许在读线程获取读锁并执行的过程中，写线程获取写锁并执行</p>
 </li>
-<li><p>AQS 使用了一个<code>int</code>型的<code>volatile</code>变量<code>state</code>来维护同步状态（状态的修改通过 CAS 完成），通过内置的 FIFO 双向队列来完成资源获取线程的排队工作。</p>
+<li><p>从<code>StampedLock</code>对象可以分别获取读锁和写锁（<code>long</code>类型，其实是版本号），在使用时，只需根据代码逻辑来区分加写锁或者读锁即可满足以上需求，<code>StampedLock</code>是不可重入锁</p>
 </li>
-<li><p>AQS 实现了同步状态的原子性管理、线程的阻塞和解除阻塞并提供阻塞线程的存储队列。</p>
+<li><p><code>ReadWriteLock</code>提供的读锁是悲观锁，<code>StampedLock</code>提供的读锁是乐观锁，乐观锁的并发效率更高，但一旦有小概率的写入导致读取的数据不一致，检测出来后需要再读一遍</p>
+</li>
+<li><p><code>StampedLock</code>加写锁的操作与<code>ReadWriteLock</code>是一致的，但加读锁时，首先获取读锁（版本号）并直接读取需要的值（读取时不保证原子性），接着通过<code>validate</code>方法验证版本号，验证失败时从<code>StampedLock</code>对象获取悲观读锁，接着重新读取（加锁保证原子性）</p>
+</li>
+<li><p><strong><code>StampedLock</code>的写锁和悲观读锁需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）</strong></p>
+</li>
+<li><p><code>StampedLock</code>通过将读锁细分为乐观锁和悲观锁，进一步提升并发效率</p>
+</li>
+</ul>
+<h1 id="6、同步器"><a href="#6、同步器" class="headerlink" title="6、同步器"></a>6、同步器</h1><p>锁是面向使用者的，它定义了使用者与锁交互的接口，隐藏了实现细节；同步器是面向锁的实现者的，它简化了锁的实现方式，屏蔽了同步状态管理、线程的排列、等待与唤醒等底层操作。锁和同步器很好地隔离了使用者和实现者所关注的领域，可以实现更加灵活的线程同步。</p>
+<h2 id="6-1-AQS"><a href="#6-1-AQS" class="headerlink" title="6.1 AQS"></a>6.1 AQS</h2><ul>
+<li><p><code>AbstractQueuedSynchronizer</code>是很多 JDK 实现锁和同步器的基础类，本质是一个抽象同步队列，简称 AQS，出现在 JDK 1.5 中</p>
+</li>
+<li><p>AQS 使用了一个<code>int</code>型的<code>volatile</code>变量<code>state</code>来维护同步状态（状态的修改通过 CAS 完成），通过内置的 FIFO 双向队列来完成资源获取线程的排队工作，通过<code>park</code>和<code>unpark</code>来实现线程的等待和唤醒</p>
 </li>
 <li><p>同步器的设计是基于模板方法模式的，可以通过继承 AQS 并重写<code>tryAcquire</code>和<code>tryRelease</code>方法来实现自己的同步器。</p>
 </li>
-<li><p>自定义的同步器推荐被定义为同步组件的静态内部类，同步器本身没有实现任何同步接口。</p>
+<li><p>自定义的同步器推荐被定义为同步组件的静态内部类，同步器本身没有实现任何同步接口</p>
 </li>
-<li><p>同步器可分为独占状态的同步器和共享状态的同步器，共享模式下的同步器还需实现<code>tryAcquireShared</code>和<code>tryReleaseShared</code>方法。</p>
+<li><p>同步器可分为独占状态的同步器和共享状态的同步器，共享模式下的同步器还需实现<code>tryAcquireShared</code>和<code>tryReleaseShared</code>方法</p>
 </li>
-<li><p>使用独占模式同步器的主要类库有可重入锁<code>ReentrantLock</code>以及读写锁<code>ReentrantReadWriteLock</code>中的写锁<code>WriteLock</code>。</p>
+<li><p>使用独占模式同步器的主要类库有可重入锁<code>ReentrantLock</code>以及读写锁<code>ReentrantReadWriteLock</code>中的写锁<code>WriteLock</code></p>
 </li>
-<li><p>使用共享模式同步器的主要类库有信号量<code>Semaphore</code>以及倒数栅栏<code>CountDownLatch</code>。</p>
+<li><p>使用共享模式同步器的主要类库有信号量<code>Semaphore</code>以及倒数栅栏<code>CountDownLatch</code></p>
 </li>
 </ul>
-<h3 id="5-2-2-Condition"><a href="#5-2-2-Condition" class="headerlink" title="5.2.2 Condition"></a>5.2.2 Condition</h3><p><code>synchronized</code>可以配合<code>wait</code>和<code>notify</code>来协调线程工作，当用<code>ReentrantLock</code>类代替<code>synchronized</code>时，可以使用<code>Condition</code>类来代替<code>wait</code>和<code>notify</code>。</p>
+<h2 id="6-2-Condition"><a href="#6-2-Condition" class="headerlink" title="6.2 Condition"></a>6.2 Condition</h2><p><code>synchronized</code>可以配合<code>wait</code>和<code>notify</code>来协调线程工作，当用<code>ReentrantLock</code>类代替<code>synchronized</code>时，可以使用<code>Condition</code>类来代替<code>wait</code>和<code>notify</code>。</p>
 <ul>
-<li><p><code>Condition</code>对象由<code>ReentrantLock</code>对象的<code>newCondition</code>方法返回得到。</p>
+<li><p><code>Condition</code>对象由<code>ReentrantLock</code>对象的<code>newCondition</code>方法返回得到，<code>Condition</code>对象可以唤醒指定线程</p>
 </li>
-<li><p><code>Condition</code>类提供<code>await</code>、<code>singal</code>、<code>signalAll</code>方法分别代替<code>wait</code>、<code>notify</code>、<code>notifyAll</code>，方法的原理和行为都是一致的。</p>
+<li><p><code>Condition</code>类提供<code>await</code>、<code>singal</code>、<code>signalAll</code>方法分别代替<code>wait</code>、<code>notify</code>、<code>notifyAll</code>，方法的原理和行为都是一致的</p>
 </li>
-<li><p><code>await</code>和<code>tryLock</code>类似的是：在等待指定时间后，如果还没有被<code>singal</code>或<code>signalAll</code>唤醒，可以自己醒来。</p>
+<li><p><code>await</code>和<code>tryLock</code>类似的是：在等待指定时间后，如果还没有被<code>singal</code>或<code>signalAll</code>唤醒，可以自己醒来</p>
 </li>
-<li><p>通过<code>ReentrantLock</code>和<code>Condition</code>可以实现更加灵活的线程同步。</p>
+<li><p>通过<code>ReentrantLock</code>和<code>Condition</code>可以实现更加灵活的线程同步</p>
 </li>
 </ul>
-<h3 id="5-2-3-CountDownLatch"><a href="#5-2-3-CountDownLatch" class="headerlink" title="5.2.3 CountDownLatch"></a>5.2.3 CountDownLatch</h3><p>用来同步一个或多个任务，强制他们等待由其他任务执行的一组操作完成。</p>
+<h2 id="6-3-CountDownLatch"><a href="#6-3-CountDownLatch" class="headerlink" title="6.3 CountDownLatch"></a>6.3 CountDownLatch</h2><p>用来同步一个或多个任务，强制他们等待由其他任务执行的一组操作完成。</p>
 <ul>
-<li><p>通过参数<code>count</code>来新建<code>CountDownLatch</code>实例，<code>count</code>为计数器初始值。</p>
+<li><p>通过参数<code>count</code>来新建<code>CountDownLatch</code>实例，<code>count</code>为计数器初始值</p>
 </li>
-<li><p>每当有一个线程达到同步点（屏障）时，调用<code>CountDownLatch</code>的<code>countDown</code>方法使得计数器减1，调用<code>CountDownLatch</code>的<code>await</code>方法使得该线程进入<code>Blocked</code>状态，当计数器等于0时，所有被挂起的线程才继续执行。</p>
+<li><p>每当有一个线程达到同步点（屏障）时，调用<code>CountDownLatch</code>的<code>countDown</code>方法使得计数器减1，调用<code>CountDownLatch</code>的<code>await</code>方法使得该线程进入<code>Blocked</code>状态，当计数器等于 0 时，所有被挂起的线程才继续执行</p>
 </li>
-<li><p><code>CountDownLatch</code>在计数器等于0并触发门闩打开后，就不能再次重复使用了，除非新建新的<code>CountDownLatch</code>。</p>
+<li><p><code>CountDownLatch</code>在计数器等于 0 并触发门闩打开后，就不能再次重复使用了，除非新建新的<code>CountDownLatch</code></p>
 </li>
 </ul>
-<h3 id="5-2-4-CyclicBarrier"><a href="#5-2-4-CyclicBarrier" class="headerlink" title="5.2.4 CyclicBarrier"></a>5.2.4 CyclicBarrier</h3><p>允许多个线程在一个栅栏处等待，直到所有线程都到达栅栏之后，才会继续执行下去。</p>
+<h2 id="6-4-CyclicBarrier"><a href="#6-4-CyclicBarrier" class="headerlink" title="6.4 CyclicBarrier"></a>6.4 CyclicBarrier</h2><p>允许多个线程在一个栅栏处等待，直到所有线程都到达栅栏之后，才会继续执行下去。</p>
 <ul>
-<li><p>通过参数<code>count</code>和<code>Runnable</code>实现类来新建<code>CyclicBarrier</code>实例，计数器初始值为0，<code>Runnable</code>实现类定义了屏障打开之后要执行的内容。</p>
+<li><p>通过参数<code>count</code>和<code>Runnable</code>实现类来新建<code>CyclicBarrier</code>实例，计数器初始值为0，<code>Runnable</code>实现类定义了屏障打开之后要执行的内容</p>
 </li>
-<li><p>每当有一个线程达到同步点（屏障）时计数器自动加1，调用<code>CyclicBarrier</code>的<code>await</code>方法使得该线程进入Blocked状态，当计数器达到<code>count</code>值时，所有线程才继续执行。</p>
+<li><p>每当有一个线程达到同步点（屏障）时计数器自动加1，调用<code>CyclicBarrier</code>的<code>await</code>方法使得该线程进入Blocked状态，当计数器达到<code>count</code>值时，所有线程才继续执行</p>
 </li>
-<li><p><code>CyclicBarrier</code>在计数器达到足够数量并打开屏障之后依旧能够再次重复使用。</p>
+<li><p><code>CyclicBarrier</code>在计数器达到足够数量并打开屏障之后依旧能够再次重复使用</p>
 </li>
 </ul>
-<h3 id="5-2-5-Phaser"><a href="#5-2-5-Phaser" class="headerlink" title="5.2.5 Phaser"></a>5.2.5 Phaser</h3><p>与 CyclicBarrier 类似，但是支持更灵活的栅栏操作，可以动态地注册和注销参与者，以及控制各个参与者的到达和离开。</p>
-<h3 id="5-2-6-Semaphore"><a href="#5-2-6-Semaphore" class="headerlink" title="5.2.6 Semaphore"></a>5.2.6 Semaphore</h3><p>通过<code>Semaphore</code>可以实现多副本资源的并发控制，不同于锁只允许一个任务访问意向资源，<code>Semaphore</code>允许多个任务同时访问某个资源，但是限制访问的线程数量，实现了对象池的概念，避免系统资源被过度占用。</p>
+<h2 id="6-5-Phaser"><a href="#6-5-Phaser" class="headerlink" title="6.5 Phaser"></a>6.5 Phaser</h2><p>与 CyclicBarrier 类似，但是支持更灵活的栅栏操作，可以动态地注册和注销参与者，以及控制各个参与者的到达和离开。</p>
+<h2 id="6-6-Semaphore"><a href="#6-6-Semaphore" class="headerlink" title="6.6 Semaphore"></a>6.6 Semaphore</h2><p>通过<code>Semaphore</code>可以实现多副本资源的并发控制，不同于锁只允许一个任务访问意向资源，<code>Semaphore</code>允许多个任务同时访问某个资源，但是限制访问的线程数量，实现了对象池的概念，避免系统资源被过度占用。</p>
 <ul>
-<li><p>通过参数<code>permits</code>和<code>fair</code>来新建<code>Semaphore</code>实例，<code>permits</code>代表资源数量，<code>fair</code>代表等待队列是否采用FIFO。</p>
+<li><p>通过参数<code>permits</code>和<code>fair</code>来新建<code>Semaphore</code>实例，<code>permits</code>代表资源数量，<code>fair</code>代表等待队列是否采用FIFO</p>
 </li>
-<li><p>每当有一个线程要访问共享资源时，通过<code>Semaphore</code>的<code>acquire</code>方法来获取资源：</p>
+<li><p>每当有一个线程要访问共享资源时，通过<code>Semaphore</code>的<code>acquire</code>方法来获取资源</p>
 <ul>
-<li>如果信号量的计数器大于1，则意味着有共享资源可以使用，接着令计数器减1，然后该线程获得一份共享资源；</li>
-<li>如果计数器小于1，则线程进入排队队列。</li>
+<li>如果信号量的计数器大于1，则意味着有共享资源可以使用，接着令计数器减1，然后该线程获得一份共享资源</li>
+<li>如果计数器小于1，则线程进入排队队列</li>
 </ul>
 </li>
-<li><p>每当有线程要释放共享资源时，通过<code>Semaphore</code>的<code>release</code>方法来释放资源，接着令信号量的计数器加1。</p>
+<li><p>每当有线程要释放共享资源时，通过<code>Semaphore</code>的<code>release</code>方法来释放资源，接着令信号量的计数器加1</p>
 </li>
 </ul>
-<h3 id="5-2-7-Exchanger"><a href="#5-2-7-Exchanger" class="headerlink" title="5.2.7 Exchanger"></a>5.2.7 Exchanger</h3><p>当一个对象的创建代价很高昂时，通过生产者任务来负责创建对象，而需要消费这些对象的任务则是消费者任务，那么<code>Exchanger</code>就是用来在两个任务之间交换对象的栅栏。</p>
-<h2 id="5-3-内部同步类"><a href="#5-3-内部同步类" class="headerlink" title="5.3 内部同步类"></a>5.3 内部同步类</h2><h3 id="5-3-1-Concurrent集合"><a href="#5-3-1-Concurrent集合" class="headerlink" title="5.3.1 Concurrent集合"></a>5.3.1 Concurrent集合</h3><ul>
-<li><p><code>java.util.concurrent</code>包提供了<strong>线程安全</strong>的并发集合类，这些并发集合与使用非线程安全的集合类完全相同，但多线程同时读写并发集合是安全的，因此可以大大简化多线程编程。</p>
+<h2 id="6-7-Exchanger"><a href="#6-7-Exchanger" class="headerlink" title="6.7 Exchanger"></a>6.7 Exchanger</h2><p>当一个对象的创建代价很高昂时，通过生产者任务来负责创建对象，而需要消费这些对象的任务则是消费者任务，那么<code>Exchanger</code>就是用来在两个任务之间交换对象的栅栏。</p>
+<h1 id="7、同步类"><a href="#7、同步类" class="headerlink" title="7、同步类"></a>7、同步类</h1><h2 id="7-1-Concurrent-集合"><a href="#7-1-Concurrent-集合" class="headerlink" title="7.1 Concurrent 集合"></a>7.1 Concurrent 集合</h2><ul>
+<li><p><code>java.util.concurrent</code>包提供了<strong>线程安全</strong>的并发集合类，这些并发集合与使用非线程安全的集合类完全相同，但多线程同时读写并发集合是安全的，因此可以大大简化多线程编程</p>
 </li>
-<li><p>这些线程安全的并发集合类在遍历时不是直接在集合内容上访问的，而是先拷贝原有集合内容，遍历的是开始遍历那一刻拿到的集合拷贝，迭代器只支持不变操作，但不支持<code>remove</code>等可变操作；在进行写操作时，会重新拷贝整个/部分底层数组，并在拷贝的数组（而不是原数组）上实现写操作，这个拷贝的副本在修改过程中是不可见的，只有当修改完成时，被修改的结构才会自动与主数据结构进行交换（原子性操作），这就是 COW。</p>
+<li><p>这些线程安全的并发集合类在遍历时不是直接在集合内容上访问的，而是先拷贝原有集合内容，遍历的是开始遍历那一刻拿到的集合拷贝，迭代器只支持不变操作，但不支持<code>remove</code>等可变操作；在进行写操作时，会重新拷贝整个/部分底层数组，并在拷贝的数组（而不是原数组）上实现写操作，这个拷贝的副本在修改过程中是不可见的，只有当修改完成时，被修改的结构才会自动与主数据结构进行交换（原子性操作），这就是 COW</p>
 </li>
-<li><p>拷贝使得集合上的可变操作的开销很大，而且即便存在拷贝，这些并发集合的<code>add</code>和<code>remove</code>依旧是需要加锁的，这是为了避免拷贝出 N 个副本出来，并发集合类的读操作则并没有加锁，这样的好处是可以同时进行读和写，虽然读到的可能不是最新的，这里的思想是读写分离，是弱一致性/最终一致性，而不是时刻强一致性。</p>
+<li><p>拷贝使得集合上的可变操作的开销很大，而且即便存在拷贝，这些并发集合的<code>add</code>和<code>remove</code>依旧是需要加锁的，这是为了避免拷贝出 N 个副本出来，并发集合类的读操作则并没有加锁，这样的好处是可以同时进行读和写，虽然读到的可能不是最新的，这里的思想是读写分离，是弱一致性/最终一致性，而不是时刻强一致性</p>
 </li>
-<li><p>并发集合在内部自己管理同步，因此在使用并发集合时，不需要在外部将并发集合锁定，这样只会拖累性能，即始终不要使用<code>synchronized</code>修饰并发集合，而对于<code>synchronized</code>修饰的非并发集合，则需要分情况判断是否使用。</p>
+<li><p>并发集合在内部自己管理同步，因此在使用并发集合时，不需要在外部将并发集合锁定，这样只会拖累性能，即始终不要使用<code>synchronized</code>修饰并发集合，而对于<code>synchronized</code>修饰的非并发集合，则需要分情况判断是否使用</p>
 </li>
-<li><p><code>synchronized</code>修饰的非并发集合无论读操作和写操作的数量如何，都具有大致相同的性能，进行读操作或者少量的写操作时，并发集合会比<code>synchronized</code>修饰的非并发集合快许多，但当进行大量写操作时，需要分别测试使用并发集合或者<code>synchronized</code>修饰的非并发集合，以确定哪种方式更优。</p>
+<li><p><code>synchronized</code>修饰的非并发集合无论读操作和写操作的数量如何，都具有大致相同的性能，进行读操作或者少量的写操作时，并发集合会比<code>synchronized</code>修饰的非并发集合快许多，但当进行大量写操作时，需要分别测试使用并发集合或者<code>synchronized</code>修饰的非并发集合，以确定哪种方式更优</p>
 </li>
 </ul>
 <table>
@@ -718,94 +751,104 @@
 <td align="center"><code>LinkedBlockingDeque</code></td>
 </tr>
 </tbody></table>
-<h3 id="5-3-2-Atomic类"><a href="#5-3-2-Atomic类" class="headerlink" title="5.3.2 Atomic类"></a>5.3.2 Atomic类</h3><ul>
+<h2 id="7-2-Atomic-类"><a href="#7-2-Atomic-类" class="headerlink" title="7.2 Atomic 类"></a>7.2 Atomic 类</h2><ul>
 <li><p><code>java.util.concurrent.atomic</code>包提供了一组<strong>原子操作</strong>的封装类（<code>Atomic</code>），适用于计数器、累加器等</p>
 </li>
-<li><p><code>Atomic</code>类是通过乐观锁（实际上是无锁）的方式实现线程安全的，主要原理是利用了CAS（Compare and Set），当准备更新<code>Atomic</code>对象时，会将旧值和新值一起提交给<code>compareAndSet</code>方法，如果旧值和当前在<code>Atomic</code>对象中发现的值不一致，则更新失败</p>
+<li><p><code>Atomic</code>类是通过乐观锁的方式实现线程安全的，主要原理是利用了 CAS（Compare and Set），当准备更新<code>Atomic</code>对象时，会将旧值和新值一起提交给<code>compareAndSet</code>方法，如果旧值和当前在<code>Atomic</code>对象中发现的值不一致，则更新失败</p>
 </li>
 <li><p>需要注意的是，<code>Atomic</code>类对象只有在非常简单的情况下有用，这些情况通常包括只有一个需要被修改的<code>Atomic</code>类对象，并且这个对象独立于其他所有的对象，更加安全的做法是以更加传统的锁入手，只有在性能方面存在问题时，才尝试替换为<code>Atomic</code></p>
 </li>
 </ul>
-<h2 id="5-4-线程池"><a href="#5-4-线程池" class="headerlink" title="5.4 线程池"></a>5.4 线程池</h2><p>为了避免频繁创建和销毁线程，考虑复用一组线程来执行多个任务，而不是每个任务都对应一个新线程。这种能够接收大量任务并进行分发处理的一组线程就是线程池，线程池内部维护了若干个线程，没有任务时，这些线程都处于 Waiting 状态。</p>
-<h3 id="5-4-1-线程池类"><a href="#5-4-1-线程池类" class="headerlink" title="5.4.1 线程池类"></a>5.4.1 线程池类</h3><p>Java标准库提供了<code>ExecutorService</code>接口表示线程池，<code>ExecutorService</code>知道如何构建恰当的上下文来执行<code>Runnable</code>对象，<code>Executors</code>类（静态工具类）中封装了很多创建线程池类（即<code>ExecutorService</code>接口的实现类）的方法（静态工厂方法），<code>ExecutorService</code>接口的常用实现类有：</p>
+<h1 id="8、线程池"><a href="#8、线程池" class="headerlink" title="8、线程池"></a>8、线程池</h1><p>为了避免频繁创建和销毁线程，考虑复用一组线程来执行多个任务，而不是每个任务都对应一个新线程。这种能够接收大量任务并进行分发处理的一组线程就是线程池，线程池内部维护了若干个线程，没有任务时，这些线程都处于 Waiting 状态。</p>
+<h2 id="8-1-线程池类"><a href="#8-1-线程池类" class="headerlink" title="8.1 线程池类"></a>8.1 线程池类</h2><p>Java标准库提供了<code>ExecutorService</code>接口表示线程池，<code>ExecutorService</code>知道如何构建恰当的上下文来执行<code>Runnable</code>对象，<code>ExecutorService</code>接口的常用实现类有：</p>
 <ul>
-<li><p><code>FixedThreadPool</code>：线程数固定的线程池。</p>
+<li><p><code>FixedThreadPool</code>：线程数固定的线程池</p>
 </li>
-<li><p><code>CachedThreadPool</code>：线程数根据任务动态调整的线程池，在程序执行过程中通常会创建与所需数量相同的线程，然后在它回收旧线程时停止创建新线程，是合理的线程池首选，只有当这种方式会引发问题时，才需要切换到<code>FixedThreadPool</code>。</p>
+<li><p><code>CachedThreadPool</code>：线程数根据任务动态调整的线程池，在程序执行过程中通常会创建与所需数量相同的线程，然后在它回收旧线程时停止创建新线程，是合理的线程池首选，只有当这种方式会引发问题时，才需要切换到<code>FixedThreadPool</code></p>
 </li>
-<li><p><code>SingleThreadExecutor</code>：仅单线程执行的线程池，就像是数量为1的<code>FixedThreadPool</code>，适用于希望在另一个线程中连续运行的任何长期存活的任务，或是一系列串行执行的短任务。</p>
+<li><p><code>SingleThreadExecutor</code>：仅单线程执行的线程池，就像是数量为1的<code>FixedThreadPool</code>，适用于希望在另一个线程中连续运行的任何长期存活的任务，或是一系列串行执行的短任务</p>
 </li>
-<li><p><code>ThreadPoolExecutor</code>：可以指定动态线程数范围，线程存活时间以及使用队列的线程池。</p>
+<li><p><code>ThreadPoolExecutor</code>：可以指定动态线程数范围，线程存活时间以及使用队列的线程池</p>
 </li>
-<li><p><code>ScheduledThreadPool</code>：用于执行需要定期反复执行的任务。</p>
+<li><p><code>ScheduledThreadPool</code>：用于执行需要定期反复执行的任务</p>
 </li>
 </ul>
-<p>线程池的本质是一个元素为<code>Worker</code>（<code>Runnable</code>的实现类）的<code>HashSet</code>，当给线程池提交任务时，如果当前线程数低于核心线程数，则增加核心线程来执行任务，当当前线程数达到核心线程数时，任务缓存在阻塞队列中排队，当队列已满时，增加非核心线程数来执行任务，当当前线程数达到最大线程数时，触发阻塞队列的饱和/拒绝策略<code>RejectedExecutionHandler</code>来判断如何处理新任务，如果没有自定义该实现类，则直接丢弃任务。如果线程池使用无界队列<code>LinkedBlockingQueue</code>，则队列永远不会满，也永远不会触发拒绝策略；如果线程池使用不存储元素的队列<code>SynchronousQueue</code>，则相当于队列永远是满的；一般使用有界队列<code>ArrayBlockingQueue</code>并配合<code>RejectedExecutionHandler</code>一起。</p>
-<p><strong>线程池中线程的数量并不是越多越好，具体的数量需要评估每个任何的处理时间以及当前计算机的处理器能力和数量</strong>，使用的线程过少，无法发挥处理器的性能；使用的线程过多，将会增加系统的无故开销，起到相反的作用。一般在刚上线时先根据公式（CPU 密集型应用线程数设为 N+1，I/O 密集型应用线程数设为 2N+1，N 为 CPU 核数）设置一个大致初始线程数，然后再通过压测来不断调整至合理数值。不能把大量不同类型的请求提交给同一个线程池，否则当某种类型请求流量过高时，线程池流量过载，进而导致其他类型的请求也都全部崩溃。对 I/O 等阻塞操作的优化优先于对线程池的优化。</p>
-<h3 id="5-4-2-线程池方法"><a href="#5-4-2-线程池方法" class="headerlink" title="5.4.2 线程池方法"></a>5.4.2 线程池方法</h3><p>JUC 尽可能避免对<code>Thread</code>对象的直接操作，而是尽量通过线程池来执行所有操作</p>
+<h2 id="8-2-线程池的创建"><a href="#8-2-线程池的创建" class="headerlink" title="8.2 线程池的创建"></a>8.2 线程池的创建</h2><p><code>Executors</code>类（静态工具类）中封装了很多创建各种线程池类型的静态工厂方法，但是使用这些工厂方法会存在一些弊端，比如创建出的线程池使用无界队列或者允许的最大线程数过大（<code>Integer.MAX_VALUE</code>），就会堆积大量请求或线程，最终导致内存溢出，因此不建议使用<code>Executors</code>，而是应该通过创建<code>ThreadPoolExecutor</code>实例的方式来创建线程池，规避资源耗尽的风险。</p>
+<p>线程池的本质是一个<code>HashSet</code>，元素类型是<code>Worker</code>（<code>Runnable</code>的实现类），当给线程池提交任务时，如果当前线程数低于核心线程数，则增加核心线程来执行任务，当当前线程数达到核心线程数时，任务缓存在阻塞队列中排队，当队列已满时，增加非核心线程数来执行任务，当当前线程数达到最大线程数时，触发阻塞队列的饱和/拒绝策略<code>RejectedExecutionHandler</code>来判断如何处理新任务。</p>
 <ul>
-<li><p>线程池的<code>submit</code>方法用于提交要执行的任务，该方法的入参是一个<code>Runnable</code>接口的实现类，并返回一个<code>Future&lt;?&gt;</code>，通过调用该返回值的<code>cancel</code>方法，它就会拥有在该线程上调用<code>interrupt</code>以停止这个线程的权限。</p>
+<li><p>如果线程池没有自定义<code>RejectedExecutionHandler</code>，Java 提供了四种内置的拒绝策略，默认会使用 AbortPolicy，会抛出<code>RejectedExecutionException</code>并丢弃该任务，此外，DiscardPolicy 会默默地丢弃任务而不抛出异常，一般用于日志记录等非关键场景；DiscardOldestPolicy 会尝试将任务队列中最早的任务删除，然后再尝试提交新任务，一般用于实时性要求较高的场景；CallerRunsPolicy 会将任务回退给调用线程（不会抛出异常），调用线程会尝试执行任务，这种处理会降低任务提交速度，适用于任务提交者能够承受任务执行压力但希望有一种缓冲机制的情况</p>
 </li>
-<li><p>线程池的<code>shutdown</code>、<code>shutdownNow</code>方法都可以用于程序结束时关闭线程池，<code>shutdown</code>会等待线程池中正在执行以及队列中的任务先完成，然后再关闭，<code>shutdownNow</code>会立即停止正在执行的任务（发送一个<code>interrupt</code>调用给它启动的所有线程）。</p>
+<li><p>如果线程池使用无界队列<code>LinkedBlockingQueue</code>，其最大长度为<code>Integer.MAX_VALUE</code>，容易在队列中堆积大量请求；如果线程池使用不存储元素的队列<code>SynchronousQueue</code>，则相当于队列永远是满的；一般使用有界队列<code>ArrayBlockingQueue</code>并配合<code>RejectedExecutionHandler</code>一起</p>
 </li>
-<li><p>当<code>corePoolSize</code>为零时，池内线程在执行完任务后会在达到<code>keepAliveTime</code>后被 JVM 回收，当<code>corePoolSize</code>大于零时，应该在<code>destory</code>方法中调用线程池的<code>shutdown</code>方法，否则池内线程将不会被回收，并产生内存泄漏问题。</p>
+<li><p><strong>线程池中线程的数量并不是越多越好，具体的数量需要评估每个任何的处理时间以及当前计算机的处理器能力和数量</strong>，使用的线程过少，无法发挥处理器的性能；使用的线程过多，将会增加系统的无故开销，起到相反的作用</p>
 </li>
-<li><p><code>awaitTermination</code>方法通常放在<code>shutdown</code>方法后面用来判断固定时间后线程池是否关闭。</p>
+<li><p>一般在刚上线时先根据公式（CPU 密集型应用线程数设为 N+1，I/O 密集型应用线程数设为 2N+1，N 为 CPU 核数）设置一个大致初始线程数，然后再通过压测来不断调整至合理数值</p>
 </li>
-<li><p>针对<code>ScheduledThreadPool</code>类线程池，通过<code>schedule</code>方法来提交只执行一次的任务，通过<code>scheduleAtFixedRate</code>或<code>scheduleWithFixedDelay</code>方法来提交需要多次反复执行的任务，这三个方法均可设置任务的延迟，<code>scheduleAtFixedRate</code>和<code>scheduleWithFixedDelay</code>均可设置任务执行次数。</p>
+<li><p>不能把大量不同类型的请求提交给同一个线程池，否则当某种类型请求流量过高时，线程池流量过载，进而导致其他类型的请求也都全部崩溃</p>
 </li>
-<li><p><code>FixedRate</code>和<code>FixedDelay</code>的区别在于：<code>FixedRate</code>是指任务总是以固定时间间隔触发，不管任务执行多长时间；<code>FixedDelay</code>是指上一次任务执行完毕后，等待固定的时间间隔，再执行下一次任务。</p>
-</li>
-<li><p>在<code>FixedRate</code>模式下，假设每秒触发，如果某次任务执行时间超过1秒，后续任务执行可能会延迟开始，但不会并发执行。</p>
-</li>
-<li><p>如果任务抛出了异常，将禁止后续任务的执行。</p>
+<li><p>对 I/O 等阻塞操作的优化优先于对线程池的优化</p>
 </li>
 </ul>
-<h3 id="5-4-3-任务执行结果"><a href="#5-4-3-任务执行结果" class="headerlink" title="5.4.3 任务执行结果"></a>5.4.3 任务执行结果</h3><p>用线程池执行任务时，提交的任务只需实现<code>Runnable</code>接口即可，可如果需要获取任务执行的返回值，则需要<strong>向<code>ExecutorService.submit</code>方法传入一个实现了<code>Callable</code>接口的任务，<code>submit</code>方法会返回一个<code>Future</code>类型的实例</strong>（代表一个<strong>未来</strong>能获取结果的对象）。与<code>Runnable</code>接口不同的是，<code>Callable</code>接口所定义的任务有返回值并且可以返回指定类型的结果，<code>Callable</code>接口所定义的任务可以抛出受检异常，<code>Callable</code>接口不可以应用于<code>Thread</code>类。</p>
+<h2 id="8-3-线程池的操作"><a href="#8-3-线程池的操作" class="headerlink" title="8.3 线程池的操作"></a>8.3 线程池的操作</h2><p>JUC 尽可能避免对<code>Thread</code>对象的直接操作，而是尽量通过线程池来执行所有操作</p>
 <ul>
-<li><p>返回的<code>Future</code>类型的泛型与<code>Callable</code>接口的泛型一致，从而达到指定类型的目的；</p>
+<li><p>线程池的<code>submit</code>方法用于提交要执行的任务，该方法的入参是一个<code>Runnable</code>接口的实现类，并返回一个<code>Future&lt;?&gt;</code>，通过调用该返回值的<code>cancel</code>方法，它就会拥有在该线程上调用<code>interrupt</code>以停止这个线程的权限</p>
 </li>
-<li><p><code>Future.get()</code>用于获取指定类型的结果实例<code>result</code>，可能会阻塞，需要等待；</p>
+<li><p>线程池的<code>shutdown</code>、<code>shutdownNow</code>方法都可以用于程序结束时关闭线程池，<code>shutdown</code>会等待线程池中正在执行以及队列中的任务先完成，然后再关闭，<code>shutdownNow</code>会立即停止正在执行的任务（发送一个<code>interrupt</code>调用给它启动的所有线程）</p>
 </li>
-<li><p><code>Future.get(long timeout, TimeUnit unit)</code>只等待指定的时间；</p>
+<li><p>当<code>corePoolSize</code>为零时，池内线程在执行完任务后会在达到<code>keepAliveTime</code>后被 JVM 回收，当<code>corePoolSize</code>大于零时，应该在<code>destory</code>方法中调用线程池的<code>shutdown</code>方法，否则池内线程将不会被回收，并产生内存泄漏问题</p>
 </li>
-<li><p><code>Future.cancel(boolean mayInterruptIfRunning)</code>用于取消当前任务；</p>
+<li><p><code>awaitTermination</code>方法通常放在<code>shutdown</code>方法后面用来判断固定时间后线程池是否关闭</p>
 </li>
-<li><p><code>Future.isDone()</code>用于判断任务是否已完成。</p>
+<li><p>针对<code>ScheduledThreadPool</code>类线程池，通过<code>schedule</code>方法来提交只执行一次的任务，通过<code>scheduleAtFixedRate</code>或<code>scheduleWithFixedDelay</code>方法来提交需要多次反复执行的任务，这三个方法均可设置任务的延迟，<code>scheduleAtFixedRate</code>和<code>scheduleWithFixedDelay</code>均可设置任务执行次数</p>
+</li>
+<li><p><code>FixedRate</code>和<code>FixedDelay</code>的区别在于：<code>FixedRate</code>是指任务总是以固定时间间隔触发，不管任务执行多长时间；<code>FixedDelay</code>是指上一次任务执行完毕后，等待固定的时间间隔，再执行下一次任务</p>
+</li>
+<li><p>在<code>FixedRate</code>模式下，假设每秒触发，如果某次任务执行时间超过1秒，后续任务执行可能会延迟开始，但不会并发执行</p>
+</li>
+<li><p>如果任务抛出了异常，将禁止后续任务的执行</p>
 </li>
 </ul>
-<p><code>Future.get</code>方法和轮询<code>Future.isDone</code>方法都会导致主线程被迫等待，而<code>CompletableFuture</code>做出了改进：</p>
+<h2 id="8-4-任务执行结果"><a href="#8-4-任务执行结果" class="headerlink" title="8.4 任务执行结果"></a>8.4 任务执行结果</h2><p>用线程池执行任务时，提交的任务只需实现<code>Runnable</code>接口即可，可如果需要获取任务执行的返回值或异常，则需要<strong>向<code>ExecutorService.submit</code>方法传入一个实现了<code>Callable</code>接口的任务，<code>submit</code>方法会返回一个<code>Future</code>类型的实例</strong>（代表一个<strong>未来</strong>能获取结果的对象）。与<code>Runnable</code>接口不同的是，<code>Callable</code>接口所定义的任务有返回值并且可以返回指定类型的结果，<code>Callable</code>接口所定义的任务可以抛出受检异常，<code>Callable</code>接口不可以应用于<code>Thread</code>类。</p>
 <ul>
-<li><p><code>CompletableFuture</code>可以<strong>传入</strong>一个实现了<code>Supplier</code>接口的<strong>回调对象</strong>；</p>
+<li><p>返回的<code>Future</code>类型的泛型与<code>Callable</code>接口的泛型一致，从而达到指定类型的目的</p>
 </li>
-<li><p>当异步任务完成或者发生异常时，能够自动调用回调对象的回调方法；</p>
+<li><p><code>Future.get()</code>用于获取指定类型的任务结果实例<code>result</code>或者任务执行的异常，可能会阻塞，需要等待</p>
 </li>
-<li><p>当主线程设置好回调之后，不需再关心异步任务的执行；</p>
+<li><p><code>Future.get(long timeout, TimeUnit unit)</code>只等待指定的时间</p>
 </li>
-<li><p>多个<code>CompletableFuture</code>可以通过链式调用来串行执行或者并行执行。</p>
+<li><p><code>Future.cancel(boolean mayInterruptIfRunning)</code>用于取消当前任务</p>
+</li>
+<li><p><code>Future.isDone()</code>用于判断任务是否已完成</p>
 </li>
 </ul>
-<p><code>CompletableFuture</code>类有以下方法用于指定异步处理流程：</p>
+<p>注：</p>
 <ul>
-<li><p><code>thenAccept()</code>处理正常结果；</p>
+<li><p>Java 主线程和子线程是并发执行的独立单元，因此主线程无法直接捕获子线程的异常，因此只能通过<code>Future</code>来间接获取子线程所执行任务的异常，也可以给子线程设置<code>UncaughtExceptionHandler</code>来处理未捕获的子线程中的异常</p>
 </li>
-<li><p><code>exceptional()</code>处理异常结果；</p>
-</li>
-<li><p><code>thenApplyAsync()</code>用于异步串行化另一个<code>CompletableFuture</code>；</p>
-</li>
-<li><p><code>anyOf()</code>和<code>allOf()</code>用于并行化多个<code>CompletableFuture</code>。</p>
+<li><p>每个 Java 都是相对独立的执行单元，拥有独立的执行上下文，一个线程中的异常只会影响该线程本身，其他线程均不受影响，因此 JVM 并不会因为一个线程的异常就退出 JVM 进程</p>
 </li>
 </ul>
-<h3 id="5-4-4-任务拆解"><a href="#5-4-4-任务拆解" class="headerlink" title="5.4.4 任务拆解"></a>5.4.4 任务拆解</h3><p>Java 7开始引入了<code>Fork/Join</code>线程池：基于“分治”思想将大任务分解成小任务，并行执行。</p>
+<h2 id="8-5-任务拆解"><a href="#8-5-任务拆解" class="headerlink" title="8.5 任务拆解"></a>8.5 任务拆解</h2><p>Java 7 开始引入了<code>Fork/Join</code>线程池：基于“分治”思想将大任务分解成小任务，利用多核 CPU 并行执行</p>
 <ul>
-<li><p><code>Fork/Join</code>线程池由<code>ForkJoinPool.commonPool()</code>方法创建得到；</p>
+<li><p><code>Fork/Join</code>线程池由<code>ForkJoinPool.commonPool()</code>方法创建得到，线程池的<code>invoke</code>方法用于提交要执行的任务，任务类必须继承自<code>RecursiveTask</code>或<code>RecursiveAction</code>类</p>
 </li>
-<li><p>线程池的<code>invoke</code>方法用于提交要执行的任务；</p>
+<li><p><code>ForkJoinPool</code>是基于工作窃取算法实现的线程池，池中每个线程都有自己的工作队列，用于存储待执行的任务，当一个线程执行完自己的任务之后，会从其他线程的工作队列中窃取任务执行，以此来实现任务的动态均衡和线程的最大利用率</p>
 </li>
-<li><p>任务类必须继承自<code>RecursiveTask</code>或<code>RecursiveAction</code>类。</p>
+<li><p><code>ForkJoinPool</code>中的任务通常是一些可以分割成多个独立子任务的任务（例如快速排序），这些独立子任务由不同的线程来执行，这个过程中<code>ForkJoinPool</code>会自动管理任务的执行、分割和合并，实现任务的最优化执行</p>
+</li>
+<li><p>与普通线程池中的工作线程不同，<code>ForkJoinPool</code>中的工作线程会自动地创建、销毁以及数量的动态调整，线程池的管理成本很低，而<code>ExecutorService</code>则需要手动定义线程池相关的各种参数控制</p>
 </li>
 </ul>
-<h1 id="6、虚拟线程"><a href="#6、虚拟线程" class="headerlink" title="6、虚拟线程"></a>6、虚拟线程</h1><h2 id="6-1-问题与解决"><a href="#6-1-问题与解决" class="headerlink" title="6.1 问题与解决"></a>6.1 问题与解决</h2><p><code>CompletableFuture</code>便于编排存在先后依赖关系的异步任务，一定程序上提高了 CPU 利用率，但是当任务请求数大于服务最大线程数且当前线程都阻塞时，新的任务必须等待直到有新的空闲线程，这个等待过程中 CPU 依旧是空闲的。</p>
+<h2 id="8-6-任务编排"><a href="#8-6-任务编排" class="headerlink" title="8.6 任务编排"></a>8.6 任务编排</h2><p>Java 8 开始引入<code>CompletableFuture</code>，<code>CompletableFuture</code>提供了一系列简单明了的链式调用来实现异步任务编排以及事件驱动编程（<a target="_blank" rel="noopener" href="https://juejin.cn/post/7140244126679138312">具体使用参考</a>）</p>
+<ul>
+<li><p><code>CompletableFuture</code>可以<strong>传入</strong>一个实现了<code>Supplier</code>接口的<strong>回调对象</strong>，当异步任务完成或者发生异常时，能够自动调用回调对象的回调方法，当主线程设置好回调之后，不需再关心异步任务的执行，此时不再需要使用会导致主线程被迫等待的<code>Future.get</code>方法或轮询<code>Future.isDone</code>方法</p>
+</li>
+<li><p><code>CompletableFuture</code>底层实现主要涉及到了<code>Completion</code>链式异步处理、事件驱动、<code>ForkJoinPool</code>线程池、<code>CountDownLatch</code>控制计算状态、<code>CompletionException</code>捕获异常等（<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/qgrygdsu04a6vfzw">具体原理参考</a>）</p>
+</li>
+<li><p><code>CompletableFuture</code>底层使用<code>ForkJoinPool</code>而不是<code>ExecutorService</code>是因为它的执行模型和任务分割与<code>ForkJoinPool</code>的理念更加匹配</p>
+</li>
+</ul>
+<h1 id="9、虚拟线程"><a href="#9、虚拟线程" class="headerlink" title="9、虚拟线程"></a>9、虚拟线程</h1><h2 id="9-1-问题与解决"><a href="#9-1-问题与解决" class="headerlink" title="9.1 问题与解决"></a>9.1 问题与解决</h2><p><code>CompletableFuture</code>便于编排存在先后依赖关系的异步任务，一定程序上提高了 CPU 利用率，但是当任务请求数大于服务最大线程数且当前线程都阻塞时，新的任务必须等待直到有新的空闲线程，这个等待过程中 CPU 依旧是空闲的。</p>
 <ul>
 <li><p>考虑到这种突发流量可能并不是长期持续存在的情况，且创建太多线程会消耗大量资源（线程的上下文切换，占据大量内存等）</p>
 </li>
@@ -816,7 +859,7 @@
 <li><p>JDK21 提供了与<code>Thread</code>完全一致的抽象<code>VirtualThread</code>，将平台线程的阻塞变为虚拟线程的阻塞，使得平台线程可以继续处理新的任务请求，减少了线程上下文切换，提高了 CPU 利用率</p>
 </li>
 </ul>
-<h2 id="6-2-虚拟线程"><a href="#6-2-虚拟线程" class="headerlink" title="6.2 虚拟线程"></a>6.2 虚拟线程</h2><ul>
+<h2 id="9-2-虚拟线程"><a href="#9-2-虚拟线程" class="headerlink" title="9.2 虚拟线程"></a>9.2 虚拟线程</h2><ul>
 <li><p>平台线程</p>
 <ul>
 <li><p>对应<code>Thread</code>实例，是 Java 对操作系统线程的包装，操作系统线程由操作系统管理，是操作系统调度的基本单元</p>
@@ -848,7 +891,7 @@
 </ul>
 </li>
 </ul>
-<h1 id="7、参考资料"><a href="#7、参考资料" class="headerlink" title="7、参考资料"></a>7、参考资料</h1><ul>
+<h1 id="10、参考资料"><a href="#10、参考资料" class="headerlink" title="10、参考资料"></a>10、参考资料</h1><ul>
 <li>《Java并发编程的艺术》</li>
 <li>《Effective Java (Third Edition)》</li>
 <li>《Thinking in Java (Fourth Edition)》</li>
@@ -910,7 +953,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">1、基础概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">1.1 进程与线程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-nav-text">1.2 上下文切换</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.3 并发模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-nav-text">2、底层原理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E6%9C%89%E5%BA%8F%E6%80%A7%E5%92%8C%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-nav-text">2.1 有序性和可见性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%92%8C%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-nav-text">2.2 原子操作和原子性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-synchronized-%E9%94%81"><span class="toc-nav-text">2.3 synchronized 锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-JVM-%E9%94%81%E4%BC%98%E5%8C%96"><span class="toc-nav-text">2.4 JVM 锁优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-nav-text">3、线程基础</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E5%90%AF%E5%8A%A8%E6%96%B0%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">3.1 启动新线程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="toc-nav-text">3.2 线程调度</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-nav-text">3.3 线程的状态</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="toc-nav-text">3.4 线程的行为</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E6%AD%BB%E9%94%81%E7%9A%84%E5%8F%91%E7%94%9F%E5%8F%8A%E9%A2%84%E9%98%B2"><span class="toc-nav-text">3.5 死锁的发生及预防</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-nav-text">4、线程同步</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%94%81%E5%92%8C%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="toc-nav-text">4.1 锁和临界区</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E7%AD%89%E5%BE%85-%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">4.2 等待&#x2F;通知机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%BA%A7%E5%88%AB"><span class="toc-nav-text">4.3 线程安全级别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E4%BC%A0%E9%80%92"><span class="toc-nav-text">4.4 线程状态传递</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E9%AB%98%E6%95%88%E5%B9%B6%E5%8F%91%EF%BC%88JUC%EF%BC%89"><span class="toc-nav-text">5、高效并发（JUC）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-%E5%B9%B6%E5%8F%91%E9%94%81"><span class="toc-nav-text">5.1 并发锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-1-1-Lock"><span class="toc-nav-text">5.1.1 Lock</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-1-2-ReentrantLock"><span class="toc-nav-text">5.1.2 ReentrantLock</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-1-3-ReadWriteLock"><span class="toc-nav-text">5.1.3 ReadWriteLock</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-1-4-StampedLock"><span class="toc-nav-text">5.1.4 StampedLock</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-%E5%90%8C%E6%AD%A5%E5%99%A8"><span class="toc-nav-text">5.2 同步器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-2-1-AQS"><span class="toc-nav-text">5.2.1 AQS</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-2-2-Condition"><span class="toc-nav-text">5.2.2 Condition</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-2-3-CountDownLatch"><span class="toc-nav-text">5.2.3 CountDownLatch</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-2-4-CyclicBarrier"><span class="toc-nav-text">5.2.4 CyclicBarrier</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-2-5-Phaser"><span class="toc-nav-text">5.2.5 Phaser</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-2-6-Semaphore"><span class="toc-nav-text">5.2.6 Semaphore</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-2-7-Exchanger"><span class="toc-nav-text">5.2.7 Exchanger</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-%E5%86%85%E9%83%A8%E5%90%8C%E6%AD%A5%E7%B1%BB"><span class="toc-nav-text">5.3 内部同步类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-3-1-Concurrent%E9%9B%86%E5%90%88"><span class="toc-nav-text">5.3.1 Concurrent集合</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-3-2-Atomic%E7%B1%BB"><span class="toc-nav-text">5.3.2 Atomic类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-nav-text">5.4 线程池</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-4-1-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%B1%BB"><span class="toc-nav-text">5.4.1 线程池类</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-4-2-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%96%B9%E6%B3%95"><span class="toc-nav-text">5.4.2 线程池方法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-4-3-%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-nav-text">5.4.3 任务执行结果</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-4-4-%E4%BB%BB%E5%8A%A1%E6%8B%86%E8%A7%A3"><span class="toc-nav-text">5.4.4 任务拆解</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">6、虚拟线程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">6.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-2-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">6.2 虚拟线程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#7%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">7、参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">1、基础概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">1.1 进程与线程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-nav-text">1.2 上下文切换</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98"><span class="toc-nav-text">1.3 并发问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.4 并发模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-nav-text">2、底层原理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E6%9C%89%E5%BA%8F%E6%80%A7%E5%92%8C%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-nav-text">2.1 有序性和可见性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%92%8C%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-nav-text">2.2 原子操作和原子性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-synchronized-%E9%94%81"><span class="toc-nav-text">2.3 synchronized 锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-JVM-%E9%94%81%E4%BC%98%E5%8C%96"><span class="toc-nav-text">2.4 JVM 锁优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-nav-text">3、线程基础</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E5%90%AF%E5%8A%A8%E6%96%B0%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">3.1 启动新线程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="toc-nav-text">3.2 线程调度</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-nav-text">3.3 线程的状态</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="toc-nav-text">3.4 线程的行为</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E6%AD%BB%E9%94%81%E5%8F%8A%E9%A2%84%E9%98%B2"><span class="toc-nav-text">3.5 死锁及预防</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-nav-text">4、线程同步</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%94%81%E5%92%8C%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="toc-nav-text">4.1 锁和临界区</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E7%AD%89%E5%BE%85-%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">4.2 等待&#x2F;通知机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%BA%A7%E5%88%AB"><span class="toc-nav-text">4.3 线程安全级别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E4%BC%A0%E9%80%92"><span class="toc-nav-text">4.4 线程状态传递</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%B9%B6%E5%8F%91%E9%94%81"><span class="toc-nav-text">5、并发锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-Lock"><span class="toc-nav-text">5.1 Lock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-ReentrantLock"><span class="toc-nav-text">5.2 ReentrantLock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-ReadWriteLock"><span class="toc-nav-text">5.3 ReadWriteLock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-StampedLock"><span class="toc-nav-text">5.4 StampedLock</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%90%8C%E6%AD%A5%E5%99%A8"><span class="toc-nav-text">6、同步器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-1-AQS"><span class="toc-nav-text">6.1 AQS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-2-Condition"><span class="toc-nav-text">6.2 Condition</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-3-CountDownLatch"><span class="toc-nav-text">6.3 CountDownLatch</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-4-CyclicBarrier"><span class="toc-nav-text">6.4 CyclicBarrier</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-5-Phaser"><span class="toc-nav-text">6.5 Phaser</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-6-Semaphore"><span class="toc-nav-text">6.6 Semaphore</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-7-Exchanger"><span class="toc-nav-text">6.7 Exchanger</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#7%E3%80%81%E5%90%8C%E6%AD%A5%E7%B1%BB"><span class="toc-nav-text">7、同步类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-1-Concurrent-%E9%9B%86%E5%90%88"><span class="toc-nav-text">7.1 Concurrent 集合</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-2-Atomic-%E7%B1%BB"><span class="toc-nav-text">7.2 Atomic 类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#8%E3%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-nav-text">8、线程池</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-1-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%B1%BB"><span class="toc-nav-text">8.1 线程池类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-2-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-nav-text">8.2 线程池的创建</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-3-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">8.3 线程池的操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-4-%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-nav-text">8.4 任务执行结果</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-5-%E4%BB%BB%E5%8A%A1%E6%8B%86%E8%A7%A3"><span class="toc-nav-text">8.5 任务拆解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-6-%E4%BB%BB%E5%8A%A1%E7%BC%96%E6%8E%92"><span class="toc-nav-text">8.6 任务编排</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#9%E3%80%81%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">9、虚拟线程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">9.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-2-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">9.2 虚拟线程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#10%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">10、参考资料</span></a></li></ol>
       
   
   </div>
