@@ -292,6 +292,7 @@
 </tbody></table>
 <p>注：</p>
 <ul>
+<li>单个<code>boolean</code>型长度为 32 bit，<code>boolean</code>数组中的每个<code>boolean</code>值的长度为 8 bit</li>
 <li><code>boolean</code>型无法转换为其他基本类型，也无法进行加减等任何算术运算以及位运算，除<code>boolean</code>以外的任何一种基本类型都可以通过类型转换变为其他基本类型，但有可能丢失信息</li>
 <li>有的小数无法用二进制精确表示（比如 0.1 的二进制形式是无限循环的），因此<code>float</code>和<code>double</code>都可能只是近似值而非精确值，存在精度丢失，所以在需要进行高精度运算时使用<code>BigDecimal</code>（比如金额运算）</li>
 <li>由于<code>float</code>和<code>double</code>都是不精确的，所以不应使用<code>float</code>和<code>double</code>作为入参来<code>new</code>一个<code>BigDecimal</code>（只会得到更加不精确的数字），而是应该使用<code>String</code>作为入参</li>
