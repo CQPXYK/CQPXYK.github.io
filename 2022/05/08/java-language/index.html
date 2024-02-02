@@ -289,14 +289,32 @@
 <td align="center">32 bits</td>
 <td align="center">64 bits</td>
 </tr>
+<tr>
+<td align="center">取值范围</td>
+<td align="center"></td>
+<td align="center">0~2^16-1</td>
+<td align="center">-2^7~2^7 - 1</td>
+<td align="center">-2^15~2^15 - 1</td>
+<td align="center">-2^31~2^31 - 1</td>
+<td align="center">-2^63~2^63 - 1</td>
+<td align="center">-2^128~2^128</td>
+<td align="center">-2^1024~2^1024</td>
+</tr>
 </tbody></table>
 <p>注：</p>
 <ul>
-<li>单个<code>boolean</code>型长度为 32 bit，<code>boolean</code>数组中的每个<code>boolean</code>值的长度为 8 bit</li>
-<li><code>boolean</code>型无法转换为其他基本类型，也无法进行加减等任何算术运算以及位运算，除<code>boolean</code>以外的任何一种基本类型都可以通过类型转换变为其他基本类型，但有可能丢失信息</li>
-<li>有的小数无法用二进制精确表示（比如 0.1 的二进制形式是无限循环的），因此<code>float</code>和<code>double</code>都可能只是近似值而非精确值，存在精度丢失，所以在需要进行高精度运算时使用<code>BigDecimal</code>（比如金额运算）</li>
-<li>由于<code>float</code>和<code>double</code>都是不精确的，所以不应使用<code>float</code>和<code>double</code>作为入参来<code>new</code>一个<code>BigDecimal</code>（只会得到更加不精确的数字），而是应该使用<code>String</code>作为入参</li>
-<li><code>BigDecimal</code>内部使用一个无标度值和一个标度来表示一个数，<code>BigDecimal</code>的等值比较应使用忽略标度的<code>compareTo</code>而不是同时比较值和标度的<code>equals</code>（1.0 与 1.00 使用<code>equals</code>的返回结果为 <code>false</code>）</li>
+<li><p>单个<code>boolean</code>型长度为 32 bit，<code>boolean</code>数组中的每个<code>boolean</code>值的长度为 8 bit</p>
+</li>
+<li><p><code>boolean</code>型无法转换为其他基本类型，也无法进行加减等任何算术运算以及位运算，除<code>boolean</code>以外的任何一种基本类型都可以通过类型转换变为其他基本类型，但有可能丢失信息</p>
+</li>
+<li><p>浮点数由符号位、指数位以及尾数位组成，指数位决定范围，尾数位决定精度，<code>float</code>的符号位、指数位以及尾数位分别是 1 bit、8 bits、23 bits，<code>double</code>的符号位、指数位以及尾数位分别是 1 bit、11 bits、52 bits，浮点数并不能把表示范围中的所有的数都表示出来</p>
+</li>
+<li><p>有的小数无法用二进制精确表示（比如 0.1 的二进制形式是无限循环的），因此<code>float</code>和<code>double</code>都可能只是近似值而非精确值，存在精度丢失，所以在需要进行高精度运算时使用<code>BigDecimal</code>（比如金额运算）</p>
+</li>
+<li><p>由于<code>float</code>和<code>double</code>都是不精确的，所以不应使用<code>float</code>和<code>double</code>作为入参来<code>new</code>一个<code>BigDecimal</code>（只会得到更加不精确的数字），而是应该使用<code>String</code>作为入参</p>
+</li>
+<li><p><code>BigDecimal</code>内部使用一个无标度值和一个标度来表示一个数，<code>BigDecimal</code>的等值比较应使用忽略标度的<code>compareTo</code>而不是同时比较值和标度的<code>equals</code>（1.0 与 1.00 使用<code>equals</code>的返回结果为 <code>false</code>）</p>
+</li>
 </ul>
 <p>从概念上讲，“初始化”和“创建”是彼此独立的，在 Java 中，“初始化”和“创建”捆绑在一起，由构造器来完成。编写构造器时有一条准则：用尽可能简单的方法使对象进入正常状态，构造器内唯一能够安全调用的那些方法是基类中的<code>final</code>方法（因为这些方法不能被子类重写），此外，构造器应当避免调用其他方法，尤其是可能被子类重写的方法，可能会使用还未被初始化的变量。</p>
 <p>Java 中创建对象可以使用<code>new</code>关键字来调用构造器、使用反射机制来调用构造器、使用<code>clone</code>方法（并不调用构造器）、使用反序列化（基于反射和<code>Unsafe</code>类，并不调用构造器）、使用构造函数的方法句柄来间接调用构造器，从而创建对象，Java 鼓励使用构造函数和工厂方法来创建对象，以确保对象的正确初始化，并维护对象的不变性。</p>
@@ -748,7 +766,7 @@
 <p>最后再补充一个关于<code>toString</code>方法使用的错误示例：希望打印对象的内存地址时，调用以下代码会产生异常，这是因为在将<code>InfiniteRecursion</code>对象自动转换为<code>String</code>类型时，会调用<code>this</code>上的<code>toString</code>方法，于是就发生了递归调用。为了避免这个问题，应当将<code>this</code>修改为<code>super</code>。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InfiniteRecursion</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;InfiniteRecursion address&quot;</span> + <span class="built_in">this</span> + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        <span class="comment">// 应当修改为</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;InfiniteRecursion address&quot;</span> + <span class="built_in">super</span>.toString() + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>UUID 是全局唯一标识符，是指在一台机器上生成的数字，目标是保证在同一时空中的所有机器上都是唯一的。UUID 的生成通常是在本地基于随机数生成器、时间戳、MAC 地址等<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/pi2zfc9ykug141im">生成算法</a>，生成的 UUID 由 32 位 16 进制数表示，共 128 bit，具有极高的唯一性，几乎不可能重复，</p>
+<p>UUID 是全局唯一标识符，是指在一台机器上生成的数字，目标是保证在同一时空中的所有机器上都是唯一的。UUID 的生成通常是在本地基于随机数生成器、时间戳、MAC 地址等<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/pi2zfc9ykug141im">生成算法</a>，生成的 UUID 由 32 位 16 进制数表示，共 128 bit，具有极高的唯一性，几乎不可能重复。由于随机生成的 UUID 具备不可预测性，无任何含义，不适合页面展示，适用于需要保密的应用场景。由于可以在不同的机器上生成 UUID，因此可以用于分布式系统中。</p>
 <p>正则表达式是一种强大而灵活的文本处理工具，提供了一种完全通用的方式来解决各种字符串处理相关的问题，比如匹配、选择、编辑以及验证（参考<code>java.util.regex.Pattern</code>），正则表达式是昂贵的操作，不应在循环中大量执行。</p>
 <h2 id="5-4-字符编码"><a href="#5-4-字符编码" class="headerlink" title="5.4 字符编码"></a>5.4 字符编码</h2><p>字符编码是一套法则，使用该法则能够对自然语言的字符集合进行配对。</p>
 <p>ASCII 码对英语字符与二进制之间的关系做了统一的规定，一共 128 个字符。</p>
