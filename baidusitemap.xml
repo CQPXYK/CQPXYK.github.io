@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/05/10/spring/</loc>
+    <lastmod>2024-02-04</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/08/06/mysql/</loc>
-    <lastmod>2024-02-03</lastmod>
+    <lastmod>2024-02-04</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/08/java-language/</loc>
@@ -14,10 +18,6 @@
   </url>
   <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
-    <lastmod>2024-01-22</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/10/spring/</loc>
     <lastmod>2024-01-22</lastmod>
   </url>
   <url>
