@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2024/02/06/distributed-architecture/</loc>
+    <lastmod>2024-02-06</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/09/01/week-53/</loc>
+    <lastmod>2024-02-06</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/10/03/kubernetes/</loc>
+    <lastmod>2024-02-06</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2023/01/01/java-web/</loc>
     <lastmod>2024-02-05</lastmod>
   </url>
@@ -39,14 +51,6 @@
   <url>
     <loc>http://example.com/2022/05/11/design-patterns/</loc>
     <lastmod>2024-01-12</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/09/01/week-53/</loc>
-    <lastmod>2024-01-10</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/10/03/kubernetes/</loc>
-    <lastmod>2024-01-10</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/09/06/docker/</loc>
@@ -105,11 +109,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
@@ -169,11 +173,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/06/03/week-40/</loc>
+    <loc>http://example.com/2023/04/27/week-35/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/04/27/week-35/</loc>
+    <loc>http://example.com/2023/06/03/week-40/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>

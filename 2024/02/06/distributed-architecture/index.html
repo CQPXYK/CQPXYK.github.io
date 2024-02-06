@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">-->
+  <meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Distributed Architecture | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/records" class="item-link">Records</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/scratches/" class="item-link">Scratches</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/records" class="menu-link">Records</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/scratches/" class="menu-link">Scratches</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Distributed Architecture</h2>
+  <!--<p class="post-date">2024-02-06</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>-->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="分布式架构"><a href="#分布式架构" class="headerlink" title="分布式架构"></a>分布式架构</h1><p>单体集中式应用是最传统的架构模式，整个系统有一个统一的数据中心，各个功能模块显式进行相互依赖，随着应用变得越来越庞大，流量负载越来越高，单体应用在可扩展性和容错性上都存在致命缺陷，则倾向于使用一组互相独立且富余的服务器系统（云服务），而非单体服务来运行应用。</p>
+<p>分布式是把一个集中式系统拆分成多个系统，每一个系统单独对外提供部分功能，整个分布式系统整体对外提供一整套服务，用户对这种拆分是无感知的。分布式架构的具体实现有很多种，比如 C/S 架构、P2P 架构、SOA 架构、微服务架构、Serverless 架构等。</p>
+<ul>
+<li>C/S 架构中，客户端应用程序通过网络连接到一个或多个服务器，服务器负责处理客户端的请求并返回相应的结果，服务器会成为性能瓶颈，C/S 架构常见于 Web 应用、数据库系统等</li>
+<li>P2P 架构中，网络的每个参与者既是服务提供者又是服务消费者，每个节点的地位都是对等的，常见应用是 BT、迅雷等</li>
+<li>SOA 架构是面向服务的架构，将应用根据系统维度、功能维度、读写维度或者模块维度进行划分，成为各个独立的服务组件，组件之间通过一个约定的方式进行通信，并通过一个统一的数据中心或调度中心来基于流量压力实时管理集群容量，这种 SOA 架构利用可拔插的中间件以及消息队列来完成服务与服务之间的解耦，但对总线结构的依赖也使得服务的独立性并没有剥离，没有完全去中心化</li>
+<li>微服务架构是一种将单体应用开发为一套微小服务的方法论，这些微小服务是围绕业务功能构建的，每个微小服务都在自己的进程中运行，服务各自都可以使用不同的编程语言、不同的数据存储技术，并通过自动化的方式独立部署，服务之间通过轻量的通信机制通信，无需集中式管理</li>
+<li>Serverless 架构是一种将应用程序逻辑交给云服务提供商管理的架构形式，应用程序通过事件驱动的方式触发，适用于快速开发、弹性扩展和按需收费的场景</li>
+</ul>
+<h1 id="SOA-架构"><a href="#SOA-架构" class="headerlink" title="SOA 架构"></a>SOA 架构</h1><p>面向对象和面向服务都尽可能追求抽象、封装和低耦合，但面向对象的接口基本只被团队内的有限人在进程内使用，而面向服务旨在无限制的范围内（不同部门不同企业甚至不同国家）被远程调用。SOA 是面向服务的，包含标准化的服务契约、服务的松耦合、服务的抽象、服务的可重用性、服务的自治性、服务的无状态性、服务的可发现性、服务的可组合性，最终提高一个公司业务的敏捷度。</p>
+<h1 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h1><p>微服务可以理解为 SOA 的传承，本质区别在于微服务是真正分布式的、去集中式、去中心化的，不再强调传统 SOA 架构中的 ESB 企业服务总线，是比 SOA 更彻底的拆分，通过有效地拆分应用，也更便于实现敏捷开发和部署，合理解耦的微服务架构可以独立地进行水平伸缩扩展，可以动态调整机器数量，并且不会陷入单个机器资源上限问题，这相对于传统架构中升级硬件资源这种垂直扩展具备更大的优势，微服务架构的复杂性在于</p>
+<ul>
+<li><strong>API Gateway</strong>：微服务一般在后台 N 个服务和前台之间有一个代理（又称 API Gateway），这个 API Gateway 提供统一的服务入口，聚合后台的服务，让微服务对前台透明，也提供安全、过滤、控流等 API 管理功能，不过 API Gateway 可能成为单点故障或者性能瓶颈</li>
+<li><strong>服务间调用</strong>：单体应用中各个模块间的通信可以直接使用本地方法调用或通过内部事件发布机制，而当使用微服务架构时，每个服务都有自己独立的数据模型而不依赖于某个中心系统，服务间的通信必须通过网络远程调用，常用的方式是基于 HTTP 的 RESTful、RPC，而对于一些实时性要求不高，又耗时较长的通信场景，经常使用消息队列</li>
+<li><strong>服务发现</strong>：微服务架构中的每个服务都有多个拷贝实例，每个服务实例随时都有可能下线，也随时会有新的服务实例上线，基本是通过 zookeeper 等类似技术做服务注册信息的分布式管理，当服务上线时，服务提供者将自己的服务信息注册到 zookeeper（或类似框架），并通过心跳维持长连接，实时更新连接信息，服务调用者通过 zookeeper 寻址找到一个服务，还可以将服务信息缓存在本地以提高性能，当服务下线时，zookeeper 会发通知给服务客户端</li>
+<li><strong>服务容错</strong>：重试、限流、熔断、负载均衡、降级（本地缓存）</li>
+<li><strong>服务部署</strong>：容器化技术、云服务、Docker、CI/CD、K8S、ECS、Openshift</li>
+<li><strong>数据调用</strong>：使用数据持久层将业务中使用到的数据进行存储和管理，可以令应用层无状态化，便于应用层进行水平伸缩扩展和实现容错机制（关系型数据库不利于伸缩和业务扩展，利用 NoSQL 数据库可以得到更好的扩展性、可用性和性能）</li>
+<li><strong>数据一致性</strong>：事件驱动模型被实践证明可以用于实现数据的最终一致性，事件驱动模型以订阅者-消费者形式进行应用程序各服务间的解耦，在各个应用不同数据系统的微服务组件之间共享事件流数据，核心就是将应用程序每一次状态变化当做一个事件记录下来，数据是通过一连串事件流存储起来的，数据库事务日志和版本控制就是应用事件驱动模型最出名的两个例子，此外还可以用于读写分离场景，提升读写性能</li>
+<li><strong>可伸缩资源配置</strong>：Elastic Containe Service (ECS) 基于虚拟化技术，在云环境中提供了高可用的服务器计算资源，其中包括通用型、计算型、内存型、磁盘型等适用于各种不同应用场景需求的虚拟机实例（运行容器），用户可以根据需要选择，这种资源调整的灵活性和弹性很好的解决了微服务架构所面临的低成本资源伸缩的需求，此外，ECS 还提供了数据备份、安全控制、性能监控、海量日志数据分析和报警等一系列管理功能</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/micro-soa-1">https://www.infoq.cn/article/micro-soa-1</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.infoq.cn/news/micro-soa-2">https://www.infoq.cn/news/micro-soa-2</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/2764">https://developer.aliyun.com/article/2764</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2024/01/10/effective-product-control/">
+        <span class="nav-arrow">← </span>
+        
+          Effective Product Control
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Content START -->
+  
+    <aside class="content-container">
+  <div class="toc-main">
+  
+      
+          <strong class="toc-title">CONTENT</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">分布式架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SOA-%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">SOA 架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">微服务架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+      
+  
+  </div>
+</aside>
+  
+  <!-- Content END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2024/02/06/distributed-architecture/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <!--
+<footer class="app-footer">
+  <p class="copyright">
+    &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+-->
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
