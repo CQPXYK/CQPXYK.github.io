@@ -163,8 +163,8 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="分布式架构"><a href="#分布式架构" class="headerlink" title="分布式架构"></a>分布式架构</h1><p>单体集中式应用是最传统的架构模式，整个系统有一个统一的数据中心，各个功能模块显式进行相互依赖，随着应用变得越来越庞大，流量负载越来越高，单体应用在可扩展性和容错性上都存在致命缺陷，则倾向于使用一组互相独立且富余的服务器系统（云服务），而非单体服务来运行应用。</p>
-<p>分布式是把一个集中式系统拆分成多个系统，每一个系统单独对外提供部分功能，整个分布式系统整体对外提供一整套服务，用户对这种拆分是无感知的。分布式架构的具体实现有很多种，比如 C/S 架构、P2P 架构、SOA 架构、微服务架构、Serverless 架构等。</p>
+    <section class="markdown-content"><h1 id="1、引言"><a href="#1、引言" class="headerlink" title="1、引言"></a>1、引言</h1><p>单体集中式应用是最传统的架构模式，整个系统有一个统一的数据中心，各个功能模块显式进行相互依赖，随着应用变得越来越庞大，流量负载越来越高，单体应用在可扩展性和容错性上都存在致命缺陷，则倾向于使用一组互相独立且富余的服务器系统（云服务），而非单体服务来运行应用。分布式是把一个集中式系统拆分成多个系统，每一个系统单独对外提供部分功能，整个分布式系统整体对外提供一整套服务，用户对这种拆分是无感知的。分布式还意味着可以采用更多的没有空间限制的计算机组成分布式集群对外提供服务，计算机越多，集群的资源也就越丰富，能够处理的用户流量就越大。与此同时，分布式也引入了一些需要考虑的问题，比如机器与机器之间的通信问题，数据一致性问题等。</p>
+<h1 id="2、架构"><a href="#2、架构" class="headerlink" title="2、架构"></a>2、架构</h1><p>分布式架构的具体实现有很多种，比如 C/S 架构、P2P 架构、SOA 架构、微服务架构、Serverless 架构等。</p>
 <ul>
 <li>C/S 架构中，客户端应用程序通过网络连接到一个或多个服务器，服务器负责处理客户端的请求并返回相应的结果，服务器会成为性能瓶颈，C/S 架构常见于 Web 应用、数据库系统等</li>
 <li>P2P 架构中，网络的每个参与者既是服务提供者又是服务消费者，每个节点的地位都是对等的，常见应用是 BT、迅雷等</li>
@@ -172,22 +172,67 @@
 <li>微服务架构是一种将单体应用开发为一套微小服务的方法论，这些微小服务是围绕业务功能构建的，每个微小服务都在自己的进程中运行，服务各自都可以使用不同的编程语言、不同的数据存储技术，并通过自动化的方式独立部署，服务之间通过轻量的通信机制通信，无需集中式管理</li>
 <li>Serverless 架构是一种将应用程序逻辑交给云服务提供商管理的架构形式，应用程序通过事件驱动的方式触发，适用于快速开发、弹性扩展和按需收费的场景</li>
 </ul>
-<h1 id="SOA-架构"><a href="#SOA-架构" class="headerlink" title="SOA 架构"></a>SOA 架构</h1><p>面向对象和面向服务都尽可能追求抽象、封装和低耦合，但面向对象的接口基本只被团队内的有限人在进程内使用，而面向服务旨在无限制的范围内（不同部门不同企业甚至不同国家）被远程调用。SOA 是面向服务的，包含标准化的服务契约、服务的松耦合、服务的抽象、服务的可重用性、服务的自治性、服务的无状态性、服务的可发现性、服务的可组合性，最终提高一个公司业务的敏捷度。</p>
-<h1 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h1><p>微服务可以理解为 SOA 的传承，本质区别在于微服务是真正分布式的、去集中式、去中心化的，不再强调传统 SOA 架构中的 ESB 企业服务总线，是比 SOA 更彻底的拆分，通过有效地拆分应用，也更便于实现敏捷开发和部署，合理解耦的微服务架构可以独立地进行水平伸缩扩展，可以动态调整机器数量，并且不会陷入单个机器资源上限问题，这相对于传统架构中升级硬件资源这种垂直扩展具备更大的优势，微服务架构的复杂性在于</p>
+<h2 id="2-1-SOA-架构"><a href="#2-1-SOA-架构" class="headerlink" title="2.1 SOA 架构"></a>2.1 SOA 架构</h2><p>SOA 是面向服务的，相互独立的软件片段将自身的功能通过服务提供给其他应用，包含标准化的服务契约、服务的松耦合、服务的抽象、服务的可重用性、服务的自治性、服务的无状态性、服务的可发现性、服务的可组合性、服务的可编排性、服务的可协同性，最终提高更大范围的业务敏捷度。</p>
+<p>Service 是一种按照既定“接口“来访问一个或多个软件功能的机制（这种访问要符合“服务描述”中策略和限制）。面向对象和面向服务都尽可能追求抽象、封装和低耦合，但面向对象的接口基本只被团队内的有限人通过内部特定的客户端在进程内使用，需要通过提供细粒度接口和复杂参数类型以追求使用的使用灵活性和功能的强大性，而面向服务旨在远程应用于范围无限制的客户端（不同部门不同企业甚至不同国家），采用的原则如下，两者适用场景和原则完全相反。</p>
+<ul>
+<li><strong>远程过程调用</strong>：由于 service 通常要被远程访问，而网络传输，对象序列化 / 反序列化等开销都远远超过本地 Object 访问几个数量级，所以选择高性能的远程调用方式对于加快系统的响应速度、减少带宽占用和提高吞吐量是很重要的，远程调用方式往往受限于具体的业务和部署环境（比如内网、外网、同构平台、异构平台等），以及对诸如分布式事务，消息级别签名 / 加密，可靠异步传输等方面的支持程度（这些方面通常被称为 SLA：service level agreement），从性能上讲，TCP 协议 + 二进制序列化更适合内网应用，从兼容性、简单性上来说，HTTP 协议 + 文本序列化更适合外网应用，此外，基于 HTTP 协议的 REST 也可以看作是一种轻量级远程调用方式</li>
+<li><strong>消除冗余数据</strong>：由于 service 的远程调用开销很高，所以在它的输入参数和返回结果中，还要尽量避免携带当前业务用例不需要的冗余的字段，来减少序列化和传输的开销，此外，去掉冗余字段也可以简化接口，避免给外部用户带来不必要的业务困惑</li>
+<li><strong>粗粒度契约</strong>：同样由于远程调用开销高，同时 service 的外部使用者对特定业务流程的了解也比不上组织内部的人，所以 service 的契约（接口）通常需要是粗粒度的，其中的一个操作就可能对应到一个完整的业务用例或者业务流程，这样既能减少远程调用次数，同时又降低学习成本和耦合度（而 OO 接口通常可以是非常细粒度的，提供最好的灵活性和重用性），对外网客户来说，多次跨网的远程调用变成了一次跨网调用 + 多次内网调用</li>
+<li><strong>通用契约</strong>：由于 service 不假设用户的范围，一般要支持不同语言和平台的客户端，但各种语言和平台在功能丰富性上有很大差异，这就决定了服务契约必须取常见语言、平台以及序列化方式的最大公约数，才能保证 service 广泛兼容性，服务契约中不能有某些语言才具备的高级特性，参数和返回值也必须是被广泛支持的较简单的数据类型（比如不能有对象循环引用）</li>
+<li><strong>隔离变化</strong>：虽然 OO 和 SO 都追求低耦合，但 SO 由于使用者范围极广，就要求了更高程度的低耦合性和内外系统隔离，内部的重构不能能影响到外部的用户，把内部系统变化对外部的冲击减少到最小程度</li>
+<li><strong>契约先行</strong>：Service 是往往涉及不同组织之间的合作，而按照正常逻辑，两个组织之间合作的首要任务，就是先签订明确的契约（WSDL 或者 IDL），详细规定双方合作的内容，合作的形式等等，这样才能对双方形成强有力的约束和保障，同时大家的工作也能够并行不悖，不用相互等待</li>
+<li><strong>稳定和兼容的契约</strong>：基于契约先行的方式，以后频繁更改契约也导致开发人员要不断重做契约到目标语言映射，非常麻烦，因此契约在公开发布之后就要保证相当的稳定性，不能随便被重构，即使升级也要考虑尽可能的向下兼容性（计划式设计），这一点与敏捷软件开发的拥抱变化，持续重构完全相反（演进式设计），计划式设计和演进式设计并不绝对矛盾，可以将 SOA 层和面向对象应用相对隔离，分而治之</li>
+<li><strong>契约包装</strong>：在较理想的 SOA 设计中，可以考虑包装远程 service 访问逻辑，消费端自己主导定义接口和参数类型，并将调用转发给真正的 service 客户端生成代码，从而对它的使用者完全屏蔽了服务契约，这些使用者甚至不知道这个服务到底是远程提供的的还是本地提供的</li>
+</ul>
+<p>面向服务并不是用来取代传统的面向对象设计，而是引入一个额外的很薄的 SOA 层次来补充传统的面向对象设计，将面向对象应用或者其他遗留性应用加以包装和适配以帮助它们成为面向服务应用，其实就是面向对象的 service 提供端程序 + SOA 层（契约包装、契约）后形成真正的远程 service 提供端并发布，面向对象的 service 消费端程序 + SOA 层（契约包装、契约）后形成真正的远程 service 消费端并远程过程调用已发布的远程 service 提供端。</p>
+<h2 id="2-2-微服务架构"><a href="#2-2-微服务架构" class="headerlink" title="2.2 微服务架构"></a>2.2 微服务架构</h2><p>微服务可以理解为 SOA 的传承，本质区别在于微服务是真正分布式的、去集中式、去中心化的，不再强调传统 SOA 架构中的 ESB 企业服务总线，是比 SOA 更彻底的拆分，通过有效地拆分应用，也更便于实现敏捷开发和部署，一些拆分方式比如按照业务功能进行拆分、按照应用类型进行拆分、按照技术体系进行拆分等，要注意的是应当根据拆分后的系统架构来重建人员组织架构，两者应当保持一致。</p>
+<p>合理解耦的微服务架构可以独立地进行水平伸缩扩展，可以动态调整机器数量，并且不会陷入单个机器资源上限问题，这相对于传统架构中升级硬件资源这种垂直扩展具备更大的优势，微服务架构的复杂性在于</p>
 <ul>
 <li><strong>API Gateway</strong>：微服务一般在后台 N 个服务和前台之间有一个代理（又称 API Gateway），这个 API Gateway 提供统一的服务入口，聚合后台的服务，让微服务对前台透明，也提供安全、过滤、控流等 API 管理功能，不过 API Gateway 可能成为单点故障或者性能瓶颈</li>
 <li><strong>服务间调用</strong>：单体应用中各个模块间的通信可以直接使用本地方法调用或通过内部事件发布机制，而当使用微服务架构时，每个服务都有自己独立的数据模型而不依赖于某个中心系统，服务间的通信必须通过网络远程调用，常用的方式是基于 HTTP 的 RESTful、RPC，而对于一些实时性要求不高，又耗时较长的通信场景，经常使用消息队列</li>
 <li><strong>服务发现</strong>：微服务架构中的每个服务都有多个拷贝实例，每个服务实例随时都有可能下线，也随时会有新的服务实例上线，基本是通过 zookeeper 等类似技术做服务注册信息的分布式管理，当服务上线时，服务提供者将自己的服务信息注册到 zookeeper（或类似框架），并通过心跳维持长连接，实时更新连接信息，服务调用者通过 zookeeper 寻址找到一个服务，还可以将服务信息缓存在本地以提高性能，当服务下线时，zookeeper 会发通知给服务客户端</li>
-<li><strong>服务容错</strong>：重试、限流、熔断、负载均衡、降级（本地缓存）</li>
-<li><strong>服务部署</strong>：容器化技术、云服务、Docker、CI/CD、K8S、ECS、Openshift</li>
+<li><strong>服务容错</strong>：重试、限流、降级（本地缓存）、熔断、负载均衡（Ribbon、Nginx）</li>
+<li><strong>服务部署</strong>：Container、Cloud、Docker、CI/CD、DevOps、K8S、ECS、Openshift</li>
+<li><strong>服务监控</strong>：对服务调用链路进行追踪和监控，以及对服务性能进行评估和优化</li>
 <li><strong>数据调用</strong>：使用数据持久层将业务中使用到的数据进行存储和管理，可以令应用层无状态化，便于应用层进行水平伸缩扩展和实现容错机制（关系型数据库不利于伸缩和业务扩展，利用 NoSQL 数据库可以得到更好的扩展性、可用性和性能）</li>
 <li><strong>数据一致性</strong>：事件驱动模型被实践证明可以用于实现数据的最终一致性，事件驱动模型以订阅者-消费者形式进行应用程序各服务间的解耦，在各个应用不同数据系统的微服务组件之间共享事件流数据，核心就是将应用程序每一次状态变化当做一个事件记录下来，数据是通过一连串事件流存储起来的，数据库事务日志和版本控制就是应用事件驱动模型最出名的两个例子，此外还可以用于读写分离场景，提升读写性能</li>
 <li><strong>可伸缩资源配置</strong>：Elastic Containe Service (ECS) 基于虚拟化技术，在云环境中提供了高可用的服务器计算资源，其中包括通用型、计算型、内存型、磁盘型等适用于各种不同应用场景需求的虚拟机实例（运行容器），用户可以根据需要选择，这种资源调整的灵活性和弹性很好的解决了微服务架构所面临的低成本资源伸缩的需求，此外，ECS 还提供了数据备份、安全控制、性能监控、海量日志数据分析和报警等一系列管理功能</li>
+<li><strong>循环依赖</strong>：可以通过系统架构图或者调用链路追踪来确认是否存在服务系统间的循环依赖，循环依赖会导致流量放大、时延延长、级联故障、发布困难，一旦出现循环依赖就说明设计不合理，需要重新设计，比如将互相调用依赖改为异步消息消费、或者抽取共享库等方式来解耦依赖</li>
 </ul>
+<h2 id="2-3-康威定律"><a href="#2-3-康威定律" class="headerlink" title="2.3 康威定律"></a>2.3 康威定律</h2><blockquote>
+<p>Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations. - Melvin Conway (1967)</p>
+<p>系统架构设计就是组织沟通方式的拷贝，企业的组织形式就决定了整个系统架构</p>
+</blockquote>
+<ul>
+<li>第一定律<ul>
+<li>Communication dictates design，组织沟通方式会通过系统设计表达出来</li>
+<li>沟通的问题，会带来系统设计的问题，进而影响整个系统的开发效率和最终产品结果</li>
+</ul>
+</li>
+<li>第二定律<ul>
+<li>There is never enough time to do something right, but there is always enough time to do it over，时间再多一件事情也不可能做的完美，但总有时间做完一件事情</li>
+<li>一个微服务组成的系统，每一个微服务都可能挂掉，这是常态，解决方法不是消灭问题，而是容忍问题并保证足够的冗余和备份，在问题发生时，能自动恢复即可，和持续集成、敏捷开发、弹性设计/高可用设计一个道理</li>
+</ul>
+</li>
+<li>第三定律<ul>
+<li>There is a homomorphism from the linear graph of a system to the linear graph of its design organization，线型系统和线型组织架构间有潜在的异质同态特性，想要什么样的系统，就搭建什么样的团队</li>
+<li>微服务的团队理念是定义好系统的边界和接口，为一个系统去搭建一个团队，通过令团队内全栈自治，将沟通的成本维持在系统内部，每个子系统也会更加内聚，彼此的依赖耦合能变弱，降低跨系统的沟通成本</li>
+</ul>
+</li>
+<li>第四定律<ul>
+<li>The structures of large systems tend to disintegrate during development, qualitatively more so than with small systems，大的系统组织总是比小系统更倾向于分解，微服务就是一种分解结果</li>
+</ul>
+</li>
+</ul>
+<h1 id="3、问题"><a href="#3、问题" class="headerlink" title="3、问题"></a>3、问题</h1><h2 id="3-1-一致性"><a href="#3-1-一致性" class="headerlink" title="3.1 一致性"></a>3.1 一致性</h2><h2 id="3-2-稳定性"><a href="#3-2-稳定性" class="headerlink" title="3.2 稳定性"></a>3.2 稳定性</h2><p>限流、降级和熔断是三种常用的系统稳定策略，在高并发和高负载场景下尤为重要</p>
+<p>限流的目的是控制系统的并发流量，通过限制请求流量的手段来防止过度流量击穿系统，一般用于应用突发流量高峰，一般发生在被调用方，但也可以发生在调用方。滑动窗口、漏桶、令牌桶都是限流算法。</p>
+<p>降级是当系统过载时主动关闭一些非核心功能，以确保核心功能的正常运行，一般用于在系统资源有限或响应时间过长时，通过降低服务质量保障核心服务正常运行，可以发生在调用方或者被调用方。可通过开关控制某些功能降级。</p>
+<p>熔断是在检测到下游服务异常时，自动停止向该服务发送请求，并在一定时间后尝试恢复，这是为了防止系统因某个服务的故障而整体崩溃，一般发生在调用方。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/micro-soa-1">https://www.infoq.cn/article/micro-soa-1</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.infoq.cn/news/micro-soa-2">https://www.infoq.cn/news/micro-soa-2</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/2764">https://developer.aliyun.com/article/2764</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/8611">https://developer.aliyun.com/article/8611</a></li>
 </ul>
 </section>
     <!-- Tags START -->
@@ -235,7 +280,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">分布式架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SOA-%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">SOA 架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">微服务架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%BC%95%E8%A8%80"><span class="toc-nav-text">1、引言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2、架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-SOA-%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2.1 SOA 架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2.2 微服务架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E5%BA%B7%E5%A8%81%E5%AE%9A%E5%BE%8B"><span class="toc-nav-text">2.3 康威定律</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3、问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-nav-text">3.1 一致性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-nav-text">3.2 稳定性</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
       
   
   </div>
