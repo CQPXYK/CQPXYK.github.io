@@ -4,7 +4,7 @@
   <url>
     <loc>http://example.com/2024/02/06/distributed-system/</loc>
     
-    <lastmod>2024-02-09</lastmod>
+    <lastmod>2024-02-16</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -290,7 +290,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     
     <lastmod>2023-12-30</lastmod>
     
@@ -299,7 +299,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     
     <lastmod>2023-12-30</lastmod>
     
@@ -425,7 +425,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/04/27/week-35/</loc>
+    <loc>http://example.com/2023/06/03/week-40/</loc>
     
     <lastmod>2023-12-30</lastmod>
     
@@ -434,7 +434,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/06/03/week-40/</loc>
+    <loc>http://example.com/2023/04/27/week-35/</loc>
     
     <lastmod>2023-12-30</lastmod>
     
@@ -643,7 +643,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2024-02-09</lastmod>
+    <lastmod>2024-02-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
