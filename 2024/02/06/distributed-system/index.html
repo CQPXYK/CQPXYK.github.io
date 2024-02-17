@@ -274,7 +274,8 @@
 <li>Cancel 阶段：如果任何一个参与者在 Try 阶段执行失败，则协调者通知所有参与者在本地回滚事务并释放全局事务资源，如果 有参与者在 Cancel 阶段失败了，可以尝试记录日志、发送警报、自动重试、人工干预等手段</li>
 </ul>
 <p>TCC 无需太多的网络通信，异常处理相对简单，既可以实现强一致性又可以最终一致性要求，能够根据业务逻辑实现精细的事务控制，适用于不同类型的业务场景，通过分布式锁来保证分布式事务的一致性和可用性，支持横向扩展，具备比 2PC 更好的性能，可以适应更多的并发访问和业务场景。</p>
-<p>TCC 实现复杂，每个操作都需要实现正确的业务逻辑和补偿机制，代码实现比较复杂，存在代码入侵问题、悬挂事务问题（部分子事务失败部分子事务成功，导致整个事务无法回滚或提交）、空回滚问题（Try 阶段本来就执行失败的参与者由于存在其他子事务失败而依旧需要执行 Cancel 进行空回滚）。</p>
+<p>TCC 实现复杂，每个操作都需要实现正确的业务逻辑和补偿机制，代码实现比较复杂，存在代码入侵问题、悬挂事务问题（整体先 try 后 cancel 的流程可能由于网络延迟导致部分参与者接收到的是先 cancel 再 try，而这种参与者后续 try 所占用的资源则无法释放）、空回滚问题（Try 阶段本来就执行失败的参与者由于存在其他子事务失败而依旧需要执行 Cancel 进行空回滚）。</p>
+<p>通过引入分布式事务记录表可以解决悬挂事务和空回滚问题，每个参与者都可以在本地事务执行的过程中同时记录一次分布式事务的操作记录。</p>
 <h2 id="4-5-MQ"><a href="#4-5-MQ" class="headerlink" title="4.5 MQ"></a>4.5 MQ</h2><p>基于 MQ 实现的分布式事务可以分为</p>
 <ul>
 <li>可靠消息<ul>
@@ -292,14 +293,40 @@
 </li>
 </ul>
 <p>如果业务只需要保证最终一致性则以上三种方案都可以，若业务可以接受丢消息，则首选最大努力通知方案，若业务要求可靠消息，则排除最大努力通知方案，接着分析若 MQ 支持事务消息，则首选事务消息方案，若 MQ 不支持事务消息，则首选本地消息表方案。</p>
-<h2 id="4-6-Seata"><a href="#4-6-Seata" class="headerlink" title="4.6 Seata"></a>4.6 Seata</h2><h2 id="4-7-方案选择"><a href="#4-7-方案选择" class="headerlink" title="4.7 方案选择"></a>4.7 方案选择</h2><p>如果需要实现强一致性则必须要引入一个协调者，通过协调者来协调所有参与者进行提交或者回滚，这类方案包括 TCC 、基于 XA 规范的二阶段提交（2PC）、三阶段提交（3PC）、Seata 等。如果只要求实现最终一致性，那么方案就可以更简单一些，这类方案包括 TCC 、基于可靠消息（本地消息、事务消息）、最大努力通知、Seata 等。应该以实际业务情况为依据来做选择</p>
+<h2 id="4-6-Seata"><a href="#4-6-Seata" class="headerlink" title="4.6 Seata"></a>4.6 Seata</h2><p>Seata 是阿里开源的分布式事务框架，定义了以下三种类型的组件</p>
+<ul>
+<li>Transaction Coordinator (TC)，是一个独立的 JVM 进程，不包含任何业务代码，负责维护整个分布式事务的全局状态，负责通知 RM 执行回滚或提交</li>
+<li>Transaction Manager (TM)，指一个聚合服务（即将不同微服务组合起来构成一个业务流程），负责开启或提交或回滚一个全局事务</li>
+<li>Resource Manager (RM)，指具体的微服务，负责执行每个事务分支操作</li>
+</ul>
+<p>Seata 支持以下四种模式</p>
+<ul>
+<li><p>XA 模式，可以保证强一致性，实现完全隔离，无代码入侵，性能较差，适用于一致性和隔离性要求较高的场景</p>
+</li>
+<li><p>AT 模式，只能保证弱一致性，可以实现基于全局锁隔离，无代码入侵，性能较好，适用于基于关系型数据库的大多数分布式事务场景</p>
+</li>
+<li><p>TCC 模式，只能保证弱一致性，可以实现基于资源预留隔离，存在代码入侵（需要编写 TCC 三个接口），性能非常好，适用于对性能要求高的，存在非关系型数据库参与事务的场景</p>
+</li>
+<li><p>Saga 模式，只能保证最终一致性，无隔离，存在代码入侵（需要编写状态机以及补偿代码），性能非常好，适用于业务流程长且多，参与者包含外部接口或者遗留接口，无法做 TCC 模式的场景</p>
+</li>
+</ul>
+<h2 id="4-7-方案选择"><a href="#4-7-方案选择" class="headerlink" title="4.7 方案选择"></a>4.7 方案选择</h2><p>如果需要实现强一致性则必须要引入一个协调者，通过协调者来协调所有参与者进行提交或者回滚，这类方案包括 TCC 、基于 XA 规范的二阶段提交（2PC）、三阶段提交（3PC）、Seata 等。如果只要求实现最终一致性，那么方案就可以更简单一些，这类方案包括 TCC 、基于可靠消息（本地消息、事务消息）、最大努力通知、Seata 等。应该以实际业务情况为依据来做选择</p>
 <ul>
 <li>依据项目开发和维护的难度：TCC 和 2PC 的实现成本最高，业务侵入性也比较大</li>
 <li>依据一致性要求：2PC 可以保证强一致性的，TCC 既可以保证强一致性也可以保证最终一致性，其他方案是最终一致性方案</li>
 <li>依据可用性要求：对于需要保证高可用性的业务，就无法保证强一致性，只能选择最终一致性方案</li>
 <li>依据数据规模：消息中间件不合适业务数据量很大的场景，有可能出现严重的消息堆积，此时可以考虑 Seata 这种分布式事务框架</li>
 </ul>
-<h1 id="5、其他"><a href="#5、其他" class="headerlink" title="5、其他"></a>5、其他</h1><h2 id="5-1-分布式锁"><a href="#5-1-分布式锁" class="headerlink" title="5.1 分布式锁"></a>5.1 分布式锁</h2><p>分布式锁应当保证在分布式部署的应用集群中，同一个方法在同一时间只能被一台机器上的一个线程执行，应当是可重入的、高可用、高性能的锁，根据业务需要可以设置为阻塞或非阻塞。</p>
+<h1 id="5、其他"><a href="#5、其他" class="headerlink" title="5、其他"></a>5、其他</h1><h2 id="5-1-分布式锁"><a href="#5-1-分布式锁" class="headerlink" title="5.1 分布式锁"></a>5.1 分布式锁</h2><p>普通的锁主要用于单机环境，用于控制同一 JVM 进程中多个线程对共享资源的互斥访问，而分布式锁则用于分布式环境，协调多个计算机或多个进程之间对共享资源的全局互斥访问，确保分布式系统的一致性</p>
+<ul>
+<li><p>分布式锁应当保证在分布式部署的应用集群中，同一个方法在同一时间只能被一台机器上的一个线程执行，应当是可重入的、高可用、高性能的互斥锁</p>
+</li>
+<li><p>分布式环境中的网络延迟、节点故障等会使得死锁出现的概率更高，因此分布式锁一般都会设置一定的超时机制和死锁检测策略</p>
+</li>
+<li><p>分布式锁根据加锁失败后是否阻塞持续自旋加锁（业务需要）应当可以设置为阻塞或非阻塞，一般非阻塞锁用的更多一些</p>
+</li>
+</ul>
+<p>分布式锁的实现一般有如下方式</p>
 <ul>
 <li><p>基于数据库</p>
 <ul>
@@ -343,7 +370,19 @@
 <li><p>Session 复制，当用户在某个机器上产生 Session 后，将该 Session 信息复制到其他机器中，可能存在延迟问题</p>
 </li>
 </ul>
-<h2 id="5-4-负载均衡"><a href="#5-4-负载均衡" class="headerlink" title="5.4 负载均衡"></a>5.4 负载均衡</h2><p>负载均衡负责将负载（工作任务，访问请求）平衡地分摊到多个操作单元（服务器，组件）上执行，是解决高性能，高可用，水平伸缩的终极解决方案。负载均衡技术可用于 OSI 七层模型中的不同层次，可以根据负载均衡技术所在的层级将其称为 x 层负载均衡，常用的层级如下</p>
+<h2 id="5-4-分布式数据库"><a href="#5-4-分布式数据库" class="headerlink" title="5.4 分布式数据库"></a>5.4 分布式数据库</h2><p>与传统关系型数据库相比，分布式数据库在亿级别以下性能略逊色，而在亿级别以上性能更高，完全支持云原生，通过副本冗余的方式提升整个集群可靠性，可以近乎无限地进行水平扩展，但无法严格且完全地实现真正意义上的 ACID，事务隔离级别弱，不支持单机部署，基本不适合小业务量的应用。</p>
+<h2 id="5-5-一致性哈希"><a href="#5-5-一致性哈希" class="headerlink" title="5.5 一致性哈希"></a>5.5 一致性哈希</h2><p>一致性哈希是一种用于分布式系统中数据分片和负载均衡的算法，目标是在节点动态增加或删除时，尽可能地减少数据迁移和重新分布的成本</p>
+<ul>
+<li><p>一致性哈希算法首先构造一个哈希环，将哈希环划分为固定数量的虚拟节点，分布式系统中的每一个节点在哈希环上都有一个对应的虚拟节点</p>
+</li>
+<li><p>当有数据需要存储时首先计算数据的哈希值，然后顺时针或者逆时针在哈希环上找到最近的虚拟节点，就可以得到该数据应当存放的节点</p>
+</li>
+<li><p>当需要增加或删除节点时，只有少量的数据需要迁移，大部分数据不会受到影响</p>
+</li>
+<li><p>当节点较少时，节点的分布可能不够均匀，这会导致数据倾斜，进而导致节点变化时的数据迁移成本可能会很高，可能通过将一个节点映射为多个虚拟节点来将数据分散的更加均匀一些</p>
+</li>
+</ul>
+<h2 id="5-6-负载均衡"><a href="#5-6-负载均衡" class="headerlink" title="5.6 负载均衡"></a>5.6 负载均衡</h2><p>负载均衡负责将负载（工作任务，访问请求）平衡地分摊到多个操作单元（服务器，组件）上执行，是解决高性能，高可用，水平伸缩的终极解决方案。负载均衡技术可用于 OSI 七层模型中的不同层次，可以根据负载均衡技术所在的层级将其称为 x 层负载均衡，常用的层级如下</p>
 <ul>
 <li>七层负载均衡，负载均衡器在接收到请求后，通过修改数据包的地址信息（IP + 端口号）将流量转发到应用服务器，此外，还可以根据 URL、浏览器类别、语言等信息来决定是否进行负载均衡，Nginx 和 HAProxy 都常用于七层负载均衡</li>
 <li>四层负载均衡，负载均衡器在接收到请求后，通过修改数据包的地址信息（IP + 端口号）将流量转发到应用服务器，LVS (Linux Virtual Server) 是一个常用于四层负载均衡的软件</li>
@@ -364,6 +403,20 @@
 <li>服务质量，按不同的优先级对数据流进行分配</li>
 <li>服务类型，按不同的服务类型对数据流进行分配</li>
 <li>规则模式，针对不同的数据流设置导向规则</li>
+</ul>
+<h2 id="5-7-链路追踪"><a href="#5-7-链路追踪" class="headerlink" title="5.7 链路追踪"></a>5.7 链路追踪</h2><p>在微服务架构中，一次业务请求一般要经过几个微服务调用才能完成，需要在请求入口处生成一个全局唯一的 traceId 并在该请求所经历的所有系统中始终把这个 traceId 传下去（一般会放在 RPC 的请求头、HTTP 的请求头、MQ 消息的消息头中），从而实现全链路追踪。</p>
+<p>每一次调用中的重要信息被记录在 span 中，一个完整的 span 通常具有如下属性</p>
+<ul>
+<li><p>Operation Name：描述当前接口的行为语义，比如具体是哪个接口，哪个 URL 地址</p>
+</li>
+<li><p>SpanId/ParentSpanId：接口调用的层级标识，用于还原 Trace 内部的层次调用关系</p>
+</li>
+<li><p>Start/FinishTime：接口调用的开始和结束时间</p>
+</li>
+<li><p>StatusCode：响应状态，标识当前调用结果</p>
+</li>
+<li><p>Tags/Events：调用附加信息</p>
+</li>
 </ul>
 <h1 id="6、参考资料"><a href="#6、参考资料" class="headerlink" title="6、参考资料"></a>6、参考资料</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/micro-soa-1">https://www.infoq.cn/article/micro-soa-1</a></li>
@@ -387,6 +440,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2024/02/18/redis/">
+        
+          Redis
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
@@ -417,7 +477,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%BC%95%E8%A8%80"><span class="toc-nav-text">1、引言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2、分布式架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-SOA-%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2.1 SOA 架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2.2 微服务架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E5%BA%B7%E5%A8%81%E5%AE%9A%E5%BE%8B"><span class="toc-nav-text">2.3 康威定律</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E6%80%A7%E8%83%BD"><span class="toc-nav-text">3、分布式性能</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-nav-text">3.1 一致性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-nav-text">3.2 稳定性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-CAP-%E7%90%86%E8%AE%BA"><span class="toc-nav-text">3.3 CAP 理论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-BASE-%E7%90%86%E8%AE%BA"><span class="toc-nav-text">4.4 BASE 理论</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、分布式事务</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-XA-%E8%A7%84%E8%8C%83"><span class="toc-nav-text">4.1 XA 规范</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E6%9F%94%E6%80%A7%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4.2 柔性事务</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-2PC-%E5%92%8C-3PC"><span class="toc-nav-text">4.3 2PC 和 3PC</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-TCC"><span class="toc-nav-text">4.4 TCC</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-5-MQ"><span class="toc-nav-text">4.5 MQ</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-6-Seata"><span class="toc-nav-text">4.6 Seata</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-7-%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9"><span class="toc-nav-text">4.7 方案选择</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%85%B6%E4%BB%96"><span class="toc-nav-text">5、其他</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">5.1 分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-%E5%88%86%E5%B8%83%E5%BC%8F-ID"><span class="toc-nav-text">5.2 分布式 ID</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-%E5%88%86%E5%B8%83%E5%BC%8F-Session"><span class="toc-nav-text">5.3 分布式 Session</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-nav-text">5.4 负载均衡</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">6、参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%BC%95%E8%A8%80"><span class="toc-nav-text">1、引言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2、分布式架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-SOA-%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2.1 SOA 架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">2.2 微服务架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E5%BA%B7%E5%A8%81%E5%AE%9A%E5%BE%8B"><span class="toc-nav-text">2.3 康威定律</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E6%80%A7%E8%83%BD"><span class="toc-nav-text">3、分布式性能</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-nav-text">3.1 一致性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-nav-text">3.2 稳定性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-CAP-%E7%90%86%E8%AE%BA"><span class="toc-nav-text">3.3 CAP 理论</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-BASE-%E7%90%86%E8%AE%BA"><span class="toc-nav-text">4.4 BASE 理论</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4、分布式事务</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-XA-%E8%A7%84%E8%8C%83"><span class="toc-nav-text">4.1 XA 规范</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E6%9F%94%E6%80%A7%E4%BA%8B%E5%8A%A1"><span class="toc-nav-text">4.2 柔性事务</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-2PC-%E5%92%8C-3PC"><span class="toc-nav-text">4.3 2PC 和 3PC</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-TCC"><span class="toc-nav-text">4.4 TCC</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-5-MQ"><span class="toc-nav-text">4.5 MQ</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-6-Seata"><span class="toc-nav-text">4.6 Seata</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-7-%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9"><span class="toc-nav-text">4.7 方案选择</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%85%B6%E4%BB%96"><span class="toc-nav-text">5、其他</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">5.1 分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-%E5%88%86%E5%B8%83%E5%BC%8F-ID"><span class="toc-nav-text">5.2 分布式 ID</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-%E5%88%86%E5%B8%83%E5%BC%8F-Session"><span class="toc-nav-text">5.3 分布式 Session</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-nav-text">5.4 分布式数据库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-5-%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C"><span class="toc-nav-text">5.5 一致性哈希</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-6-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-nav-text">5.6 负载均衡</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-7-%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA"><span class="toc-nav-text">5.7 链路追踪</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">6、参考资料</span></a></li></ol>
       
   
   </div>
