@@ -198,6 +198,7 @@
 <h2 id="1-4-事务机制"><a href="#1-4-事务机制" class="headerlink" title="1.4 事务机制"></a>1.4 事务机制</h2><ul>
 <li>Redis 事务的主要目的是保证多个命令执行的并发原子性，即多个命令操作不可拆分，不会被打断</li>
 <li>Redis 事务不支持回滚，在事务执行过程中发生错误会继续执行剩下的命令，因此无法保证数据库事务原子性</li>
+<li>不支持回滚是因为回滚会对 Redis 的设计简洁性和使用性能产生重大影响，且 Redis 一般用作缓存，而不是作为需要处理复杂事务的关系型数据库，Redis 的事务执行出错的原因应当是在编码阶段解决的，不应该在执行过程中出现，不应该引入回滚机制来处理执行错误</li>
 </ul>
 <h2 id="1-5-原子操作"><a href="#1-5-原子操作" class="headerlink" title="1.5 原子操作"></a>1.5 原子操作</h2><ul>
 <li>原子性执行 Lua 脚本<ul>
@@ -212,6 +213,8 @@
 </ul>
 </li>
 </ul>
+<h2 id="1-6-Pipeline-机制"><a href="#1-6-Pipeline-机制" class="headerlink" title="1.6 Pipeline 机制"></a>1.6 Pipeline 机制</h2><p>在没有 Pipeline 时，每执行一个 Redis 命令，客户端都需要等到服务响应之后才能发送下一个命令，这种往返通信在网络延迟较高的环境中会显著影响性能，Redis 的 Pipeline 机制主要用于在单个请求/响应周期内执行多个命令，是一种用于优化网络延迟的技术。</p>
+<p>在 Pipeline 模式下，客户端可以一次性发送多个命令到 Redis 服务器，无需等待每个命令的响应，Redis 服务器会依次执行这批命令并一次性返回响应。</p>
 <h1 id="2、存储"><a href="#2、存储" class="headerlink" title="2、存储"></a>2、存储</h1><h2 id="2-1-内存管理"><a href="#2-1-内存管理" class="headerlink" title="2.1 内存管理"></a>2.1 内存管理</h2><ul>
 <li>Redis 将数据存储在内存中，内存的数据读写本身就比磁盘更快，Redis 还采用一些复杂的内存管理方式，也支持很多内存优化策略</li>
 <li>Redis 的虚拟内存机制会在 Redis 使用的内存超过了指定阈值时，将部分不常用的键值对转移到磁盘上，而在需要访问被转移到磁盘上的数据时，又将数据读取到内存中，虚拟内存机制虽然可以节省内存，但同时也会带来一定的性能损失，在实际应用中应该根据具体的应用场景和硬件条件进行调整</li>
@@ -235,7 +238,13 @@
 <li>RDB 和 AOF 混合持久化会在开头将持久化数据以 RDB 的格式写入到 AOF 文件开头，之后的数据再以 AOF 格式化追加到文件末尾，从而结合 RDB 和 AOF 的优点，但会使得 AOF 文件的可读性变差</li>
 <li>持久化机制也不是完全可靠的（即便是基于 Always 的 AOF 持久化），并不能完全保证数据不会丢失</li>
 </ul>
-<h2 id="2-3-数据结构"><a href="#2-3-数据结构" class="headerlink" title="2.3 数据结构"></a>2.3 数据结构</h2><p>Redis 提供多个数据结构，比如字符串、哈希表、列表、集合、有序集合、地理坐标、Stream 等，这些数据结构都被实现得非常高效，能够在 O(1) 的时间复杂度内完成数据读写</p>
+<h2 id="2-3-数据过期"><a href="#2-3-数据过期" class="headerlink" title="2.3 数据过期"></a>2.3 数据过期</h2><ul>
+<li>Redis 通过设置过期时间来控制键值对的生命周期，过期策略采用定期删除和惰性删除相结合的方式</li>
+<li>定期删除是指 Redis 默认每隔 100 ms 就随机抽取一些设置了过期时间的 key，将已过期的 key 删除但不会立即释放内存，而是把这些 key 标记为已过期并放入一个专门的链表中，当 Redis 的内存使用率达到一定阈值时，会这些已过期的 key 进行一次内存回收，可以确保过期的 key 能够被及时删除，但是扫描 key 会占用 CPU 资源，可能会影响 Redis 性能</li>
+<li>惰性删除是指一个已经过期的 key 并不会被马上删除，而是在访问这个 key 时才会触发删除操作，可以节省 CPU 资源，但是会占用更多内存空间</li>
+<li>由于 Redis 并不保证数据在过期时能被立即删除，因此基于过期消息来驱动业务并不靠谱，延迟时间可能会很长，还缺乏对这种过期消息的持久化，可能会直接丢消息，更好的方式参见 4.2 小节</li>
+</ul>
+<h2 id="2-4-数据结构"><a href="#2-4-数据结构" class="headerlink" title="2.4 数据结构"></a>2.4 数据结构</h2><p>Redis 提供多个数据结构，比如字符串、哈希表、列表、集合、有序集合、地理坐标、Stream 等，这些数据结构都被实现得非常高效，能够在 O(1) 的时间复杂度内完成数据读写</p>
 <ul>
 <li>字符串<ul>
 <li>Redis 本身是通过 C 语言实现的，C 语言中的字符串以<code>\0</code>结尾，这意味着起码无法存储<code>\0</code>字符，C 语言的字符串操作都需要从头开始遍历直到找到<code>\0</code>，操作效率低</li>
@@ -263,11 +272,21 @@
 </ul>
 </li>
 </ul>
-<h2 id="2-4-数据过期"><a href="#2-4-数据过期" class="headerlink" title="2.4 数据过期"></a>2.4 数据过期</h2><ul>
-<li>Redis 通过设置过期时间来控制键值对的生命周期，过期策略采用定期删除和惰性删除相结合的方式</li>
-<li>定期删除是指 Redis 默认每隔 100 ms 就随机抽取一些设置了过期时间的 key，将已过期的 key 删除但不会立即释放内存，而是把这些 key 标记为已过期并放入一个专门的链表中，当 Redis 的内存使用率达到一定阈值时，会这些已过期的 key 进行一次内存回收，可以确保过期的 key 能够被及时删除，但是扫描 key 会占用 CPU 资源，可能会影响 Redis 性能</li>
-<li>惰性删除是指一个已经过期的 key 并不会被马上删除，而是在访问这个 key 时才会触发删除操作，可以节省 CPU 资源，但是会占用更多内存空间</li>
-<li>由于 Redis 并不保证数据在过期时能被立即删除，因此基于过期消息来驱动业务并不靠谱，延迟时间可能会很长，还缺乏对这种过期消息的持久化，可能会直接丢消息，更好的方式是参见 4.2 小节</li>
+<h2 id="2-5-键值对设计"><a href="#2-5-键值对设计" class="headerlink" title="2.5 键值对设计"></a>2.5 键值对设计</h2><p>在设计 Redis 的 key 和 value 时，应当以数据存储和检索效率为原则进行设计</p>
+<ul>
+<li>设计 key<ul>
+<li>具备良好的可读性和简洁性，尽量使用短且有意义的 key（过长的 key 太占用内存空间）</li>
+<li>避免在 key 中使用特殊字符，命名中尽量只包含大小写字母、数字、竖线、下划线、英文句点和英文冒号</li>
+<li>使用命名空间前缀来区分不同部分的 key</li>
+</ul>
+</li>
+<li>设计 value<ul>
+<li>根据数据的特性选择合适的数据结构，从而提高操作效率</li>
+<li>尽量将大数据分割为多个小 value，避免大 key，从而提高性能和降低内存使用</li>
+<li>设置适当的过期时间，从而降低内存使用</li>
+<li>尽量先对数据进行压缩再存储，从而降低内存使用</li>
+</ul>
+</li>
 </ul>
 <h1 id="3、问题"><a href="#3、问题" class="headerlink" title="3、问题"></a>3、问题</h1><h2 id="3-1-热-Key-问题"><a href="#3-1-热-Key-问题" class="headerlink" title="3.1 热 Key 问题"></a>3.1 热 Key 问题</h2><p>当使用 Redis 作为存储时，如果在某个时间段内，突发大量针对某一个 key 的访问，就会使得流量集中在一些极少数的物理资源上，这就是热 key 问题，针对这一问题的主要处理方式如下</p>
 <ul>
@@ -306,7 +325,28 @@
 <li>更新数据库之后如果没有删除缓存，那么如果在数据库更新期间存在其他请求通过读操作顺便地将更新之前的数据再加载回缓存，后续通过缓存拿到的数据依旧都是错误的，所以在数据库更新之后再重新删一次缓存，确保缓存中没有脏数据</li>
 <li>更新数据库之后的缓存删除也可以改成借助数据库 BinLog，订阅到数据库变更消息之后异步地删除缓存</li>
 </ul>
-<h2 id="3-7-使用注意"><a href="#3-7-使用注意" class="headerlink" title="3.7 使用注意"></a>3.7 使用注意</h2><ul>
+<h2 id="3-7-缓存集群之间不一致"><a href="#3-7-缓存集群之间不一致" class="headerlink" title="3.7 缓存集群之间不一致"></a>3.7 缓存集群之间不一致</h2><p>即便使用集群模式，依旧可能出现主节点在数据还未同步到其他从节点时发生故障，后续新选出的主节点并不具备和原主节点一致的数据</p>
+<ul>
+<li>数据丢失<ul>
+<li>数据丢失是数据不一致的一种情况，比如基于 Redis 集群的分布式锁就可能无法顺利在节点间同步已经被获取的锁，进而发生锁丢失</li>
+<li>红锁（RedLock）是 Redis 提出的一个多节点分布式锁算法，旨在解决单节点 Redis 分布式锁可能存在的单点故障和锁丢失问题</li>
+<li>RedLock 在进行加锁操作时，RedLock 会向每个 Redis 节点发生相同的命令请求，每个节点都会去竞争锁，如果在大多数节点上成功获取了锁，那么就认为加锁成功，从而避免主节点故障又未能及时将锁同步到其他节点的情况</li>
+<li>RedLock 并没有完全解决 Redis 分布式锁的问题，在脑裂的情况下可能会出现多个客户端同时持有锁</li>
+</ul>
+</li>
+<li>脑裂<ul>
+<li>脑裂是数据不一致的一种导致原因，是指集群中的出现多个节点都认为自己是主节点，进而导致数据不一致、数据丢失、重复写入等问题，一般发生在网络中断或主节点出现问题的时候</li>
+<li>网络中断和主节点故障都是可能导致脑裂的原因，网络故障或网络分区会导致集群不同子集之间的网络通信中断，进而导致一部分节点被划分到了单独的一个网络中，这部分节点找不到主节点就会重新选出一个新的主节点，集群中就出现了多个主节点；主节点出现问题后又快速恢复了，这期间有部分从节点又重现选出了新的主节点，集群中就出现了多个主节点</li>
+<li>Redis 可以通过配置来尽量规避脑裂问题，但无法彻底杜绝</li>
+</ul>
+</li>
+<li>时间漂移<ul>
+<li>时间漂移也是数据不一致的一种导致原因，是指不同的机器之间的时间可能存在微小的不一致，进而导致分布式系统的数据不一致（比如锁失效时间不一致，然后有的 Redis 已经解锁并使得新的客户端能够获取到的锁）</li>
+<li>RedLock 可以使用 NTP 等工具来同步不同机器之间的事件，尽量避免时间漂移</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-8-使用注意"><a href="#3-8-使用注意" class="headerlink" title="3.8 使用注意"></a>3.8 使用注意</h2><ul>
 <li>避免使用 KEYS 命令获取所有 key，该命令会遍历所有 key，可能会长时间阻塞 Redis 主线程</li>
 <li>避免使用 FLUSHALL 或 FLUSHDB 命令清空 Redis，这会清空所有数据库中的所有数据，不仅仅是当前数据库</li>
 <li>对于写操作频繁的数据，可以使用哈希表结构（可以做部分更新，减少网络传输数据量），并考虑使用 Redis 持久化机制进行数据持久化，以保证数据可靠性</li>
@@ -348,24 +388,19 @@
 <h2 id="4-3-分布式锁"><a href="#4-3-分布式锁" class="headerlink" title="4.3 分布式锁"></a>4.3 分布式锁</h2><ul>
 <li>SETNX<ul>
 <li>多个 Redis 客户端同时通过 SETNX 命令尝试获取锁，Redis 的单线程特性会确保只有一个客户端可以获取锁成功</li>
-<li>获取到锁的客户端宕机重启后无法释放锁，因此请求锁的同时也应当设置一个过期时间来确保锁一定会被释放，避免死锁</li>
-<li>这种方式实现的分布式锁使用简单，便于理解，性能较高，但锁无法续期，可能会出现死锁（如果没有设置过期时间），不支持可重入</li>
+<li>获取到锁的客户端宕机重启后无法释放锁，因此请求锁的同时也应当设置一个过期时间来确保锁一定会被释放，避免死锁，但是过长的过期时间会影响分布式锁的并发性能</li>
+<li>如果需要支持可重入，则需要在获取锁时通过一个全局唯一标识来识别特定线程，根据这个标识来判断尝试获取锁的线程是否已经持有了锁，并额外维护一个重入次数的字段</li>
+<li>这种方式实现的分布式锁使用简单，便于理解，性能较高，但锁无法续期，可能会出现死锁（如果没有设置过期时间的话）</li>
 </ul>
 </li>
 <li>Redisson<ul>
-<li>Redisson 提供了包括分布式锁功能，支持分布式锁的可重入、公平锁、联锁、读写锁以及 RedLock 等</li>
-<li>Redisson 引入看门狗机制来在 Redisson 实例运行期间不断延长锁的有效期直到释放锁（如果在加锁时指定了超时时间则不会续期，如果 Redis 线程中断、服务宕机下线等则会停止续期）</li>
+<li>Redisson 提供了包括分布式锁功能，支持分布式锁的可重入、公平锁、联锁、读写锁、阻塞或非阻塞以及 RedLock 等</li>
+<li>Redisson 引入看门狗机制来在 Redisson 实例运行期间不断延长锁的有效期直到释放锁（这个后台任务是基于 JVM 运行的），如果在加锁时指定了超时时间则不会续期，如果 Redis 线程中断、服务宕机下线等则会停止续期</li>
 </ul>
 </li>
 </ul>
-<p>注：</p>
-<ul>
-<li>单节点 Redis 分布式锁可能存在单点故障问题，而使用集群模式部署可能无法顺利在节点间同步已经被获取的锁，即锁丢失</li>
-<li>红锁（RedLock）是 Redis 提出的一个多节点分布式锁算法，旨在解决单节点 Redis 分布式锁可能存在的单点故障问题</li>
-<li>在进行加锁操作时，RedLock 会向每个 Redis 节点发生相同的命令请求，每个节点都会去竞争锁，如果在大多数节点上成功获取了锁，那么就认为加锁成功，从而避免主节点故障又未能及时将锁同步到其他节点的情况</li>
-<li>RedLock 并没有完全解决 Redis 分布式锁的问题，在脑裂的情况下可能会出现多个客户端同时持有锁</li>
-<li>脑裂</li>
-</ul>
+<h2 id="4-4-分布式限流"><a href="#4-4-分布式限流" class="headerlink" title="4.4 分布式限流"></a>4.4 分布式限流</h2><p>滑动窗口是一种流量控制策略，窗口会随着时间推移而不断滑动，在窗口内允许的操作数量是固定的，用于控制一定时间内允许执行的操作数量或请求频次，这种平滑地控制流量而不是简单地设置固定的请求次数或速率，可以使得系统更加灵活地应对突发流量，不会为固定速率的限制而浪费资源或降低系统性能。</p>
+<p>Redis 可以通过 ZSet 在每一次接收到请求时记录下请求的时间戳和请求的数据，但只记录特定时间窗口内的请求，丢弃窗口之外的请求。</p>
 </section>
     <!-- Tags START -->
     
@@ -419,7 +454,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1、模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1.1 集群模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">1.2 通信协议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.3 并发模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1.4 事务机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-5-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">1.5 原子操作</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%AD%98%E5%82%A8"><span class="toc-nav-text">2、存储</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-nav-text">2.1 内存管理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-nav-text">2.2 数据持久化</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">2.3 数据结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%95%B0%E6%8D%AE%E8%BF%87%E6%9C%9F"><span class="toc-nav-text">2.4 数据过期</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3、问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E7%83%AD-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.1 热 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E5%A4%A7-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.2 大 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-nav-text">3.3 缓存击穿</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-nav-text">3.4 缓存穿透</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-nav-text">3.5 缓存雪崩</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-6-%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-nav-text">3.6 缓存和数据库不一致</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-7-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="toc-nav-text">3.7 使用注意</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%BA%94%E7%94%A8"><span class="toc-nav-text">4、应用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.1 消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.2 延迟消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">4.3 分布式锁</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1、模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1.1 集群模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">1.2 通信协议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.3 并发模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1.4 事务机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-5-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">1.5 原子操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-6-Pipeline-%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1.6 Pipeline 机制</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%AD%98%E5%82%A8"><span class="toc-nav-text">2、存储</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-nav-text">2.1 内存管理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-nav-text">2.2 数据持久化</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%95%B0%E6%8D%AE%E8%BF%87%E6%9C%9F"><span class="toc-nav-text">2.3 数据过期</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">2.4 数据结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E9%94%AE%E5%80%BC%E5%AF%B9%E8%AE%BE%E8%AE%A1"><span class="toc-nav-text">2.5 键值对设计</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3、问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E7%83%AD-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.1 热 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E5%A4%A7-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.2 大 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-nav-text">3.3 缓存击穿</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-nav-text">3.4 缓存穿透</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-nav-text">3.5 缓存雪崩</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-6-%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-nav-text">3.6 缓存和数据库不一致</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-7-%E7%BC%93%E5%AD%98%E9%9B%86%E7%BE%A4%E4%B9%8B%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-nav-text">3.7 缓存集群之间不一致</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-8-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="toc-nav-text">3.8 使用注意</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%BA%94%E7%94%A8"><span class="toc-nav-text">4、应用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.1 消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.2 延迟消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">4.3 分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E5%88%86%E5%B8%83%E5%BC%8F%E9%99%90%E6%B5%81"><span class="toc-nav-text">4.4 分布式限流</span></a></li></ol></li></ol>
       
   
   </div>

@@ -10,7 +10,7 @@
   
   <title>
     
-      Categories | CQ&#39;s Blog
+      Remote Procedure Call | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -154,8 +154,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Categories</h2>
-  <!--<p class="post-date">2022-05-05</p>
+  <h2>Remote Procedure Call</h2>
+  <!--<p class="post-date">2024-02-21</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>-->
@@ -163,66 +163,63 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="基础科目"><a href="#基础科目" class="headerlink" title="基础科目"></a>基础科目</h1><ul>
-<li><a href="../../2022/08/06/mysql/">DBMS (Example: MySQL)</a></li>
-<li><a href="../../../../2023/11/06/computer-networking/">Computer Networking</a></li>
-<li><a href="../../../../2023/08/20/operating-systems/">Operating Systems</a></li>
-<li><a href="../../../../2023/10/14/shell-script/">Linux &amp; Shell Scripting</a></li>
-<li><a href="../../2022/05/08/java-language/">Java Language</a></li>
-<li><a href="../../../../2023/12/09/java-virtual-machine/">Java Virtual Machine</a></li>
-<li><a href="../../2022/05/08/java-concurrency/">Java Concurrency</a></li>
-<li><a href="../../2023/01/01/java-web/">Java Web</a></li>
+    <section class="markdown-content"><h1 id="RPC-概述"><a href="#RPC-概述" class="headerlink" title="RPC 概述"></a>RPC 概述</h1><p>远程过程调用（Remote Procedure Call，RPC）的调用方和被调用方是位于不同独立系统上的进程，调用请求和响应需要通过网络通信来传输，RPC 框架使得这个网络远程通信过程对调用方和被调用方来说是透明的，双方都感觉调用就好像发生在自己本地一样。</p>
+<p>RPC 框架中主要有 Provider、Consumer、Registry 这三个角色，Provider 在启动后主动向 Registry 注册机器 IP、Port 以及提供的服务列表， Consumer 在启动后向 Registry 获取所需服务的 Providers 列表。</p>
+<p>RPC 框架涉及到的相关技术如下</p>
+<ul>
+<li><p>Java 动态代理，一般通过代理来处理远程调用交互，开发者无需关心如何远程调用，只需要专注业务</p>
+</li>
+<li><p>序列化，为了能够在网络上传输和接收 Java 对象，需要对对象进行序列化和反序列化</p>
+</li>
+<li><p>NIO，一般选择 Netty 作为底层 I/O 通信框架</p>
+</li>
+<li><p>服务注册中心，可以选择 Redis、Zookeeper、Consul、Etcd</p>
+</li>
 </ul>
-<h1 id="思想范式"><a href="#思想范式" class="headerlink" title="思想范式"></a>思想范式</h1><ul>
-<li><a href="../../2022/05/06/clean-code/">Clean Code</a></li>
-<li><a href="../../2022/05/11/design-patterns/">Design Patterns</a></li>
-<li><a href="../../2022/09/30/tdd/">Test Driven Development</a></li>
-<li><a href="../../../../2024/02/06/distributed-system/">Distributed System</a></li>
-<li><a href="../../../../2024/02/21/rpc/">Remote Procedure Call</a></li>
-<li><a href="../../2022/09/06/docker/">Container、Cloud、Docker</a></li>
-<li><a href="../../2022/09/06/devops/">CI/CD、DevOps、Jenkins</a></li>
-<li><a href="../../2022/10/03/kubernetes/">K8S、ECS、Openshift</a></li>
+<h1 id="RPC-和-HTTP"><a href="#RPC-和-HTTP" class="headerlink" title="RPC 和 HTTP"></a>RPC 和 HTTP</h1><p>RPC 通常需要包含传输协议和序列化协议的实现，HTTP 就是一种传输协议（详细见 <a href="../../../../2023/11/06/computer-networking/">Computer Networking</a> 的 2.2 小节）</p>
+<ul>
+<li><p>RPC 可以基于 TCP 协议来实现，也可以直接基于 HTTP 协议来实现</p>
+</li>
+<li><p>RPC 允许更加深层次的定制和优化，HTTP 的定制能力则较低</p>
+</li>
+<li><p>RPC 的设计目的就是用于高效的内部服务通信，HTTP 的设计目的是更加通用的传输协议</p>
+</li>
+<li><p>RPC 可以像直接调用本地方法一样调用远程代码，使用方便，而 HTTP 调用需要拼接复杂的报文（Header、Body）</p>
+</li>
+<li><p>不是所有编程语言和操作系统都支持相同的 RPC 协议，HTTP 是一种几乎所有的编程语言和操作系统都支持的通用协议</p>
+</li>
+<li><p>RPC 采用更加紧凑的数据格式，使用更加轻量高效的序列化协议，可以更加有效地利用网络带宽和存储空间，在传输效率上通常比 HTTP 更高，HTTP 在灵活性和可访问性上进行了优化，而不是仅仅专注于性能</p>
+</li>
+<li><p>RPC 主要用于公司内部服务之间的互相调用，性能消耗低，传输效率高，服务治理方便，网络交互链路短，HTTP 主要用于对外的跨语言和跨平台的异构环境，公网通信的一次交互可能需要经过较多的中间节点</p>
+</li>
 </ul>
-<h1 id="软件工具"><a href="#软件工具" class="headerlink" title="软件工具"></a>软件工具</h1><ul>
-<li><a href="../../2022/05/07/git/">Git</a></li>
-<li><a href="../../2022/05/07/maven/">Maven</a></li>
-<li><a href="../../2023/07/29/gradle/">Gradle</a></li>
-<li><a href="../../2022/08/06/mysql/">MySQL</a></li>
-<li><a href="../../2022/12/15/oracle/">Oracle</a></li>
-<li><a href="../../2022/09/06/docker/">Docker</a></li>
-<li><a href="../../2022/10/03/kubernetes/">Kubernetes</a></li>
-<li><a href="../../2023/02/11/jmeter/">JMeter</a></li>
-</ul>
-<h1 id="框架组件"><a href="#框架组件" class="headerlink" title="框架组件"></a>框架组件</h1><ul>
-<li><a href="../../2022/05/10/spring/">Spring Framework</a></li>
-<li><a href="../../2022/05/22/spring-boot/">Spring Boot</a></li>
-<li><a href="../../../../2024/02/18/redis/">Redis</a></li>
-<li><a href="../../../../2024/02/21/dubbo/">Dubbo</a></li>
-<li><a href="../../../../2024/02/21/mq/">MQ</a></li>
-</ul>
-<h1 id="读书笔记"><a href="#读书笔记" class="headerlink" title="读书笔记"></a>读书笔记</h1><ul>
-<li><a href="../../2022/05/06/clean-code/">代码整洁之道</a></li>
-<li><a href="../../2022/05/06/effective-java/">Effective Java</a></li>
-<li><a href="../../2022/05/08/java-concurrency/">Java 并发编程的艺术</a></li>
-<li><a href="../../2022/05/10/spring/">Spring 实战</a></li>
-<li><a href="../../2022/08/06/mysql/">高性能 MySQL</a></li>
-<li><a href="../../2022/05/08/java-language/">Java 编程思想</a></li>
-<li><a href="../../../../2023/08/20/operating-systems/">操作系统导论</a></li>
-<li><a href="../../../../2023/10/14/shell-script/">Linux 命令行与 shell 脚本编程大全</a></li>
-<li><a href="../../../../2023/11/06/computer-networking/">计算机网络 自顶向下方法</a></li>
-<li><a href="../../../../2023/12/09/java-virtual-machine/">深入理解 Java 虚拟机</a></li>
-<li><a href="../../../../2024/01/10/effective-product-control/">Effective Product Control</a></li>
-</ul>
-<h1 id="实践用例"><a href="#实践用例" class="headerlink" title="实践用例"></a>实践用例</h1><ul>
-<li><a href="../../2022/05/06/blog/">搭建个人博客</a></li>
-</ul>
-<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>所有的内容均是为了保证自己能有一个从输入到输出的消化梳理过程，每个知识点梳理都可能会有各种局限于当下的偏差与不足，但是都会持续地进行修正与完善，期待通过点与点交织成网最终构建出一个井然有序的知识网图。</p>
+<h1 id="泛化调用"><a href="#泛化调用" class="headerlink" title="泛化调用"></a>泛化调用</h1><p>泛化调用是指在没有服务提供方提供的 API 时，调用方对服务进行调用，并且可以拿到调用结果，一般在测试集成工具、网关服务中较多使用泛化调用。</p>
 </section>
     <!-- Tags START -->
     
     <!-- Tags END -->
     <!-- NAV START -->
     
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2024/02/18/week-75/">
+        <span class="nav-arrow">← </span>
+        
+          2024.2.5 - 2024.2.9
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2024/02/21/dubbo/">
+        
+          Dubbo
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
     <!-- NAV END -->
     <!-- 打赏 START -->
     
@@ -250,7 +247,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%9F%BA%E7%A1%80%E7%A7%91%E7%9B%AE"><span class="toc-nav-text">基础科目</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%80%9D%E6%83%B3%E8%8C%83%E5%BC%8F"><span class="toc-nav-text">思想范式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">软件工具</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">框架组件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="toc-nav-text">读书笔记</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AE%9E%E8%B7%B5%E7%94%A8%E4%BE%8B"><span class="toc-nav-text">实践用例</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-nav-text">写在最后</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#RPC-%E6%A6%82%E8%BF%B0"><span class="toc-nav-text">RPC 概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#RPC-%E5%92%8C-HTTP"><span class="toc-nav-text">RPC 和 HTTP</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%B3%9B%E5%8C%96%E8%B0%83%E7%94%A8"><span class="toc-nav-text">泛化调用</span></a></li></ol>
       
   
   </div>
@@ -261,7 +258,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/categories/index.html';
+    var url = 'http://example.com/2024/02/21/rpc/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({

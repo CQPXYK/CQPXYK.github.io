@@ -10,7 +10,7 @@
   
   <title>
     
-      Categories | CQ&#39;s Blog
+      Dubbo | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -154,8 +154,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Categories</h2>
-  <!--<p class="post-date">2022-05-05</p>
+  <h2>Dubbo</h2>
+  <!--<p class="post-date">2024-02-21</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>-->
@@ -163,66 +163,101 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="基础科目"><a href="#基础科目" class="headerlink" title="基础科目"></a>基础科目</h1><ul>
-<li><a href="../../2022/08/06/mysql/">DBMS (Example: MySQL)</a></li>
-<li><a href="../../../../2023/11/06/computer-networking/">Computer Networking</a></li>
-<li><a href="../../../../2023/08/20/operating-systems/">Operating Systems</a></li>
-<li><a href="../../../../2023/10/14/shell-script/">Linux &amp; Shell Scripting</a></li>
-<li><a href="../../2022/05/08/java-language/">Java Language</a></li>
-<li><a href="../../../../2023/12/09/java-virtual-machine/">Java Virtual Machine</a></li>
-<li><a href="../../2022/05/08/java-concurrency/">Java Concurrency</a></li>
-<li><a href="../../2023/01/01/java-web/">Java Web</a></li>
+    <section class="markdown-content"><p>Dubbo 是阿里开源的一个 Java 高性能 RPC 框架，可以和 Spring 框架无缝集成，可以支持<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/lkqnmplc1rz02zmi">多种调用协议</a>。</p>
+<h1 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h1><ul>
+<li>config 配置层，对外配置接口</li>
+<li>proxy 服务代理层，将远程调用透明化</li>
+<li>registry 注册中心层，封装服务地址的注册与发现</li>
+<li>cluster 路由层，封装多个服务提供者的路由及负载均衡，并桥接注册中心</li>
+<li>monitor 监控层，监控 RPC 调用次数和调用时间</li>
+<li>protocol 远程调用层，封装 RPC 调用</li>
+<li>exchange 信息交换层，封装请求响应模式</li>
+<li>transport 网络传输层</li>
+<li>serialize 数据序列化层</li>
 </ul>
-<h1 id="思想范式"><a href="#思想范式" class="headerlink" title="思想范式"></a>思想范式</h1><ul>
-<li><a href="../../2022/05/06/clean-code/">Clean Code</a></li>
-<li><a href="../../2022/05/11/design-patterns/">Design Patterns</a></li>
-<li><a href="../../2022/09/30/tdd/">Test Driven Development</a></li>
-<li><a href="../../../../2024/02/06/distributed-system/">Distributed System</a></li>
-<li><a href="../../../../2024/02/21/rpc/">Remote Procedure Call</a></li>
-<li><a href="../../2022/09/06/docker/">Container、Cloud、Docker</a></li>
-<li><a href="../../2022/09/06/devops/">CI/CD、DevOps、Jenkins</a></li>
-<li><a href="../../2022/10/03/kubernetes/">K8S、ECS、Openshift</a></li>
+<h1 id="远程调用"><a href="#远程调用" class="headerlink" title="远程调用"></a>远程调用</h1><p>一次完整的远程服务调用分为服务注册、服务发现和服务调用三个过程</p>
+<ul>
+<li>服务注册<ul>
+<li>服务提供者在启动时向注册中心注册自己提供的服务以及服务相关的信息（名称、版本号、IP 地址、端口号、协议、权重等）</li>
+<li>Dubbo 支持多种注册中心，如 Redis、Zookeeper 、Nacos 等</li>
+<li>在使用 Redis 时，会通过 Redis 的消息订阅发布机制来实现服务注册和发现</li>
+<li>在使用 Zookeeper 时，会通过 Zookeeper 的 watch 机制来监听服务提供者列表的变化</li>
 </ul>
-<h1 id="软件工具"><a href="#软件工具" class="headerlink" title="软件工具"></a>软件工具</h1><ul>
-<li><a href="../../2022/05/07/git/">Git</a></li>
-<li><a href="../../2022/05/07/maven/">Maven</a></li>
-<li><a href="../../2023/07/29/gradle/">Gradle</a></li>
-<li><a href="../../2022/08/06/mysql/">MySQL</a></li>
-<li><a href="../../2022/12/15/oracle/">Oracle</a></li>
-<li><a href="../../2022/09/06/docker/">Docker</a></li>
-<li><a href="../../2022/10/03/kubernetes/">Kubernetes</a></li>
-<li><a href="../../2023/02/11/jmeter/">JMeter</a></li>
+</li>
+<li>服务发现<ul>
+<li>服务消费者在启动时需要向注册中心订阅自己所需的服务</li>
+<li>服务消费者通过注册中心来获取服务提供者列表</li>
+<li>服务提供者列表发生变化时注册中心会主动通知服务消费者进行变更</li>
 </ul>
-<h1 id="框架组件"><a href="#框架组件" class="headerlink" title="框架组件"></a>框架组件</h1><ul>
-<li><a href="../../2022/05/10/spring/">Spring Framework</a></li>
-<li><a href="../../2022/05/22/spring-boot/">Spring Boot</a></li>
-<li><a href="../../../../2024/02/18/redis/">Redis</a></li>
-<li><a href="../../../../2024/02/21/dubbo/">Dubbo</a></li>
-<li><a href="../../../../2024/02/21/mq/">MQ</a></li>
+</li>
+<li>服务调用<ul>
+<li>Dubbo 使用动态代理技术生成一个代理类，该代理类实现了本地接口，在调用本地接口方法时，该代理类会将参数封装成请求消息</li>
+<li>Dubbo 会将请求进行序列化，通过网络传输将请求转发到远程服务提供者并接收请求返回的响应，Dubbo 将返回值进行反序列化</li>
+<li>Dubbo 支持多种序列化协议，如 Hessian、Java 原生的序列化、JSON 等，以适应不同性能和兼容性</li>
+<li>Dubbo 支持多种网络通信协议，如 Dubbo 协议、HTTP 协议、Hessian 协议等</li>
+<li>Dubbo 支持不同的通信模式，可以使用长连接或短连接模式，可以使用 Netty 等其他高性能的通信框架，还可以设置心跳来保持连接的稳定性</li>
+<li>Dubbo 支持多种路由策略来实现负载均衡，包括随机路由、轮询路由、一致性哈希路由等，根据路由规则可以将服务请求路由到指定的服务提供者上</li>
+<li>Dubbo 会对服务调用进行监控，包括调用次数、调用时间、响应时间、异常次数、异常信息等</li>
 </ul>
-<h1 id="读书笔记"><a href="#读书笔记" class="headerlink" title="读书笔记"></a>读书笔记</h1><ul>
-<li><a href="../../2022/05/06/clean-code/">代码整洁之道</a></li>
-<li><a href="../../2022/05/06/effective-java/">Effective Java</a></li>
-<li><a href="../../2022/05/08/java-concurrency/">Java 并发编程的艺术</a></li>
-<li><a href="../../2022/05/10/spring/">Spring 实战</a></li>
-<li><a href="../../2022/08/06/mysql/">高性能 MySQL</a></li>
-<li><a href="../../2022/05/08/java-language/">Java 编程思想</a></li>
-<li><a href="../../../../2023/08/20/operating-systems/">操作系统导论</a></li>
-<li><a href="../../../../2023/10/14/shell-script/">Linux 命令行与 shell 脚本编程大全</a></li>
-<li><a href="../../../../2023/11/06/computer-networking/">计算机网络 自顶向下方法</a></li>
-<li><a href="../../../../2023/12/09/java-virtual-machine/">深入理解 Java 虚拟机</a></li>
-<li><a href="../../../../2024/01/10/effective-product-control/">Effective Product Control</a></li>
+</li>
 </ul>
-<h1 id="实践用例"><a href="#实践用例" class="headerlink" title="实践用例"></a>实践用例</h1><ul>
-<li><a href="../../2022/05/06/blog/">搭建个人博客</a></li>
+<h1 id="缓存机制"><a href="#缓存机制" class="headerlink" title="缓存机制"></a>缓存机制</h1><p>Dubbo 支持服务端结果缓存和客户端结果缓存，Dubbo 缓存机制的主要作用在于缓存服务调用的响应结果，减少重复调用，提高调用性能，但注意缓存导致的数据不一致问题。</p>
+<ul>
+<li>服务端结果缓存可以提高响应速度和系统吞吐量，实现方式如下<ul>
+<li>LRU Cache，缓存空间不足时会基于 LRU 算法来清除最近最少使用的缓存</li>
+<li>Thread Local Cache，每个线程都拥有一个缓存实例，缓存结果只对当前线程可见</li>
+<li>Concurrent Map Cache，基于 ConcurrentMap 实现的缓存，支持并发读写，效率较高</li>
 </ul>
-<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>所有的内容均是为了保证自己能有一个从输入到输出的消化梳理过程，每个知识点梳理都可能会有各种局限于当下的偏差与不足，但是都会持续地进行修正与完善，期待通过点与点交织成网最终构建出一个井然有序的知识网图。</p>
+</li>
+<li>客户端结果缓存可以降低系统负载，实现方式如下<ul>
+<li>LRU Cache，缓存空间不足时会基于 LRU 算法来清除最近最少使用的缓存</li>
+<li>Thread Local Cache，每个线程都拥有一个缓存实例，缓存结果只对当前线程可见</li>
+</ul>
+</li>
+</ul>
+<h1 id="优雅下线"><a href="#优雅下线" class="headerlink" title="优雅下线"></a>优雅下线</h1><ul>
+<li><p>在操作系统层面，不建议使用<code>kill -9</code>来强硬结束进程，更优雅的方式是<code>kill -15</code>在下线之间进行一些收尾动作处理</p>
+</li>
+<li><p>在容器层面，Docker 提供了类似<code>kill -9</code>的<code>docker kill</code>和类似<code>kill -15</code>的<code>docker stop</code></p>
+</li>
+<li><p>在 JVM 层面，JVM 提供了类似<code>kill -9</code>的强制关闭、类似<code>kill -15</code>的正常关闭（JVM 可以做一些清理动作）以及异常关闭，此外，开发者也可以基于 JDK 的 shutdown hook 来自定义一些清理动作</p>
+</li>
+<li><p>在 Spring 层面，Spring 提供了事件机制来监听 Spring 容器的关闭事件并做一些特殊的处理（本质也是 JDK 的 shutdown hook）</p>
+</li>
+</ul>
+<p>Dubbo 基于 Spring 的事件机制完成优雅停机</p>
+<ul>
+<li><p>服务提供方在应用下线时，先标记为不接受新请求（如果有请求过来直接报错），然后检测线程池中是否有正在运行的线程，等待正在运行的线程执行完毕</p>
+</li>
+<li><p>服务消费方在应用下线时，不再发起新的调用请求，然后检测是否存在还未返回的远程请求，等待未返回的远程请求返回</p>
+</li>
+</ul>
 </section>
     <!-- Tags START -->
     
     <!-- Tags END -->
     <!-- NAV START -->
     
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2024/02/21/rpc/">
+        <span class="nav-arrow">← </span>
+        
+          Remote Procedure Call
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2024/02/21/mq/">
+        
+          MQ
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
     <!-- NAV END -->
     <!-- 打赏 START -->
     
@@ -250,7 +285,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%9F%BA%E7%A1%80%E7%A7%91%E7%9B%AE"><span class="toc-nav-text">基础科目</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%80%9D%E6%83%B3%E8%8C%83%E5%BC%8F"><span class="toc-nav-text">思想范式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">软件工具</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">框架组件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="toc-nav-text">读书笔记</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AE%9E%E8%B7%B5%E7%94%A8%E4%BE%8B"><span class="toc-nav-text">实践用例</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-nav-text">写在最后</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">整体架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8"><span class="toc-nav-text">远程调用</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">缓存机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BC%98%E9%9B%85%E4%B8%8B%E7%BA%BF"><span class="toc-nav-text">优雅下线</span></a></li></ol>
       
   
   </div>
@@ -261,7 +296,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/categories/index.html';
+    var url = 'http://example.com/2024/02/21/dubbo/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
