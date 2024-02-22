@@ -179,13 +179,16 @@
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2024/02/21/mq/">MQ</a>
+        <a href="/2024/02/21/mq/">Message Queue</a>
       </h2>
       <p class="article-date">2024年2月21日</p>
       
       <div class="article-summary">
         
-          
+          概述消息队列的目标在于
+
+解耦，上游系统模块可以独立地将消息发布到消息队列中，无需关心消息的订阅方，下游系统模块可以自行从消息队列中订阅所需的消息，无需关心消息的发布方，通过消息队列可以解耦原本需要直接依赖的系统模块
+异步，对于一些比较耗时的操作来说，如果使用同步的方式处理，会阻塞主工作流并 ...
         
       </div>
       <a class="more" href="/2024/02/21/mq/">Read more</a>

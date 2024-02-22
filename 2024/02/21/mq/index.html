@@ -10,7 +10,7 @@
   
   <title>
     
-      MQ | CQ&#39;s Blog
+      Message Queue | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -154,7 +154,7 @@
 </header>
 
     <div id="article-banner">
-  <h2>MQ</h2>
+  <h2>Message Queue</h2>
   <!--<p class="post-date">2024-02-21</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
@@ -163,7 +163,69 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"></section>
+    <section class="markdown-content"><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>消息队列的目标在于</p>
+<ul>
+<li>解耦，上游系统模块可以独立地将消息发布到消息队列中，无需关心消息的订阅方，下游系统模块可以自行从消息队列中订阅所需的消息，无需关心消息的发布方，通过消息队列可以解耦原本需要直接依赖的系统模块</li>
+<li>异步，对于一些比较耗时的操作来说，如果使用同步的方式处理，会阻塞主工作流并使其性能下降，可以将操作封装成消息放到消息队列中，由子系统异步地对消息队列中的消息进行处理，可以避免原本同步时对主流程的影响</li>
+<li>控流，针对那些非常态的突发性流量，并不适合直接增加系统资源，可以将消息队列作为缓冲区，令系统以一个比较平稳的流量负载运行，减少瞬时压力，提升系统的稳定性</li>
+</ul>
+<p>为了实现以上目标，消息队列应当做到</p>
+<ul>
+<li>可靠性高，消息队列应当实现消息的备份、持久化存储以及故障恢复等功能，确保消息不会丢失</li>
+<li>扩展性好，消息队列应当能够通过增加服务实例来轻松实现消息队列的水平扩展</li>
+<li>灵活性强，消息队列应当能够支持多种消息传递模型，例如点对点，发布-订阅等，适应各种业务场景</li>
+</ul>
+<p>Kafka、ActiveMQ、RabbitMQ 和 RocketMQ 都是常见的消息中间件，都提供了高性能、高可用、可扩展且灵活的消息队列，区别如下</p>
+<ul>
+<li>Kafka 主要支持发布-订阅模型，ActiveMQ、RabbitMQ 和 RocketMQ 同时支持点对点和发布-订阅模型</li>
+<li>Kafka 在数据处理和数据分发方面具备高吞吐量，可以处理每秒数百万条消息，ActiveMQ、RabbitMQ 和 RocketMQ 吞吐量相对 Kafka 较低</li>
+<li>Kafka 将消息划分为多个分区，并分布在多个服务器上，实现了负载均衡和高可用性，ActiveMQ、RabbitMQ 和 RocketMQ 也支持消息分区和负载均衡，但实现方式不同</li>
+<li>Kafka 易于使用和部署，但是一些高级功能需要比较复杂的配置，ActiveMQ、RabbitMQ 和 RocketMQ 提供了很多灵活的多功能，但是会增加开发和部署的复杂度</li>
+<li>Kafka 不支持优先级队列、延迟队列、死信队列以及重试队列，ActiveMQ、RabbitMQ 和 RocketMQ 都支持</li>
+<li>Kafka 主要是拉模式，ActiveMQ、RabbitMQ 和 RocketMQ 同时支持推拉两种模式</li>
+<li>Kafka 提供更加快速的消息持久化，并且支持高效的消息查询，RabbitMQ 和 RocketMQ 提供更加传统的消息持久化方式</li>
+<li>Kafka、ActiveMQ 和 RocketMQ 都是基于 Java 语言的，RabbitMQ 是基于 Erlang 的</li>
+<li>Kafka 和 RocketMQ 的社区活跃度和发展势头是最高的</li>
+</ul>
+<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><ul>
+<li>架构<ul>
+<li>Kafka 是分布式架构，由 Producer（生产者）、Broker（Kafka 集群）、Consumer（消费者）组成</li>
+<li>Producer 负责将消息发布到 Broker 中的一个或多个 Topic，每个 Topic 包含一个或多个分区（Topic 是承载消息的逻辑容器，用于区分具体业务，分区是存储消息的物理容器，每个分区都是一个有序且持久化存储地日志文件）</li>
+<li>Consumer 负责从 Broker 中拉取一个或多个 Topic 的消息，并修改消息的 Offset，以确保消息的顺序性、一致性、不丢失、也不重复（Offset 是每条消息的位置信息，单调递增）</li>
+<li>多个 Broker 组成 Kafka 集群，每个分区都有一个主 Broker 和多个从 Broker，只有主 Broker 才可以处理 Producer 和 Consumer 的请求，每个 Broker 节点都可以存储一个或多个 Topic 的分区副本，以提供高可用性和容错能力</li>
+<li>Kafka 使用 Zookeeper 作为分布式协调服务，用于维护 Kafka 集群的状态和元数据信息，比如 Topic 和分区的分配信息、分区的主 Broker、消费者组以及消费者 Offset 等</li>
+</ul>
+</li>
+<li>消息发送<ul>
+<li>Kafka 将多个消息打包成一个批次，减少了网络传输和磁盘写入的次数，提高了消息的吞吐量和传输效率</li>
+<li>Kafka 通过一个确认机制来告知生产者消息是否发送成功，生产者可以异步发送消息，不必等待每个消息的确认</li>
+<li>Kafka 将数据分布在不同的分区中，生产者可以并行发送多个消息（每个消息发送到某个特定分区），提高了消息的吞吐量</li>
+<li>Kafka 通过对消息进行压缩，减少了需要网络传输的数据量，提高了消息的传输效率</li>
+</ul>
+</li>
+<li>消息存储<ul>
+<li>Kafka 使用零拷贝来避免数据的拷贝操作，降低了内存和 CPU 的使用率，提高了系统性能</li>
+<li>Kafka 以顺序写入的方式来将数据写入磁盘，降低了磁头寻道时间，提高了写入效率</li>
+<li>Kafka 在从磁盘中读取数据时，会在操作系统的页缓存中保留数据页副本，后续的数据访问会更加快速</li>
+<li>Kafka 通过分段的日志文件来存储消息，每个分段都有自己的索引文件，这些索引文件是每隔一定数量的消息建立索引点的稀疏索引，索引占用空间小，内存可以加载更多的索引，从而提高查找特定消息的效率</li>
+<li>Kafka 将消息划分为多个分区，并分布在多个服务器上，每个分区都有多个消息副本，实现了负载均衡和高可用性</li>
+</ul>
+</li>
+<li>消息消费<ul>
+<li>Kafka 通过消费者群组实现消息的负载均衡和容错处理，同一个消费者组内的消费者可以共享消费负载，如果一个消息被消费者组中的任何一个消费者消费了，则组内其他消费者就不会再收到这个消息</li>
+<li>Kafka 的重平衡机制会在消费者组中新增或删除消费者（或者订阅 Topic 数量发生变化，或者订阅 Topic 的分区数量发生变化）时，重新分配 Topic 分区给各个组内的各个消费者，以保证每个消费者消费的分区数量尽可能均衡</li>
+<li>Kafka 支持不同消费者独立并行的消费不同分区的消息</li>
+<li>Kafka 支持一次性拉取多个消息进行消费</li>
+</ul>
+</li>
+<li>消息传递语义<ul>
+<li>At-least-once，消息不会丢失但可能会重复（默认）</li>
+<li>At-most-once，消息可能会丢失但不会重复</li>
+<li>Exactly-once，消息不会丢失也不会重复</li>
+</ul>
+</li>
+</ul>
+<h1 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h1><h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1></section>
     <!-- Tags START -->
     
     <!-- Tags END -->
@@ -207,6 +269,9 @@
     <aside class="content-container">
   <div class="toc-main">
   
+      
+          <strong class="toc-title">CONTENT</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-nav-text">概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka"><span class="toc-nav-text">Kafka</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#RocketMQ"><span class="toc-nav-text">RocketMQ</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#RabbitMQ"><span class="toc-nav-text">RabbitMQ</span></a></li></ol>
       
   
   </div>
