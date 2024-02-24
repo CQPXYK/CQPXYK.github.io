@@ -225,7 +225,70 @@
 </ul>
 </li>
 </ul>
-<h1 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h1><h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1></section>
+<h1 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h1><ul>
+<li>架构<ul>
+<li>RocketMQ 同样由 Producer、Broker（MQ 集群）、Consumer 组成</li>
+<li>Producer 负责将消息发送到 Broker，Consumer 负责从 Broker 消费消息，Broker 是存储和转发消息的中转服务器，Broker 集群中的每个 Broker 都拥有独立的存储空间和消息队列，集群有单 Master、多 Master、多 Master 多 Slave 这三种方式，</li>
+<li>RocketMQ 使用 NameServer 作为命名服务，NameServer 负责维护 Broker 的元数据信息（Broker 地址、Topic、Queue 等），同时也是路由和寻址中心，Producer 和 Consumer 在启动时需要连接到 NameServer 来获取 Broker 的信息以及路由信息等</li>
+</ul>
+</li>
+<li>事务消息发送<ul>
+<li>RocketMQ 的事务消息是通过 TransactionListener 接口来实现的</li>
+<li>Producer 在发送消息时，首先向 Broker 发送一条 half 消息，half 消息会被存储在 Broker 的事务消息日志中（此时的 half 消息还不能被消费），Producer 在 half 消息发送成功后再执行本地事务并告知 Broker 事务执行结果</li>
+<li>若 Producer 事务执行成功，就会通知 Broker 提交改事务消息（此时消息可以被消费了），若执行失败，就会通知 Broker 回滚该事务消息（此时消息会被删除）</li>
+<li>若 Broker 在规定时间内没有收到事务执行结果，会不断向 Producer 发送回查消息来询问结果，若 Producer 未能在过期时间内返回响应，则 Broker 自动回滚该事务消息</li>
+</ul>
+</li>
+<li>顺序消息消费<ul>
+<li>和 Kafka 支持同一个分区内的消息顺序消费（不同分区的消息消费是无序的）一样，RocketMQ 也提供同一个队列的消息顺序消费（不同队列的消息消费是无序的），因此顺序消费的前提是 Producer 选择同一个 Broker 以同步的方式发送顺序消息</li>
+<li>接着需要向该 Broker 为特定消费者申请分布式锁，加锁成功后该 Broker 的后续消息会只发送给特定的 Consumer，该 Consumer 会一次性拉取多条消息到本地 MessageQueue，因此需要申请 MessageQueue 锁来确保同一时间一个队列中只有一个线程能处理队列中的消息，即可顺序消费消息</li>
+<li>由于顺序消息消费需要加锁，因此会降低吞吐量，甚至造成消息阻塞</li>
+</ul>
+</li>
+<li>非顺序消息消费<ul>
+<li>RocketMQ 支持广播消费和集群消费</li>
+<li>广播消费时，RocketMQ 会将每条消息推送给集群内的所有消费者，保证消息至少被每个消费者消费一次，但是并不会重投消费失败的消息，客户端每一次重启都会从最新消息消费，客户端被关闭期间发送至服务端的消息将会被自动跳过</li>
+<li>集群消费时，RocketMQ 会将每一条消息都只分发到一个消费者客户端处理，不保证每一次失败重投的消息都被路由到同一个消费者上</li>
+</ul>
+</li>
+<li>延时消息消费<ul>
+<li>RocketMQ 支持需要等待指定时长才能能被消费的延时消息，实现方式是先将消息存储在内存中，然后使用定时器/时间轮进行消息延迟，到达指定时间后再将消息存储到磁盘中，此时才能由消费者消费</li>
+</ul>
+</li>
+<li>消息堆积<ul>
+<li>但客户端消息消费耗时过长或并发度较小时，就可能会出现消息堆积，此时可以增加消费者数量、提升消费者速度、降低生产者速度、清理过期消息、增加更多的 Broker 队列</li>
+</ul>
+</li>
+</ul>
+<h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><p>RabbitMQ 实现了高级消息队列协议（AMQP），也支持其他消息传递协议，例如简单文本定向消息协议（STOMP）和物联网协议（MQTT）</p>
+<ul>
+<li>架构<ul>
+<li>RabbitMQ 由 Producer、VHost、Exchange、Queue、Binding、Consumer 组成</li>
+<li>Producer 将消息发布到 Exchange，Exchange 是消息的接收和路由中心，将接收到的来自生产者的消息路由到一个或多个与之绑定的 Queue 中，Queue 是消息的存储和消费地，保存者未被消费的消息并等待 Consumer 消费，Binding 是 Exchange 和 Queue 之间的关联关系，定义了 Exchange 将消息路由到哪些 Queue 中</li>
+<li>VHost 是 RabbitMQ 的虚拟主机，类似于操作系统中的命名空间，用于将 RabbitMQ 的资源进行隔离和分组，每个 VHost 都拥有自己的 Exchange、Queue、Binding 和权限设置，不同 VHost 之间的资源相互独立，可以用于将不同的应用服务进行隔离，防止彼此之间的消息冲突和资源竞争</li>
+</ul>
+</li>
+<li>消息分发<ul>
+<li>RabbitMQ 通过确认机制或者事务机制来保证消息一定能成功发送，RabbitMQ 有六种消息分发模式，分别是简单模式、工作队列模型、发布订阅模式、路由模型、主题模型以及 RPC 模式</li>
+<li>简单模式是最基本最简单的消息传递模式，一个 Producer 将消息发送到一个 Queue 中，一个 Consumer 从 Queue 中获取并处理消息，消息的处理是同步的，适用于单个 Producer 和单个 Consumer 的场景</li>
+<li>工作队列模式用于实现一个任务在多个 Consumer 之间的并发处理的场景，每个消息只能被一个 Consumer 处理，可以提高系统的吞吐量</li>
+<li>发布订阅模式用于实现一个消息被多个消费者同时处理的场景（日志订阅等），Exchange 会将消息广播到所有绑定的 Queue，每个队列对应一个 Consumer</li>
+<li>路由模式用于实现需要根据消息的路由键将消息路由到不同队列的场景，Exchange 会根据路由键将消息路由到与之匹配的队列中，实现消息的筛选和分发</li>
+<li>主题模式是一个更灵活更复杂的消息路由模式，使用通配符匹配路由键，可以将消息路由到多个队列中</li>
+</ul>
+</li>
+<li>延迟消息消费<ul>
+<li>RabbitMQ 中的正常消息如果超过存活时间（TTL 过期），或者队列长度超限，或者被消费者拒绝，或者无法路由等没有被消费，那么就会成为死信，并被重新发送到死信队列中</li>
+<li>可以通过给消息设置 TTL，等待消息过期成为死信之后再消费，就实现了延迟消息消费，RabbitMQ 的 TTL 是可以设置任意时长的，不同于 RocketMQ 只能设置一些固定的时长</li>
+<li>注意如果排在队头的消息的 TTL 设置的很大，那么排在队头之后的消息即使过期也无法进入死信队列，而是会一直被队头阻塞</li>
+</ul>
+</li>
+<li>消息重复<ul>
+<li>RabbitMQ 通过解决幂等问题来避免消息重复消费，即每个消息都带有一个唯一的标识，Consumer 通过这个唯一标识来判断消息是否被重复消费了</li>
+</ul>
+</li>
+</ul>
+</section>
     <!-- Tags START -->
     
     <!-- Tags END -->
@@ -234,13 +297,20 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2024/02/21/dubbo/">
+      <a class="nav-left" href="/2024/02/21/rpc/">
         <span class="nav-arrow">← </span>
         
-          Dubbo
+          Remote Procedure Call
         
       </a>
     
+    
+      <a class="nav-right" href="/2024/02/24/zookeeper/">
+        
+          Zookeeper
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
