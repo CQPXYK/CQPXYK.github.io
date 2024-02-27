@@ -163,7 +163,53 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Zookeeper 是最早流行的开源分布式协调服务框架之一，同时也提供了分布式配置中心的功能，以强一致性著称（CP 设计），但是需要用户自己来开发分布式配置的功能。</p>
+    <section class="markdown-content"><p>Zookeeper 是最早流行的开源分布式协调服务框架之一，提供了分布式配置中心的功能，以顺序一致性著称（CP 设计），可以用于分布式配置管理、分布式同步、命名服务、集群管理、Master 选举、分布式协调服务、服务注册与发现、负载均衡等应用场景。</p>
+<h1 id="主要组成"><a href="#主要组成" class="headerlink" title="主要组成"></a>主要组成</h1><p>Zookeeper 中的主要组成部分有</p>
+<ul>
+<li><p>领导者（leader），负责进行投票的发起和决议，更新系统状态，为客户端提供读写服务，只有 leader 可以进行写操作</p>
+</li>
+<li><p>跟随者（follower），用于接收客户端的请求并响应客户端返回结果，在选举时参与投票，为客户端提供读服务</p>
+</li>
+<li><p>观察者（Observer），可以接收客户端连接，将写请求转发给 leader，但不参与选举投票，只同步 leader 状态，作用在于扩展系统，提高读取速度</p>
+</li>
+<li><p>客户端（client），请求发起方</p>
+</li>
+</ul>
+<h1 id="选举机制"><a href="#选举机制" class="headerlink" title="选举机制"></a>选举机制</h1><p>Zookeeper 会在集群启动阶段以及 leader 失效时通过选举机制来确保 Zookeeper 集群中有一个 leader 节点，从而协调和处理客户端请求，选举机制是实现 Zookeeper 分布式协调一致性的核心，Zookeeper 中的每个 follower 节点都可以成为 leader。</p>
+<p>一次完整的选举大概要经历以下步骤</p>
+<ul>
+<li><p>初始化，所有 follower 节点都处于 looking 状态，每个节点都会监视集群中的其他节点，以侦听 leader 选举消息</p>
+</li>
+<li><p>提名，当一个节点启动时，会向其他节点发送投票请求（称为提名）</p>
+</li>
+<li><p>改投，节点收到其他节点的提名后可以选择投票改投这个节点，也可以不投票，每个节点只能在一个选举周期内投一票</p>
+</li>
+</ul>
+<p>Zookeeper 以事务 ID（zxid）来标识数据的新旧程度（zxid 越大代表节点的数据越新），以数据的新旧程度来标识节点的能力强弱（数据越新代表节点的能力越强）。在投票过程中，节点首先会认为自己最强，先投自己一票并将投票信息（包含了自己的事务 ID zxid 和唯一标识节点自身的 sid）广播出去，当节点接收到其他节点的投票信息时，会将其他节点的 zxid 和自身对比，若其他节点的 zxid 更大，则改投其他节点。</p>
+<p>选举过程有多个轮次，每个轮次是一个选举周期，在每个选举周期中，节点根据投票来选择新的 leader 候选，如果一个候选节点获得了超过半数的投票，那么就成为新的 leader，如果没有候选节点成为 leader，那么这个选举周期失败，所有节点会继续进行下一个选举周期。</p>
+<p>一旦一个节点成为 leader，会开始处理客户端请求并向其他节点发送 leader 就绪信息，告知其他节点自己成为 leader，其他节点会与新 leader 同步数据（也包括同步未完成的客户端请求），确保所有节点在一个一致的状态下运行。</p>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p>Zookeeper 中的数据以目录结构的形式存储，每一个存储数据的节点都称为 ZNode</p>
+<ul>
+<li><p>ZNode 不支持部分读写，需要一次性完整读写，每个 ZNode 都有一个唯一的路径标识，每个 ZNode 都可以有子 ZNode（和目录类似），ZNode 中可以存储数据和状态信息</p>
+</li>
+<li><p>ZNode 有 PERSISTENT（持久节点）、PERSISTENT_SEQUENTIAL（持久的连续节点）、EPHEMERAL（临时节点）、EPHEMERAL_SEQUENTIAL（临时的连续节点）这种四种类型，ZNode 的类型在创建时确定并不能修改</p>
+</li>
+<li><p>持久节点会在创建后一直存在，直到有删除操作来主动清除该持久节点，而临时节点的生命周期与客户端会话绑定，一旦客户端会话失效，那么该临时节点就会自动被清除，临时节点不能有子节点，顺序节点在创建时会自动加上编号</p>
+</li>
+<li><p>每个 ZNode 都可以配置监视器来监听 ZNode 以及子 ZNode 中的数据和状态变化，一旦这些状态发生变化，服务器就会通知这个 ZNode 上的所有子 ZNode 的监视器，使得每个客户端都能很快知道它所关注的目录节点的变化，从而迅速做出反应</p>
+</li>
+</ul>
+<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><p>基于 Zookeeper 的临时有序节点可以实现分布式锁，当多个客户端尝试对某个方法加锁时，Zookeeper 的 leader 节点为每个客户端在该方法对应的指定节点的目录下（并发）创建与客户端相对应的临时有序节点，有序节点中序号最小的那个节点会获得锁，删除这个临时节点即可释放锁</p>
+<ul>
+<li><p>如果获取到锁的客户端宕机，那么该临时会被自动删除，即自动解锁，因此可以避免服务宕机导致的分布式锁无法释放问题</p>
+</li>
+<li><p>当一个客户端通过删除临时节点来释放锁之后，下一个节点序号最小的客户端就可以继续获得锁，因此可以实现阻塞的分布式锁</p>
+</li>
+<li><p>客户端可以判断自身是否已经获得锁来区分是更改锁的重入次数还是创建新的临时有序节点，因此可以实现可重入的分布式锁</p>
+</li>
+<li><p>Zookeeper 实现的分布式锁在创建和释放时涉及到节点的创建和销毁，这种操作只能通过 leader 节点来执行，然后将数据同步到 follower 节点上，因此性能会差于基于缓存的分布式锁</p>
+</li>
+</ul>
 </section>
     <!-- Tags START -->
     
@@ -208,6 +254,9 @@
     <aside class="content-container">
   <div class="toc-main">
   
+      
+          <strong class="toc-title">CONTENT</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%84%E6%88%90"><span class="toc-nav-text">主要组成</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">选举机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">数据结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">分布式锁</span></a></li></ol>
       
   
   </div>
