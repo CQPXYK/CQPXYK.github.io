@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
+    <lastmod>2024-03-09</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2024/03/09/elastic-search/</loc>
+    <lastmod>2024-03-09</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/05/06/blog/</loc>
-    <lastmod>2024-03-05</lastmod>
+    <lastmod>2024-03-09</lastmod>
   </url>
   <url>
     <loc>http://example.com/2024/01/10/effective-product-control/</loc>
@@ -149,11 +157,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>

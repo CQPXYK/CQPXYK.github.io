@@ -2,9 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
+    
+    <lastmod>2024-03-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/categories/index.html</loc>
+    
+    <lastmod>2024-03-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2024/03/09/elastic-search/</loc>
+    
+    <lastmod>2024-03-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/05/06/blog/</loc>
     
-    <lastmod>2024-03-05</lastmod>
+    <lastmod>2024-03-09</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -39,15 +66,6 @@
   
   <url>
     <loc>http://example.com/2024/02/18/redis/</loc>
-    
-    <lastmod>2024-03-04</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/categories/index.html</loc>
     
     <lastmod>2024-03-04</lastmod>
     
@@ -362,7 +380,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     
     <lastmod>2023-12-30</lastmod>
     
@@ -371,7 +389,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     
     <lastmod>2023-12-30</lastmod>
     
@@ -688,7 +706,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2024-03-05</lastmod>
+    <lastmod>2024-03-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
