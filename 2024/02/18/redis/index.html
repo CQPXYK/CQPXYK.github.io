@@ -413,10 +413,55 @@
 <li>黑名单过滤器使用布隆过滤器来判断用户是否存在于黑名单中，从而阻止恶意请求</li>
 </ul>
 <p>Java 可以使用 Google Guava 库、Apache Commons 库以及 Redis 来实现布隆过滤器</p>
-<h1 id="5、其他"><a href="#5、其他" class="headerlink" title="5、其他"></a>5、其他</h1><h2 id="5-1-不同缓存类型"><a href="#5-1-不同缓存类型" class="headerlink" title="5.1 不同缓存类型"></a>5.1 不同缓存类型</h2><ul>
-<li>本地缓存是将数据存储在单个应用程序的内存中，速度快、易于使用和管理，但不能跨多个节点共享缓存，不能用于集群环境，适合单个应用程序的性能优化</li>
-<li>分布式缓存将数据存储在多个节点的内存中，这些节点可以在不同的服务器，甚至是不同的地理位置上，可以支持多个应用程序共享数据，提高系统的可伸缩性和可用性，管理和维护成本较高，需要考虑数据一致性和故障恢复等问题</li>
-<li>近端缓存通常是指位于网络边缘、距离用户位置更近的缓存，用于在网络上尽可能快地向用户提高内容，减少用户请求的响应时间和带宽占用，典型例子是 CDN，详细参见 <a href="../../../../2023/11/06/computer-networking/">Computer Networking</a> 的 2.5 小节，此外，由于应用服务器比分布式缓存距离用户也更近一些，因此和应用服务器部署在一起的缓存有时候也可以称为近端缓存，本地缓存也是近端缓存的一种</li>
+<h1 id="5、补充"><a href="#5、补充" class="headerlink" title="5、补充"></a>5、补充</h1><h2 id="5-1-不同缓存类型"><a href="#5-1-不同缓存类型" class="headerlink" title="5.1 不同缓存类型"></a>5.1 不同缓存类型</h2><ul>
+<li><p>本地缓存</p>
+<ul>
+<li>将数据存储在单个应用程序的内存中，访问速度快、易于使用和管理，但不能跨多个节点共享缓存，存在一致性问题使其无法用于集群环境，适合单个应用程序的性能优化</li>
+<li>为了提升缓存的效率，本地缓存通常采用 Key-Value 结构进行数据存储，本地缓存作为一个全局可访问的变量，需要考虑线程安全问题，本地缓存会占用 JVM 堆内存，需要考虑存储空间问题、过期时间和清除策略</li>
+<li>推荐使用的比较成熟的本地缓存框架是 Caffeine，Caffeine 是 Spring 5 中默认支持的本地缓存，采用 W-TinyLFU 缓存失效算法，性能良好，支持异步 Cache，很多工作都是交由线程池去做的，支持写入外部资源</li>
+</ul>
+</li>
+<li><p>分布式缓存</p>
+<ul>
+<li>将数据存储在多个节点的内存中，这些节点可以在不同的服务器，甚至是不同的地理位置上，可以支持多个应用程序共享数据，提高系统的可伸缩性和可用性，管理和维护成本较高，需要考虑数据一致性和故障恢复等问题</li>
+<li>Redis 就是一个分布式缓存框架</li>
+</ul>
+</li>
+<li><p>多级缓存</p>
+<ul>
+<li>多级缓存是比较常见的一种性能优化手段，一般就是本地缓存加上分布式缓存，优先查询本地缓存，如果本地缓存中查不到，再查询分布式缓存并将其保存到本地缓存，多级缓存的问题在于缓存数据一致性</li>
+<li>一般是将变化不频繁且能够接受一定程度的不一致的数据考虑放到本地缓存中（变化频繁的数据会带来严重的一致性问题，和本地缓存的思想是相悖的），基于业务能够接受的不一致时长来设置本地缓存的失效时长</li>
+</ul>
+</li>
+<li><p>近端缓存</p>
+<ul>
+<li>通常是指位于网络边缘、距离用户位置更近的缓存，用于在网络上尽可能快地向用户提高内容，减少用户请求的响应时间和带宽占用，典型例子是 CDN，详细参见 <a href="../../../../2023/11/06/computer-networking/">Computer Networking</a> 的 2.5 小节</li>
+<li>由于应用服务器比分布式缓存距离用户也更近一些，因此和应用服务器部署在一起的本地缓存也可以称为近端缓存</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-2-缓存失效算法"><a href="#5-2-缓存失效算法" class="headerlink" title="5.2 缓存失效算法"></a>5.2 缓存失效算法</h2><p>当缓存中存储地对象过多时，需要通过缓存失效算法选择出需要被淘汰的对象，常见的缓存失效算法如下</p>
+<ul>
+<li>FIFO<ul>
+<li>选择最先进行缓存的数据，使用队列，淘汰队头</li>
+</ul>
+</li>
+<li>LRU<ul>
+<li>选择最久没有被访问的数据，可以使用链表，每次访问缓存数据后将其移动到链表头部，淘汰链表尾部</li>
+<li>在 Redis、Memcached 中有被广泛使用</li>
+</ul>
+</li>
+<li>LFU<ul>
+<li>选择最小频率被访问的数据，可以对每个缓存数据块进行引用计数，具有相同计数的数据块则按照时间排序，淘汰排序后末尾的数据块</li>
+<li>通常能够实现最佳的缓存命中率，但需要给每个缓存数据块维护频率信息，每次访问缓存都需要更新，需要较大的空间，时间性能也较差</li>
+<li>无法很好的清除那种早期访问频率很高，后期不再访问的数据，也容易淘汰刚刚加入缓存的数据块</li>
+</ul>
+</li>
+<li>W-TinyLFU<ul>
+<li>是基于窗口（W 就是 Window）的近似虽少使用算法，根据数据的访问模式动态地调整缓存中数据的淘汰策略，综合了 LRU 和 LFU 的长处，高命中率、低内存占用，是一种高效的缓存淘汰算法，主要用于处理大规模缓存系统中的淘汰问题</li>
+<li>使用 LRU 作为窗口缓存，让数据块能够有机会在窗口缓存中积累它的频率，避免淘汰刚刚加入缓存的低频数据，使用 SLRU 作为主缓存，数据块被挤出窗口缓存时，会在过滤器和主缓存中最容易被淘汰的数据块进行竞争，如果频率大于主缓存中最低频的数据块，才能进入主缓存</li>
+</ul>
+</li>
 </ul>
 </section>
     <!-- Tags START -->
@@ -471,7 +516,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1、模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1.1 集群模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">1.2 通信协议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.3 并发模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1.4 事务机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-5-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">1.5 原子操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-6-Pipeline-%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1.6 Pipeline 机制</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%AD%98%E5%82%A8"><span class="toc-nav-text">2、存储</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-nav-text">2.1 内存管理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-nav-text">2.2 数据持久化</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%95%B0%E6%8D%AE%E8%BF%87%E6%9C%9F"><span class="toc-nav-text">2.3 数据过期</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">2.4 数据结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E9%94%AE%E5%80%BC%E5%AF%B9%E8%AE%BE%E8%AE%A1"><span class="toc-nav-text">2.5 键值对设计</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3、问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E7%83%AD-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.1 热 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E5%A4%A7-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.2 大 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-nav-text">3.3 缓存击穿</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-nav-text">3.4 缓存穿透</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-nav-text">3.5 缓存雪崩</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-6-%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-nav-text">3.6 缓存和数据库不一致</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-7-%E7%BC%93%E5%AD%98%E9%9B%86%E7%BE%A4%E4%B9%8B%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-nav-text">3.7 缓存集群之间不一致</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-8-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="toc-nav-text">3.8 使用注意</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%BA%94%E7%94%A8"><span class="toc-nav-text">4、应用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.1 消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.2 延迟消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">4.3 分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E5%88%86%E5%B8%83%E5%BC%8F%E9%99%90%E6%B5%81"><span class="toc-nav-text">4.4 分布式限流</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-5-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-nav-text">4.5 布隆过滤器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%85%B6%E4%BB%96"><span class="toc-nav-text">5、其他</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-%E4%B8%8D%E5%90%8C%E7%BC%93%E5%AD%98%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">5.1 不同缓存类型</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1、模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1.1 集群模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-nav-text">1.2 通信协议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.3 并发模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1.4 事务机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-5-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">1.5 原子操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-6-Pipeline-%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">1.6 Pipeline 机制</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%AD%98%E5%82%A8"><span class="toc-nav-text">2、存储</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-nav-text">2.1 内存管理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-nav-text">2.2 数据持久化</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E6%95%B0%E6%8D%AE%E8%BF%87%E6%9C%9F"><span class="toc-nav-text">2.3 数据过期</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">2.4 数据结构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E9%94%AE%E5%80%BC%E5%AF%B9%E8%AE%BE%E8%AE%A1"><span class="toc-nav-text">2.5 键值对设计</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3、问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E7%83%AD-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.1 热 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E5%A4%A7-Key-%E9%97%AE%E9%A2%98"><span class="toc-nav-text">3.2 大 Key 问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-nav-text">3.3 缓存击穿</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-nav-text">3.4 缓存穿透</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-nav-text">3.5 缓存雪崩</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-6-%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-nav-text">3.6 缓存和数据库不一致</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-7-%E7%BC%93%E5%AD%98%E9%9B%86%E7%BE%A4%E4%B9%8B%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-nav-text">3.7 缓存集群之间不一致</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-8-%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F"><span class="toc-nav-text">3.8 使用注意</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E5%BA%94%E7%94%A8"><span class="toc-nav-text">4、应用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.1 消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E5%BB%B6%E8%BF%9F%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-nav-text">4.2 延迟消息队列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">4.3 分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E5%88%86%E5%B8%83%E5%BC%8F%E9%99%90%E6%B5%81"><span class="toc-nav-text">4.4 分布式限流</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-5-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-nav-text">4.5 布隆过滤器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E8%A1%A5%E5%85%85"><span class="toc-nav-text">5、补充</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-%E4%B8%8D%E5%90%8C%E7%BC%93%E5%AD%98%E7%B1%BB%E5%9E%8B"><span class="toc-nav-text">5.1 不同缓存类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-%E7%BC%93%E5%AD%98%E5%A4%B1%E6%95%88%E7%AE%97%E6%B3%95"><span class="toc-nav-text">5.2 缓存失效算法</span></a></li></ol></li></ol>
       
   
   </div>
