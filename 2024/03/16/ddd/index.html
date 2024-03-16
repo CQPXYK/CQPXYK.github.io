@@ -10,7 +10,7 @@
   
   <title>
     
-      Categories | CQ&#39;s Blog
+      Domain Driven Design | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -154,8 +154,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Categories</h2>
-  <!--<p class="post-date">2022-05-05</p>
+  <h2>Domain Driven Design</h2>
+  <!--<p class="post-date">2024-03-16</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>-->
@@ -163,71 +163,122 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="基础科目"><a href="#基础科目" class="headerlink" title="基础科目"></a>基础科目</h1><ul>
-<li><a href="../../2022/08/06/mysql/">DBMS (Example: MySQL)</a></li>
-<li><a href="../../../../2023/11/06/computer-networking/">Computer Networking</a></li>
-<li><a href="../../../../2023/08/20/operating-systems/">Operating Systems</a></li>
-<li><a href="../../../../2023/10/14/shell-script/">Linux &amp; Shell Scripting</a></li>
-<li><a href="../../2022/05/08/java-language/">Java Language</a></li>
-<li><a href="../../../../2023/12/09/java-virtual-machine/">Java Virtual Machine</a></li>
-<li><a href="../../2022/05/08/java-concurrency/">Java Concurrency</a></li>
+    <section class="markdown-content"><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>领域驱动设计（Domain Driven Design, DDD）是一种软件开发方法论，强调将业务（而不是技术）作为软件设计的核心，开发人员应当与业务人员密切合作，了解业务需求，理解业务模型，通过领域建模、领域驱动架构、领域事件将业务模型映射到软件系统中，从而开发出更符合业务需求的软件系统，这样软件系统易于维护和重构，可以更好地满足业务需求并支持业务迭代。</p>
+<ul>
+<li><p>领域建模是指通过领域对象、领域服务、领域事件等概念来对业务进行抽象与建模，进而实现业务需求</p>
+<ul>
+<li><p>领域模型是用来描述业务领域的核心概念、业务规则和业务流程的一种图形化表示方式，由实体、值对象、聚合、领域服务和时间等元素组成</p>
+</li>
+<li><p>实体通常指具有唯一标识的具体对象或事务，具有自己的生命周期，可以被创建、修改和删除，通常对应数据库表中的一行记录，每个实体具有唯一的标识符（通常是主键）</p>
+</li>
+<li><p>值对象通常指没有唯一标识符的对象或数据类型，值对象通常不可变，一旦被创建就不能修改，只能通过创建新的值对象来替换原来的值对象，通过对应数据库表中的一组字段</p>
+</li>
+<li><p>聚合是指将多个相关的对象或实体组合在一起形成一个具有单一标识符的单独的整体，这个整体代表了一组相关的子对象或属性，在整个系统中具有特定的上下文和含义</p>
+</li>
+<li><p>聚合根是聚合中的唯一标识符，控制着聚合中其他对象的生命周期，是整个聚合的唯一入口点，所有对聚合的操作都是通过聚合根来进行的</p>
+</li>
 </ul>
-<h1 id="思想范式"><a href="#思想范式" class="headerlink" title="思想范式"></a>思想范式</h1><ul>
-<li><a href="../../2022/05/06/clean-code/">Clean Code</a></li>
-<li><a href="../../2022/05/11/design-patterns/">Design Patterns</a></li>
-<li><a href="../../2022/09/30/tdd/">Test Driven Development</a></li>
-<li><a href="../../../../2024/03/16/ddd/">Domain Driven Design</a></li>
+</li>
+<li><p>领域驱动架构是指将应用程序从上到下依次划分为用户接口层、应用层、领域层、基础设施层这四个层次来实现业务领域的清晰分离，层级调用关系是上层调用下层单向调用</p>
+<ul>
+<li><p>用户接口层包含用户界面展示、Web 服务调用</p>
+</li>
+<li><p>应用层提供应用服务来处理用户请求并协调领域对象的交互</p>
+</li>
+<li><p>领域层包含聚合（实体和值对象）和领域服务</p>
+</li>
+<li><p>基础设施层负责提供数据持久化、事件总线、API 网关、缓存、第三方工具以及其他基础组件等</p>
+</li>
 </ul>
-<h1 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h1><ul>
-<li><a href="../../2022/05/07/git/">Git</a></li>
-<li><a href="../../2022/05/07/maven/">Maven</a></li>
-<li><a href="../../2023/07/29/gradle/">Gradle</a></li>
-<li><a href="../../2022/08/06/mysql/">MySQL</a></li>
-<li><a href="../../2022/12/15/oracle/">Oracle</a></li>
-<li><a href="../../../../2024/02/18/redis/">Redis</a></li>
-<li><a href="../../2023/02/11/jmeter/">JMeter</a></li>
+</li>
+<li><p>领域事件是领域模型发生一些状态或行为时向外发出的一个通知，这个通知被定义为领域事件</p>
+<ul>
+<li>不同于 MQ 中的事件，领域事件一般不会在分布式系统之间传递，只会在单个微服务内部传递，作用在于解除领域之间的耦合</li>
+<li>领域事件驱动是指通过领域事件的发布和订阅机制来在各个领域模块之间传递信息，实现各个领域模型之间的解耦</li>
 </ul>
-<h1 id="框架组件"><a href="#框架组件" class="headerlink" title="框架组件"></a>框架组件</h1><ul>
-<li><a href="../../2022/05/10/spring/">Spring Framework</a></li>
-<li><a href="../../2022/05/22/spring-boot/">Spring Boot</a></li>
-<li><a href="../../../../2024/02/21/rpc/">Remote Procedure Call</a></li>
-<li><a href="../../../../2024/02/21/mq/">Message Queue</a></li>
-<li><a href="../../../../2024/02/24/zookeeper/">Zookeeper</a></li>
-<li><a href="../../../../2024/03/09/elastic-search/">ElasticSearch</a></li>
+</li>
 </ul>
-<h1 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h1><ul>
-<li><a href="../../2023/01/01/java-web/">Java Web System</a></li>
-<li><a href="../../../../2024/02/06/distributed-system/">Distributed System</a></li>
-<li><a href="../../../../2024/03/09/cloud-computing/">Cloud Computing</a></li>
+<p>DDD 是一种复杂的方法论，需要较长的学习周期和更多的开发成本，并不适用于所有的项目团队，应用 DDD 之前需要评估项目的适用性。</p>
+<h1 id="实现流程"><a href="#实现流程" class="headerlink" title="实现流程"></a>实现流程</h1><ul>
+<li><p>确定业务领域</p>
+<ul>
+<li><p>需要明确软件系统需要解决的业务问题，并确定业务领域的边界</p>
+</li>
+<li><p>业务领域是指具有内在一致性和自治性的业务范畴，包含了业务规则和业务流程</p>
+</li>
 </ul>
-<h1 id="运维管理"><a href="#运维管理" class="headerlink" title="运维管理"></a>运维管理</h1><ul>
-<li><a href="../../2022/09/06/devops/">CI/CD、DevOps、Jenkins</a></li>
-<li><a href="../../2022/09/06/docker/">Container、Cloud、Docker</a></li>
-<li><a href="../../2022/10/03/kubernetes/">K8S、ECS、Openshift</a></li>
+</li>
+<li><p>设计领域模型</p>
+<ul>
+<li><p>根据业务领域来设计领域模型，实时确保领域模型和业务需求的一致性</p>
+</li>
+<li><p>建立统一语言以确保所有团队成员都能够理解和共享业务知识</p>
+</li>
 </ul>
-<h1 id="读书笔记"><a href="#读书笔记" class="headerlink" title="读书笔记"></a>读书笔记</h1><ul>
-<li><a href="../../2022/05/06/clean-code/">代码整洁之道</a></li>
-<li><a href="../../2022/05/06/effective-java/">Effective Java</a></li>
-<li><a href="../../2022/05/08/java-concurrency/">Java 并发编程的艺术</a></li>
-<li><a href="../../2022/05/10/spring/">Spring 实战</a></li>
-<li><a href="../../2022/08/06/mysql/">高性能 MySQL</a></li>
-<li><a href="../../2022/05/08/java-language/">Java 编程思想</a></li>
-<li><a href="../../../../2023/08/20/operating-systems/">操作系统导论</a></li>
-<li><a href="../../../../2023/10/14/shell-script/">Linux 命令行与 shell 脚本编程大全</a></li>
-<li><a href="../../../../2023/11/06/computer-networking/">计算机网络 自顶向下方法</a></li>
-<li><a href="../../../../2023/12/09/java-virtual-machine/">深入理解 Java 虚拟机</a></li>
-<li><a href="../../../../2024/01/10/effective-product-control/">Effective Product Control</a></li>
+</li>
+<li><p>设计领域架构</p>
+<ul>
+<li><p>将应用程序从上到下依次划分为用户接口层、应用层、领域层、基础设施层这四个层次来实现业务领域的清晰分离</p>
+</li>
+<li><p>架构模型可以不同的表现形式，但都是以领域模型为中心的微服务架构，设计思想都是高内聚低耦合原则</p>
+</li>
 </ul>
-<h1 id="实践用例"><a href="#实践用例" class="headerlink" title="实践用例"></a>实践用例</h1><ul>
-<li><a href="../../2022/05/06/blog/">搭建个人博客</a></li>
+</li>
+<li><p>实现领域模型</p>
+<ul>
+<li><p>将设计好的领域模型转化为实际代码</p>
+</li>
+<li><p>领域对象封装到聚合类中，实现领域服务以实现领域模型之间的交互和协作，使用领域事件来传递领域对象之间的消息</p>
+</li>
 </ul>
-<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>所有的内容均是为了保证自己能有一个从输入到输出的消化梳理过程，每个知识点梳理都可能会有各种局限于当下的偏差与不足，但是都会持续地进行修正与完善，期待通过点与点交织成网最终构建出一个井然有序的知识网图。</p>
+</li>
+</ul>
+<h1 id="充血-贫血模型"><a href="#充血-贫血模型" class="headerlink" title="充血/贫血模型"></a>充血/贫血模型</h1><p>充血模型和贫血模型都是面向对象的软件设计方法</p>
+<ul>
+<li><p>充血模型</p>
+<ul>
+<li><p>强调将业务逻辑封装在领域对象中，领域对象自身包含业务逻辑</p>
+</li>
+<li><p>易于理解和扩展，具有良好的封装性和可维护性，可以避免过度依赖外部服务，提高系统的稳定性</p>
+</li>
+<li><p>需要对模型具备良好理解才能开发，上手成本高，对象间的协议更加复杂，对象的状态可能会变得不一致</p>
+</li>
+<li><p>适用于较大的应用系统或者复杂的业务流程</p>
+</li>
+</ul>
+</li>
+<li><p>贫血模型</p>
+<ul>
+<li><p>强调行为与数据分离，领域对象仅持有数据，业务逻辑行为由外部服务提供</p>
+</li>
+<li><p>对象复杂度低，代码的重用性和可测试性高，可以更好地利用现有的服务和框架</p>
+</li>
+<li><p>对象缺乏封装性，易于出现耦合性和脆弱性，业务逻辑被分散在各个类中，过度依赖外部服务，可能导致系统的不稳定</p>
+</li>
+<li><p>适用于较小的应用系统或简答的业务流程</p>
+</li>
+</ul>
+</li>
+</ul>
 </section>
     <!-- Tags START -->
     
     <!-- Tags END -->
     <!-- NAV START -->
     
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2024/03/09/cloud-computing/">
+        <span class="nav-arrow">← </span>
+        
+          Cloud Computing
+        
+      </a>
+    
+    
+  </div>
+
     <!-- NAV END -->
     <!-- 打赏 START -->
     
@@ -255,7 +306,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%9F%BA%E7%A1%80%E7%A7%91%E7%9B%AE"><span class="toc-nav-text">基础科目</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%80%9D%E6%83%B3%E8%8C%83%E5%BC%8F"><span class="toc-nav-text">思想范式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="toc-nav-text">开发工具</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A1%86%E6%9E%B6%E7%BB%84%E4%BB%B6"><span class="toc-nav-text">框架组件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-nav-text">系统架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86"><span class="toc-nav-text">运维管理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="toc-nav-text">读书笔记</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AE%9E%E8%B7%B5%E7%94%A8%E4%BE%8B"><span class="toc-nav-text">实践用例</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-nav-text">写在最后</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-nav-text">概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">实现流程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%85%85%E8%A1%80-%E8%B4%AB%E8%A1%80%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">充血&#x2F;贫血模型</span></a></li></ol>
       
   
   </div>
@@ -266,7 +317,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/categories/index.html';
+    var url = 'http://example.com/2024/03/16/ddd/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({

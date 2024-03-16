@@ -866,6 +866,68 @@
 <h2 id="5-10-拷贝"><a href="#5-10-拷贝" class="headerlink" title="5.10 拷贝"></a>5.10 拷贝</h2><p>拷贝对象时，浅拷贝是指只复制对象的地址，而不是对象本身，原始对象和浅拷贝得到的对象实际上是共享同一个内存地址的；深拷贝是指将对象及其所有属性都复制到另一个全新的对象中，原始对象和深拷贝得到对象位于不同的内存地址，互不影响。深拷贝有两种实现方法，一个是实现<code>Cloneable</code>接口并重写<code>clone</code>方法，另一个是序列化与反序列化。</p>
 <p>调用一个对象的<code>clone</code>方法时，JVM 就会创建一个新的对象，将前面对象的内容全部拷贝进去（并不会调用构造函数），如果只实现了<code>Cloneable</code>接口而没有重写<code>clone</code>方法，则会默认使用<code>Object</code>类中的<code>clone</code>方法（这是一个 Native 方法），此时只能实现浅拷贝，要实现深拷贝就必须重写<code>clone</code>方法，要重写<code>clone</code>方法就必须实现<code>Cloneable</code>接口。</p>
 <p>先把对象序列化成某种格式流，再从该格式流中反序列化对象，默认就会得到新的对象，序列化的方法可以 Java 原生的序列化机制、各种 JSON 工具等。</p>
+<h2 id="5-11-文件处理"><a href="#5-11-文件处理" class="headerlink" title="5.11 文件处理"></a>5.11 文件处理</h2><p>通常看到的 xlsx 文件其实是一个将若干个 XML 格式的纯文本文件压缩到一起的高度压缩文件，解压后的 xlsx 文件包含的内容可能会扩大为好几倍，Excel 就是读取这些压缩文件的信息，最后展现出一个完全图形化的电子表格。</p>
+<p>Apache POI 是一个非常流行的文档处理工具，通常被用于处理 Excel，当 POI 在处理 xlsx 文件时，会把整个内容都加载到内存中，实际处理的大小并不是看到的 xlsx 文件大小，因此会很容易出现内存溢出。</p>
+<p>POI 中提供了如下<code>WorkBook</code>来操作 Excel</p>
+<ul>
+<li><p><code>SSFWorkbook</code>用于处理 Excel 的 .xls 格式</p>
+</li>
+<li><p><code>XSSFWorkbook</code>用于处理 Excel 的 .xlsx 格式，支持更大的数据集和更多的功能，如更好地样式和公式支持，也会占据比<code>SSFWorkbook</code>更多的内存</p>
+</li>
+<li><p><code>SXSSFWorkbook</code>用于处理 Excel 的 .xlsx 格式，是<code>XSSFWorkbook</code>的流式版本，专门设计用于处理大数据集，通过将数据写入临时文件而非全部保留在内存中，显著减少内存消耗，避免内存溢出</p>
+</li>
+</ul>
+<h2 id="5-12-定时任务"><a href="#5-12-定时任务" class="headerlink" title="5.12 定时任务"></a>5.12 定时任务</h2><p>定时任务可以定时执行的原理是通过操作系统提供的定时器实现的，定时器可以周期性地发出中断信号，以便操作系统或其他应用程序可以在指定的时间间隔内执行某些任务，操作系统中常见的定时任务管理工具有 crontab（Linux 系统）、Windows Task Scheduler（Windows 系统）。</p>
+<p>Java 提供如下方式来实现定时任务</p>
+<ul>
+<li><p>原生特性，使用简单，不需要依赖第三方调度框架和类库，非常轻量级，但依赖 JVM 进程，一般需要配合数据库的持久化一起使用，不便于集群多节点配合</p>
+<ul>
+<li><p><code>Timer</code>类和<code>TimerTask</code>类，精度不高，单线程执行，某个任务执行时间长或者抛出未捕获异常都会影响到后续任务的执行</p>
+</li>
+<li><p><code>ScheduleExecutorService</code>类，比<code>Timer</code>更精准，支持多个任务并发执行</p>
+</li>
+<li><p><code>DelayQueue</code>类，本质是一个带有延迟时间的无界阻塞队列，元素必须实现<code>Delayed</code>接口，当从<code>DelayQueue</code>中取出一个元素时，如果其延迟时间还未到达，则会阻塞等待直到延迟时间到达</p>
+</li>
+</ul>
+</li>
+<li><p>Spring 类库的<code>@Scheduled</code>注解</p>
+</li>
+<li><p>Quartz 任务调度框架的<code>JobDetail</code>和<code>Trigger</code>对象，支持任务的并发执行和动态调度</p>
+</li>
+<li><p>xxl-job 是一个分布式定时任务调度平台，支持集群部署，可以满足高并发、大数据量的任务调度需求</p>
+</li>
+<li><p>Elastic-Job 是一个分布式任务调度框架，支持分布式部署，提供高并发、高可用性、高可扩展性、大数据量的任务调度需求</p>
+</li>
+</ul>
+<p>此外，也可以自定义算法来实现定时任务</p>
+<ul>
+<li><p>小顶堆</p>
+<ul>
+<li>可以作为管理定时事件的数据结构，每个事件包含触发时间戳和要执行的任务信息，最紧要触发的任务一直位于堆的根部，从而高效地触发最近需要触发的定时事件，Java 中的<code>Timer</code>类和<code>DelayQueue</code>类都是基于小顶堆实现的</li>
+</ul>
+</li>
+<li><p>链表</p>
+<ul>
+<li>可以作为管理定时事件的数据结构，每个节点包含触发时间戳和任务信息，链表中的节点按照触发时间戳从小到大排列，通过遍历链表可以找到最近触发的定时事件</li>
+</ul>
+</li>
+<li><p>时间轮</p>
+<ul>
+<li><p>是一种用于处理定时任务和调度的常见算法，算法需要定义一个时间轮盘，在轮盘中划分出槽位，每个槽位表示一个时间段（秒级、分钟级、小时级等），将需要定时执行的任务挂到这些槽位中，随着轮盘指针随着时间推移而不断旋转，指针指向的槽位中的任务就会定时触发，会在线程池中执行被触发的任务，常见的应用时间轮算法的框架和库如下</p>
+</li>
+<li><p>Netty，使用时间轮算法来处理定时任务和超时检测，时间轮用于管理通道的超时和重连机制</p>
+</li>
+<li><p>Akka，使用时间轮算法来管理和触发并发任务，使得 Akka 能够支持高并发和复杂的任务调度需求</p>
+</li>
+<li><p>Kafka，使用时间轮算法来管理消息的过期和删除，以释放存储空间</p>
+</li>
+<li><p>Hystrix，使用时间轮算法来管理命令执行和熔断状态的转换</p>
+</li>
+<li><p>Disruptor，使用时间轮算法来管理任务的并发执行，以提高处理大量事件的性能</p>
+</li>
+</ul>
+</li>
+</ul>
 <h1 id="6、参考资料"><a href="#6、参考资料" class="headerlink" title="6、参考资料"></a>6、参考资料</h1><ul>
 <li>《Thinking in Java (Fourth Edition)》</li>
 <li><a target="_blank" rel="noopener" href="https://www.slf4j.org/manual.html">https://www.slf4j.org/manual.html</a></li>
@@ -927,7 +989,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">1、面向对象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81"><span class="toc-nav-text">1.1 对象的基本特征</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E5%88%9B%E5%BB%BA%E3%80%81%E5%AD%98%E5%82%A8%E3%80%81%E9%94%80%E6%AF%81%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">1.2 创建、存储、销毁对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E6%8E%A5%E5%8F%A3%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%86%85%E9%83%A8%E7%B1%BB"><span class="toc-nav-text">1.3 接口、抽象类、内部类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%AE%B9%E5%99%A8%E5%92%8C%E6%B3%9B%E5%9E%8B"><span class="toc-nav-text">2、容器和泛型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-Collection-%E5%BA%8F%E5%88%97"><span class="toc-nav-text">2.1 Collection 序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-Map-%E6%98%A0%E5%B0%84"><span class="toc-nav-text">2.2 Map 映射</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">2.3 容器的使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF%E5%92%8C%E6%B3%9B%E5%8C%96"><span class="toc-nav-text">2.4 类型信息和泛化</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E6%B3%9B%E5%9E%8B%E5%8F%8A%E5%85%B6%E5%B1%80%E9%99%90"><span class="toc-nav-text">2.5 泛型及其局限</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81I-O-%E7%B3%BB%E7%BB%9F"><span class="toc-nav-text">3、I&#x2F;O 系统</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-I-O-%E7%B1%BB%E5%BA%93"><span class="toc-nav-text">3.1 I&#x2F;O 类库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E6%A0%87%E5%87%86-I-O"><span class="toc-nav-text">3.2 标准 I&#x2F;O</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%96%B0-I-O"><span class="toc-nav-text">3.3 新 I&#x2F;O</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-nav-text">3.4 序列化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E6%97%A5%E5%BF%97"><span class="toc-nav-text">4、日志</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB"><span class="toc-nav-text">4.1 日志级别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E8%AE%B0%E5%BD%95%E6%97%B6%E6%9C%BA"><span class="toc-nav-text">4.2 记录时机</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E6%97%A5%E5%BF%97%E8%A7%84%E8%8C%83"><span class="toc-nav-text">4.3 日志规范</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6"><span class="toc-nav-text">4.4 日志框架</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%85%B6%E4%BB%96%E8%A1%A5%E5%85%85"><span class="toc-nav-text">5、其他补充</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-final"><span class="toc-nav-text">5.1 final</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">5.2 异常</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-nav-text">5.3 字符串</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81"><span class="toc-nav-text">5.4 字符编码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-5-%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">5.5 注解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-6-%E6%9E%9A%E4%B8%BE"><span class="toc-nav-text">5.6 枚举</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-7-%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-nav-text">5.7 新特性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-8-SPI"><span class="toc-nav-text">5.8 SPI</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-9-Unsafe"><span class="toc-nav-text">5.9 Unsafe</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-10-%E6%8B%B7%E8%B4%9D"><span class="toc-nav-text">5.10 拷贝</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">6、参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">1、面向对象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81"><span class="toc-nav-text">1.1 对象的基本特征</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E5%88%9B%E5%BB%BA%E3%80%81%E5%AD%98%E5%82%A8%E3%80%81%E9%94%80%E6%AF%81%E5%AF%B9%E8%B1%A1"><span class="toc-nav-text">1.2 创建、存储、销毁对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E6%8E%A5%E5%8F%A3%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E3%80%81%E5%86%85%E9%83%A8%E7%B1%BB"><span class="toc-nav-text">1.3 接口、抽象类、内部类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%AE%B9%E5%99%A8%E5%92%8C%E6%B3%9B%E5%9E%8B"><span class="toc-nav-text">2、容器和泛型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-Collection-%E5%BA%8F%E5%88%97"><span class="toc-nav-text">2.1 Collection 序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-Map-%E6%98%A0%E5%B0%84"><span class="toc-nav-text">2.2 Map 映射</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-nav-text">2.3 容器的使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-%E7%B1%BB%E5%9E%8B%E4%BF%A1%E6%81%AF%E5%92%8C%E6%B3%9B%E5%8C%96"><span class="toc-nav-text">2.4 类型信息和泛化</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-5-%E6%B3%9B%E5%9E%8B%E5%8F%8A%E5%85%B6%E5%B1%80%E9%99%90"><span class="toc-nav-text">2.5 泛型及其局限</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81I-O-%E7%B3%BB%E7%BB%9F"><span class="toc-nav-text">3、I&#x2F;O 系统</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-I-O-%E7%B1%BB%E5%BA%93"><span class="toc-nav-text">3.1 I&#x2F;O 类库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E6%A0%87%E5%87%86-I-O"><span class="toc-nav-text">3.2 标准 I&#x2F;O</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E6%96%B0-I-O"><span class="toc-nav-text">3.3 新 I&#x2F;O</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-nav-text">3.4 序列化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E6%97%A5%E5%BF%97"><span class="toc-nav-text">4、日志</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB"><span class="toc-nav-text">4.1 日志级别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E8%AE%B0%E5%BD%95%E6%97%B6%E6%9C%BA"><span class="toc-nav-text">4.2 记录时机</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E6%97%A5%E5%BF%97%E8%A7%84%E8%8C%83"><span class="toc-nav-text">4.3 日志规范</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6"><span class="toc-nav-text">4.4 日志框架</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%85%B6%E4%BB%96%E8%A1%A5%E5%85%85"><span class="toc-nav-text">5、其他补充</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-final"><span class="toc-nav-text">5.1 final</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">5.2 异常</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-nav-text">5.3 字符串</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81"><span class="toc-nav-text">5.4 字符编码</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-5-%E6%B3%A8%E8%A7%A3"><span class="toc-nav-text">5.5 注解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-6-%E6%9E%9A%E4%B8%BE"><span class="toc-nav-text">5.6 枚举</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-7-%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-nav-text">5.7 新特性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-8-SPI"><span class="toc-nav-text">5.8 SPI</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-9-Unsafe"><span class="toc-nav-text">5.9 Unsafe</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-10-%E6%8B%B7%E8%B4%9D"><span class="toc-nav-text">5.10 拷贝</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-11-%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86"><span class="toc-nav-text">5.11 文件处理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-12-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-nav-text">5.12 定时任务</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">6、参考资料</span></a></li></ol>
       
   
   </div>
