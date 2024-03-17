@@ -2,6 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/09/30/tdd/</loc>
+    
+    <lastmod>2024-03-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/08/java-language/</loc>
+    
+    <lastmod>2024-03-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/07/git/</loc>
+    
+    <lastmod>2024-03-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/07/maven/</loc>
+    
+    <lastmod>2024-03-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2024/03/16/ddd/</loc>
     
     <lastmod>2024-03-16</lastmod>
@@ -12,15 +48,6 @@
   
   <url>
     <loc>http://example.com/categories/index.html</loc>
-    
-    <lastmod>2024-03-16</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/05/08/java-language/</loc>
     
     <lastmod>2024-03-16</lastmod>
     
@@ -398,15 +425,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
-    
-    <lastmod>2023-12-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/02/04/week-23/</loc>
     
     <lastmod>2023-12-30</lastmod>
@@ -470,15 +488,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/09/30/tdd/</loc>
-    
-    <lastmod>2023-12-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/04/07/week-32/</loc>
     
     <lastmod>2023-12-30</lastmod>
@@ -498,15 +507,6 @@
   
   <url>
     <loc>http://example.com/2022/10/10/week-7/</loc>
-    
-    <lastmod>2023-12-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/05/07/maven/</loc>
     
     <lastmod>2023-12-30</lastmod>
     
@@ -715,7 +715,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2024-03-16</lastmod>
+    <lastmod>2024-03-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>

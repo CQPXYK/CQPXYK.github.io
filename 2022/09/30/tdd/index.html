@@ -163,25 +163,21 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述"></a>1、概述</h1><p>单元测试（unit test）是为了检验程序的正确性。一个单元可能是单个程序、类、对象、方法等，它是应用程序的最小可测试部件。</p>
-<p>在编写UT时，应当遵循一些规范：</p>
+    <section class="markdown-content"><h1 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述"></a>1、概述</h1><p>单元测试（unit test）是为了检验程序的正确性。一个单元可能是单个程序、类、对象、方法等，它是应用程序的最小可测试部件，通常由开发人员编写，旨在验证代码的正确性和可靠性，通常是自动化的，可以快速执行。</p>
+<p>在编写 UT 时，应当遵循一些规范：</p>
 <ul>
-<li><p>代码简单易懂，不可能再为测试代码编写测试；</p>
+<li><p>代码简单易懂，层次清晰，和业务代码一样保持 clean，不可能再为测试代码编写测试；</p>
 </li>
-<li><p>每个测试都互相独立，不依赖运行顺序；</p>
+<li><p>每个测试都互相独立，不依赖运行顺序，测试保持可用并具有确定的运行结果；</p>
 </li>
-<li><p>不要在<code>setup</code>中初始化只在某些测试中使用的对象；</p>
+<li><p>注意测试边界条件和异常情况，尽可能测出所有可能出现的场景；</p>
 </li>
-<li><p>不要写冗长的<code>setup</code>；</p>
-</li>
-<li><p>不要在<code>setup</code>中创建伪对象；</p>
-</li>
-<li><p>注意测试边界条件。</p>
+<li><p>不要盲目追求覆盖率，每个测试都要有断言，否则这个测试毫无意义。</p>
 </li>
 </ul>
-<p>与单元测试不同，集成测试依赖于真实的环境以及组件，因此如果一个测试需要使用真实的系统时间，真实的文件系统或者一个真实的数据库，那么就属于集成测试，集成测试结果更加不稳定。</p>
-<h1 id="2、Junit"><a href="#2、Junit" class="headerlink" title="2、Junit"></a>2、Junit</h1><p>Java平台使用的测试框架是JUnit，JUnit是白盒测试，知道测试如何完成功能和完成什么样的功能。</p>
-<p>Junit5提供了以下注解（<strong>由于配置问题，使用Junit4相关注解的UT无法被sonar扫描到，注意区分Junit4和Junit5之间的区别</strong>）</p>
+<p>与单元测试不同，集成测试依赖于真实的环境以及组件，因此如果一个测试需要使用真实的系统时间，真实的文件系统或者一个真实的数据库，那么就属于集成测试，集成测试结果更加不稳定，通常由测试人员编写，旨在验证整个系统或模块间的交互是否符合需求和规范。</p>
+<h1 id="2、Junit"><a href="#2、Junit" class="headerlink" title="2、Junit"></a>2、Junit</h1><p>Java 平台使用的测试框架是 JUnit，JUnit 是白盒测试，知道测试如何完成功能和完成什么样的功能。</p>
+<p>Junit5 提供了以下注解（<strong>Junit4 和 Junit5 的注解名称存在区别</strong>）</p>
 <ul>
 <li><p><code>@Test</code></p>
 <ul>
@@ -239,10 +235,10 @@
 </ul>
 </li>
 </ul>
-<h1 id="3、Mockito"><a href="#3、Mockito" class="headerlink" title="3、Mockito"></a>3、Mockito</h1><p>如果要测试的对象依赖于另一个无法控制或者还未实现的对象，那么就应该使用 Stub（存根）。Stub 是对系统中存在的一个依赖项（或者协作者）的可控制的替代物，通过使用 Stub，在测试代码时无需直接处理这个依赖项。</p>
+<h1 id="3、Mockito"><a href="#3、Mockito" class="headerlink" title="3、Mockito"></a>3、Mockito</h1><p>如果要测试的对象依赖于另一个无法控制或者还未实现的对象，那么就应该使用 Stub（存根），Stub 是对系统中存在的一个依赖项（或者协作者）的可控制的替代物，通过使用 Stub，在测试代码时无需直接处理这个依赖项。</p>
 <p>如果要验证被测试对象是否按预期的方式调用了该被测试对象，并因此导致单元测试通过或失败，那么就应该使用 Mock。Mock 对象会保存交互的历史记录，这些记录之后用于预期的验证，通常每个测试最多有一个 Mock。</p>
 <p>Stub 和 Mock 都是伪对象，一个伪对象究竟是 Stub 还是 Mock ，取决于它在当前测试中的使用方式。如果这个伪对象用来检验一个交互，它就是 Mock 对象，否则就是 Stub 对象。 Stub 对象不会导致测试失败，但 Mock 对象可以。</p>
-<p>如果需要创建真实对象，那么就应该使用 Spy。使用 Spy 时将调用真正的方法（除非方法被 stubbing）。Spy 与 Mock 相反，Mock 对象在调用未 stubbing 的方法时返回缺省值，而 Spy 对象在调用未 stubbing 的方法时返回真实调用值。</p>
+<p>如果需要创建真实对象，那么就应该使用 Spy。使用 Spy 时将调用真正的方法（除非方法被 stubbing），Spy 与 Mock 相反，Mock 对象在调用未 stubbing 的方法时返回缺省值，而 Spy 对象在调用未 stubbing 的方法时返回真实调用值。</p>
 <p>Mockito 框架可以与JUnit结合使用，可用于创建和配置伪对象。Mockito 提供了以下 API</p>
 <ul>
 <li><p><code>mock(Class&lt;?&gt; tClass)</code>：返回一个伪对象，可声明未 stubbing 时真实调用的缺省值</p>

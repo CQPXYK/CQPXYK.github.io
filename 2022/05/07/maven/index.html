@@ -163,7 +163,7 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Maven是一个用于Java项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制。</p>
+    <section class="markdown-content"><p>Maven是一个用于 Java 项目管理和构建的工具，提供了一套标准化的项目结构，标准化自动化的构建流程（编译、测试、打包、发布），以及项目依赖管理机制（jar 包导入、冲突解决）。</p>
 <h1 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h1><p>一个使用Maven管理的Java项目目录结构如下：</p>
 <ul>
 <li><p><code>pom.xml</code>：项目描述文件 (Project Object Model)；</p>
@@ -188,21 +188,54 @@
 </ul>
 <h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>Maven会自动解析并判断真正需要的依赖，避免了繁琐的人工管理。Maven定义了几种依赖关系（scope）如下：</p>
 <ul>
-<li>compile：编译、运行和测试时需要用到的jar包（最常用的，直接放入classpath），打包时也要包含进去；</li>
-<li>test：编译UT时需要用到的jar包，不会随项目发布，比如junit；</li>
-<li>runtime：编译时不需要，但运行和测试时需要用到的jar包，比如mysql；</li>
-<li>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），打包时不需要包含进去，比如servlet-api。</li>
+<li><p>compile：编译、运行和测试时需要用到的jar包（最常用的，直接放入classpath），打包时也要包含进去；</p>
+</li>
+<li><p>test：编译UT时需要用到的jar包，不会随项目发布，比如junit；</p>
+</li>
+<li><p>runtime：编译时不需要，但运行和测试时需要用到的jar包，比如mysql；</p>
+</li>
+<li><p>provided：编译时需要用到，但运行时不需要（运行时由JDK或某个服务器提供），打包时不需要包含进去，比如servlet-api。</p>
+</li>
 </ul>
-<h1 id="jar包的发布与下载"><a href="#jar包的发布与下载" class="headerlink" title="jar包的发布与下载"></a>jar包的发布与下载</h1><ul>
-<li><p>一个jar包一经发布就无法修改，修改已发布jar包的唯一方法是发布一个新版本；</p>
+<p>Maven 默认的依赖传递原则如下：</p>
+<ul>
+<li><p>最短路径优先原则：A -&gt; B -&gt; C(2.0) 路径和 A -&gt; C(1.0) 路径相比，最终生效的是路径更短的 1.0 版本的 C 包</p>
 </li>
-<li><p>Maven维护了一个中央仓库，所有第三方库将自身的jar以及相关信息上传至中央仓库，Maven就可以从中央仓库把所需依赖下载到本地；</p>
+<li><p>最先声明优先原则：如果路径长度一致，A -&gt; C(1.0) 和 B -&gt; C(2.0) 相比，最终生效的更早声明的 1.0 版本的 C 包</p>
 </li>
-<li><p>一个jar包一旦被下载过，就会被Maven自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
+</ul>
+<p>如果在应用运行期间发生了<code>NoSuchMethodError</code>、<code>ClassNotFoundException</code>等异常或错误时，需要考虑依赖冲突问题，Maven 的 jar 包依赖传递原则最终选择的 jar 包可能并不是真正需要的，通过<code>mvn dependency:tree</code>命令可以打印整个项目的 jar 包依赖的依赖树，从而查看冲突 jar 包的多种不同版本的依赖路径，此时就需要如下人工干预手段来选择所需要的 jar 包：</p>
+<ul>
+<li><p>在<code>&lt;dependency&gt;&lt;/dependency&gt;</code>标签内使用<code>&lt;exclusions&gt;&lt;exclusion&gt;&lt;/exclusion&gt;&lt;/exclusions&gt;</code>标签来排除不需要的 jar 包</p>
 </li>
-<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种开发版本只能用于内部私有的Maven repo，公开发布的版本不允许出现SNAPSHOT；</p>
+<li><p>在父 POM 中直接指定需要的版本，无需一个一个地进行 exclusion</p>
 </li>
-<li><p>当中央仓库速度较慢时，可以选择一个速度较快的Maven的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要在用户主目录的<code>.m2</code>目录创建一个<code>settings.xml</code>配置文件，进行配置；</p>
+</ul>
+<h1 id="常见打包格式"><a href="#常见打包格式" class="headerlink" title="常见打包格式"></a>常见打包格式</h1><p>jar 和 war 是 Java 中常见的两种打包文件格式</p>
+<ul>
+<li><p>jar 包是一种用于打包 Java 类（.class 文件）和相关资源（文本文件，图片等）的归档文件格式，方便进行分发和部署，通常用于在 Java 应用中引入其他的库文件，也可以作为 Java 应用程序的可执行文件运行</p>
+</li>
+<li><p>fat jar 是一种包含所有依赖项的 jar 文件（将多个 jar 文件打包到一个 jar 中），这些依赖项通常需要在运行时加载，可以方便地一次性部署和维护多个 jar 组成的应用程序，但 fat jar 容易过大不利于网络传输和存储，需要在 fat jar 和普通 jar 之间权衡</p>
+</li>
+<li><p>war 包是一种用于打包 Web 应用程序的归档文件格式，通过包含 Web 应用程序的所有文件和资源，如 JSP 文件、HTML 文件、JS 文件、CSS 文件、.class 文件、web.xml 文件、配置文件、资源文件等，是将 Web 应用程序打包和部署的标准方式，可以方便地将 Web 应用程序部署到 Web 容器（Tomcat、Jetty 等）中</p>
+</li>
+<li><p>ear 包是一种打包 Java EE 的归档文件格式，包含多个模块，如 ejb 模块、war 模块、jar 模块等，是一种高级的打包格式，打包后再 Java EE 服务器上部署</p>
+</li>
+<li><p>sar 包通常用于将 Java EE 应用程序部署在 JBoss 应用服务器上，JBoss 可以方便地将 Java EE 应用程序部署为服务，并对服务进行管理、监控和控制</p>
+</li>
+<li><p>apk 包是一种用于打包 Android 应用程序的归档文件格式，包含 Android 应用程序的所有资源文件、代码文件、配置文件、库文件等</p>
+</li>
+</ul>
+<h1 id="jar-包的发布与下载"><a href="#jar-包的发布与下载" class="headerlink" title="jar 包的发布与下载"></a>jar 包的发布与下载</h1><ul>
+<li><p>一个 jar 包一经发布就无法修改，修改已发布 jar 包的唯一方法是发布一个新版本；</p>
+</li>
+<li><p>Maven 维护了一个中央仓库，所有第三方库将自身的 jar 以及相关信息上传至中央仓库，Maven 就可以从中央仓库把所需依赖下载到本地；</p>
+</li>
+<li><p>一个 jar 包一旦被下载过，就会被 Maven 自动缓存在本地目录（用户主目录的<code>.m2</code>目录），避免重复下载；</p>
+</li>
+<li><p><code>version</code>以<code>-SNAPSHOT</code>结尾的jar包会被Maven视为开发版本，开发版本每次都会重复下载，这种开发版本只能用于内部私有的Maven repo，公开发布的版本不允许出现 SNAPSHOT；</p>
+</li>
+<li><p>当中央仓库速度较慢时，可以选择一个速度较快的 Maven 的镜像仓库（镜像仓库定期从中央仓库同步），使用Maven镜像仓库需要在用户主目录的<code>.m2</code>目录创建一个<code>settings.xml</code>配置文件，进行配置；</p>
 </li>
 <li><p>进入到<code>pom.xml</code>所在的目录，输入命令<code>mvn clean package</code>，即可在<code>target</code>目录下获得编译后自动打包的jar包。</p>
 </li>
@@ -301,7 +334,7 @@
   
       
           <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">项目结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="toc-nav-text">依赖管理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#jar%E5%8C%85%E7%9A%84%E5%8F%91%E5%B8%83%E4%B8%8E%E4%B8%8B%E8%BD%BD"><span class="toc-nav-text">jar包的发布与下载</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">构建流程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86"><span class="toc-nav-text">模块管理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">项目结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="toc-nav-text">依赖管理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%B8%B8%E8%A7%81%E6%89%93%E5%8C%85%E6%A0%BC%E5%BC%8F"><span class="toc-nav-text">常见打包格式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#jar-%E5%8C%85%E7%9A%84%E5%8F%91%E5%B8%83%E4%B8%8E%E4%B8%8B%E8%BD%BD"><span class="toc-nav-text">jar 包的发布与下载</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%9E%84%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="toc-nav-text">构建流程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%A8%A1%E5%9D%97%E7%AE%A1%E7%90%86"><span class="toc-nav-text">模块管理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">参考资料</span></a></li></ol>
       
   
   </div>
