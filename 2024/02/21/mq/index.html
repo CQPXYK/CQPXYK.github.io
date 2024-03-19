@@ -228,7 +228,8 @@
 <h1 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h1><ul>
 <li>架构<ul>
 <li>RocketMQ 同样由 Producer、Broker（MQ 集群）、Consumer 组成</li>
-<li>Producer 负责将消息发送到 Broker，Consumer 负责从 Broker 消费消息，Broker 是存储和转发消息的中转服务器，Broker 集群中的每个 Broker 都拥有独立的存储空间和消息队列，集群有单 Master、多 Master、多 Master 多 Slave 这三种方式，</li>
+<li>Producer 负责将消息发送到 Broker，Consumer 负责从 Broker 消费消息，Consumer Group 和记录该 Consumer Group 与服务端交互方式、Topic、Tag 的配置项的映射关系是一比一</li>
+<li>Broker 是存储和转发消息的中转服务器，Broker 集群中的每个 Broker 都拥有独立的存储空间和消息队列，集群有单 Master、多 Master、多 Master 多 Slave 这三种方式，</li>
 <li>RocketMQ 使用 NameServer 作为命名服务，NameServer 负责维护 Broker 的元数据信息（Broker 地址、Topic、Queue 等），同时也是路由和寻址中心，Producer 和 Consumer 在启动时需要连接到 NameServer 来获取 Broker 的信息以及路由信息等</li>
 </ul>
 </li>

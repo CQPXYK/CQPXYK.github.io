@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com/2022/09/30/tdd/</loc>
-    <lastmod>2024-03-17</lastmod>
+    <loc>http://example.com/2023/11/06/computer-networking/</loc>
+    <lastmod>2024-03-19</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/08/06/mysql/</loc>
+    <lastmod>2024-03-19</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2024/02/21/mq/</loc>
+    <lastmod>2024-03-19</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/11/design-patterns/</loc>
+    <lastmod>2024-03-19</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/08/java-language/</loc>
+    <lastmod>2024-03-19</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/09/30/tdd/</loc>
     <lastmod>2024-03-17</lastmod>
   </url>
   <url>
@@ -57,10 +73,6 @@
     <lastmod>2024-02-26</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/21/mq/</loc>
-    <lastmod>2024-02-24</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2023/07/23/expression/</loc>
     <lastmod>2024-02-24</lastmod>
   </url>
@@ -109,10 +121,6 @@
     <lastmod>2024-02-04</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/08/06/mysql/</loc>
-    <lastmod>2024-02-04</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
     <lastmod>2024-01-22</lastmod>
   </url>
@@ -123,10 +131,6 @@
   <url>
     <loc>http://example.com/2023/10/14/shell-script/</loc>
     <lastmod>2024-01-15</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/11/design-patterns/</loc>
-    <lastmod>2024-01-12</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/12/19/week-17/</loc>
@@ -158,10 +162,6 @@
   </url>
   <url>
     <loc>http://example.com/2023/05/19/week-38/</loc>
-    <lastmod>2023-12-30</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/11/06/computer-networking/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
