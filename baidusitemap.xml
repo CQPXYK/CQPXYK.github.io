@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2023/08/20/operating-systems/</loc>
+    <lastmod>2024-03-24</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
+    <lastmod>2024-03-24</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2023/11/06/computer-networking/</loc>
     <lastmod>2024-03-23</lastmod>
   </url>
@@ -83,14 +91,6 @@
   <url>
     <loc>http://example.com/2024/02/21/rpc/</loc>
     <lastmod>2024-02-24</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
-    <lastmod>2024-02-21</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/08/20/operating-systems/</loc>
-    <lastmod>2024-02-19</lastmod>
   </url>
   <url>
     <loc>http://example.com/2024/02/18/week-75/</loc>
@@ -221,11 +221,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/06/03/week-40/</loc>
+    <loc>http://example.com/2023/04/27/week-35/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/04/27/week-35/</loc>
+    <loc>http://example.com/2023/06/03/week-40/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
