@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/05/08/java-language/</loc>
+    <lastmod>2024-03-26</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2024/02/06/distributed-system/</loc>
+    <lastmod>2024-03-26</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/08/06/mysql/</loc>
+    <lastmod>2024-03-26</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2023/08/20/operating-systems/</loc>
     <lastmod>2024-03-24</lastmod>
   </url>
@@ -17,16 +29,8 @@
     <lastmod>2024-03-23</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/06/distributed-system/</loc>
-    <lastmod>2024-03-23</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2024/02/18/redis/</loc>
     <lastmod>2024-03-23</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/08/06/mysql/</loc>
-    <lastmod>2024-03-19</lastmod>
   </url>
   <url>
     <loc>http://example.com/2024/02/21/mq/</loc>
@@ -34,10 +38,6 @@
   </url>
   <url>
     <loc>http://example.com/2022/05/11/design-patterns/</loc>
-    <lastmod>2024-03-19</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/08/java-language/</loc>
     <lastmod>2024-03-19</lastmod>
   </url>
   <url>
@@ -265,11 +265,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/07/07/week-45/</loc>
+    <loc>http://example.com/2022/09/27/week-5/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/09/27/week-5/</loc>
+    <loc>http://example.com/2023/07/07/week-45/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
@@ -277,11 +277,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/04/21/week-34/</loc>
+    <loc>http://example.com/2023/06/06/week-41/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/06/06/week-41/</loc>
+    <loc>http://example.com/2023/04/21/week-34/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>

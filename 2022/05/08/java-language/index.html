@@ -432,13 +432,11 @@
 </li>
 <li><p><code>List</code></p>
 <ul>
-<li><p><code>List</code>按照插入的顺序保存元素</p>
-</li>
-<li><p>确定一个元素是否属于<code>List</code>，发现某个元素的索引，以及移除元素操作都会用到<code>equal</code>方法，因此<code>List</code>的行为根据<code>equal</code>的行为而有所变化</p>
+<li><p><code>List</code>按照插入的顺序保存元素，确定一个元素是否属于<code>List</code>，发现某个元素的索引，以及移除元素操作都会用到<code>equals</code>方法，因此<code>List</code>的行为根据<code>equals</code>的行为而有所变化</p>
 </li>
 <li><p><code>ArrayList</code>和<code>LinkedList</code>都是<code>List</code>类型，两者的不同之处在于底层结构和执行某些类型的操作性能，以及<code>LinkedList</code>还实现了<code>Deque</code>，具备了<code>List</code>中未包含的额外方法，比如需要栈的行为时，应当使用<code>LinkedList</code></p>
 </li>
-<li><p><code>ArrayList</code>是一个可改变大小的数组，<code>LinkedList</code>是一个双向链表，在<code>List</code>中间插入和删除，对于<code>LinkedList</code>来说都是廉价操作，但对于<code>ArrayList</code>来说是昂贵的操作，<code>ArrayList</code>更适用于随机访问元素，而<code>LinkedList</code>在随机访问时相对较慢</p>
+<li><p><code>ArrayList</code>是一个可改变大小的数组，<code>LinkedList</code>是一个双向链表，在<code>List</code>中间插入和删除，对于<code>LinkedList</code>来说都是廉价操作，但对于<code>ArrayList</code>来说是昂贵的操作，<code>ArrayList</code>更适用于根据下标来随机访问元素，而<code>LinkedList</code>在随机访问时相对较慢</p>
 </li>
 <li><p><code>ArrayList</code>的<code>subList</code>方法返回的是用<code>SubList</code>类型（<code>ArrayList</code>的内部类）表示的原<code>List</code>的视图，对视图的所有操作其实依旧是在操作原列表，<code>SubList</code>与<code>ArrayList</code>之间没有继承关系，不能强转</p>
 </li>
@@ -505,11 +503,11 @@
 </li>
 </ul>
 </li>
-<li><p>为了解决数组容量固定的问题，不同的键可以产生相同的下标，即可能有<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/pogt662wy87z24dr">冲突</a>，因此每个桶中存放的元素是<code>Entry</code>类型（<code>Map</code>的内部接口）的单个键值对/链表/包含双向链表的<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/zx609g">红黑树</a></p>
+<li><p>为了解决数组容量固定的问题，不同的键可以产生相同的下标，即可能有<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/pogt662wy87z24dr">冲突</a>，因此每个桶中存放的元素是<code>Entry</code>类型（<code>Map</code>的内部接口）的单个键值对/链表/包含双向链表的<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/zx609g">红黑树</a>，当散列函数接近完美时，每个桶中存放的就是单个键值对或比较短的链表，当链表长度达到 8 时进化为红黑树，当树节点个数小于 6 时再退化为链表</p>
 </li>
-<li><p>当散列函数接近完美时，每个桶中存放的就是单个键值对或比较短的链表，当链表长度达到 8 时树化，当树节点个数小于 6 时再退化为链表，红黑树包含双向链表是为了方便退化为链表</p>
+<li><p>进化后的树结构选择红黑树是因为红黑树是一颗平衡树，不会在极端情况下自动退化为链表，但又不会像 AVL 树那样严格要求绝对平衡进而导致在删除和插入节点时过于频繁地左旋和右旋，因此红黑树是一个比较合适的选择，红黑树包含双向链表是为了方便退化为链表</p>
 </li>
-<li><p>当使用自定义类作为<code>HashMap</code>的键时，一定要同时重载<code>hashCode()</code>和<code>equals()</code>方法，<code>hashCode()</code>用于定位 key 应当位于哪个桶（这一步的定位很快），<code>equals()</code>用于定位 key 位于桶中链表/红黑树的哪个节点（这一步的定位可能慢一些）</p>
+<li><p>当使用自定义类作为<code>HashMap</code>的键时，一定要同时重载<code>hashCode()</code>和<code>equals()</code>方法，但不要必须实现<code>Comparable</code>接口，<code>hashCode()</code>用于定位 key 应当位于哪个桶（这一步的定位很快），<code>equals()</code>用于定位 key 位于桶中链表/红黑树的哪个节点（这一步的定位可能慢一些），如果实现了<code>Comparable</code>接口，则红黑树使用该<code>Comparable</code>接口进行比较，如果没有实现，则使用一个默认的仲裁比较方法</p>
 </li>
 </ul>
 </li>
@@ -739,6 +737,7 @@
 
 <h2 id="4-5-分布式日志系统"><a href="#4-5-分布式日志系统" class="headerlink" title="4.5 分布式日志系统"></a>4.5 分布式日志系统</h2><p>分布式日志系统可以对集群中的各个机器上的日志做统一收集、存储和管理，避免在分析日志时需要要去各个机器分别查看日志，可以通过自建 ELK 来实现分布式日志系统。</p>
 <p>ELK 指 Elasticsearch、Logstash 和 Kibana，其中，Elasticsearch 提供分析、查询、存储数据等功能，Logstash 提供日志的采集和过滤，Kibana 提供友好的图形化界面，帮助信息汇总。</p>
+<p>有时候还是避免不了去服务器上查看日志，<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/fr5h634v474sgo7q">在 Linux 上查看和分析日志方式</a></p>
 <h1 id="5、其他补充"><a href="#5、其他补充" class="headerlink" title="5、其他补充"></a>5、其他补充</h1><h2 id="5-1-final"><a href="#5-1-final" class="headerlink" title="5.1 final"></a>5.1 final</h2><p><code>final</code>通常指无法改变，不想做改变可能出于设计或者效率的考虑，应当尽可能从设计的角度来决定是否使用<code>final</code>，而不是出于试图提高性能的目的来使用<code>final</code></p>
 <ul>
 <li><p><code>final</code>数据</p>
