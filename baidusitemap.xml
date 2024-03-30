@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/05/10/spring/</loc>
+    <lastmod>2024-03-30</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
+    <lastmod>2024-03-30</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
+    <lastmod>2024-03-30</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/10/14/shell-script/</loc>
+    <lastmod>2024-03-30</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
+    <lastmod>2024-03-30</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/05/08/java-language/</loc>
-    <lastmod>2024-03-26</lastmod>
+    <lastmod>2024-03-30</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/01/01/java-web/</loc>
+    <lastmod>2024-03-30</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/11/design-patterns/</loc>
+    <lastmod>2024-03-30</lastmod>
   </url>
   <url>
     <loc>http://example.com/2024/02/06/distributed-system/</loc>
@@ -17,15 +45,7 @@
     <lastmod>2024-03-24</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
-    <lastmod>2024-03-24</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2023/11/06/computer-networking/</loc>
-    <lastmod>2024-03-23</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/10/spring/</loc>
     <lastmod>2024-03-23</lastmod>
   </url>
   <url>
@@ -34,10 +54,6 @@
   </url>
   <url>
     <loc>http://example.com/2024/02/21/mq/</loc>
-    <lastmod>2024-03-19</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/11/design-patterns/</loc>
     <lastmod>2024-03-19</lastmod>
   </url>
   <url>
@@ -57,10 +73,6 @@
     <lastmod>2024-03-16</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
-    <lastmod>2024-03-12</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2024/03/09/elastic-search/</loc>
     <lastmod>2024-03-09</lastmod>
   </url>
@@ -74,10 +86,6 @@
   </url>
   <url>
     <loc>http://example.com/2023/02/11/jmeter/</loc>
-    <lastmod>2024-03-04</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/01/01/java-web/</loc>
     <lastmod>2024-03-04</lastmod>
   </url>
   <url>
@@ -123,14 +131,6 @@
   <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
     <lastmod>2024-01-22</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
-    <lastmod>2024-01-20</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/10/14/shell-script/</loc>
-    <lastmod>2024-01-15</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/12/19/week-17/</loc>
@@ -189,11 +189,11 @@
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/06/15/week-42/</loc>
+    <loc>http://example.com/2023/08/22/week-52/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/08/22/week-52/</loc>
+    <loc>http://example.com/2023/06/15/week-42/</loc>
     <lastmod>2023-12-30</lastmod>
   </url>
   <url>

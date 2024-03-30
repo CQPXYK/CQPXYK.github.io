@@ -942,9 +942,9 @@
 <li>NESTED，如果之前有事务，则创建嵌套事务，嵌套事务回滚不影响父事务，但父事务回滚则影响嵌套事务</li>
 </ul>
 </li>
-<li><p>声明式事务使用简单，对代码没有侵入性，也容易被开发者的忽略，进而在错误使用 AOP（类内部自调用、<code>static</code>方法、<code>final</code>方法、非<code>public</code>方法），或者在事务中加入一些分布式缓存、RPC、文件写入等无法回滚的操作，或者错误地设置了<code>rollbackFor</code>、<code>propagation</code>属性，又或者是在事务方法内部 catch 了异常等都会导致事务使用出问题；</p>
+<li><p>声明式事务使用简单，对代码没有侵入性，也容易被开发者的忽略，进而在错误使用 AOP（类内部自调用、内部类调用、<code>static</code>方法、<code>final</code>方法、<code>private</code>方法），或者在事务中加入一些分布式缓存、RPC、文件写入等无法回滚的操作，或者错误地设置了<code>rollbackFor</code>、<code>propagation</code>属性，或者是在事务方法内部 catch 了异常，又或者是使用了多线程（新线程中的操作不会被包含在原有事务中）等都会导致声明式事务使用出问题；</p>
 </li>
-<li><p>除了基于<code>@Transactional</code>的声明式事务，Spring 还提供基于<code>TransactionTemplate</code>等核心接口的编程式事务，开发者可以在代码中手动控制事务的开启、提交、回滚等操作，此时业务代码中就会清清楚楚地看到事务的具体控制细节，绝对不会被开发者忽略。</p>
+<li><p>除了基于<code>@Transactional</code>的声明式事务，Spring 还提供基于<code>TransactionTemplate</code>等核心接口的编程式事务，开发者可以在代码中手动控制事务的开启、提交、回滚等操作，此时业务代码中就会清清楚楚地看到事务的具体控制细节，绝对不会被开发者忽略，也支持跨线程的事务管理。</p>
 </li>
 </ul>
 <p>除了<code>@Transactional</code>注解，还可以自定义注解来标注需要拦截的方法，此时切面 Bean 中的切点表达式只需写为 AspectJ 指示器（自定义注解）这样的形式，即可在业务代码中通过自定义注解来精准指定需要在何处织入切面。</p>

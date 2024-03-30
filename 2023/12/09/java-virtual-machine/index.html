@@ -164,6 +164,7 @@
   <!-- Article START -->
   <article class="post-article">
     <section class="markdown-content"><h1 id="1、引言"><a href="#1、引言" class="headerlink" title="1、引言"></a>1、引言</h1><p>Java 技术体系主要由支撑 Java 程序运行的虚拟机、提供各开发领域接口支持的 Java 类库、Java 编程语言及许许多多的第三方 Java 框架（如 Spring、MyBatis）构成。JVM 层面隐藏了机器平台、操作系统、资源管理等底层技术的复杂性和差异性，在千差万别的平台上建立了统一的 Java 运行平台，与此同时也牺牲了一些硬件相关的性能特性，即提升硬件性能时无法等比例提升 Java 程序的运行性能和并放能力，甚至可能没有任何改善，了解 JVM 是为了写出最适合 JVM 运行和自优化的 Java 代码。HotSpot VM 是 Sun/OracleJDK 和 OpenJDK 中的默认 JVM。</p>
+<p>Dump 是 JVM 运行时快照，保存了 JVM 运行时的状态和信息，比如线程 Dump 包含所有线程的运行状态，纯文本格式，堆 Dump 包含线程 Dump 以及所有堆对象的状态，二进制格式。Java Dump 可以弥补传统 Bug 分析手段的不足，针对非功能正确性的 Bug，比如多线程开发、内存泄漏等。</p>
 <h1 id="2、自动内存管理"><a href="#2、自动内存管理" class="headerlink" title="2、自动内存管理"></a>2、自动内存管理</h1><h2 id="2-1-内存使用"><a href="#2-1-内存使用" class="headerlink" title="2.1 内存使用"></a>2.1 内存使用</h2><p>内存泄漏指程序中分配的内存在不再需要时没有被正确释放回收，内存溢出指程序试图分配超过其可用内存大小的内存空间。Java 程序将控制内存的权利交给了 JVM，在编码的时候享受自动内存管理，但需要通过了解 JVM 使用和回收内存的原理来排查内存泄漏和溢出方面的问题。C++ 则需要在程序中显式地进行内存管理，但有第三方框架可以提供垃圾收集的支持。</p>
 <h3 id="2-1-1-内存分区"><a href="#2-1-1-内存分区" class="headerlink" title="2.1.1 内存分区"></a>2.1.1 内存分区</h3><p>JVM 在执行 Java 程序过程中会把它所管理的内存划分为</p>
 <ul>
