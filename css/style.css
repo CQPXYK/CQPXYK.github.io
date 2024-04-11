@@ -337,13 +337,13 @@ h2.article-head {
   box-shadow: 0 0 3px rgba(14,14,14,0.26);
 }
 .fixed-header .home-link {
-  color: #42b983;
+  color: #7f8c8d;
 }
 .fixed-header .menu .icon-bar {
   background-color: #7f8c8d;
 }
 .fixed-header .item-link {
-  color: #34495e;
+  color: #7f8c8d;
 }
 .header-container {
   max-width: 1200px;
@@ -364,7 +364,6 @@ h2.article-head {
   width: 40px;
   height: 40px;
   margin-right: 10px;
-  border-radius: 100px;
 }
 .home-link {
   display: flex;
@@ -573,7 +572,7 @@ h2.article-head {
 .article-summary blockquote {
   margin: 1em 0;
   padding: 10px 20px;
-  border-left: 4px solid #7f8c8d;
+  border-left: 4px solid #42b983;
   background: #f8f8f8;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
@@ -615,7 +614,7 @@ h2.article-head {
   right: 0;
   color: #ccc;
   text-align: right;
-  font-size: 1em;
+  font-size: 0.7em;
   padding: 5px 10px 0;
   line-height: 15px;
   height: 15px;
@@ -627,7 +626,7 @@ h2.article-head {
 }
 .markdown-content > table thead,
 .article-summary > table thead {
-  background-color: #e6eed6;
+  background-color: #f8f8f8;
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: #e5e5e5;
@@ -996,7 +995,7 @@ h2.article-head {
 }
 @media screen and (max-width: 960px) {
   .catalog-container {
-    display: block;
+    display: none;
   }
 }
 .catalog-container .fixed-toc {
