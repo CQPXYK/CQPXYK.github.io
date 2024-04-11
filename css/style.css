@@ -765,14 +765,14 @@ h2.article-head {
   position: absolute;
   top: 2em;
   bottom: 1em;
-  left: 450px;
+  left: 30px;
   height: auto;
   content: '';
   background-color: #42b983;
   width: 4px;
 }
 .time-section {
-  padding-left: 450px;
+  padding-left: 30px;
   position: relative;
 }
 .time-section .section-year {
@@ -782,7 +782,7 @@ h2.article-head {
 }
 .time-section .section-year:before {
   position: absolute;
-  left: 428px;
+  left: 8px;
   top: 11px;
   content: '';
   background-color: #fff;
