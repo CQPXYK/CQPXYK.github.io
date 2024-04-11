@@ -765,14 +765,14 @@ h2.article-head {
   position: absolute;
   top: 2em;
   bottom: 1em;
-  left: 300px;
+  left: 450px;
   height: auto;
   content: '';
   background-color: #42b983;
   width: 4px;
 }
 .time-section {
-  padding-left: 300px;
+  padding-left: 450px;
   position: relative;
 }
 .time-section .section-year {
@@ -782,7 +782,7 @@ h2.article-head {
 }
 .time-section .section-year:before {
   position: absolute;
-  left: 278px;
+  left: 428px;
   top: 11px;
   content: '';
   background-color: #fff;
@@ -986,53 +986,53 @@ h2.article-head {
 .card-container .project-card .card-wrap .card-footer span .fa {
   padding-right: 5px;
 }
-.content-container {
+.catalog-container {
   display: block;
   margin-left: 5px;
 }
 @media screen and (max-width: 960px) {
-  .content-container {
+  .catalog-container {
     display: block;
   }
 }
-.content-container .fixed-toc {
+.catalog-container .fixed-toc {
   position: fixed;
   top: 90px;
 }
-.content-container .toc-main {
+.catalog-container .toc-main {
   padding-left: 8px;
   border-left: 1px solid #e5e5e5;
   width: 215px;
   box-sizing: border-box;
 }
-.content-container .toc-main .toc-title {
+.catalog-container .toc-main .toc-title {
   font-size: 1.2em;
   position: relative;
   padding-left: 28px;
 }
-.content-container .toc-main .toc-title:before {
+.catalog-container .toc-main .toc-title:before {
   content: '';
   position: absolute;
   width: 22px;
   height: 22px;
   left: 0;
   top: 2px;
-  background: url("images/content.png") no-repeat;
+  background: url("images/catalog.png") no-repeat;
   background-size: contain;
 }
-.content-container .toc-main .toc-nav {
+.catalog-container .toc-main .toc-nav {
   padding: 0;
   margin-top: 1em;
   overflow-y: scroll;
   max-height: 565px;
 }
-.content-container .toc-main .toc-nav::-webkit-scrollbar {
+.catalog-container .toc-main .toc-nav::-webkit-scrollbar {
   display: none;
 }
-.content-container .toc-main ol {
+.catalog-container .toc-main ol {
   padding-left: 20px;
 }
-.content-container .toc-main li {
+.catalog-container .toc-main li {
   list-style-type: none;
   line-height: 1.5;
 }

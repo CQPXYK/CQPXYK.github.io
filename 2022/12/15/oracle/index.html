@@ -2,9 +2,10 @@
 <html>
   <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <!--<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">-->
+<!--   TODO -->
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
   <meta name="description" content="要有一个从输入到输出的过程">
-  <meta name="keyword" content="">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
     <link rel="shortcut icon" href="/css/images/logo.png">
   
@@ -26,6 +27,28 @@
   
   
   
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
   
 
 
@@ -408,9 +431,9 @@
     
   </article>
   <!-- Article END -->
-  <!-- Content START -->
+  <!-- Catalog START -->
   
-    <aside class="content-container">
+    <aside class="catalog-container">
   <div class="toc-main">
   
       
@@ -421,7 +444,7 @@
   </div>
 </aside>
   
-  <!-- Content END -->
+  <!-- Catalog END -->
 </main>
 
 <script>
@@ -483,8 +506,7 @@
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
-    <!--
-<footer class="app-footer">
+    <footer class="app-footer">
   <p class="copyright">
     &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
     <br>
@@ -492,7 +514,6 @@
     
   </p>
 </footer>
--->
 
 <script>
   function async(u, c) {
