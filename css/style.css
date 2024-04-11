@@ -989,6 +989,10 @@ h2.article-head {
 .catalog-container {
   display: block;
   margin-left: 5px;
+  flex-basis: 280px;
+  -webkit-flex-basis: 280px;
+  flex-shrink: 0;
+  -webkit-flex-shrink: 0;
 }
 @media screen and (max-width: 960px) {
   .catalog-container {
