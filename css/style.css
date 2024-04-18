@@ -3,7 +3,7 @@
   src: url("../fonts/SourceSansPro.ttf");
 }
 ::selection {
-  background: #42b983;
+  background: #799f0c;
   color: #fff;
 }
 body {
@@ -30,7 +30,7 @@ p {
 }
 a {
   text-decoration: none;
-  color: #42b983;
+  color: #799f0c;
   cursor: pointer;
 }
 p {
@@ -99,7 +99,7 @@ h2.article-head {
   color: #34495e;
 }
 .article-head > a:hover {
-  border-bottom: 2px solid #42b983;
+  border-bottom: 2px solid #799f0c;
 }
 .article-date {
   color: #7f8c8d;
@@ -304,7 +304,7 @@ h2.article-head {
   width: 40px;
   height: 40px;
   padding: 5px;
-  background-color: #42b983;
+  background-color: #799f0c;
   border-radius: 20px;
   transform: translate(80px, 0);
   transition: all 0.3s ease;
@@ -337,13 +337,13 @@ h2.article-head {
   box-shadow: 0 0 3px rgba(14,14,14,0.26);
 }
 .fixed-header .home-link {
-  color: #7f8c8d;
+  color: #34495e;
 }
 .fixed-header .menu .icon-bar {
-  background-color: #7f8c8d;
+  background-color: #34495e;
 }
 .fixed-header .item-link {
-  color: #7f8c8d;
+  color: #34495e;
 }
 .header-container {
   max-width: 1200px;
@@ -396,10 +396,10 @@ h2.article-head {
   padding-bottom: 3px;
 }
 .item-link:hover {
-  border-bottom: 3px solid #42b983;
+  border-bottom: 3px solid #799f0c;
 }
 .active {
-  border-bottom: 3px solid #42b983;
+  border-bottom: 3px solid #799f0c;
 }
 .menu {
   display: none;
@@ -466,7 +466,7 @@ h2.article-head {
   color: #7f8c8d;
 }
 .mobile-active {
-  color: #42b983;
+  color: #799f0c;
 }
 .app-footer {
   padding: 1em 0;
@@ -558,7 +558,7 @@ h2.article-head {
 .markdown-content h4:before,
 .article-summary h4:before {
   content: "#";
-  color: #42b983;
+  color: #799f0c;
   margin-right: 5px;
   font-size: 1.2em;
   font-weight: 700;
@@ -572,7 +572,7 @@ h2.article-head {
 .article-summary blockquote {
   margin: 1em 0;
   padding: 10px 20px;
-  border-left: 4px solid #42b983;
+  border-left: 4px solid #799f0c;
   background: #f8f8f8;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
@@ -692,7 +692,7 @@ h2.article-head {
 }
 .tag-name:before {
   content: "#";
-  color: #42b983;
+  color: #799f0c;
   position: absolute;
   left: -0.7em;
   top: -2px;
@@ -745,7 +745,7 @@ h2.article-head {
 }
 .category-name:before {
   content: "#";
-  color: #42b983;
+  color: #799f0c;
   position: absolute;
   left: -0.7em;
   top: -2px;
@@ -767,7 +767,7 @@ h2.article-head {
   left: 30px;
   height: auto;
   content: '';
-  background-color: #42b983;
+  background-color: #799f0c;
   width: 4px;
 }
 .time-section {
@@ -787,7 +787,7 @@ h2.article-head {
   background-color: #fff;
   width: 12px;
   height: 12px;
-  border: 2px solid #42b983;
+  border: 2px solid #799f0c;
   border-radius: 50%;
 }
 .time-section .section-list .section-list-item {
@@ -799,7 +799,7 @@ h2.article-head {
   left: -29px;
   top: 7px;
   content: '';
-  background-color: #42b983;
+  background-color: #799f0c;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -810,7 +810,7 @@ h2.article-head {
   font-size: 1.1em;
 }
 .time-section .section-list .section-list-item .archive-title:hover {
-  color: #42b983;
+  color: #799f0c;
   padding-left: 10px;
 }
 .time-section .section-list .section-list-item .archive-date {

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Flip Puzzle | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/categories/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/records" class="item-link">Records</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/scratches/" class="item-link">Scratches</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/categories/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/records" class="menu-link">Records</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/scratches/" class="menu-link">Scratches</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Flip Puzzle</h2>
+  <!--<p class="post-date">2024-04-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>-->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>对于给定的矩阵（N * M），每个位置存在 0 和 1 两种状态，那么整个矩阵存在 2 ^ (N * M) 种不同的状态，对于给定的<a target="_blank" rel="noopener" href="http://youtube.com/watch?v=fhdYy-vMc8Y">状态转移规则</a>，假如存在由状态 A 转移至状态 B 的 flip 路径则称状态 A、B 之间是有解的，需要确认是否任意两个矩阵状态之间都是有解的（Yes/No）</p>
+<p>状态转移规则指对于给定一个矩阵元素位置，该位置及其上下左右位置的状态进行翻转（由 1 变 0，或由 0 变 1），以 3 * 3 的矩阵为例，某种 flip 路径如下所示，其中，01 矩阵代表 flip 前后的状态，OX 矩阵代表 flip 路径</p>
+<img src="问题描述.jpg" alt="问题描述" style="zoom:100%;" />
+
+<h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><ul>
+<li> 以全零状态为中间状态，任意两个状态有解等同于从全零状态到任意状态有解</li>
+<li>以基本状态为中间状态，全零状态到任意状态有解等同于从全零状态到任意基本状态有解（<strong>基本状态</strong>指只有一个 1 的状态）</li>
+<li>考虑到矩阵的对称性，从全零状态由某个基本状态有解等同于全零状态到该基本状态的所有对称状态有解，因此从全零状态到任意基本状态有解等同于从全零状态到任意标准基本状态有解（<strong>标准基本状态</strong>值唯一的 1 位于左上角的基本状态）</li>
+<li>综上所述，任意两个状态有解等同于从全零状态到任意标准基本状态有解（找到全部的基本解之后，任意解即可通过对基本解的异或求和计算得到</li>
+</ul>
+<h2 id="分析举例一"><a href="#分析举例一" class="headerlink" title="分析举例一"></a>分析举例一</h2><p>对于 3 * 3 的矩阵，标准基本状态的集合如下：</p>
+<img src="问题分析1-1.jpg" alt="问题分析1-1" style="zoom:100%;" />
+
+<p>从全零状态到 3 种标准基本状态的 flip 路径解如下：</p>
+<img src="问题分析1-2.jpg" alt="问题分析1-2" style="zoom:100%;" />
+
+<p>3 种标准基本状态的解全部找到，因此 3 * 3 的矩阵是任意有解的</p>
+<h2 id="分析举例二"><a href="#分析举例二" class="headerlink" title="分析举例二"></a>分析举例二</h2><p>对于 3 * 5 的矩阵，标准基本状态的集合如下：</p>
+<img src="问题分析2-1.jpg" alt="问题分析2-1" style="zoom:100%;" />
+
+<p>只能找到从全零状态到 1 种标准基本状态的 flip 路径解如下：</p>
+<img src="问题分析2-2.jpg" alt="问题分析2-2" style="zoom:100%;" />
+
+<p>6 种标准基本状态的解只找到 1 个，因此 3 * 5 的矩阵不是任意有解的</p>
+<h1 id="问题求解"><a href="#问题求解" class="headerlink" title="问题求解"></a>问题求解</h1><p>以全零状态为起始状态，通过枚举找寻找基本状态，每找到的一个基本状态后将其标准化并记录下来，通过分区枚举来将大矩阵划分为小矩阵，从而对矩阵降阶，可以极大地降低计算复杂度</p>
+<p>分区计算的原理是：选择一个区域的非边界元素位置进行 flip 时不会影响到其他区域的状态，因此可以对矩阵进行分区计算，但需要处理区与区之间的边界情况，这导致算法实现起来略微复杂一些</p>
+<h2 id="求解举例"><a href="#求解举例" class="headerlink" title="求解举例"></a>求解举例</h2><p>如下图所述，对于 7 * 10 的矩阵，其标准基本状态的集合如下：</p>
+<img src="问题求解1-1.jpg" alt="问题求解1-1" style="zoom:100%;" />
+
+<p>其标准基本状态可以看作是一个 4 * 5 的矩阵的全部基本状态的集合，为了确定该 7 * 10 矩阵的左上角的 4 * 5 的矩阵的状态，可以将该 7 * 10 矩阵的左上角的 5 * 6 的矩阵看作是该 7 * 10 矩阵的主分区，右上角的 5 * 5 矩阵、左下角的 3 * 6 矩阵以及右下角的 3 * 5 矩阵均可看作是辅助分区，辅助分区的计算目标就是将所有位置的 1 状态全部清零</p>
+<img src="问题求解1-2.jpg" alt="问题求解1-2" style="zoom:100%;" />
+
+<ul>
+<li>左上角 5 * 6 主分区最下方和最右方（浅蓝色区域）的状态先忽略不计，先通过求解主分区中 4 * 5 矩阵（深蓝色区域）的全部基本状态来找到 7 * 10 矩阵的标准基本状态的潜在可能解，计算完 5 * 6 主分区之后，即可固定主分区内 4 * 5 区域的状态和 5 * 6 区域的路径</li>
+<li>接着求解右上角的 5 * 5 辅助分区，在计算过程中，该辅助分区的最左方（浅蓝色区域）的位置是不可达的（这部分路径已经在主分区的计算中固定下来的），最下方（浅黄色区域）的状态可以先忽略不计，计算完右上角的 5 * 5 辅助分区之后，即可固定辅助分区内 4 * 5 区域的状态和 5 * 5 区域的路径</li>
+<li>接着求解左下角 3 * 6 辅助分区，在计算过程中，该辅助分区的最上方（浅蓝色区域）的位置是不可达的（这部分路径已经在主分区的计算中固定下来的），最右方（浅黄色区域）的状态可以先忽略不计，计算完左下角 3 * 6 辅助分区之后，即可固定辅助分区内 3 * 5 区域的状态和 3 * 6 区域的路径</li>
+<li>接着求解右下角 3 * 5 辅助分区，在计算过程中，该辅助分区的最上方和最左方（浅蓝色和浅黄色区域）的位置是不可达的（这部分路径已经在主分区和其他辅助分区的计算中固定下来的），所有区域状态都需要纳入考虑，计算完最后一个辅助分区之后，7 * 10 矩阵的所有区域的状态和路径都已经固定了，即可从主分区计算得到的潜在可能解中找到真正的解</li>
+<li>为了进一步降低计算复杂度，可以将主分区看作是一个待求解的全局大矩阵将其进一步划分为更小的主分区和辅助分区（递归分区），也可以将辅助分区进一步划分为更小的辅助分区（线性分区），所有的分区归根到底都是为了降低枚举的范围，降低时间复杂度和空间复杂度，分区之前为 O(2^(N * M))，分区之后接近无限接近 O(N * M)</li>
+</ul>
+<h1 id="弯路（但有意义）"><a href="#弯路（但有意义）" class="headerlink" title="弯路（但有意义）"></a>弯路（但有意义）</h1><p>刚开始拿到这个题时直接暴力枚举，算法实现起来很简单，但是一旦矩阵阶数大了之后对时间和空间都是很大的挑战，我尝试通过将矩阵的状态和路径都看作是二进制数并转成十进制整型存储以及使用<code>BitSet</code>来节约空间，通过各种位运算来加速计算过程，详细参见<a href="../../../02/18/week-75">工作记录</a>，最终将 6 * 6 矩阵的计算时间优化到152 秒，内存消耗 8.25 GB</p>
+<p>后来从同学那里得到基本状态这一概念的启发，于是将问题转换为求解标准基本状态从而降低空间消耗，并基于此想到分区计算的思路从而降低时间消耗，最终将 6 * 6 的计算时间优化到 0.03 秒，空间消耗优化到 3 MB，并继续一直求解到 10 * 10，总体来看思路还算直白不是很绕，但具体代码实现细节较为繁琐，是我写过的代码最长的算法题</p>
+<p>在没有参考答案可以参照的情况下自己一步一步地尝试解决问题还是很有意义的（懒人在有答案的时候总是喜欢直接看答案），自己从来都不是那种可以一次性就给出周到方案的人，往往会在一段时间内反反复复不厌其烦地对现有方案进行质疑、优化、再质疑、再优化，这其实是一个非常令人着迷的过程。</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2024/03/16/ddd/">
+        <span class="nav-arrow">← </span>
+        
+          Domain Driven Design
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+  
+      
+          <strong class="toc-title">CONTENT</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-nav-text">问题描述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-nav-text">问题分析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%88%86%E6%9E%90%E4%B8%BE%E4%BE%8B%E4%B8%80"><span class="toc-nav-text">分析举例一</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%88%86%E6%9E%90%E4%B8%BE%E4%BE%8B%E4%BA%8C"><span class="toc-nav-text">分析举例二</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A3"><span class="toc-nav-text">问题求解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%B1%82%E8%A7%A3%E4%B8%BE%E4%BE%8B"><span class="toc-nav-text">求解举例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%BC%AF%E8%B7%AF%EF%BC%88%E4%BD%86%E6%9C%89%E6%84%8F%E4%B9%89%EF%BC%89"><span class="toc-nav-text">弯路（但有意义）</span></a></li></ol>
+      
+  
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2024/04/18/flip-puzzle/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
