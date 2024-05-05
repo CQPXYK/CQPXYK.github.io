@@ -221,15 +221,15 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/12/04/week-14/</loc>
-    <lastmod>2024-04-11</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2023/07/07/week-45/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/09/27/week-5/</loc>
+    <lastmod>2024-04-11</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/12/04/week-14/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
@@ -269,11 +269,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/21/rpc/</loc>
+    <loc>http://example.com/2024/02/18/redis/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/18/redis/</loc>
+    <loc>http://example.com/2024/02/21/rpc/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
