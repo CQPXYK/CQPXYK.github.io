@@ -193,9 +193,9 @@
 </li>
 <li><p>进程是资源分配和保护的基本单元，线程是操作系统调度和分派的基本单元</p>
 </li>
-<li><p>由于进程是运行在它自己的地址空间内的自包容程序，具有一个独立的、完整的、私有的基本运行环境和资源集合，创建进程的开销比创建线程大，同一个进程中的线程会共享进程的资源</p>
+<li><p>进程往往被看作是程序或应用的代名词，是运行在它自己的地址空间内的自包容程序，具有一个独立的、完整的、私有的基本运行环境和资源集合</p>
 </li>
-<li><p>进程往往被看作是程序或应用的代名词，但是一个单独的应用程序实际上可能是一组互相协作的进程集合</p>
+<li><p>创建进程的开销比创建线程大，同一个进程中的线程会共享进程的资源</p>
 </li>
 <li><p>进程间通信比线程间通信要慢，这是因为线程间通信就是读写同一个变量，不需要进行系统调用，速度很快</p>
 </li>
@@ -246,14 +246,14 @@
 </li>
 <li><p>JMM 规定了线程间的共享变量（实例域、静态域和数组元素）存储在主内存（堆和方法区）中，每个线程自身有一个私有的工作内存（缓存、写缓冲区、寄存器等），线程的工作内存中保存该线程中使用到的变量的主内存副本拷贝，线程对变量的所有操作都必须在线程工作内存中进行，而不能直接读写主内存</p>
 </li>
-<li><p>JMM 规定了如何以及何时进行主内存与线程工作内存之间的交互（也就是线程间通信），这个过程中 JMM 使用了<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/kozqs205honv8nso">内存屏障</a>、限制了处理器优化、提供了一系列同步机制，解决了线程间通信过程中存在的多 CPU 多级缓存导致的一致性问题、CPU 时间片导致的原子性问题、以及编译器对指令重排、处理器对指令乱序执行导致的有序性问题</p>
+<li><p>JMM 规定了如何以及何时进行主内存与线程工作内存之间的交互（也就是线程间通信），这个过程中 JMM 使用了内存屏障、限制了处理器优化、提供了一系列同步机制，解决了线程间通信过程中存在的多 CPU 多级缓存导致的一致性问题、CPU 时间片导致的原子性问题、以及编译器对指令重排、处理器对指令乱序执行导致的有序性问题</p>
 </li>
-<li><p>JMM 所使用的<a target="_blank" rel="noopener" href="https://gee.cs.oswego.edu/dl/jmm/cookbook.html">内存屏障</a>是一种 CPU 指令，可以防止 CPU 及编译器对指令序列进行重排序，再加上 JMM 所提供的一系列同步机制则可以一同解决缓存一致性和总线风暴问题</p>
+<li><p>JMM 所使用的内存屏障是一种 CPU 指令，可以防止 CPU 及编译器对指令序列进行重排序，再加上 JMM 所提供的一系列同步机制则可以一同解决缓存一致性和总线风暴问题</p>
 </li>
 <li><p>JMM 中的 happens-before 原则要求如果一个操作 A happens-before 另一个操作 B，那么操作 A 的结果对操作 B 是可见的，JMM 通过 happens-before 原则确保了多线程间的可见性和有序性</p>
 </li>
 </ul>
-<h1 id="2、底层原理"><a href="#2、底层原理" class="headerlink" title="2、底层原理"></a>2、底层原理</h1><h2 id="2-1-有序性和可见性"><a href="#2-1-有序性和可见性" class="headerlink" title="2.1 有序性和可见性"></a>2.1 有序性和可见性</h2><p><code>volatile</code>关键字可以用来保证对变量操作的有序性和可见性，是 JVM 提供的最轻量级的同步机制。</p>
+<h1 id="2、同步机制"><a href="#2、同步机制" class="headerlink" title="2、同步机制"></a>2、同步机制</h1><h2 id="2-1-有序性和可见性"><a href="#2-1-有序性和可见性" class="headerlink" title="2.1 有序性和可见性"></a>2.1 有序性和可见性</h2><p><code>volatile</code>关键字可以用来保证对变量操作的有序性和可见性，是 JVM 提供的最轻量级的同步机制。</p>
 <ul>
 <li><p><code>volatile</code>只能修饰变量，不能修饰方法和代码块</p>
 </li>
@@ -362,7 +362,7 @@
 <li>偏向锁表示锁对象当前偏向第一个访问它的线程</li>
 <li>加锁和解锁不需要额外的消耗（其实根本没有同步操作），与执行非同步代码相比，性能差距很小</li>
 <li>存在锁竞争时，就需要等到安全点再将偏向锁撤销为无锁或升级为轻量级锁，这会带来额外的消耗，在高并发情况下尤为严重</li>
-<li>适用于只有一个线程获取锁的场景，如果确认锁通常情况下处理竞争状态，可以关闭偏向锁，偏向锁关闭后程序默认会进入轻量级锁状态</li>
+<li>适用于只有一个线程获取锁的场景，如果确认锁通常情况下处于竞争状态，可以关闭偏向锁，偏向锁关闭后程序默认会进入轻量级锁状态</li>
 <li>偏向锁在 Java 6 和 Java 7 里是默认启用的，考虑到现代应用程序中只有一个线程获取锁的场景比较少见，且偏向锁的引入比较复杂，给 HotSpot VM 中锁相关部分与其他组件之间的交互也带了复杂性，并且阻碍了一些重大设计更改，JDK 15 中废弃了偏向锁</li>
 </ul>
 </li>
@@ -385,7 +385,7 @@
 </ul>
 </li>
 </ul>
-<h1 id="3、线程基础"><a href="#3、线程基础" class="headerlink" title="3、线程基础"></a>3、线程基础</h1><h2 id="3-1-启动新线程"><a href="#3-1-启动新线程" class="headerlink" title="3.1 启动新线程"></a>3.1 启动新线程</h2><p>一个 Java 程序实际上是一个 JVM 进程，JVM 进程用一个主线程来执行<code>main</code>方法，除此之外，JVM还有负责垃圾回收的其他线程运行。在方法内部，程序员通过编写代码又可以启动其他新线程，启动新线程有泛化<code>Thread</code>类、实现<code>Runnable</code>接口以及直接使用lambda表达式这三种方式，三种方式的共同点在于都在<code>run</code>方法中定义了线程所需执行的任务，并通过调用<code>start</code>方法来显示地启动线程。</p>
+<h1 id="3、线程基础"><a href="#3、线程基础" class="headerlink" title="3、线程基础"></a>3、线程基础</h1><h2 id="3-1-启动新线程"><a href="#3-1-启动新线程" class="headerlink" title="3.1 启动新线程"></a>3.1 启动新线程</h2><p>一个 Java 程序实际上是一个 JVM 进程，JVM 进程用一个主线程来执行<code>main</code>方法，除此之外，JVM还有负责垃圾回收的其他线程运行。在方法内部，程序员通过编写代码又可以启动其他新线程，启动新线程有泛化<code>Thread</code>类、实现<code>Runnable</code>接口以及直接使用 lambda 表达式这三种方式，三种方式的共同点在于都在<code>run</code>方法中定义了线程所需执行的任务，并通过调用<code>start</code>方法来显示地启动线程。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        t1.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">MyRunnable</span>());</span><br><span class="line">        t2.start();</span><br><span class="line">        </span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;...&#125;);</span><br><span class="line">        t3.start ();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Java 作为跨平台的编程语言，线程的实现是依赖于具体的操作系统的，针对比较常用的 Windows 和 Linux 来说，都是采用内核线程的方式实现的，即在 Java 程序中创建一个 Thread 时，其实是需要映射到操作系统的线程的具体实现的，其创建、调度都需要切入内核态，成本比较高。</p>
@@ -398,9 +398,9 @@
 </li>
 <li><p>优先级高的线程会被操作系统调度的更加频繁，但不能确保优先级高的线程一定会先执行，也不意味着优先级低的线程得不到执行，即优先级不会导致死锁</p>
 </li>
-<li><p>针对频繁阻塞（休眠或者I/O操作）的线程需要设置较高优先级，而偏重计算（需要较多CPU时间）的线程则设置较低优先级，确保线程不会被独占</p>
+<li><p>针对频繁阻塞（休眠或者 I/O 操作）的线程需要设置较高优先级，而偏重计算（需要较多 CPU 时间）的线程则设置较低优先级，确保线程不会被独占</p>
 </li>
-<li><p>在不同的JVM以及操作系统上，线程规划会存在差异，有的操作系统甚至会忽略对线程优先级的设定，因此，*<em>程序正确性不能依赖线程的优先级高低。</em></p>
+<li><p>在不同的 JVM 以及操作系统上，线程规划会存在差异，有的操作系统甚至会忽略对线程优先级的设定，因此，<strong>程序正确性不能依赖线程的优先级高低。</strong></p>
 </li>
 <li><p>如果必须控制任务执行的顺序，那么最好使用同步控制，或者编写自己的协作例程（例程会按照执行的顺序在相互之间传递控制权）而不使用线程</p>
 </li>
@@ -426,7 +426,7 @@
 </li>
 </ul>
 </li>
-<li><p>Timed Waiting：可以在指定的时间内自行返回到 Runnable，会让出 CPU</p>
+<li><p>Time Waiting：可以在指定的时间内自行返回到 Runnable，会让出 CPU</p>
 </li>
 <li><p>Terminated：已终止的线程</p>
 </li>
@@ -451,7 +451,7 @@
 </li>
 <li><p>直接调用<code>run</code>方法并不会执行新线程，而是在主线程中执行<code>run</code>方法</p>
 </li>
-<li><p><code>run</code>方法正常执行完毕或者因未捕获的异常而终止后该线程都会进入Terminated</p>
+<li><p><code>run</code>方法正常执行完毕或者因未捕获的异常而终止后该线程都会进入 Terminated</p>
 </li>
 </ul>
 </li>
@@ -465,25 +465,25 @@
 </li>
 <li><p><code>Thread.join()</code></p>
 <ul>
-<li><p>线程调用<code>join</code>方法后，其他线程都进入Waiting，直到当前线程进入Terminated</p>
+<li><p>线程调用<code>join</code>方法后，其他线程都进入 Waiting，直到当前线程进入 Terminated</p>
 </li>
-<li><p>处于Terminated的的线程调用<code>join</code>方法时会立即返回</p>
+<li><p>处于 Terminated 的线程调用<code>join</code>方法时会立即返回</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.interrupt()</code></p>
 <ul>
-<li><p>对阻塞中的目标线程调用<code>interrupt</code>方法可以向其发出中断请求，此时目标线程会抛出<code>InterruptedException</code>，其中断标志位会被置为<code>true</code></p>
-</li>
-<li><p>一个可能会进入阻塞操作的线程应当捕获<code>InterruptedException</code>并重置中断标志位或直接声明会抛出<code>InterruptedException</code>（更优）</p>
-</li>
-<li><p>方法一旦捕获了<code>InterruptedException</code>，当前线程的中断标志位会被自动置为<code>false</code>，如果此时既不打算抛出<code>InterruptedException</code>，又不希望线程就此终止，则应当通过<code>Thread.currentThread.interrupt()</code>来将中断标志位重置为<code>true</code>，否则线程在方法外部将无法得知自身是否被中断</p>
-</li>
-<li><p>目标线程的<code>run</code>方法可以通过检测<code>isInterrupted</code>方法是否返回<code>true</code>来判断自身是否被中断，处于 Terminated 的的线程调用<code>isInterrupted</code>方法会返回<code>fasle</code></p>
+<li><p>对阻塞中的目标线程调用<code>interrupt</code>方法可以向其发出中断请求，此时目标线程的中断标志位会被置为<code>true</code></p>
 </li>
 <li><p>目标线程是否能够立即响应该中断请求，取决于目标线程的<code>run</code>方法中的具体设置，有设置则对中断请求进行相应的处理，没有设置则直接忽略中断请求</p>
 </li>
-<li><p>试图执行 I/O 操作和试图获取<code>synchronized</code>锁的线程是不可中断的，而当任务以不可中断的方式被阻塞时，那么都会有潜在的死锁的可能</p>
+<li><p>目标线程的<code>run</code>方法可以通过检测<code>isInterrupted</code>方法是否返回<code>true</code>来判断自身是否被中断，处于 Terminated 的的线程调用<code>isInterrupted</code>方法会返回<code>fasle</code></p>
+</li>
+<li><p>方法一旦捕获了<code>InterruptedException</code>，当前线程的中断标志位会被自动置为<code>false</code>，如果不希望线程就此终止，则应当通过<code>Thread.currentThread.interrupt()</code>来将中断标志位重置为<code>true</code>，否则线程在方法外部将无法得知自身是否被中断</p>
+</li>
+<li><p>一个可能会进入阻塞操作的线程应当直接不捕获并声明会抛出<code>InterruptedException</code>（更优）或捕获<code>InterruptedException</code>并重置中断标志位</p>
+</li>
+<li><p>试图执行 I/O 操作和试图获取<code>synchronized</code>锁的线程是不可中断的，而当任务以不可中断的方式被阻塞时，那么就会有潜在的死锁的可能</p>
 </li>
 <li><p>可中断的锁参见 JUC 包（<code>tryLock</code>），可中断的 I/O 操作参见 NIO 包</p>
 </li>
@@ -503,13 +503,13 @@
 <ul>
 <li><p>调用<code>setPriority(int)</code>方法可以设定线程的优先级</p>
 </li>
-<li><p>优先级的范围是1~10，默认是5</p>
+<li><p>优先级的范围是 1~10，默认是 5</p>
 </li>
 </ul>
 </li>
 <li><p><code>Thread.stop()</code></p>
 <ul>
-<li><p>线程调用<code>stop</code>方法后会进入Terminated</p>
+<li><p>线程调用<code>stop</code>方法后会进入 Terminated</p>
 </li>
 <li><p>不建议使用<code>stop</code>方法，该方法在调用后不会释放已经占有的资源，容易引发死锁</p>
 </li>
@@ -576,7 +576,7 @@
 </li>
 <li><p><code>wait</code>方法调用时，会<strong>释放</strong>线程获得的锁，<code>wait</code>方法返回后，线程又会重新试图获得锁，因此必须在<code>synchronized</code>块中才能调用<code>wait</code>方法</p>
 </li>
-<li><p>调用<code>wait</code>方法后，线程进入 Waiting 状态，但<code>wait</code>方法不会返回，直到将来某个时刻，线程从等待状态被其他线程唤醒并唤醒线程释放锁后，<code>wait</code>方法才会返回，然后继续执行下一条语句</p>
+<li><p>调用<code>wait</code>方法后，线程进入 Waiting 状态，但<code>wait</code>方法不会返回，直到将来某个时刻，线程从等待状态被其他线程唤醒并获得唤醒线程所释放的锁后，<code>wait</code>方法才会返回，然后继续执行下一条语句</p>
 </li>
 <li><p>当某个线程调用锁对象的<code>wait</code>方法后，需要其他线程调用相同的锁对象的<code>notify</code>方法，该<code>wait</code>方法才能返回，因此必须在<code>synchronized</code>块中才能调用<code>notify</code>方法</p>
 </li>
@@ -589,8 +589,7 @@
 <li><p><code>park</code>会使当前线程挂起，进入 Waiting 状态，具体实现会让线程进入等待队列中等待被唤醒，<code>park</code>方法可以不传参也可以传入一个<code>Object</code>类型的参数来标识线程挂起的原因，方便调试和排查问题，<code>Unpark</code>方法需要传入一个<code>Thread</code>类型的参数来标识需要唤醒的线程</p>
 </li>
 </ul>
-<h2 id="4-3-线程安全级别"><a href="#4-3-线程安全级别" class="headerlink" title="4.3 线程安全级别"></a>4.3 线程安全级别</h2><p>“线程安全”（thread-safe）代表是否允许多线程正确同步（即结果和预期的一样），<code>java.lang.StringBuffer</code>、不可变类以及只提供静态方法而无成员变量的工具类都是线程安全的，除此之外没有特殊说明的类默认不是 thread-safe 的。</p>
-<p>线程安全并不是要么全有要么全无的属性，而是具有以下多种级别</p>
+<h2 id="4-3-线程安全级别"><a href="#4-3-线程安全级别" class="headerlink" title="4.3 线程安全级别"></a>4.3 线程安全级别</h2><p>“线程安全”（thread-safe）代表是否允许多线程正确同步（即结果和预期的一样），线程安全并不是要么全有要么全无的属性，而是具有以下多种级别</p>
 <ul>
 <li><p>不可变的（immutable）：这个类是不可变的，不需要外部同步</p>
 </li>
@@ -985,8 +984,8 @@
   <div class="toc-main">
   
       
-          <strong class="toc-title">CONTENT</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">1、基础概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%8D%8F%E7%A8%8B"><span class="toc-nav-text">1.1 进程、线程和协程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-nav-text">1.2 上下文切换</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98"><span class="toc-nav-text">1.3 并发问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.4 并发模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-nav-text">2、底层原理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E6%9C%89%E5%BA%8F%E6%80%A7%E5%92%8C%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-nav-text">2.1 有序性和可见性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%92%8C%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-nav-text">2.2 原子操作和原子性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-synchronized-%E9%94%81"><span class="toc-nav-text">2.3 synchronized 锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-JVM-%E9%94%81%E4%BC%98%E5%8C%96"><span class="toc-nav-text">2.4 JVM 锁优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-nav-text">3、线程基础</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E5%90%AF%E5%8A%A8%E6%96%B0%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">3.1 启动新线程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="toc-nav-text">3.2 线程调度</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-nav-text">3.3 线程的状态</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="toc-nav-text">3.4 线程的行为</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E6%AD%BB%E9%94%81%E5%8F%8A%E9%A2%84%E9%98%B2"><span class="toc-nav-text">3.5 死锁及预防</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-nav-text">4、线程同步</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%94%81%E5%92%8C%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="toc-nav-text">4.1 锁和临界区</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E7%AD%89%E5%BE%85-%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">4.2 等待&#x2F;通知机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%BA%A7%E5%88%AB"><span class="toc-nav-text">4.3 线程安全级别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E4%BC%A0%E9%80%92"><span class="toc-nav-text">4.4 线程状态传递</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%B9%B6%E5%8F%91%E9%94%81"><span class="toc-nav-text">5、并发锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-Lock"><span class="toc-nav-text">5.1 Lock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-ReentrantLock"><span class="toc-nav-text">5.2 ReentrantLock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-ReadWriteLock"><span class="toc-nav-text">5.3 ReadWriteLock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-StampedLock"><span class="toc-nav-text">5.4 StampedLock</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%90%8C%E6%AD%A5%E5%99%A8"><span class="toc-nav-text">6、同步器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-1-AQS"><span class="toc-nav-text">6.1 AQS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-2-Condition"><span class="toc-nav-text">6.2 Condition</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-3-CountDownLatch"><span class="toc-nav-text">6.3 CountDownLatch</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-4-CyclicBarrier"><span class="toc-nav-text">6.4 CyclicBarrier</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-5-Phaser"><span class="toc-nav-text">6.5 Phaser</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-6-Semaphore"><span class="toc-nav-text">6.6 Semaphore</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-7-Exchanger"><span class="toc-nav-text">6.7 Exchanger</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#7%E3%80%81%E5%90%8C%E6%AD%A5%E7%B1%BB"><span class="toc-nav-text">7、同步类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-1-Concurrent-%E9%9B%86%E5%90%88"><span class="toc-nav-text">7.1 Concurrent 集合</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-2-Atomic-%E7%B1%BB"><span class="toc-nav-text">7.2 Atomic 类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#8%E3%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-nav-text">8、线程池</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-1-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%B1%BB"><span class="toc-nav-text">8.1 线程池类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-2-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-nav-text">8.2 线程池的创建</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-3-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">8.3 线程池的操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-4-%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-nav-text">8.4 任务执行结果</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-5-%E4%BB%BB%E5%8A%A1%E6%8B%86%E8%A7%A3"><span class="toc-nav-text">8.5 任务拆解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-6-%E4%BB%BB%E5%8A%A1%E7%BC%96%E6%8E%92"><span class="toc-nav-text">8.6 任务编排</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#9%E3%80%81%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B-%E5%8D%8F%E7%A8%8B"><span class="toc-nav-text">9、虚拟线程&#x2F;协程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">9.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-2-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">9.2 虚拟线程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#10%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">10、分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#11%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">11、参考资料</span></a></li></ol>
+          <strong class="toc-title">OUTLINE</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-nav-text">1、基础概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E5%92%8C%E5%8D%8F%E7%A8%8B"><span class="toc-nav-text">1.1 进程、线程和协程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-nav-text">1.2 上下文切换</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98"><span class="toc-nav-text">1.3 并发问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="toc-nav-text">1.4 并发模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">2、同步机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-%E6%9C%89%E5%BA%8F%E6%80%A7%E5%92%8C%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-nav-text">2.1 有序性和可见性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%92%8C%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-nav-text">2.2 原子操作和原子性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-synchronized-%E9%94%81"><span class="toc-nav-text">2.3 synchronized 锁</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-JVM-%E9%94%81%E4%BC%98%E5%8C%96"><span class="toc-nav-text">2.4 JVM 锁优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-nav-text">3、线程基础</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E5%90%AF%E5%8A%A8%E6%96%B0%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">3.1 启动新线程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-2-%E7%BA%BF%E7%A8%8B%E8%B0%83%E5%BA%A6"><span class="toc-nav-text">3.2 线程调度</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-3-%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-nav-text">3.3 线程的状态</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-4-%E7%BA%BF%E7%A8%8B%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="toc-nav-text">3.4 线程的行为</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-5-%E6%AD%BB%E9%94%81%E5%8F%8A%E9%A2%84%E9%98%B2"><span class="toc-nav-text">3.5 死锁及预防</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-nav-text">4、线程同步</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-%E9%94%81%E5%92%8C%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="toc-nav-text">4.1 锁和临界区</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-%E7%AD%89%E5%BE%85-%E9%80%9A%E7%9F%A5%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">4.2 等待&#x2F;通知机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-3-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%BA%A7%E5%88%AB"><span class="toc-nav-text">4.3 线程安全级别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-4-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E4%BC%A0%E9%80%92"><span class="toc-nav-text">4.4 线程状态传递</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5%E3%80%81%E5%B9%B6%E5%8F%91%E9%94%81"><span class="toc-nav-text">5、并发锁</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-Lock"><span class="toc-nav-text">5.1 Lock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-ReentrantLock"><span class="toc-nav-text">5.2 ReentrantLock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-3-ReadWriteLock"><span class="toc-nav-text">5.3 ReadWriteLock</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-4-StampedLock"><span class="toc-nav-text">5.4 StampedLock</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6%E3%80%81%E5%90%8C%E6%AD%A5%E5%99%A8"><span class="toc-nav-text">6、同步器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-1-AQS"><span class="toc-nav-text">6.1 AQS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-2-Condition"><span class="toc-nav-text">6.2 Condition</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-3-CountDownLatch"><span class="toc-nav-text">6.3 CountDownLatch</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-4-CyclicBarrier"><span class="toc-nav-text">6.4 CyclicBarrier</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-5-Phaser"><span class="toc-nav-text">6.5 Phaser</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-6-Semaphore"><span class="toc-nav-text">6.6 Semaphore</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-7-Exchanger"><span class="toc-nav-text">6.7 Exchanger</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#7%E3%80%81%E5%90%8C%E6%AD%A5%E7%B1%BB"><span class="toc-nav-text">7、同步类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-1-Concurrent-%E9%9B%86%E5%90%88"><span class="toc-nav-text">7.1 Concurrent 集合</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7-2-Atomic-%E7%B1%BB"><span class="toc-nav-text">7.2 Atomic 类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#8%E3%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-nav-text">8、线程池</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-1-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%B1%BB"><span class="toc-nav-text">8.1 线程池类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-2-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-nav-text">8.2 线程池的创建</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-3-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-nav-text">8.3 线程池的操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-4-%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-nav-text">8.4 任务执行结果</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-5-%E4%BB%BB%E5%8A%A1%E6%8B%86%E8%A7%A3"><span class="toc-nav-text">8.5 任务拆解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#8-6-%E4%BB%BB%E5%8A%A1%E7%BC%96%E6%8E%92"><span class="toc-nav-text">8.6 任务编排</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#9%E3%80%81%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B-%E5%8D%8F%E7%A8%8B"><span class="toc-nav-text">9、虚拟线程&#x2F;协程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-1-%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-nav-text">9.1 问题与解决</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#9-2-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-nav-text">9.2 虚拟线程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#10%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">10、分布式锁</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#11%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">11、参考资料</span></a></li></ol>
       
   
   </div>
