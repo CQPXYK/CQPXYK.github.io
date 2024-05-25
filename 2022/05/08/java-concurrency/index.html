@@ -615,7 +615,7 @@
 <li><p><code>ThreadLocal</code>中的 context 即便是在父子线程之间也依旧互斥，即子线程无法获取父线程的 context，如果需要在父子线程之间传递 context，可以使用<code>InheritableThreadLocal</code>，父线程在创建子线程时，子线程会创建父线程的<code>InheritableThreadLocal</code>中的 context 的副本作为自身的<code>InheritableThreadLocal</code>中的 context</p>
 </li>
 </ul>
-<h1 id="3、JUC-包"><a href="#3、JUC-包" class="headerlink" title="3、JUC 包"></a>3、JUC 包</h1><p>在使用线程时，出现那些可能看起来极罕见的缺陷，是很寻常并容易发生的事，而且对于到底出了什么错，这些缺陷只能给一个很模糊的概念。在 Java 5中引入了<code>java.util.concurrent</code>包，该包提供了一系列并发锁、线程安全的并发集合、原子操作的封装类以及同步器来实现简单高效健壮的并发。</p>
+<h1 id="3、JUC-包"><a href="#3、JUC-包" class="headerlink" title="3、JUC 包"></a>3、JUC 包</h1><p>在使用线程时，出现那些可能看起来极罕见的缺陷，是很寻常并容易发生的事，而且对于到底出了什么错，这些缺陷只能给一个很模糊的概念。在 Java 5 中引入了<code>java.util.concurrent</code>包，该包提供了一系列并发锁、线程安全的并发集合、原子操作的封装类以及同步器来实现简单高效健壮的并发。</p>
 <h2 id="3-1-并发锁"><a href="#3-1-并发锁" class="headerlink" title="3.1 并发锁"></a>3.1 并发锁</h2><h3 id="3-1-1-Lock"><a href="#3-1-1-Lock" class="headerlink" title="3.1.1 Lock"></a>3.1.1 Lock</h3><ul>
 <li><p><code>Lock</code>接口提供了与<code>synchronized</code>关键字类似的同步功能</p>
 </li>
@@ -634,7 +634,7 @@
 </ul>
 <h3 id="3-1-2-ReentrantLock"><a href="#3-1-2-ReentrantLock" class="headerlink" title="3.1.2 ReentrantLock"></a>3.1.2 ReentrantLock</h3><p><code>ReentrantLock</code>在功能上是<code>synchronized</code>的超集，在性能上至少不弱于<code>synchronized</code>，<code>ReentrantLock</code>与<code>synchronized</code>之间的区别在于</p>
 <ul>
-<li><p><code>synchronized</code>锁在获取时必须一致等待，没有额外的尝试机制，<code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去</p>
+<li><p><code>synchronized</code>锁在获取时必须一直等待，没有额外的尝试机制，<code>ReentrantLock</code>通过<code>tryLock</code>方法来<strong>尝试</strong>获取锁，如果在一定的时间未获得锁，<code>tryLock</code>方法会返回<code>false</code>，此时程序可以做一些额外的处理，而不是无限等待下去</p>
 </li>
 <li><p><code>synchronized</code>可以由 JVM 来确保即使发生异常也能自动释放锁，<code>ReentrantLock</code>需要考虑异常，因此在获得锁之后，使用<code>try-finally</code>语句来执行获得锁后的操作（在<code>finally</code>中释放锁）</p>
 </li>
@@ -789,23 +789,23 @@
 <ul>
 <li><p><code>FixedThreadPool</code>：线程数固定的线程池</p>
 </li>
-<li><p><code>CachedThreadPool</code>：线程数根据任务动态调整的线程池，在程序执行过程中通常会创建与所需数量相同的线程，然后在它回收旧线程时停止创建新线程，是合理的线程池首选，只有当这种方式会引发问题时，才需要切换到<code>FixedThreadPool</code></p>
+<li><p><code>CachedThreadPool</code>：线程数根据任务动态调整的线程池，在程序执行过程中通常会创建与所需数量相同的线程，然后在它回收旧线程时停止创建新线程</p>
 </li>
-<li><p><code>SingleThreadExecutor</code>：仅单线程执行的线程池，就像是数量为1的<code>FixedThreadPool</code>，适用于希望在另一个线程中连续运行的任何长期存活的任务，或是一系列串行执行的短任务</p>
+<li><p><code>SingleThreadExecutor</code>：仅单线程执行的线程池，就像是数量为 1 的<code>FixedThreadPool</code>，适用于希望在另一个线程中连续运行的任何长期存活的任务，或是一系列串行执行的短任务</p>
 </li>
 <li><p><code>ThreadPoolExecutor</code>：可以指定动态线程数范围，线程存活时间以及使用队列的线程池</p>
 </li>
 <li><p><code>ScheduledThreadPool</code>：用于执行需要定期反复执行的任务</p>
 </li>
 </ul>
-<h3 id="3-4-2-线程池的创建"><a href="#3-4-2-线程池的创建" class="headerlink" title="3.4.2 线程池的创建"></a>3.4.2 线程池的创建</h3><p><code>Executors</code>类（静态工具类）中封装了很多创建各种线程池类型的静态工厂方法，但是使用这些工厂方法会存在一些弊端，比如创建出的线程池使用无界队列或者允许的最大线程数过大（<code>Integer.MAX_VALUE</code>），就会堆积大量请求或线程，最终导致内存溢出，因此不建议使用<code>Executors</code>，而是应该通过创建<code>ThreadPoolExecutor</code>实例的方式来创建线程池，规避资源耗尽的风险。</p>
+<h3 id="3-4-2-线程池的创建"><a href="#3-4-2-线程池的创建" class="headerlink" title="3.4.2 线程池的创建"></a>3.4.2 线程池的创建</h3><p><code>Executors</code>类（静态工具类）中封装了很多创建各种线程池类型的静态工厂方法，但是使用这些工厂方法会存在一些弊端，比如创建出的线程池使用无界队列或者允许的最大线程数过大（<code>Integer.MAX_VALUE</code>），就会堆积大量请求或线程，因此不建议使用<code>Executors</code>，而是应该通过创建<code>ThreadPoolExecutor</code>实例的方式来创建线程池，规避资源耗尽的风险。</p>
 <p>线程池的本质是一个<code>HashSet</code>，元素类型是<code>Worker</code>（<code>Runnable</code>的实现类），当给线程池提交任务时，如果当前线程数低于核心线程数，则增加核心线程来执行任务，当当前线程数达到核心线程数时，任务缓存在阻塞队列中排队，当队列已满时，增加非核心线程数来执行任务，当当前线程数达到最大线程数时，触发阻塞队列的饱和/拒绝策略<code>RejectedExecutionHandler</code>来判断如何处理新任务。</p>
 <ul>
 <li><p>如果线程池没有自定义<code>RejectedExecutionHandler</code>，Java 提供了四种内置的拒绝策略，默认会使用 AbortPolicy，会抛出<code>RejectedExecutionException</code>并丢弃该任务，此外，DiscardPolicy 会默默地丢弃任务而不抛出异常，一般用于日志记录等非关键场景；DiscardOldestPolicy 会尝试将任务队列中最早的任务删除，然后再尝试提交新任务，一般用于实时性要求较高的场景；CallerRunsPolicy 会将任务回退给调用线程（不会抛出异常），调用线程会尝试执行任务，这种处理会降低任务提交速度，适用于任务提交者能够承受任务执行压力但希望有一种缓冲机制的情况</p>
 </li>
 <li><p>如果线程池使用无界队列<code>LinkedBlockingQueue</code>，其最大长度为<code>Integer.MAX_VALUE</code>，容易在队列中堆积大量请求；如果线程池使用不存储元素的队列<code>SynchronousQueue</code>，则相当于队列永远是满的；一般使用有界队列<code>ArrayBlockingQueue</code>并配合<code>RejectedExecutionHandler</code>一起</p>
 </li>
-<li><p><strong>线程池中线程的数量并不是越多越好，具体的数量需要评估每个任何的处理时间以及当前计算机的处理器能力和数量</strong>，使用的线程过少，无法发挥处理器的性能；使用的线程过多，将会增加系统的无故开销，起到相反的作用</p>
+<li><p><strong>线程池中线程的数量并不是越多越好，具体的数量需要评估每个任务的处理时间以及当前计算机的处理器能力和数量</strong>，使用的线程过少，无法发挥处理器的性能；使用的线程过多，将会增加系统的无故开销，起到相反的作用</p>
 </li>
 <li><p>一般在刚上线时先根据公式（CPU 密集型应用线程数设为 N+1，I/O 密集型应用线程数设为 2N+1，N 为 CPU 核数）设置一个大致初始线程数，然后再通过压测来不断调整至合理数值</p>
 </li>
@@ -816,7 +816,7 @@
 </ul>
 <h3 id="3-4-3-线程池的操作"><a href="#3-4-3-线程池的操作" class="headerlink" title="3.4.3 线程池的操作"></a>3.4.3 线程池的操作</h3><p>JUC 尽可能避免对<code>Thread</code>对象的直接操作，而是尽量通过线程池来执行所有操作</p>
 <ul>
-<li><p>线程池的<code>submit</code>方法用于提交要执行的任务，该方法的入参是一个<code>Runnable</code>接口的实现类，并返回一个<code>Future&lt;?&gt;</code>，通过调用该返回值的<code>cancel</code>方法，它就会拥有在该线程上调用<code>interrupt</code>以停止这个线程的权限</p>
+<li><p>线程池的<code>submit</code>方法用于提交要执行的任务，该方法的入参是一个<code>Runnable</code>/<code>Callable&lt;T&gt;</code>接口的实现类，并返回一个<code>Future&lt;?&gt;</code>/<code>Future&lt;T&gt;</code>，通过调用该返回值的<code>cancel</code>方法，它就会拥有在该线程上调用<code>interrupt</code>以停止这个线程的权限</p>
 </li>
 <li><p>线程池的<code>shutdown</code>、<code>shutdownNow</code>方法都可以用于程序结束时关闭线程池，<code>shutdown</code>会等待线程池中正在执行以及队列中的任务先完成，然后再关闭，<code>shutdownNow</code>会立即停止正在执行的任务（发送一个<code>interrupt</code>调用给它启动的所有线程）</p>
 </li>
@@ -868,7 +868,7 @@
 <ul>
 <li><p><code>CompletableFuture</code>可以<strong>传入</strong>一个实现了<code>Supplier</code>接口的<strong>回调对象</strong>，当异步任务完成或者发生异常时，能够自动调用回调对象的回调方法，当主线程设置好回调之后，不需再关心异步任务的执行，此时不再需要使用会导致主线程被迫等待的<code>Future.get</code>方法或轮询<code>Future.isDone</code>方法</p>
 </li>
-<li><p><code>CompletableFuture</code>底层实现主要涉及到了<code>Completion</code>链式异步处理、事件驱动、<code>ForkJoinPool</code>线程池、<code>CountDownLatch</code>控制计算状态、<code>CompletionException</code>捕获异常等（<a target="_blank" rel="noopener" href="https://www.yuque.com/hollis666/niq4hm/qgrygdsu04a6vfzw">具体原理参考</a>）</p>
+<li><p><code>CompletableFuture</code>底层实现主要涉及到了<code>Completion</code>链式异步处理、事件驱动机制、<code>ForkJoinPool</code>线程池、<code>CountDownLatch</code>控制计算状态、<code>CompletionException</code>捕获异常等</p>
 </li>
 <li><p><code>CompletableFuture</code>底层使用<code>ForkJoinPool</code>而不是<code>ExecutorService</code>是因为它的执行模型和任务分割与<code>ForkJoinPool</code>的理念更加匹配</p>
 </li>
@@ -877,7 +877,7 @@
 <ul>
 <li><p>考虑到这种突发流量可能并不是长期持续存在的情况，且创建太多线程会消耗大量资源（线程的上下文切换，占据大量内存等）</p>
 </li>
-<li><p>常见的方案是升配扩容（垂直扩展，升级机器配置，水平扩展，增加服务节点），缺点是会增加成本，同时有些场景下扩容并不一定能解决问题</p>
+<li><p>常见的方案是升配扩容（垂直扩展指升级机器配置，水平扩展指增加服务节点），缺点是会增加成本，同时有些场景下扩容并不一定能解决问题</p>
 </li>
 <li><p>异步/响应式编程使用事件驱动即可通过少量线程实现高吞吐的请求处理，但与目前的任务请求和线程一对一的模型差异较大，存在兼容性问题</p>
 </li>
