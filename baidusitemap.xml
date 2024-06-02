@@ -2,15 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://example.com/2022/05/08/java-concurrency/</loc>
-    <lastmod>2024-05-25</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/07/23/expression/</loc>
-    <lastmod>2024-05-25</lastmod>
+    <lastmod>2024-06-02</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/08/java-language/</loc>
-    <lastmod>2024-05-24</lastmod>
+    <lastmod>2024-06-01</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2024/05/26/sentence-making/</loc>
+    <lastmod>2024-06-01</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
+    <lastmod>2024-06-01</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/07/23/expression/</loc>
+    <lastmod>2024-05-26</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/12/15/oracle/</loc>
@@ -19,10 +27,6 @@
   <url>
     <loc>http://example.com/2022/08/06/mysql/</loc>
     <lastmod>2024-05-23</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
-    <lastmod>2024-05-11</lastmod>
   </url>
   <url>
     <loc>http://example.com/2024/04/18/flip-puzzle/</loc>
@@ -273,11 +277,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/18/redis/</loc>
+    <loc>http://example.com/2024/02/21/rpc/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/21/rpc/</loc>
+    <loc>http://example.com/2024/02/18/redis/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
