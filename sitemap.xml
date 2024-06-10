@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>http://example.com/home/index.html</loc>
     
     <lastmod>2024-06-10</lastmod>
     
@@ -308,7 +308,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -317,7 +317,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -668,7 +668,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2024/02/18/redis/</loc>
+    <loc>http://example.com/2024/02/21/rpc/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -677,7 +677,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2024/02/21/rpc/</loc>
+    <loc>http://example.com/2024/02/18/redis/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
