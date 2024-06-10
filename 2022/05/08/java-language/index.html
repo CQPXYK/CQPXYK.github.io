@@ -72,7 +72,7 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/categories/" class="item-link">Home</a>
           
         </li>
       
@@ -118,7 +118,7 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/categories/" class="menu-link">Home</a>
             
           </li>
         
@@ -895,7 +895,7 @@
 </li>
 <li><p><code>Unsafe</code>的功能是强大而危险的，可以绕过 Java 的安全机制，它所分配的内存需要手动 free 而不被 GC 回收，可能会导致内存泄漏、非法访问、数据损坏等安全问题</p>
 </li>
-<li><p><code>Unsafe</code>被设计的初衷并不是希望被一般开发者使用，它的构造方法时私有的，所以不能通过<code>new</code>或工厂方法去得到<code>Unsafe</code>实例，可以采用反射获取<code>Unsafe</code>实例</p>
+<li><p><code>Unsafe</code>被设计的初衷并不是希望被一般开发者使用，它的构造方法是私有的，所以不能通过<code>new</code>或工厂方法去得到<code>Unsafe</code>实例，可以采用反射获取<code>Unsafe</code>实例</p>
 </li>
 <li><p>Java 鼓励使用构造函数和工厂方法来创建对象，以确保对象的正确初始化，并维护对象的不变性，使用<code>Unsafe</code>创建对象并不符合 Java 面向对象的原则</p>
 </li>
