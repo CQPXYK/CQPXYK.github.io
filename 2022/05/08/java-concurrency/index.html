@@ -608,7 +608,7 @@
 </li>
 <li><p>通过<code>ThreadLocal</code>的<code>set</code>方法可以将需要的 Context 关联到<code>ThreadLocal</code>实例当中，通过<code>remove</code>方法可以将 Context 从<code>ThreadLocal</code>实例中移除，关联到<code>ThreadLocal</code>中的 Context 在移除之前，所有方法都可以通过<code>ThreadLocal</code>的<code>get</code>方法随时获取到 Context</p>
 </li>
-<li><p><code>get</code>方法其实是先获取当前线程自身的<code>ThreadLocalMap</code>类型的成员变量，再以<code>ThreadLocal</code>对象（<code>this</code>引用）为 key，从<code>ThreadLocalMap</code>中获取到 Context 数据</p>
+<li><p><code>get</code>方法其实是先获取当前线程自身的<code>ThreadLocalMap</code>类型的成员变量，再以<code>ThreadLocal</code>对象引用为 key，从<code>ThreadLocalMap</code>中获取到 Context 数据</p>
 </li>
 <li><p>通过<code>ThreadLocal</code>设置 Context 之后一定要在<code>finally</code>块中调用<code>remove</code>方法来清除 Context，否则只要线程还存在，那么该线程的<code>ThreadLocalMap</code>的<code>Entry</code>数组中会一直保留 Context 数据，进而导致内存泄漏，具体细节见下图</p>
 <img src="线程状态传递.jpg" alt="线程状态传递" style="zoom:100%;" /></li>

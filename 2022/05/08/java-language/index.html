@@ -887,7 +887,7 @@
 <p>JDK 21 中提供了虚拟线程，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a>。</p>
 <h2 id="5-8-SPI"><a href="#5-8-SPI" class="headerlink" title="5.8 SPI"></a>5.8 SPI</h2><p>应用开发人员使用 API 定义软件组件之间交互的规则和约定的接口，API 提供方制定接口并完成对接口的不同实现，API 调用方只需调用即可；框架扩展人员使用 SPI 定义应用程序中可拔插的服务实现，SPI 提供方制定服务并提供可拔插的实现方式，SPI 调用方可以选择使用提供方提供的内置实现，也可以自己实现。</p>
 <p>SPI 适用于调用者需要根据实际使用需要来启用、扩展、或者替换框架的实现策略的场景，比如数据库驱动加载接口实现类的加载、JDBC 加载不同类型数据库的驱动、日志门面接口实现类加载、SLF4J 加载不同提供商的日志实现类等，Spring 中也大量使用了 SPI。</p>
-<h2 id="5-9-Unsafe"><a href="#5-9-Unsafe" class="headerlink" title="5.9 Unsafe"></a>5.9 Unsafe</h2><p><code>sun.misc.Unsafe</code>类是 Java 中的一个底层类，提供了硬件级别的原子操作，可以对堆外内存进行直接的内存操作（是 JVM 开的后门），包括内存分配和对象实例化。</p>
+<h2 id="5-9-Unsafe"><a href="#5-9-Unsafe" class="headerlink" title="5.9 Unsafe"></a>5.9 Unsafe</h2><p><code>sun.misc.Unsafe</code>类是 Java 实现 CAS 的核心类，提供了硬件级别的原子操作，可以对堆外内存进行直接的内存操作（是 JVM 开的后门），包括内存分配和对象实例化。</p>
 <ul>
 <li><p><code>Unsafe</code>是 Java 的内部 API，并不属于 Java 标准库的一部分，<code>Unsafe</code>的行为在不同的 JDK 版本和不同 JVM 实现中可能会有差异，会引发代码的不可移植性</p>
 </li>

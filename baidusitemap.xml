@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2024/05/26/sentence-making/</loc>
+    <lastmod>2024-06-15</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
+    <lastmod>2024-06-15</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/08/java-language/</loc>
+    <lastmod>2024-06-14</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
+    <lastmod>2024-06-11</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2024/06/10/overall/</loc>
     <lastmod>2024-06-10</lastmod>
   </url>
   <url>
     <loc>http://example.com/2023/07/31/overview/</loc>
     <lastmod>2024-06-10</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/08/java-concurrency/</loc>
-    <lastmod>2024-06-10</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/05/08/java-language/</loc>
-    <lastmod>2024-06-08</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2024/05/26/sentence-making/</loc>
-    <lastmod>2024-06-08</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
-    <lastmod>2024-06-01</lastmod>
   </url>
   <url>
     <loc>http://example.com/2023/07/23/expression/</loc>
@@ -89,11 +89,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
+    <loc>http://example.com/2023/11/06/computer-networking/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/11/06/computer-networking/</loc>
+    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
@@ -125,11 +125,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
@@ -245,11 +245,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/09/27/week-5/</loc>
+    <loc>http://example.com/2023/07/07/week-45/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/07/07/week-45/</loc>
+    <loc>http://example.com/2022/09/27/week-5/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
