@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/05/10/spring/</loc>
+    
+    <lastmod>2024-06-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2024/06/10/overall/</loc>
+    
+    <lastmod>2024-06-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2024/05/26/sentence-making/</loc>
     
     <lastmod>2024-06-15</lastmod>
@@ -48,15 +66,6 @@
   
   <url>
     <loc>http://example.com/records/index.html</loc>
-    
-    <lastmod>2024-06-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2024/06/10/overall/</loc>
     
     <lastmod>2024-06-10</lastmod>
     
@@ -227,7 +236,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/11/06/computer-networking/</loc>
+    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -236,7 +245,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2024/03/09/cloud-computing/</loc>
+    <loc>http://example.com/2023/11/06/computer-networking/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -308,7 +317,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -317,7 +326,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -596,7 +605,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/11/10/week-10/</loc>
+    <loc>http://example.com/2022/09/01/week-1/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -605,7 +614,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/09/01/week-1/</loc>
+    <loc>http://example.com/2022/11/10/week-10/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -668,7 +677,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2024/02/21/rpc/</loc>
+    <loc>http://example.com/2024/02/18/redis/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -677,7 +686,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2024/02/18/redis/</loc>
+    <loc>http://example.com/2024/02/21/rpc/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -730,19 +739,10 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>http://example.com/2022/05/10/spring/</loc>
-    
-    <lastmod>2024-04-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2024-06-15</lastmod>
+    <lastmod>2024-06-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>

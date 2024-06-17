@@ -291,7 +291,7 @@
 <li><p>通过<code>&lt;constructor-arg values = &quot;...&quot; /&gt;</code>或者<code>&lt;constructor-arg ref= &quot;...&quot; /&gt;</code>或者<code>&lt;constructor-arg&gt; &lt;bean class = &quot;...&quot; /&gt; &lt;/constructor-arg&gt;</code>来注入构造器参数（默认的无参构造器不需要这样注入参数。</p>
 </li>
 </ul>
-<h3 id="2-2-3-动态装配"><a href="#2-2-3-动态装配" class="headerlink" title="2.2.3 动态装配"></a>2.2.3 动态装配</h3><p>在XML配置文件中除了静态定义依赖关系之外，还可以通过Spring表达式语言（Spring Expression Language, SpEL）在运行期将值动态装配到Bean的属性或者构造器参数中。比如<code>&lt;property name = &quot;...&quot; value = &quot;#&#123;SpEL表达式&#125;&quot; /&gt;</code>可以将<code>#&#123;&#125;</code>界定符中的SpEL表达式所计算得到的值装配到Bean属性中。</p>
+<h3 id="2-2-3-动态装配"><a href="#2-2-3-动态装配" class="headerlink" title="2.2.3 动态装配"></a>2.2.3 动态装配</h3><p>在 XML 配置文件中除了静态定义依赖关系之外，还可以通过 Spring 表达式语言（Spring Expression Language, SpEL）在运行期将值动态装配到 Bean 的属性或者构造器参数中。比如<code>&lt;property name = &quot;...&quot; value = &quot;#&#123;SpEL表达式&#125;&quot; /&gt;</code>可以将<code>#&#123;&#125;</code>界定符中的 SpEL 表达式所计算得到的值装配到 Bean 属性中。</p>
 <ul>
 <li><p>SpEL表达式提供了多种运算符；</p>
 <table>
@@ -367,8 +367,8 @@
 <li><p>当使用<code>constructor</code>自动装配时，必须自动装配构造器的所有入参，不能混合使用<code>constructor</code>自动装配和<code>&lt;constructor-arg</code>元素。</p>
 </li>
 </ul>
-<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>使用注解自动装配与在XML中使用<code>autowire</code>属性自动装配并没有太大差别，但使用注解方式允许更细粒度的自动装配，可以选择性地标注某一个属性来对其应用自动装配，使用也更加方便。但当需要修改一个Bean时，无法很好的确定到底有多少个其他的Bean依赖于这个被修改的Bean。</p>
-<p>可以通过XML来配置第三方jar中的Bean，通过注解来配置自身开发的Bean，此时是XML+注解的配置模式，XML文件依旧存在，因此Spring IoC容器的启动依旧是从加载XML开始的。</p>
+<h2 id="2-3-注解配置"><a href="#2-3-注解配置" class="headerlink" title="2.3 注解配置"></a>2.3 注解配置</h2><p>使用注解自动装配与在XML中使用<code>autowire</code>属性自动装配并没有太大差别，但使用注解方式允许更细粒度的自动装配，可以选择性地标注某一个属性来对其应用自动装配，使用也更加方便。但当需要修改一个Bean时，无法很好的确定到底有多少个其他的 Bean 依赖于这个被修改的 Bean。</p>
+<p>可以通过 XML 来配置第三方 jar 中的 Bean，通过注解来配置自身开发的 Bean，此时是 XML +注解的配置模式，XML 文件依旧存在，因此 Spring IoC 容器的启动依旧是从加载XML开始的。</p>
 <h3 id="2-3-1-使用步骤"><a href="#2-3-1-使用步骤" class="headerlink" title="2.3.1 使用步骤"></a>2.3.1 使用步骤</h3><p>1）通过Maven创建工程并引入<code>spring-context</code>依赖；</p>
 <p>2）在XML文件中进行配置；</p>
 <ul>
@@ -376,18 +376,18 @@
 </li>
 <li><p>配置<code>&lt;context:component-scan&gt;</code>元素（除了完成与<code>&lt;context:annotation-config&gt;</code>元素一样的工作，还允许Spring自动检测Bean和定义Bean，此时不再需要<code>&lt;bean&gt;</code>元素）；</p>
 </li>
-<li><p>会扫描<code>base-package</code>属性所指定的包及其所有子包，并查找出能够自动注册为Spring Bean的类；</p>
+<li><p>会扫描<code>base-package</code>属性所指定的包及其所有子包，并查找出能够自动注册为 Spring Bean的类；</p>
 </li>
 </ul>
 <p>3）定义配置类</p>
 <ul>
 <li><p>通过<code>@Configuration</code>和<code>@ComponentScan</code>注解编写<code>AppConfig</code>配置类；</p>
 </li>
-<li><p>通常将<code>AppConfig</code>配置类位于自定义的顶层包，其他Bean按类别放入子包；</p>
+<li><p>通常将<code>AppConfig</code>配置类位于自定义的顶层包，其他 Bean 按类别放入子包；</p>
 </li>
 </ul>
 <p>4）通过<code>@Component</code>和<code>@Autowired</code>等注解编写组件；</p>
-<p>5）在<code>AppConfig</code>配置类的<code>main</code>函数中创建IoC容器实例，容器创建并装配好所有Bean，接着就可以从Spring的IoC容器中获取装配好的Bean。</p>
+<p>5）在<code>AppConfig</code>配置类的<code>main</code>函数中创建 IoC 容器实例，容器创建并装配好所有 Bean，接着就可以从 Spring 的 IoC 容器中获取装配好的 Bean。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AnnotationConfigApplicationContext</span>(AppConfig.class);</span><br><span class="line"><span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> (Product) context.getBean(Product.class);</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-3-2-自动装配"><a href="#2-3-2-自动装配" class="headerlink" title="2.3.2 自动装配"></a>2.3.2 自动装配</h3><p>Spring 支持字段注入、构造器注入、<code>setter</code>注入，但是 Spring 不建议使用基于字段的依赖注入，这是因为这种方式使得 Spring 作为外部容器却感知到一个被封装 Bean 内部的私有成员变量，破坏了封装性。以下注解均用于在类初始化之后注入 Bean，实现自动装配</p>
@@ -414,7 +414,7 @@
 </li>
 <li><p><code>@Inject</code></p>
 <ul>
-<li><p>Java的<code>@Inject</code>几乎可以完全替代Spring的<code>@Autowired</code>；</p>
+<li><p>Java 的<code>@Inject</code>几乎可以完全替代 Spring 的<code>@Autowired</code>；</p>
 </li>
 <li><p>与<code>@Autowired</code>不同的是，<code>@Inject</code>没有<code>required</code>属性，因此<code>@Inject</code>标注的依赖关系必须存在，如果不存在则会抛出异常。</p>
 </li>
@@ -432,7 +432,7 @@
 </li>
 <li><p><code>@Value</code></p>
 <ul>
-<li><p>用于某个属性、方法或者方法参数，并传入一个基本类型或者<code>String</code>类型的值来装配属性，<code>String</code>类型还可以是一个SpEL表达式，表达式的计算结果可以是任意类型；</p>
+<li><p>用于某个属性、方法或者方法参数，并传入一个基本类型或者<code>String</code>类型的值来装配属性，<code>String</code>类型还可以是一个 SpEL 表达式，表达式的计算结果可以是任意类型；</p>
 </li>
 <li><p>用于注入资源，Spring提供了一个<code>org.springframework.core.io.Resource</code>（注意不是<code>javax.annotation.Resource</code>），它可以像<code>String</code>、<code>int</code>一样使用<code>@Value</code>注入；</p>
 </li>
@@ -964,7 +964,7 @@
 <li>NESTED，如果之前有事务，则创建嵌套事务，嵌套事务回滚不影响父事务，但父事务回滚则影响嵌套事务</li>
 </ul>
 </li>
-<li><p>声明式事务使用简单，对代码没有侵入性，也容易被开发者的忽略，进而在错误使用 AOP（类内部自调用、内部类调用、<code>static</code>方法、<code>final</code>方法、<code>private</code>方法），或者在事务中加入一些分布式缓存、RPC、文件写入等无法回滚的操作，或者错误地设置了<code>rollbackFor</code>、<code>propagation</code>属性，或者是在事务方法内部 catch 了异常，又或者是使用了多线程（新线程中的操作不会被包含在原有事务中）等都会导致声明式事务使用出问题；</p>
+<li><p>声明式事务使用简单，对代码没有侵入性，也容易被开发者忽略，进而在错误使用 AOP（类内部自调用、内部类调用、<code>static</code>方法、<code>final</code>方法、<code>private</code>方法），或者在事务中加入一些分布式缓存、RPC、文件写入等无法回滚的操作，或者错误地设置了<code>rollbackFor</code>、<code>propagation</code>属性，或者是在事务方法内部 catch 了异常，又或者是使用了多线程（新线程中的操作不会被包含在原有事务中）等都会导致声明式事务使用出问题；</p>
 </li>
 <li><p>除了基于<code>@Transactional</code>的声明式事务，Spring 还提供基于<code>TransactionTemplate</code>等核心接口的编程式事务，开发者可以在代码中手动控制事务的开启、提交、回滚等操作，此时业务代码中就会清清楚楚地看到事务的具体控制细节，绝对不会被开发者忽略，也支持跨线程的事务管理。</p>
 </li>
