@@ -581,7 +581,23 @@
 </li>
 </ul>
 <p>快速失效（fail-fast）是一种理念，在系统设计中，fail-fast 系统是一种可以立即报告任何可能表明故障的情况的系统，一旦发生故障，直接停止正常操作并以异常的方式上报故障，而不是试图继续可能存在问题的过程。在 Java 容器中有用到 fail-fast 原则进行设计，如果存在多个线程同时修改同一个容器的内容或者是在迭代过程中增加或移除元素，就会触发 fail-fast，抛出<code>CocurrentModificationException</code>。如果需要在遍历时修改集合，可以使用普通的<code>for</code>循环，或者使用迭代器本身的<code>remove</code>，或者使用<code>stream</code>的<code>filter</code>方法。fail-safe 则是为线程安全的并发集合准备的，避免了多线程并发以及迭代过程中增加或移除元素时触发 fail-fast 导致不断抛出异常，但在并发及迭代期间并不保证数据的强一致性，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a> 的 3.3.1 小节。除了直接使用 JUC 包，还可以通过给非并发容器加锁、使用局部变量、使用<code>ThreadLocal</code>将容器放到单个线程内访问、使用<code>Collections.synchronizedXXX</code>方法获取线程安全的容器、使用不可变的容器类等方式来保证容器的线程安全。</p>
-<p>数组和容器所存储的元素集合都可以生成<code>Stream</code>，<code>Stream</code>不是一种数据结构，只是某种数据源的一个视图，<code>Stream</code>的思想是将要处理的元素集合看作一种流，可以对流进行筛选、排序、聚合等处理，对<code>Stream</code>的任何处理都不会修改其背后的数据源，而是会产生一个新的<code>Stream</code>/新的集合/其他结果。<code>Stream</code>的中间操作（<code>filter</code>, <code>map</code>, <code>limit</code>, <code>sorted</code>, <code>distinct</code>）的结果是<code>Stream</code>，<code>Stream</code>最终操作（<code>forEach</code>, <code>count</code>, <code>collect</code>）就是在消费<code>Stream</code>，<code>Stream</code>只能被消费一次，消费之后不能再次使用流，也不能再使用任何中间操作。对于有序的<code>stream</code>，并发可能会降低性能，此时应该避免使用并发，如果无法避免使用并发，可在使用前通过<code>unorder</code>将该<code>Stream</code>转为无序的。</p>
+<p>数组和容器所存储的元素集合都可以生成<code>Stream</code></p>
+<ul>
+<li><p><code>Stream</code>不是一种数据结构，只是某种数据源的一个视图</p>
+</li>
+<li><p><code>Stream</code>的思想是将要处理的元素集合看作一种流，可以对流进行筛选、排序、聚合等处理</p>
+</li>
+<li><p>对<code>Stream</code>的任何处理都不会修改其背后的数据源，而是会产生一个新的<code>Stream</code>/新的集合/其他结果</p>
+</li>
+<li><p><code>Stream</code>的中间操作（<code>filter</code>, <code>map</code>, <code>limit</code>, <code>sorted</code>, <code>distinct</code>）的结果是<code>Stream</code></p>
+</li>
+<li><p><code>Stream</code>最终操作（<code>forEach</code>, <code>count</code>, <code>collect</code>）就是在消费<code>Stream</code>，<code>Stream</code>只能被消费一次，消费之后不能再次使用流，也不能再使用任何中间操作</p>
+</li>
+<li><p><code>Stream</code>底层使用了 ForkJoin 进行并发处理，但考虑到线程管理的开销，任务分割合理性，线程争用，以及 CPU 核数等因素，并发处理并不一定比串行快</p>
+</li>
+<li><p>对于有序的<code>Stream</code>，并发可能会降低性能，此时应该避免使用并发，如果无法避免使用并发，可在使用前通过<code>unorder</code>将该<code>Stream</code>转为无序的</p>
+</li>
+</ul>
 <h2 id="2-4-类型信息和泛化"><a href="#2-4-类型信息和泛化" class="headerlink" title="2.4 类型信息和泛化"></a>2.4 类型信息和泛化</h2><p>运行时类型信息可以在程序运行时发现和使用类型信息，类型信息是由称为<code>Class</code>对象的特殊对象完成的，它包含了与类有关的信息，每一个 Java 类都有一个<code>Class</code>对象。Java 有两种方式可以在运行时识别类型信息</p>
 <ul>
 <li><p>一种是传统的 RTTI，它假定在编译时就已经知道了所有的类型（Java 的容器和泛型系统会确保这一点），编译器在编译时打开和检查<code>.class</code>文件</p>

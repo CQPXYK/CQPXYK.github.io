@@ -2,9 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2024/05/26/sentence-making/</loc>
+    
+    <lastmod>2024-07-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/05/10/spring/</loc>
     
-    <lastmod>2024-06-17</lastmod>
+    <lastmod>2024-07-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/08/java-language/</loc>
+    
+    <lastmod>2024-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/05/22/spring-boot/</loc>
+    
+    <lastmod>2024-06-21</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -20,27 +47,9 @@
   </url>
   
   <url>
-    <loc>http://example.com/2024/05/26/sentence-making/</loc>
-    
-    <lastmod>2024-06-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
     
     <lastmod>2024-06-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://example.com/2022/05/08/java-language/</loc>
-    
-    <lastmod>2024-06-14</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -587,7 +596,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2023/07/07/week-45/</loc>
+    <loc>http://example.com/2022/09/27/week-5/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -596,7 +605,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/09/27/week-5/</loc>
+    <loc>http://example.com/2023/07/07/week-45/</loc>
     
     <lastmod>2024-04-11</lastmod>
     
@@ -695,15 +704,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/2022/05/22/spring-boot/</loc>
-    
-    <lastmod>2024-04-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/2024/03/16/ddd/</loc>
     
     <lastmod>2024-04-11</lastmod>
@@ -742,7 +742,7 @@
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2024-06-17</lastmod>
+    <lastmod>2024-07-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
