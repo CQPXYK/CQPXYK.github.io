@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
+    <lastmod>2024-08-31</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/06/clean-code/</loc>
+    <lastmod>2024-08-16</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2024/02/18/redis/</loc>
+    <lastmod>2024-08-05</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2024/02/06/distributed-system/</loc>
+    <lastmod>2024-08-02</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2023/11/06/computer-networking/</loc>
+    <lastmod>2024-07-29</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/09/30/tdd/</loc>
+    <lastmod>2024-07-25</lastmod>
+  </url>
+  <url>
+    <loc>http://example.com/2022/05/11/design-patterns/</loc>
+    <lastmod>2024-07-23</lastmod>
+  </url>
+  <url>
     <loc>http://example.com/2022/08/06/mysql/</loc>
     <lastmod>2024-07-17</lastmod>
   </url>
@@ -23,10 +51,6 @@
   <url>
     <loc>http://example.com/2022/05/22/spring-boot/</loc>
     <lastmod>2024-06-21</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2023/12/09/java-virtual-machine/</loc>
-    <lastmod>2024-06-15</lastmod>
   </url>
   <url>
     <loc>http://example.com/2022/05/08/java-concurrency/</loc>
@@ -101,10 +125,6 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/11/06/computer-networking/</loc>
-    <lastmod>2024-04-11</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2023/11/05/history-vocabulary/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
@@ -133,11 +153,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/06/effective-java/</loc>
+    <loc>http://example.com/2022/05/07/git/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/07/git/</loc>
+    <loc>http://example.com/2022/05/06/effective-java/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
@@ -165,10 +185,6 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/11/design-patterns/</loc>
-    <lastmod>2024-04-11</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2023/05/03/week-36/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
@@ -178,10 +194,6 @@
   </url>
   <url>
     <loc>http://example.com/2023/02/25/week-26/</loc>
-    <lastmod>2024-04-11</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2022/09/30/tdd/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
@@ -210,10 +222,6 @@
   </url>
   <url>
     <loc>http://example.com/2023/06/03/week-40/</loc>
-    <lastmod>2024-04-11</lastmod>
-  </url>
-  <url>
-    <loc>http://example.com/2024/02/06/distributed-system/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
@@ -253,11 +261,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/09/27/week-5/</loc>
+    <loc>http://example.com/2023/07/07/week-45/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/07/07/week-45/</loc>
+    <loc>http://example.com/2022/09/27/week-5/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
@@ -281,10 +289,6 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2022/05/06/clean-code/</loc>
-    <lastmod>2024-04-11</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2022/12/29/master-period/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
@@ -297,10 +301,6 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/18/redis/</loc>
-    <lastmod>2024-04-11</lastmod>
-  </url>
-  <url>
     <loc>http://example.com/2024/03/16/ddd/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
@@ -309,11 +309,11 @@
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2023/02/11/jmeter/</loc>
+    <loc>http://example.com/2024/02/21/mq/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
   <url>
-    <loc>http://example.com/2024/02/21/mq/</loc>
+    <loc>http://example.com/2023/02/11/jmeter/</loc>
     <lastmod>2024-04-11</lastmod>
   </url>
 </urlset> 

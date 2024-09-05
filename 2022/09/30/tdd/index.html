@@ -241,7 +241,7 @@
 </li>
 <li><p>每个运行器都有特殊功能，应根据需要选择不同的运行器来运行测试代码；</p>
 </li>
-<li><p>Junit5中<code>@ExtendWith</code>是可重复的，可以使用多个运行器，这意味着多个扩展可以很容器的组合在一起。</p>
+<li><p>Junit5中<code>@ExtendWith</code>是可重复的，可以使用多个运行器，这意味着多个扩展可以很容易的组合在一起。</p>
 </li>
 </ul>
 </li>
@@ -267,7 +267,7 @@
 </li>
 <li><p><code>@Mock</code>注解配合<code>MockitoAnnotations.initMocks</code>或者<code>@ExtendWith(MockitoExtension,class)</code>一起使用，用于声明一个 Mock 对象</p>
 </li>
-<li><p><code>@MockBean</code>用于需要依赖 Spring 容器的测试，并在替换 Spring 容器中的 Bean，或者增加 Bean</p>
+<li><p><code>@MockBean</code>用于需要依赖 Spring 容器的测试，并替换 Spring 容器中的 Bean，或者增加 Bean</p>
 </li>
 <li><p><code>@InjectMocks</code>用于声明并创建需要进行测试和方法调用的真实 Class 实例</p>
 </li>
@@ -285,7 +285,7 @@
 </li>
 </ul>
 </li>
-<li><p><code>doxxx(Object obj).when(T mock)</code>：stubbing void 方法或者 <strong>spy 对象</strong>上的方法，或者用于多次 stubbing 相 同的方法，以在测试过程中更改模拟的行为</p>
+<li><p><code>doxxx(Object obj).when(T mock)</code>：stubbing void 方法或者 <strong>spy 对象</strong>上的方法，或者用于多次 stubbing 相同的方法，以在测试过程中更改模拟的行为</p>
 </li>
 <li><p><code>spy(new xxx())</code>：返回一个真实的 Spy 对象</p>
 </li>
