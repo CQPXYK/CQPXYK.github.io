@@ -580,7 +580,9 @@
 <li><p>能力：容器即存放要使用的对象的地方，比数组更加灵活，具备更多不同的功能，Java 容器类是最具重用性的类库之一，当需要在数组上执行更加复杂的操作的，需要评估到底是使用数组还是更加灵活的容器，只有在已证明性能存在问题，并且切换到数组对性能提高有所帮助时，才应该将程序由容器重构为使用数组</p>
 </li>
 </ul>
-<p>快速失效（fail-fast）是一种理念，在系统设计中，fail-fast 系统是一种可以立即报告任何可能表明故障的情况的系统，一旦发生故障，直接停止正常操作并以异常的方式上报故障，而不是试图继续可能存在问题的过程。在 Java 容器中有用到 fail-fast 原则进行设计，如果存在多个线程同时修改同一个容器的内容或者是在迭代过程中增加或移除元素，就会触发 fail-fast，抛出<code>CocurrentModificationException</code>。如果需要在遍历时修改集合，可以使用普通的<code>for</code>循环，或者使用迭代器本身的<code>remove</code>，或者使用<code>stream</code>的<code>filter</code>方法。fail-safe 则是为线程安全的并发集合准备的，避免了多线程并发以及迭代过程中增加或移除元素时触发 fail-fast 导致不断抛出异常，但在并发及迭代期间并不保证数据的强一致性，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a> 的 3.3.1 小节。除了直接使用 JUC 包，还可以通过给非并发容器加锁、使用局部变量、使用<code>ThreadLocal</code>将容器放到单个线程内访问、使用<code>Collections.synchronizedXXX</code>方法获取线程安全的容器、使用不可变的容器类等方式来保证容器的线程安全。</p>
+<p>快速失效（fail-fast）是一种理念，在系统设计中，fail-fast 系统是一种可以立即报告任何可能表明故障的情况的系统，一旦发生故障，直接停止正常操作并以异常的方式上报故障，而不是试图继续可能存在问题的过程。在 Java 容器中有用到 fail-fast 原则进行设计，如果存在多个线程同时修改同一个容器的内容或者是在迭代过程中增加或移除元素，就会触发 fail-fast，抛出<code>CocurrentModificationException</code>。如果需要在遍历时修改集合，可以使用普通的<code>for</code>循环，或者使用迭代器本身的<code>remove</code>，或者使用<code>stream</code>的<code>filter</code>方法。</p>
+<p>fail-safe 则是为线程安全的并发集合准备的，避免了多线程并发以及迭代过程中增加或移除元素时触发 fail-fast 导致不断抛出异常，但在并发及迭代期间并不保证数据的强一致性，详细参见 <a href="../../../../2022/05/08/java-concurrency/">Java Concurrency</a> 的 3.3.1 小节。除了直接使用 JUC 包，还可以通过给非并发容器加锁、使用局部变量、使用<code>ThreadLocal</code>将容器放到单个线程内访问、使用<code>Collections.synchronizedXXX</code>方法获取线程安全的容器、使用不可变的容器类等方式来保证容器的线程安全。</p>
+<p>fail-over 是一种备份操作模式，当主要组件出现异常时将其功能转移到具有同样功能的备份组件上，实现故障转移，失败自动切换，通常用于读操作，但重试会带来更长的延迟。fail-back 是在故障转移之后，发生故障的失效服务机器能够自动恢复，通常用于消息通知操作。</p>
 <p>数组和容器所存储的元素集合都可以生成<code>Stream</code></p>
 <ul>
 <li><p><code>Stream</code>不是一种数据结构，只是某种数据源的一个视图</p>

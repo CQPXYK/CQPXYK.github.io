@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="要有一个从输入到输出的过程">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      互联网信贷风险与大数据 | CQ&#39;s Blog
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+  
+    
+<script src="/js/local-search.js"></script>
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CQ's Blog</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Categories</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/records" class="item-link">Records</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/scratches/" class="item-link">Scratches</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+      
+        <li class="menu-item menu-item-search right-list">
+    <a role="button" class="popup-trigger">
+        <i class="fa fa-search fa-fw"></i>
+    </a>
+</li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Categories</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/records" class="menu-link">Records</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/scratches/" class="menu-link">Scratches</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+    
+      <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+            <span class="search-icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <div class="search-input-container">
+                <input autocomplete="off" autocapitalize="off"
+                    placeholder="Please enter your keyword(s) to search." spellcheck="false"
+                    type="search" class="search-input">
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa fa-times-circle"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+    
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>互联网信贷风险与大数据</h2>
+  <!--<p class="post-date">2024-12-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>-->
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="0、引言"><a href="#0、引言" class="headerlink" title="0、引言"></a>0、引言</h1><p>互联网技术和金融业务的结合产生了互联网金融这一业务模式，大致可以划分如下四类</p>
+<ul>
+<li>传统金融业务的互联网化<ul>
+<li>互联网银行/直营银行（direct banking），没有物理营业网点，依靠互联网、电话和 ATM 提供服务，是利率市场化和互联网技术发展的直接结果</li>
+<li>互联网券商/在线折扣券商（online discount brokerage），是证券交易佣金自由化与互联网技术发展相结合背景下产生的，佣金费率低</li>
+<li>互联网保险</li>
+</ul>
+</li>
+<li>基于互联网平台开展金融业务<ul>
+<li>电子商务平台和互联网第三方支付，在网络平台上销售金融产品，基于平台用户信息和大数据面向网上商户开展的小贷和面向个人开展的消费金融业务</li>
+</ul>
+</li>
+<li>全新的互联网金融模式<ul>
+<li>P2P 网络贷款，无需借助银行这一中介的去中心化的借贷平台，资金出借方可以明确知晓自己的投资目标对象，根据自己的需求执行透明的投资计划</li>
+<li>众筹融资（crowdfunding），通过互联网平台发布，吸引公众（最终用户）对产品进行直接投资</li>
+</ul>
+</li>
+<li>金融支持的互联网化<ul>
+<li>金融业务和产品的搜索；家庭理财服务；理财教育服务；金融社交平台</li>
+<li>这些平台不提供金融服务，但是能够大大提升人们对于金融产品和业务的认知</li>
+</ul>
+</li>
+</ul>
+<h1 id="1、个人信贷业务创新模式"><a href="#1、个人信贷业务创新模式" class="headerlink" title="1、个人信贷业务创新模式"></a>1、个人信贷业务创新模式</h1><p>互联网金融不再提供狭义的金融服务，而是成为金融服务及产品相关的<strong>多业态（各方参与者各取所需）</strong>的参与者，多项功能和需求交织在一个平台之上，从而产生更多的协同效应，在平台内部可<strong>闭环（避免客户脱离过程中的转化率损失）</strong>地完成整个服务过程，同时通过用户的参与，实现动态的自我更新与<strong>进化（相关数据积累和观测）</strong>，强调开放、快捷、简化和低门槛。</p>
+<p>由于国内金融体系的不完善，个人与小企业的信贷需求未能得到充分满足，互联网金融创新模式更多地表现在信用贷款领域，信贷业务是互联网服务向金融领域延伸的表现。电商平台在发展信贷业务上很有优势，平台可以利用其积累起来的商户或购物会员的交易、支付等信息，为他们提供纯信用的贷款产品，这一行为的初衷通常是企业为了促进自身主营业务的发展，向其自有会员提供增值服务，是原有业务体系的延伸。这类融资服务的发展模式大体分为合作与自营两类，合作贷款模式下，互联网企业会和金融机构合作，由金融机构来承担贷款审核、资金发放和贷后管理的一系列职能；自营模式下，互联网企业通常会申请相应的金融牌照，由自有的贷款经营企业提供贷款服务，自行进行信息整合和风险管理，这样就在企业内部形成了闭环的金融生态圈。</p>
+<p>金融企业的收入构成主要有：1）体现资金的时间价值的收入，即利息；2）体现专业服务价值的收入，即服务费；3）对客户违约的惩罚性收入。传统银行主要靠资金价值赚钱，采取创新业务模式的金融机构则依靠服务赢得市场空间，这类机构尝试打破原有银行体系对资金的垄断，以产品和服务为中心。金融企业的成本构成主要有：1）资金成本；2）运营成本；3）风险成本。不同金融机构所面对的资金成本和运营成本虽然有一定的差异性，但金融机构的持续性盈利能力的高低主要来自于风险成本的差异，风险管理是金融机构的核心竞争力，不但决定了机构是否处于可持续发展的良性循环，更是决定了金融企业生死的问题。金融的核心价值在于资金融通，资金的互通有无是建立在信用的基础之上，而信用的识别与评估则是风险管理的基础工作，信息不对称是导致信用评估失效的核心因素，因此<strong>信贷的核心是如何高效地从大量数据中挖掘出有价值的客户信息，解决信息不对称问题，有效衡量借款人的信用水平，进行有效的风险管理</strong>。</p>
+<p>创新业务模式下，个人信贷业务仍旧无法脱离的两个显著特征是授信额度较小和规模经营，授信额度较小这一特征根源于个人信贷业务的目标客户群主要是单一消费者、个体工商户或小企业主具备地区分散性、行业多元性、客户多样性，一旦过度授信会造成信用风险聚集；规模经营则根源于个人信贷的受众群体广泛，需求者众多，通过规模经营能够有效降低运营成本。总之，个人信贷业务具有<strong>客户数目巨大、单户授信规模小、风险分散</strong>的特点，虽然单户发生风险的可能性是不确定的，但是对全体客户来说，发生风险的比例却是相对稳定的，通过对大量客户信息的分析和挖掘，找到其风险特征和预期信贷表现出的规律，基于大数定律，其他相同条件的客户也会表现出相同的规律，这就是个人信贷可以依据大数法则、采用评分卡进行量化评估和管理的原因。</p>
+<p>从风险和收益平衡的角度来看，需要严格把握不同风险等级客户在金融机构整体资产中的占比，及时跟踪、调整、优化资产结构。较高风险的客户不是完全不能经营的，适度的风险容忍度和社会容忍度有利于为更广大的客户提供必需的金融服务，但较高风险客户的占比过大意味着风险容忍度被无底线地突破，更不能单纯地以高定价的方式来覆盖风险成本（失败的风险管理）。</p>
+<h1 id="2、风险管理概述"><a href="#2、风险管理概述" class="headerlink" title="2、风险管理概述"></a>2、风险管理概述</h1><p>风险可以可以概括为一种不确定性，对这种不确定性的接受程度可以称为风险容忍度或风险承受能力，经济领域的风险通常指对预期结果的偏离（包括不及预期和超过预期）。风险按照来源进行分类有信用风险、市场风险、操作风险、流动性风险、合规风险等。其中，信用风险是指因交易对手不能履约所造成的损失，在个人信贷业务中指借款人不能按照约定的时间足额还款，包括未还款、未按时还款以及未足额还款，信用风险产生的主要原因有借款人无偿还能力（突发原因以及超贷）和无偿还意愿（欺诈）；操作风险指由不完善或有问题的内部程序、员工和信息技术系统，以及外部事件而造成损失的风险，操作风险包括外部欺诈，外部欺诈可分为信息欺诈、身份欺诈和用途欺诈。</p>
+<p>风险管理本身是基于对风险发生的规律的研究和把握，通过各种手段对风险实施有效控制，并妥善处理损失的过程，<strong>核心是有效识别、衡量风险并将风险置于可控范围内，而非单纯地消灭风险</strong>。根据对风险发生的可能性和风险发生后所带来的损失大小两个维度的划分，风险事件被大体识别为四个类型：1）风险转移，发生频率低，严重性较高，内部控制成本非常高，一般会采取转移风险的缓释手段，如通过保险形式转嫁风险；2）风险接受/风险自留，发生频率低、严重性也低，对风险干预的成本往往超过了该风险所可能引起的损失；3）风险控制，发生频率高，严重性较低，需要控制风险发生的频率使其尽量向自留风险方向转化；4）风险规避，发生频率高，严重性较高，通常采取规避策略，即不涉足相关业务。</p>
+<p>风险管理是一个闭环管理的过程，从识别、衡量风险开始，基于风险分类建立相对应的管理手段，通过管理手段与策略的落地实施，产生风险管控效果，继而需要对实际风险管理效果进行检测，做出效果评估，再进入到新一轮对风险的识别和评估的过程中去，风险管理的文化、理念、政策应该贯穿在整个业务流程中的各风险环节点，及时调整优化风险管理政策，这不仅有利于风险管理措施的落地，同时使得风险管理和业务发展协调共进。风险管理战略需要和企业经营战略保持一致性，并可分解为各业务领域及各业务环节的风险管理方针。<strong>风险管理战略定义的核心内容是风险偏好和风险容忍度，风险偏好代表了金融机构对风险及回报的态度，风险容忍度则是在风险偏好的总体指导下，对风险敞口量化后确定的企业所能承受的最大限度的可预见风险水平，风险偏好和风险容忍度共同回答了金融机构承担何种风险，承担多少风险，承担风险的边界在哪里</strong>。</p>
+<p>风险管理策略是在风险战略的指导下选择的具体风险管理方法，是反映战略导向的风险管理工作的总体安排，可以是多个不冲突的管理策略并行的，共同构成金融机构的风险管理方法。1）全面风险管理，指对金融机构各个业务层面、各个业务环节的风险全盘管理，将所有业务单位均纳入到这个体系当中，以统一的量化指标来衡量、跟踪、评价；2）集中的管理架构，将风险决策的权限集中在总部管理，从整体上把握金融机构所面临的全部风险，但风险管理的职责则分配分散至各业务末端；3）风险分散的原则，所有的风险并非同时发生，分散化可使得组合的风险显著低于组合中所有单项交易的风险加总，单户的违约概率一旦互相关联（集中度风险过高）就容易对整体资产产生显著影响；4）计量风险工具，对业务所面临的风险 - 收益水平作较为科学、标准、自动、可量化的评估（而非业务人员的主观判断）；5）资产组合管理，在既定的经营目标以及资源约束的条件下，确定最佳的资产组合。</p>
+<h1 id="3、贷前-个人信贷申请准入"><a href="#3、贷前-个人信贷申请准入" class="headerlink" title="3、贷前-个人信贷申请准入"></a>3、贷前-个人信贷申请准入</h1><p>信贷审批工厂模式<strong>基于客户群特征针对性设计标准化产品和流程，实现流水线式的批量化信贷作业过程，授信群体从个人消费到中小企业经营</strong>。不同于地域管理模式成本高且难以服务到地理位置边缘地区，这种工厂管理模式则打破了地域辐射式的管理方式，以“中心工厂+卫星车间“的方式进行信贷管理，卫星车间作为地区分部，承接已明确定义好的短流程作业（按既定流程收集客户信息、核实真实性，再按约定输入总部的大工厂中），最大限度地隔离了业务员和客户之间的利益输出，中心工厂则进行远程长流程管理，集中掌握审批和授信权限（便于对问题点和风险点寻根逆源，定点优化），处于流水线上的单个作业人员无法根本性地左右审批结果。对于借款客户来说，信贷工厂本身是一个已经包装整合好的盒子，会按照既定流程进行自动化生产，对于给定的输入用户，输出标准化的产品和服务。</p>
+<p>相比于原有信贷工厂，互联网信贷工厂继承了原有信贷工厂的作业优势，但承接与客户直接接触的管理末端工作的“卫星车间”在逐渐消失，总部可以通过线上的方式直接接触客户和市场并获取相关数据和信息，获取信息的方式更加广阔丰富的同时，如何从繁杂信息中挑选出有效信息，并将其应用在管理策略之中（比如利用效信息完成实时快速甚至无感知的审批，结合需求预测信息将审批前置到营销获客阶段等）是互联网信贷工厂的重大挑战。</p>
+<p>这种大规模、远程作业的经营模式使得专业化有组织的中介欺诈的造假成本非常低，欺诈行为根据其发生的阶段，可以大体区分为申请欺诈和交易欺诈两大类。申请欺诈包括提供虚假资质证明材料、提供虚报申请信息和伪冒他人名义申请三类，交易欺诈发生在申请批复后的贷后阶段，包括虚假交易、伪冒交易和挪用借款资金三类。<strong>仅仅在申请环节和贷后环节分别针对申请欺诈和交易欺诈进行管理是不够的，金融机构需要在贷前、贷中、贷后进行全流程的反欺诈风险管理</strong>（比如在贷后管理阶段仍要对申请端的欺诈案件进行不断地排查）。</p>
+<p>客户引入管理是风控的第一道重要门槛，需要确认引入什么样的客户以及如何授信，该阶段用于辨识客户资质的模型主要有申请风险模型、初始额度模型和申请欺诈模型。申请风险模型常用 Logistic 回归模型，预测变量依赖于客户申请信息和信贷历史信息（静态的起始点信息），此外也会引入大量第三方数据（行为信息）来增加客户风险评价的准确性。初始额度模型（也可以看做是申请收益模型）主要衡量客户的收益情况，申请收益模型和申请风险模型二维矩阵共同确定客户的授信。申请欺诈模型通过客户填写的申请信息以及第三方数据来判断客户欺诈的可能性。</p>
+<p>金融征信是社会征信体系的一个子领域，主要用来解决信贷市场信息不对称的问题。美国采用专门的征信立法，注重征信市场效率，以私营征信机构为主，采用多元监管模式（未设立负责征信监管的专门部门），强调正确的信用报告和公平的征信方式；欧洲大多采用分散性综合征信立法，以公共征信机构为主，设立了专门的征信行业监管部门，强调个人隐私保护；我国的征信体系以中国人民银行征信中心为核心，中国人民银行征信中心通过收集第三方数据（从国内各家金融机构采集客户的贷款信息、客户信息、法院执行、电信缴费等公共信息）并进行加工、整合、转换、挖掘，为金融机构提供信用评估报告和信用评分等服务。</p>
+<h1 id="4、贷中-存量客户管理"><a href="#4、贷中-存量客户管理" class="headerlink" title="4、贷中-存量客户管理"></a>4、贷中-存量客户管理</h1><p>客户生命周期是以时间为维度，描述客户与机构之间的关系，以及每个阶段相应的客户行为特征。客户生命周期理论的核心观点在于，一个客户的属性特征、行为表现并非静止不变的，而是一个动态、持续的过程，比较具备代表性的五阶段模型中提出的阶段有：1）认知，买卖双方通过各种途径触达对方；2）考察，买方搜索卖方并进行尝试性购买；3）扩展，双方的依赖程度日益加深；4）承诺，双方对彼此高度满意并互相保证持续现有关系；5）解体，至少有一方退出了买卖关系。<strong>金融机构希望通过对客户关系生命周期的剖析，找到不同阶段客户经营和管理的重点，尤其是存量管理阶段最为复杂也最为重要，这是因为获取新客户的成本远高于维系一个老客户的成本，存量管理客户管理阶段是沟通贷前贷后的桥梁，是直接和间接利润来源的重要阶段</strong>。</p>
+<p>存量客户经营需要围绕的主线有：1）客户信息积累，静态属性和动态行为特征信息等；2）客户特征分析，基于客户信息和行为表现的记录，给客户打上分类标签并记录标签变动历史；3）存量客户管理决策，设计最优客户结构，提高投入产出比；4）差异化管理，不同风险-收益特征的客户群体应当进行差异化需求分析并向不同方向引导；5）针对性服务，动态、长效、针对性的客户管理机制。存量客户管理手段有同产品追加（贷款追加、贷款展期、提升授信额度）、新产品追加（增加用户转移的成本，增强客户黏性）、交叉营销（建立立体式的跨界服务体系，而不再局限于机构本身的金融服务）、<strong>再次营销（最重要）、授信管理、风险预警</strong>等。</p>
+<p>再次营销不再是卖产品、卖服务那么简单，而是<strong>对客户提供的产品和服务的种类的增加或属性的变化，给予客户超出预期的服务，协助客户提升自我价值，同时也可以不断优化资产质量与结构</strong>，使得低价值的客户转变为高价值客户，使得高价值客户持续优化。“精准”再次营销需要经过三个阶段：1）客户需求触发阶段，机构必须识别客户需求，及时捕捉到体现客户需求的行为，结合对客户特征的分析，迅速触发相应的管理动作（由客户行为触发管理）；2）客户特征识别和行为培养，机构开始对存量客户给出自己的评价，并确定对不同标签下的客户的管理方向（机构开始主动提供服务），希望通过这些管理动作来培养客户的行为；3）金融机构主动出击，金融应该对存量客户建立了足够详尽的档案，可以结合用户需求和自身经营管理需要，主动提供差异化的产品和服务，让客户不反感地接受营销。</p>
+<p>授信调整也是一个非常重要的存量客户管理手段，在存量客户管理阶段，多种经营手段最终都会涉及授信额度的调整，授信额度是贷款产品最重要的属性之一。合理授信的衡量需要做到三个平衡：1）需求平衡，授信额度与客户的额度需求相适应，这种需求并不是客户所要求的额度，而是基于客户融资需求背后的实际用途，估算的合理融资规模；2）偿付能力平衡，偿付能力的评估体现在两个维度上，一个维度是授信追加时的评估，另一个维度是机构需要对客户偿还能力进行持续监控；3）管理目标平衡，授信调整需要满足记否自身的管理目标（结构优化、收益提升等）。此外，注意授信额度是针对客户个人的，<strong>授信管理必须要有客户层面的归集</strong>，不能单纯按照单个产品或账户进行管理（一个客户可以购买多个产品，有多个账户，跨多个业务线等）。</p>
+<p>风险预警指通过信息收集和分析，对客户或资产的风险情况进行识别、衡量、分析，并采取适当应对措施以化解风险、减少损失的动态过程。风险预警并不以“预警”本身为目的，而是体现了主动监测风险、主动化解风险的管理策略，<strong>最终要以问题得到解决或控制为一个小循环的终点</strong>，“预警”仅是触发风险处理措施的一环。有效的监测识别决定了预警的及时性和准确性，而归因分析则是采取适当的处置措施的必要前提。</p>
+<p>存量客户管理模型体系主要有：1）行为风险模型，通过客户历史行为预测客户未来出现坏账的可能性，目标变量和客户逾期的严重性相关；2）交易欺诈模型，根据客户的历史交易行为预测当笔交易为欺诈的可能性（0/1）；3）行为收益模型，通过客户的历史行为来预测客户未来收益的高低；4）行为流失模型；5）市场响应模型等。</p>
+<h1 id="X、参考资料"><a href="#X、参考资料" class="headerlink" title="X、参考资料"></a>X、参考资料</h1><ul>
+<li>《The Risk of Internet Lending and Big Data》</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2024/11/26/week-117/">
+        <span class="nav-arrow">← </span>
+        
+          2024.11.25 - 2024.11.29
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+    <!-- 二维码 END -->
+    
+      <!-- Utterances START -->
+      <div id="utterances"></div>
+      <script src="https://utteranc.es/client.js"
+        repo=""
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async></script>    
+      <!-- Utterances END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+  
+      
+          <strong class="toc-title">OUTLINE</strong>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#0%E3%80%81%E5%BC%95%E8%A8%80"><span class="toc-nav-text">0、引言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E4%B8%AA%E4%BA%BA%E4%BF%A1%E8%B4%B7%E4%B8%9A%E5%8A%A1%E5%88%9B%E6%96%B0%E6%A8%A1%E5%BC%8F"><span class="toc-nav-text">1、个人信贷业务创新模式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E9%A3%8E%E9%99%A9%E7%AE%A1%E7%90%86%E6%A6%82%E8%BF%B0"><span class="toc-nav-text">2、风险管理概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3%E3%80%81%E8%B4%B7%E5%89%8D-%E4%B8%AA%E4%BA%BA%E4%BF%A1%E8%B4%B7%E7%94%B3%E8%AF%B7%E5%87%86%E5%85%A5"><span class="toc-nav-text">3、贷前-个人信贷申请准入</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4%E3%80%81%E8%B4%B7%E4%B8%AD-%E5%AD%98%E9%87%8F%E5%AE%A2%E6%88%B7%E7%AE%A1%E7%90%86"><span class="toc-nav-text">4、贷中-存量客户管理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#X%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-nav-text">X、参考资料</span></a></li></ol>
+      
+  
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2024/12/09/risk-of-internet-lending/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', '/css/images/error_icon.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== '/css/images/error_icon.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
+    
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      hljs.configure({useBR: true});
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

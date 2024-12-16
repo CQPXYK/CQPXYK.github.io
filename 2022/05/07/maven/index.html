@@ -226,7 +226,7 @@
 <li><p>最先声明优先原则：如果路径长度一致，A -&gt; C(1.0) 和 B -&gt; C(2.0) 相比，最终生效的更早声明的 1.0 版本的 C 包</p>
 </li>
 </ul>
-<p>如果在应用运行期间发生了<code>NoSuchMethodError</code>、<code>ClassNotFoundException</code>等异常或错误时，需要考虑依赖冲突问题，Maven 的 jar 包依赖传递原则最终选择的 jar 包可能并不是真正需要的，通过<code>mvn dependency:tree</code>命令可以打印整个项目的 jar 包依赖的依赖树，从而查看冲突 jar 包的多种不同版本的依赖路径，此时就需要如下人工干预手段来选择所需要的 jar 包：</p>
+<p>如果在应用运行期间发生了<code>NoSuchMethodError</code>、<code>ClassNotFoundException</code>等异常或错误时，需要考虑依赖冲突问题，Maven 的 jar 包依赖传递原则最终选择的 jar 包可能并不是真正需要的，通过<code>mvn dependency:tree &gt; tree</code>命令可以打印整个项目的 jar 包依赖的依赖树，从而查看冲突 jar 包的多种不同版本的依赖路径，此时就需要如下人工干预手段来选择所需要的 jar 包：</p>
 <ul>
 <li><p>在<code>&lt;dependency&gt;&lt;/dependency&gt;</code>标签内使用<code>&lt;exclusions&gt;&lt;exclusion&gt;&lt;/exclusion&gt;&lt;/exclusions&gt;</code>标签来排除不需要的 jar 包</p>
 </li>

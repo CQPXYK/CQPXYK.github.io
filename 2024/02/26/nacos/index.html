@@ -10,7 +10,7 @@
   
   <title>
     
-      Zookeeper | CQ&#39;s Blog
+      Nacos | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -176,8 +176,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Zookeeper</h2>
-  <!--<p class="post-date">2024-02-24</p>
+  <h2>Nacos</h2>
+  <!--<p class="post-date">2024-02-26</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>-->
@@ -185,53 +185,18 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Zookeeper 是最早流行的开源分布式协调服务框架之一，提供了分布式配置中心的功能，以顺序一致性著称（CP 设计），可以用于分布式配置管理、分布式同步、命名服务、集群管理、Master 选举、分布式协调服务、服务注册与发现、负载均衡等应用场景。</p>
-<h1 id="主要组成"><a href="#主要组成" class="headerlink" title="主要组成"></a>主要组成</h1><p>Zookeeper 中的主要组成部分有</p>
+    <section class="markdown-content"><p>Nacos 是服务注册中心和配置中心，是一个基于云原生架构的动态服务治理和配置管理平台。</p>
 <ul>
-<li><p>领导者（leader），负责进行投票的发起和决议，更新系统状态，为客户端提供读写服务，只有 leader 可以进行写操作</p>
-</li>
-<li><p>跟随者（follower），用于接收客户端的请求并响应客户端返回结果，在选举时参与投票，为客户端提供读服务</p>
-</li>
-<li><p>观察者（Observer），可以接收客户端连接，将写请求转发给 leader，但不参与选举投票，只同步 leader 状态，作用在于扩展系统，提高读取速度</p>
-</li>
-<li><p>客户端（client），请求发起方</p>
-</li>
+<li>服务发现及注册：可以服务注册到 Nacos 注册中心，并通过 Nacos 实现服务的自动发现和负载均衡，从而实现服务的良好可用性和弹性伸缩</li>
+<li>服务治理：可以通过 Nacos 实现服务的健康检查、故障转移、服务限流、熔断降级等治理能力，从而提高服务的可靠性和稳定性</li>
+<li>配置管理：可以将应用程序的配置信息存储在 Nacos 的配置中心，通过 Nacos 实现动态配置管理和灰度发布，从而实现应用程序的动态调整和部署</li>
+<li>事件监听和推送：可以通过 Nacos 实现配置变更、服务注册和注销等事件的监听和推送，从而实现应用程序的自动化部署和管理</li>
 </ul>
-<h1 id="选举机制"><a href="#选举机制" class="headerlink" title="选举机制"></a>选举机制</h1><p>Zookeeper 会在集群启动阶段以及 leader 失效时通过选举机制来确保 Zookeeper 集群中有一个 leader 节点，从而协调和处理客户端请求，选举机制是实现 Zookeeper 分布式协调一致性的核心，Zookeeper 中的每个 follower 节点都可以成为 leader。</p>
-<p>一次完整的选举大概要经历以下步骤</p>
-<ul>
-<li><p>初始化，所有 follower 节点都处于 looking 状态，每个节点都会监视集群中的其他节点，以侦听 leader 选举消息</p>
-</li>
-<li><p>提名，当一个节点启动时，会向其他节点发送投票请求（称为提名）</p>
-</li>
-<li><p>改投，节点收到其他节点的提名后可以选择投票改投这个节点，也可以不投票，每个节点只能在一个选举周期内投一票</p>
-</li>
-</ul>
-<p>Zookeeper 以事务 ID（zxid）来标识数据的新旧程度（zxid 越大代表节点的数据越新），以数据的新旧程度来标识节点的能力强弱（数据越新代表节点的能力越强）。在投票过程中，节点首先会认为自己最强，先投自己一票并将投票信息（包含了自己的事务 ID zxid 和唯一标识节点自身的 sid）广播出去，当节点接收到其他节点的投票信息时，会将其他节点的 zxid 和自身对比，若其他节点的 zxid 更大，则改投其他节点。</p>
-<p>选举过程有多个轮次，每个轮次是一个选举周期，在每个选举周期中，节点根据投票来选择新的 leader 候选，如果一个候选节点获得了超过半数的投票，那么就成为新的 leader，如果没有候选节点成为 leader，那么这个选举周期失败，所有节点会继续进行下一个选举周期。</p>
-<p>一旦一个节点成为 leader，会开始处理客户端请求并向其他节点发送 leader 就绪信息，告知其他节点自己成为 leader，其他节点会与新 leader 同步数据（也包括同步未完成的客户端请求），确保所有节点在一个一致的状态下运行。</p>
-<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p>Zookeeper 中的数据以目录结构的形式存储，每一个存储数据的节点都称为 ZNode</p>
-<ul>
-<li><p>ZNode 不支持部分读写，需要一次性完整读写，每个 ZNode 都有一个唯一的路径标识，每个 ZNode 都可以有子 ZNode（和目录类似），ZNode 中可以存储数据和状态信息</p>
-</li>
-<li><p>ZNode 有 PERSISTENT（持久节点）、PERSISTENT_SEQUENTIAL（持久的连续节点）、EPHEMERAL（临时节点）、EPHEMERAL_SEQUENTIAL（临时的连续节点）这种四种类型，ZNode 的类型在创建时确定并不能修改</p>
-</li>
-<li><p>持久节点会在创建后一直存在，直到有删除操作来主动清除该持久节点，而临时节点的生命周期与客户端会话绑定，一旦客户端会话失效，那么该临时节点就会自动被清除，临时节点不能有子节点，顺序节点在创建时会自动加上编号</p>
-</li>
-<li><p>每个 ZNode 都可以配置监视器来监听 ZNode 以及子 ZNode 中的数据和状态变化，一旦这些状态发生变化，服务器就会通知这个 ZNode 上的所有子 ZNode 的监视器，使得每个客户端都能很快知道它所关注的目录节点的变化，从而迅速做出反应</p>
-</li>
-</ul>
-<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><p>基于 Zookeeper 的临时有序节点可以实现分布式锁，当多个客户端尝试对某个方法加锁时，Zookeeper 的 leader 节点为每个客户端在该方法对应的指定节点的目录下（并发）创建与客户端相对应的临时有序节点，有序节点中序号最小的那个节点会获得锁，删除这个临时节点即可释放锁</p>
-<ul>
-<li><p>如果获取到锁的客户端宕机，那么该临时会被自动删除，即自动解锁，因此可以避免服务宕机导致的分布式锁无法释放问题</p>
-</li>
-<li><p>当一个客户端通过删除临时节点来释放锁之后，下一个节点序号最小的客户端就可以继续获得锁，因此可以实现阻塞的分布式锁</p>
-</li>
-<li><p>客户端可以判断自身是否已经获得锁来区分是更改锁的重入次数还是创建新的临时有序节点，因此可以实现可重入的分布式锁</p>
-</li>
-<li><p>Zookeeper 实现的分布式锁在创建和释放时涉及到节点的创建和销毁，这种操作只能通过 leader 节点来执行，然后将数据同步到 follower 节点上，因此性能会差于基于缓存的分布式锁</p>
-</li>
-</ul>
+<h1 id="AP-CP"><a href="#AP-CP" class="headerlink" title="AP+CP"></a>AP+CP</h1><p>Nacos 支持 AP 和 CP 两种模式，这样设计是因为 Nacos 的主要应用是用作注册中心和配置中心。对于注册中心来说，需要提供高可用性，否则会影响所有服务的互相调用。对于配置中心来说，需要提供高一致性，不同的机器接收到的配置不一致是不能接受的。可以根据具体的使用场景来修改配置文件，从而进行选择，默认是 AP。</p>
+<p>在金融、支付等对数据一致性要求非常高的业务场景下可以选择 CP 模式，那么当发生网络分区或故障时，为了保证数据一致性，Nacos 会自动对服务进行隔离和恢复，同时导致部分服务不可用。在网站、游戏等对可用性要求更高的场景下可以选择 AP 模式，那么当发生网络分区或故障时，Nacos 会优先保证服务的可用性，在这个前提下再去尽可能保证数据一致性。</p>
+<h1 id="配置变化"><a href="#配置变化" class="headerlink" title="配置变化"></a>配置变化</h1><p>服务端所发起的和客户端之间的长连接（保持一定的心跳机制）可以令配置变化具备良好的实时性，但是服务端需要维护大量的 TCP 连接，这会占用大量的内存和 CPU 资源，也容易受到网络抖动等因素的影响。客户端主动轮询的实现比较简单，但无法保证数据变化的实时性，客户端不断轮询也会对服务端造成压力。</p>
+<p>Nacos 1.x 采用综合了长连接和轮询的长轮询，客户端发起轮询，但是 Nacos 不立即返回，而是将请求挂起，在一段时间内保持着一个有效连接，超时或者存在配置变化再返回响应，然后客户端再发起一次轮询。长轮询可以综合轮询和长连接的优点，缺点是需要频繁地发起 HTTP 请求，会增加网络开销，并受到网络延迟等因素的影响，导致实时性不如长连接。</p>
+<p>Nacos 2.0 中采用 gRPC 和 Rsocket 实现了长连接 RPC 调用和推送来减少服务节点间的 HTTP 通信压力，同时还新增一个链接层来将不同类型不同来源的 Request 请求转化为相同语意的功能数据结果，复用业务处理逻辑，此时流量控制和负载均衡等功能也会在链接层处理。</p>
 </section>
     <!-- Tags START -->
     
@@ -241,17 +206,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2024/02/21/mq/">
+      <a class="nav-left" href="/2024/02/24/zookeeper/">
         <span class="nav-arrow">← </span>
         
-          Message Queue
+          Zookeeper
         
       </a>
     
     
-      <a class="nav-right" href="/2024/02/26/nacos/">
+      <a class="nav-right" href="/2024/03/09/elastic-search/">
         
-          Nacos
+          ElasticSearch
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -285,7 +250,7 @@
   
       
           <strong class="toc-title">OUTLINE</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%84%E6%88%90"><span class="toc-nav-text">主要组成</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">选举机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">数据结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">分布式锁</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#AP-CP"><span class="toc-nav-text">AP+CP</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%98%E5%8C%96"><span class="toc-nav-text">配置变化</span></a></li></ol>
       
   
   </div>
@@ -296,7 +261,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2024/02/24/zookeeper/';
+    var url = 'http://example.com/2024/02/26/nacos/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({

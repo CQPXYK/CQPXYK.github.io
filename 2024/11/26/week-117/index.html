@@ -10,7 +10,7 @@
   
   <title>
     
-      Zookeeper | CQ&#39;s Blog
+      2024.11.25 - 2024.11.29 | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -176,8 +176,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Zookeeper</h2>
-  <!--<p class="post-date">2024-02-24</p>
+  <h2>2024.11.25 - 2024.11.29</h2>
+  <!--<p class="post-date">2024-11-26</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>-->
@@ -185,54 +185,18 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Zookeeper 是最早流行的开源分布式协调服务框架之一，提供了分布式配置中心的功能，以顺序一致性著称（CP 设计），可以用于分布式配置管理、分布式同步、命名服务、集群管理、Master 选举、分布式协调服务、服务注册与发现、负载均衡等应用场景。</p>
-<h1 id="主要组成"><a href="#主要组成" class="headerlink" title="主要组成"></a>主要组成</h1><p>Zookeeper 中的主要组成部分有</p>
-<ul>
-<li><p>领导者（leader），负责进行投票的发起和决议，更新系统状态，为客户端提供读写服务，只有 leader 可以进行写操作</p>
-</li>
-<li><p>跟随者（follower），用于接收客户端的请求并响应客户端返回结果，在选举时参与投票，为客户端提供读服务</p>
-</li>
-<li><p>观察者（Observer），可以接收客户端连接，将写请求转发给 leader，但不参与选举投票，只同步 leader 状态，作用在于扩展系统，提高读取速度</p>
-</li>
-<li><p>客户端（client），请求发起方</p>
-</li>
-</ul>
-<h1 id="选举机制"><a href="#选举机制" class="headerlink" title="选举机制"></a>选举机制</h1><p>Zookeeper 会在集群启动阶段以及 leader 失效时通过选举机制来确保 Zookeeper 集群中有一个 leader 节点，从而协调和处理客户端请求，选举机制是实现 Zookeeper 分布式协调一致性的核心，Zookeeper 中的每个 follower 节点都可以成为 leader。</p>
-<p>一次完整的选举大概要经历以下步骤</p>
-<ul>
-<li><p>初始化，所有 follower 节点都处于 looking 状态，每个节点都会监视集群中的其他节点，以侦听 leader 选举消息</p>
-</li>
-<li><p>提名，当一个节点启动时，会向其他节点发送投票请求（称为提名）</p>
-</li>
-<li><p>改投，节点收到其他节点的提名后可以选择投票改投这个节点，也可以不投票，每个节点只能在一个选举周期内投一票</p>
-</li>
-</ul>
-<p>Zookeeper 以事务 ID（zxid）来标识数据的新旧程度（zxid 越大代表节点的数据越新），以数据的新旧程度来标识节点的能力强弱（数据越新代表节点的能力越强）。在投票过程中，节点首先会认为自己最强，先投自己一票并将投票信息（包含了自己的事务 ID zxid 和唯一标识节点自身的 sid）广播出去，当节点接收到其他节点的投票信息时，会将其他节点的 zxid 和自身对比，若其他节点的 zxid 更大，则改投其他节点。</p>
-<p>选举过程有多个轮次，每个轮次是一个选举周期，在每个选举周期中，节点根据投票来选择新的 leader 候选，如果一个候选节点获得了超过半数的投票，那么就成为新的 leader，如果没有候选节点成为 leader，那么这个选举周期失败，所有节点会继续进行下一个选举周期。</p>
-<p>一旦一个节点成为 leader，会开始处理客户端请求并向其他节点发送 leader 就绪信息，告知其他节点自己成为 leader，其他节点会与新 leader 同步数据（也包括同步未完成的客户端请求），确保所有节点在一个一致的状态下运行。</p>
-<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p>Zookeeper 中的数据以目录结构的形式存储，每一个存储数据的节点都称为 ZNode</p>
-<ul>
-<li><p>ZNode 不支持部分读写，需要一次性完整读写，每个 ZNode 都有一个唯一的路径标识，每个 ZNode 都可以有子 ZNode（和目录类似），ZNode 中可以存储数据和状态信息</p>
-</li>
-<li><p>ZNode 有 PERSISTENT（持久节点）、PERSISTENT_SEQUENTIAL（持久的连续节点）、EPHEMERAL（临时节点）、EPHEMERAL_SEQUENTIAL（临时的连续节点）这种四种类型，ZNode 的类型在创建时确定并不能修改</p>
-</li>
-<li><p>持久节点会在创建后一直存在，直到有删除操作来主动清除该持久节点，而临时节点的生命周期与客户端会话绑定，一旦客户端会话失效，那么该临时节点就会自动被清除，临时节点不能有子节点，顺序节点在创建时会自动加上编号</p>
-</li>
-<li><p>每个 ZNode 都可以配置监视器来监听 ZNode 以及子 ZNode 中的数据和状态变化，一旦这些状态发生变化，服务器就会通知这个 ZNode 上的所有子 ZNode 的监视器，使得每个客户端都能很快知道它所关注的目录节点的变化，从而迅速做出反应</p>
-</li>
-</ul>
-<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><p>基于 Zookeeper 的临时有序节点可以实现分布式锁，当多个客户端尝试对某个方法加锁时，Zookeeper 的 leader 节点为每个客户端在该方法对应的指定节点的目录下（并发）创建与客户端相对应的临时有序节点，有序节点中序号最小的那个节点会获得锁，删除这个临时节点即可释放锁</p>
-<ul>
-<li><p>如果获取到锁的客户端宕机，那么该临时会被自动删除，即自动解锁，因此可以避免服务宕机导致的分布式锁无法释放问题</p>
-</li>
-<li><p>当一个客户端通过删除临时节点来释放锁之后，下一个节点序号最小的客户端就可以继续获得锁，因此可以实现阻塞的分布式锁</p>
-</li>
-<li><p>客户端可以判断自身是否已经获得锁来区分是更改锁的重入次数还是创建新的临时有序节点，因此可以实现可重入的分布式锁</p>
-</li>
-<li><p>Zookeeper 实现的分布式锁在创建和释放时涉及到节点的创建和销毁，这种操作只能通过 leader 节点来执行，然后将数据同步到 follower 节点上，因此性能会差于基于缓存的分布式锁</p>
-</li>
-</ul>
-</section>
+    <section class="markdown-content"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="42c4e0c8ba25cd65cabee0194650d3922716877afea204142b5e097c1c6b728d">a99f2d1cd7f89812758242c57c62a59fe859e32cc19116fcceb1abacce500da0960986acd07eddb3568f524414b51feeece7ac81b079ce40859f0fe181909dd39a14cfdb6fc748ae8f3486c9193aa826079aa40266af79cbe66c6905da24dde336730238b26bfba5741f584cc6c503bb0717d78a91b11e7ff2db6f00f500c3ec947965624cabd26ed8a38f16b21fc6a2cd08a74537ada8660e57effa84da27cb9461df56ded572647ddc995a1a23e641d380e4f6dc853500db79592978faf58f00cf3b16bd2286f3b8fe2515bd21b0bd3c897b8d7298a29a1a811dbec5d6df60a93361798acab6a8a1c0d179d2c960a130b356a173b78cc9300cda8c4ffdf333db9a5582f7fb2e3ecf933a1ce66754203a7befd2d30535ab258d41a8e635e8524b21a5a27864d3114301e153e8048f3051ab65e6ce505059043103f494ecc8cc05da67a152d094bd73dedb103d4748c3526897685f19a07145959bb7d7c68f87b49a7f2798a8531ff7866f77c18b3931e4a33d77148af6a52f8194c7335f4707afdf3f8a1108ff61b7d4238e051cca016a06338129129f915d9f0241e8a2d9849ef38e230e218b350ec7c7b8b7fd24510729006512b4ae09581506f58a84e60e4a58ac74fa685c612371b44dd211cbaff449b9f59b3a15e385907c8b6555b5ff8ae9b000610fcc73722f87f33f26e2e664583b14653deaeb77b443c22beba7e012b9a0e0fc43f6249f5bc0e468bdc0dd1411ca04cb2c29043365739cf988b49bae185ccfc1a5a7497cd530a5f7f3db1ae4196d0fbac1673661b1f4a97ce1f4146cf54d5fd13cab65f7d8dbc32aaa48d9ae5828ec42596c09f2639b6e516b683f5fb49fc7d426ebe4da8a716e1373147bfbbd1ecd6cb770ac466349d9340f5fe43990979cfff3b6e7da6e15df361e6181ab344010f2fd05639cd60fd6f3a447c78460d91ecb997325255fc8a0458c324ce1dce0920fbe4e7b241c101c057961836bbd036b3f4ee19d4e188b9b696b0ac0fa780aa1ea1a6ee96c9b0a405629ff76031246bbee8d4cde6b894c25c2778df53f26196e36e85f36b31c1d2a7d6c7de6fce453841cf2484bed45bab3ef9646e12e2f6a316549eb0f095ffabf9a408012fe2fe5f20a52abd056aa7cb0653fc545a725c8f3881558040c92357cc2304a69541de15b65ba30ccd3aac4c328bc8554560145a6b0bfd668aac84af9edb9b5c33fa1067b5deefb779726dbcae87851f09be820e8562b4d571b070b237072a2b847c0afb694ff23785fa8e9b40e2774bb9d4ae780f7d379e68c74bb360d9c2921783e60c923aacbd34848a4aba120a91c2723d4dc57afd852e9b378a7b1683088b5eeeaeda616adb082ec388208c0da31be6ecf35a305f3c054fa115b4e0d315907cd8a28251c76b6a014e857c3120a8bc42346f11f86dd83b67b9d6e7f351ba36905a8c81beab25b2b44b15c01d5af7c4ff8c096dd354d9b676b8eac69927574cad7935ba836ad80a129cb8a8da8b56a5a039af1755ee9f3394413301d20c5e358f057c7c340291e00491748d37d4001a833ac386f77f631e84124df9d5b230650484fd45207eb916b3c29a929df64b87c55b6013492a26ca8a98a575ed63e20210960a0ecdc557697b3d679dbd7d7ce9e2902a30a949854728c9bf50dccf866794ef6d32c371ccf92eca0a78fab53f048790c258c2695a7e250584b81647e97febbb28b5837364ae2775b407b1f36572c408a639cf1ec73d473a808a663e9bf751480407ca4fca157428043f4105fbb1af58867b9df5db8564f0e3dafaeb859b909b99ccea2e451ae74334dfc28e6d188c18677cd0cc34236d155ff6c02c2fc5fe543374b8c4a8e084f88709449730cb01c05bcd5379fbce967cc75d485cb00b3b130710fe5d39c7561b89294830403be9537aa3fa29a9671a9b4e3a1f70df41603f50546bd17f50bb01e2b98d32f07acdcaeb50ebbc9fcc4bf36bba92eec5e8425902566e4d75437ffdc98bb043d095a8a76fcdd00cd9e8be15a2cd725448336d76708c6836076458c4a4f3fa65be71dba9fec3bf323c2d01ddbceec4c52cb98098eb60b4477fa16f67e7a1eead71cb596888f23571df537d4a416a8ac459190af614c2445fa4645f7f7856d802aca761aa75aa9f35784ce4a341755ed3407c36b648ea8bf0cb57a0d7a7c12f95c56b109575265f732c5c0cffa11f154f36def7ae73a7a222f09f0354e5cd0b2c066677d65938d1c2aaaba0e31242f35a60d20415c4f8e0051316009976bdb6b53e5731b2f0c805a8e10a3e5b0be7233dfcfcd4d77a4fc490ab50da7def7ff7a6eb8bf09231c1bda94deaf05a3160c9e8401b820eb5fd01394999aad577083610dc48d65344f1f6ab90b7e91138723d177ae25c25a33e99dc2a37dd576579561498823a1d297804087896c72b5411b13bfb7ed65b074538d69f118a9c25db5d0ec2f1293787e0957746025afbece2131a05bd4b425889dd0bb432da4f25e24c47982421a53a3d4ba3dcfca46f6e68145cd68b8c4168c8340521e58ee044cfe30f2d48f8e2981032e96babc5bcc6aa9253bee5fffe8e18200bc80b938fc76dcc27f21ec025801ec3c77315ec1aa507dda7b60893379724ccc4d768099be9510b03ccae7d8e08f29ec20d5437677d881f3fc30cacb7244287721a28145ccacb561b4c7d8e950f202342279d95c1d8340281b73b701cf434c43d7ea6e5f8598f04dc7822db88053bb8d3c54c5fd0467b4d53bf6347c8036d57e7d7ebcbcc0b98c5bae1ed39e445be3b5d9d7b103166ae6ab22d5184ce9a6350fe438fb8928e243c5fdf0a13417777d23bec7a7123cd062580348b4a8b64a95ab978fb4924cb9af6e754fe009c68c8dde29d6e941a5edd62ed97fc933d2fd686d250641e24225ab51649d5c40368a378bdccc19ff9a491c5e66222a53ee5a34204fe1dedd969a1bea5255f4bfa813626b3e9b95772832f1e28bbae0515099d9e56312e2b53e53d4c40dc1ce7d5c3716e15870586a0a6a57cc6b61e8cd620cec17281f374927372c2c124e6a713f89a35a56caa17ce61f672a360e2bd9b8b8aa19f14ab5cca16fa8c7f180d9e342e0899cba136fce24c6e498066f71015e85cf5dd5d70aefe4e45e1987656f86feeb31ced60afd43cb8434ca797585cd21d041371ef99e1044ff887316c3b372d0f3c450fc96c73044c1a7cd16305942437d9b9249df76089723e2bf5ecfa2d51f3a22ab7517af4b4d0e9711307d3c963d2faa0073434d9ca0c0cad6109730af4d16e9813a1ec4c43c363e9d10c1b43c607796f651092aaa8040eacb072f0c4de09e264c63c32bdb3742ffc6d1105c925cfff36da55fd0cbfa4efb9d891cf51dbace693abff7078b485d0c2731a7847d2c2b50de21b35567408db9ccf0a3cbfdd33a0928a89c567219ca2ea95585101a962f514892a9ab597f459bba8642e758adffb3a776c6f7f23ddd5aeeadb67a18e4215a362cbcdfdca10bcddc5c667d0605834e8d59e217903bf1e1237d61aac1b27045caaca3528fea996f42b0b0e2bd3b3ce5f90f438f306cab0dbc29fea3c334ea7291e172242ea313866ce1306ba7a50e2234eee94a4d7fad8e484b64f8566195b39b118a09e04b73dba7a8d7e1e4dbe5a99de7e096210bae792c8b2124edcd9383220ceb42fb842275208fdd2152e8f05ad79ab60b6ba0ae42322930e93ceea25757b2ffc7fea83890a414d080d69d5f9b516ae03c4ec52664f020967b27d47d2b81f1370c744d6c45fb6f334c2f8855f2be4c850e9a57423b5a32fe87fdb379241c94c982ef22f6d45370005eefefc57af035edf952767cbba7f02bf5c8723cbe760dcf6534632c6a2aab3640276e7d9cc7aa67e1d24c362c06ee0957ac7317c47d288ddc7ff670e75f7161e8484c1f8367c1f2acecfdc96922449eb0c189929ad1b6d4191530bb89b05e40abac43457ad7ad710011baf1e066e61c59769fb14f585871cefde564a9333cdb37b0709131c19792eb4e35c1e36dcf003265264776b58af63b86609f7fb331fceca649f75a6be75b91f749fddedb14f9</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css"></section>
     <!-- Tags START -->
     
     <!-- Tags END -->
@@ -241,17 +205,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2024/02/21/mq/">
+      <a class="nav-left" href="/2024/10/18/week-111/">
         <span class="nav-arrow">← </span>
         
-          Message Queue
+          2024.10.14 - 2024.10.18
         
       </a>
     
     
-      <a class="nav-right" href="/2024/02/26/nacos/">
+      <a class="nav-right" href="/2024/12/09/risk-of-internet-lending/">
         
-          Nacos
+          互联网信贷风险与大数据
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -285,7 +249,7 @@
   
       
           <strong class="toc-title">OUTLINE</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%84%E6%88%90"><span class="toc-nav-text">主要组成</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">选举机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">数据结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">分布式锁</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1%E3%80%81%E8%AF%95%E7%94%A8%E6%9C%9F%E7%9B%AE%E6%A0%87"><span class="toc-nav-text">1、试用期目标</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-%E4%B8%9A%E5%8A%A1%E6%A2%B3%E7%90%86"><span class="toc-nav-text">1.1 业务梳理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-%E9%9C%80%E6%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-nav-text">1.2 需求实现</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-%E5%B7%A5%E5%85%B7%E5%B9%B3%E5%8F%B0"><span class="toc-nav-text">1.3 工具平台</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2%E3%80%81%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="toc-nav-text">2、补充说明</span></a></li></ol>
       
   
   </div>
@@ -296,7 +260,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2024/02/24/zookeeper/';
+    var url = 'http://example.com/2024/11/26/week-117/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({

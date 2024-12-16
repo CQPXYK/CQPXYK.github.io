@@ -10,7 +10,7 @@
   
   <title>
     
-      Zookeeper | CQ&#39;s Blog
+      2024.8.19 - 2024.8.23 | CQ&#39;s Blog
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -176,8 +176,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Zookeeper</h2>
-  <!--<p class="post-date">2024-02-24</p>
+  <h2>2024.8.19 - 2024.8.23</h2>
+  <!--<p class="post-date">2024-08-22</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>-->
@@ -185,54 +185,18 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Zookeeper 是最早流行的开源分布式协调服务框架之一，提供了分布式配置中心的功能，以顺序一致性著称（CP 设计），可以用于分布式配置管理、分布式同步、命名服务、集群管理、Master 选举、分布式协调服务、服务注册与发现、负载均衡等应用场景。</p>
-<h1 id="主要组成"><a href="#主要组成" class="headerlink" title="主要组成"></a>主要组成</h1><p>Zookeeper 中的主要组成部分有</p>
-<ul>
-<li><p>领导者（leader），负责进行投票的发起和决议，更新系统状态，为客户端提供读写服务，只有 leader 可以进行写操作</p>
-</li>
-<li><p>跟随者（follower），用于接收客户端的请求并响应客户端返回结果，在选举时参与投票，为客户端提供读服务</p>
-</li>
-<li><p>观察者（Observer），可以接收客户端连接，将写请求转发给 leader，但不参与选举投票，只同步 leader 状态，作用在于扩展系统，提高读取速度</p>
-</li>
-<li><p>客户端（client），请求发起方</p>
-</li>
-</ul>
-<h1 id="选举机制"><a href="#选举机制" class="headerlink" title="选举机制"></a>选举机制</h1><p>Zookeeper 会在集群启动阶段以及 leader 失效时通过选举机制来确保 Zookeeper 集群中有一个 leader 节点，从而协调和处理客户端请求，选举机制是实现 Zookeeper 分布式协调一致性的核心，Zookeeper 中的每个 follower 节点都可以成为 leader。</p>
-<p>一次完整的选举大概要经历以下步骤</p>
-<ul>
-<li><p>初始化，所有 follower 节点都处于 looking 状态，每个节点都会监视集群中的其他节点，以侦听 leader 选举消息</p>
-</li>
-<li><p>提名，当一个节点启动时，会向其他节点发送投票请求（称为提名）</p>
-</li>
-<li><p>改投，节点收到其他节点的提名后可以选择投票改投这个节点，也可以不投票，每个节点只能在一个选举周期内投一票</p>
-</li>
-</ul>
-<p>Zookeeper 以事务 ID（zxid）来标识数据的新旧程度（zxid 越大代表节点的数据越新），以数据的新旧程度来标识节点的能力强弱（数据越新代表节点的能力越强）。在投票过程中，节点首先会认为自己最强，先投自己一票并将投票信息（包含了自己的事务 ID zxid 和唯一标识节点自身的 sid）广播出去，当节点接收到其他节点的投票信息时，会将其他节点的 zxid 和自身对比，若其他节点的 zxid 更大，则改投其他节点。</p>
-<p>选举过程有多个轮次，每个轮次是一个选举周期，在每个选举周期中，节点根据投票来选择新的 leader 候选，如果一个候选节点获得了超过半数的投票，那么就成为新的 leader，如果没有候选节点成为 leader，那么这个选举周期失败，所有节点会继续进行下一个选举周期。</p>
-<p>一旦一个节点成为 leader，会开始处理客户端请求并向其他节点发送 leader 就绪信息，告知其他节点自己成为 leader，其他节点会与新 leader 同步数据（也包括同步未完成的客户端请求），确保所有节点在一个一致的状态下运行。</p>
-<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p>Zookeeper 中的数据以目录结构的形式存储，每一个存储数据的节点都称为 ZNode</p>
-<ul>
-<li><p>ZNode 不支持部分读写，需要一次性完整读写，每个 ZNode 都有一个唯一的路径标识，每个 ZNode 都可以有子 ZNode（和目录类似），ZNode 中可以存储数据和状态信息</p>
-</li>
-<li><p>ZNode 有 PERSISTENT（持久节点）、PERSISTENT_SEQUENTIAL（持久的连续节点）、EPHEMERAL（临时节点）、EPHEMERAL_SEQUENTIAL（临时的连续节点）这种四种类型，ZNode 的类型在创建时确定并不能修改</p>
-</li>
-<li><p>持久节点会在创建后一直存在，直到有删除操作来主动清除该持久节点，而临时节点的生命周期与客户端会话绑定，一旦客户端会话失效，那么该临时节点就会自动被清除，临时节点不能有子节点，顺序节点在创建时会自动加上编号</p>
-</li>
-<li><p>每个 ZNode 都可以配置监视器来监听 ZNode 以及子 ZNode 中的数据和状态变化，一旦这些状态发生变化，服务器就会通知这个 ZNode 上的所有子 ZNode 的监视器，使得每个客户端都能很快知道它所关注的目录节点的变化，从而迅速做出反应</p>
-</li>
-</ul>
-<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><p>基于 Zookeeper 的临时有序节点可以实现分布式锁，当多个客户端尝试对某个方法加锁时，Zookeeper 的 leader 节点为每个客户端在该方法对应的指定节点的目录下（并发）创建与客户端相对应的临时有序节点，有序节点中序号最小的那个节点会获得锁，删除这个临时节点即可释放锁</p>
-<ul>
-<li><p>如果获取到锁的客户端宕机，那么该临时会被自动删除，即自动解锁，因此可以避免服务宕机导致的分布式锁无法释放问题</p>
-</li>
-<li><p>当一个客户端通过删除临时节点来释放锁之后，下一个节点序号最小的客户端就可以继续获得锁，因此可以实现阻塞的分布式锁</p>
-</li>
-<li><p>客户端可以判断自身是否已经获得锁来区分是更改锁的重入次数还是创建新的临时有序节点，因此可以实现可重入的分布式锁</p>
-</li>
-<li><p>Zookeeper 实现的分布式锁在创建和释放时涉及到节点的创建和销毁，这种操作只能通过 leader 节点来执行，然后将数据同步到 follower 节点上，因此性能会差于基于缓存的分布式锁</p>
-</li>
-</ul>
-</section>
+    <section class="markdown-content"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="1fa5fdf289c5c08866129ec23148ac014d6661cab02a1cb991b6d2adfd28c74f">a99f2d1cd7f89812758242c57c62a59fe859e32cc19116fcceb1abacce500da0960986acd07eddb3568f524414b51fee93e64e1446d7a2242b98f99a300cc3c482380c7b912cd308ad435a77bbaca12516fb79065f0e43a217779a7ad15550b9240d7c7a1e6a7df04fdee4d4594fd0cdc2e1dd3040fc3da21e9a760552388cac192bc54f34022f4c880419191ce42e472033377d5038f89e5d3bfcf8e04c4e31d555db3f959b32ae11ae22db7d6e34fd7f3cea1662cff149e8a80fcf1de65495bdcf733c36db200e261cce1218b11b3eb5efb740aff62ea6b85189dfc9a6869f56ee3e21055e7d89b8aeba5d2b3b83604ac292523e7dbb0f569075b1db71a57c31b005868175b687baae9e2dde683b2172b3d0ba30442b458fc7eb883619c2c48e43d7c34c9259df3925f910f252592abf5940628231cddb63acbb0fb1b3c82d254726d9bb53d02d9ed96aa9dea93d7677e73d1713f7f3c8e5ff28a1888f7062af3ca0f6cf7df53e6a2aa4f249a99c4740c360736cae6f1c4f1f804fd1695270cb55307d1d04e0f5bdfd90376a9d326e3238815ea803cbba8c290453372d5c6583bf2af20dda553c7199bd59b855e28ce0da8b0e7b6947ba83424a830391e8c0706e128314d707efbc531376970913e4756bc3ac0be37d1a7fc6fbbc898e7d04a171029744e0d4e638e2dbaee53ef65bff0424ea0b307a3301735f31d437af0ab7857989e8df98a9a0d814fc381778b3144a7947abc7f8ccd1406597e3f5d6e39c639ef696f6a9594dbfb9ef50718b13a02d68ce78119b85045b8b964ea6a660c0e1172385edfb1e5e3f47eb2286d938148d998d25c6ea88d83715ec844e4fadcf262c3bdd6e75e440cfbad95b4d2e7fedfdd5ad22807e043dae88c54200aae78f9ce068aef7876b2aea6c5cb197d569105e05b272596bf31d9b849d544ff836c8dccded619d538fc2a2e13d60834c487279c920294327310fa35fa64879a778acbe1d527dacf263dde9b609425d14dcc3bebda00f034dcbb61aa0d406e344167e3f7d11ccd5a4af8e95fb64fbee4750549ea95e4c8e96dadb0fac4241b118e2f444813e7472021fe985f25ac6f8b29f20910a2d291f9292dcd66bfb7f4e8928e6ad41c8e259027e43969cfa627036cc9388517498402048f8868848d6a8b2ec4e8fd99c388317701f22316c6ddc7b5366673ce5e6c957ded37f0305e3f84669ad44ce674fb7a54afec32786c0f867285a6667558ce7fb931bc0d6e768cf165964869f46056394cfa9395831625ca1f4634d7fd97ae5d52a9781b4a4b1afca0a9a1ff053e6a9cab447d5d7cee06f9e7068060c3a6fdf053e01619e675a13e86b3d8507bf01f093532c2bd2df55884b2f39501c4761f09d0cc7496ecc9b0513b6a6f6b0748f4fc3159af3f923ff7144753cb2e6b10c0278b6d30f59c8d59dee07b34096ed79ca30b72aa290a486362dd4e8bfcf33d5bb1c55ce385ce7d64579532704d7c258f4127b8f6f76eee6f7e9adc631a276e998162e1c5c60b918eee3b543731f35dd8cc49ee1b6da6e513bf49d3c5b8fbe58420f8b318c88488bc3604eaef20e58e12d1e0e7d6e09eae2c15a48f6abbe7fe171f0e2c0893c4cf117f50fb34fdfee82abd1a52014083da0c541dc8a3eb8c0ee3e42c7ea10a418fcd3ab1c6c68719d0519bef909cf719e39449f128679448730ad8b8c6c66bb1be0993db76dda1ce200e55918a658624da4e4a588c71ab78637397a7585fad7b42a0219a0b1f91a45b8bd7bf4216f9c232bb01d02521dee223be7d2c88269a8febf849f162d9eba2de0ebf2a1202c22159f04fea6464c49d4bca4474d47f4c3a93d3a0e8584dc6072c53e49c2ee2b37d4f1cb4eea4ab6beefb51c76009671c33488388a2f6f6ea07b0eb74e9b3ce004fcc4417961a4b91b793f26babb60b4bce666e035048490e72bf2d5f709a250e8604328d9052255d7e88cdf73b22cfafb9c38b7f4e93444b4aa8f54d38b64985bd623594979f1dce2551418a09d5067b6707557c66e85424600ca1a8869cabc16cb6d2bd1f6fbfe3519ff1ccfe7e4c3c578af789d2b46e8e7edcea31bd0594a8f9587cba14ede27fa933296d03c5b192aef91a55818d9bb42b31d0b7e40376fb3a523de0730c48acb0db1e6201faa80ab2757adb360723dd22c73b03d73d4e39ddfbc74d7f3eec59064261c57e73083812b9a2515bae45a10f9ccf451a23f0cbbea2fd9163d816ca8d76394631a9c21ec6528378535b162402e08a0a779f1bc2d01808833677461c8f60abc864bc1801b34f7eb2290067625f63109bff85623a59760cc4edba31ef52a8a480f809eae973d15fff4436a87d00de33de464ef091010208ffe0072fd4485476a8335e2d03323102d714b9fe8a44905b482c2d531023295900ece7e08ada0595fa60b10a509768e482535753156a491a08bc9fff1567960b1fe35fd0f4e9cbc0e73893e223b278c7657141f8ba436e99cc6d149bc3a1f65bc2ba1b0dc480b8f7f16b69b571a6499510e63b25bb552c9e427fa4b4fce57f11cc99eeb21ed1d2b23ba4cc91aa0246643ae82286c03c1d2ab5b26f453cde9b5d61716efd3f8a972eefd7bf7faa568a9861e0d944b983e60f5f76213a65a5044e525831dd27f228dd95e6c2a44424b851daaaedcf9368deba084e69572962d6100cb090a8f5ef9b1177d755b9e30cf320162a3b16eff07158337a78f09c860fe9d3e0ce805e61aac63385496d98431a1c5b61192a131b6eeeea7b5cb254215581135709c2f8b5b515f0d9f0e6dfc657996450f076d62e07246cd78dce7585f18cc285eb099dbd3f5dca639635a781942579ba5a2aab623d9ab4c684d8731b1990f88d5394dc42672a6bbf4abed58900917eaea19a472929737024071cede6e186fbb0ad8d56c27d2ee8ea0508eb31333a5d72325d89ad52861f07624b5735fa85f0a54ecebf7eae7368561196d03f950991858bd03ff0886863e32f9780270389b9218e7a4631e47a4dfcc42e4792178c1b2d131ab274981bf1dbc4b63d73f7c5ae66576939e867153b2196cc9276650823ca5de81e33e39710170abf5617f75d5a0a51f0a27e0a4cc05b017600da8c77a527870283eaa34af752d162dc6451e9c31d245822311f51c0cc4c543e342323b0f23ca916adf881d08dc0d49f47c1c1c593bd52160d046c9031220e2e08abf1f5e4f17be7b67aa52f7a1ba52238cdae6972744b1fc7c87d089c70b825dd9f4b6f579</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css"></section>
     <!-- Tags START -->
     
     <!-- Tags END -->
@@ -241,17 +205,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2024/02/21/mq/">
+      <a class="nav-left" href="/2024/06/10/overall/">
         <span class="nav-arrow">← </span>
         
-          Message Queue
+          Overall -
         
       </a>
     
     
-      <a class="nav-right" href="/2024/02/26/nacos/">
+      <a class="nav-right" href="/2024/10/18/week-111/">
         
-          Nacos
+          2024.10.14 - 2024.10.18
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -285,7 +249,7 @@
   
       
           <strong class="toc-title">OUTLINE</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%84%E6%88%90"><span class="toc-nav-text">主要组成</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-nav-text">选举机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-nav-text">数据结构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-nav-text">分布式锁</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Liquibase-vs-Flyway"><span class="toc-nav-text">Liquibase vs Flyway</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-text">参考</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E9%99%84%E5%BD%95"><span class="toc-nav-text">附录</span></a></li></ol>
       
   
   </div>
@@ -296,7 +260,7 @@
 
 <script>
   (function () {
-    var url = 'http://example.com/2024/02/24/zookeeper/';
+    var url = 'http://example.com/2024/08/22/week-103/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
