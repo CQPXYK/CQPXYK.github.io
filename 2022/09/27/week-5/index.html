@@ -247,10 +247,10 @@
     <aside class="catalog-container">
   <div class="toc-main">
   
-      
-          <strong class="toc-title">OUTLINE</strong>
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%BD%E5%8F%AF%E8%83%BD%E7%9A%84%E4%B8%8D%E4%BF%AE%E6%94%B9%E7%8E%B0%E6%9C%89%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%8F%AA%E6%89%A9%E5%B1%95%E6%96%B0%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">尽可能的不修改现有代码，只扩展新代码</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%BD%E5%8F%AF%E8%83%BD%E9%81%BF%E5%85%8D%E9%80%9A%E8%BF%87%E5%BC%82%E5%B8%B8%E6%9D%A5%E5%A4%84%E7%90%86%E6%AD%A3%E5%B8%B8%E7%9A%84%E9%80%BB%E8%BE%91%E6%A3%80%E6%9F%A5"><span class="toc-nav-text">尽可能避免通过异常来处理正常的逻辑检查</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#annotation%E5%92%8C-within"><span class="toc-nav-text">@annotation和@within</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A7%8B%E7%BB%88%E8%80%83%E8%99%91%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">始终考虑异常</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A7%8B%E7%BB%88%E9%81%BF%E5%85%8D%E5%88%87%E9%9D%A2%E5%BD%B1%E5%93%8D%E5%8E%9F%E6%9C%AC%E7%9A%84%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91"><span class="toc-nav-text">始终避免切面影响原本的业务逻辑</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A7%8B%E7%BB%88%E5%86%99%E5%BF%AB%E9%80%9F%E7%9A%84%E5%8D%95%E6%B5%8B"><span class="toc-nav-text">始终写快速的单测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-nav-text">写在最后</span></a></li></ol>
-      
+<!--        -->
+<!--           <strong class="toc-title">OUTLINE</strong> -->
+<!--           <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%BD%E5%8F%AF%E8%83%BD%E7%9A%84%E4%B8%8D%E4%BF%AE%E6%94%B9%E7%8E%B0%E6%9C%89%E4%BB%A3%E7%A0%81%EF%BC%8C%E5%8F%AA%E6%89%A9%E5%B1%95%E6%96%B0%E4%BB%A3%E7%A0%81"><span class="toc-nav-text">尽可能的不修改现有代码，只扩展新代码</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%BD%E5%8F%AF%E8%83%BD%E9%81%BF%E5%85%8D%E9%80%9A%E8%BF%87%E5%BC%82%E5%B8%B8%E6%9D%A5%E5%A4%84%E7%90%86%E6%AD%A3%E5%B8%B8%E7%9A%84%E9%80%BB%E8%BE%91%E6%A3%80%E6%9F%A5"><span class="toc-nav-text">尽可能避免通过异常来处理正常的逻辑检查</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#annotation%E5%92%8C-within"><span class="toc-nav-text">@annotation和@within</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A7%8B%E7%BB%88%E8%80%83%E8%99%91%E5%BC%82%E5%B8%B8"><span class="toc-nav-text">始终考虑异常</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A7%8B%E7%BB%88%E9%81%BF%E5%85%8D%E5%88%87%E9%9D%A2%E5%BD%B1%E5%93%8D%E5%8E%9F%E6%9C%AC%E7%9A%84%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91"><span class="toc-nav-text">始终避免切面影响原本的业务逻辑</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A7%8B%E7%BB%88%E5%86%99%E5%BF%AB%E9%80%9F%E7%9A%84%E5%8D%95%E6%B5%8B"><span class="toc-nav-text">始终写快速的单测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-nav-text">写在最后</span></a></li></ol> -->
+<!--        -->
   
   </div>
 </aside>
@@ -319,7 +319,7 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    &copy; 2025 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
     <br>
     Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
     

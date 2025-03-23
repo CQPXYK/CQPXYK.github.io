@@ -1202,62 +1202,62 @@
 <td>Ex 模式</td>
 </tr>
 <tr>
-<td><code>h</code>：光标左移一个字符</td>
-<td>PageDn/Ctrl+F：下翻一屏</td>
-<td><code>q</code>：如果未修改缓冲区数据则退出</td>
+<td><code>h</code> 光标左移一个字符</td>
+<td>PageDn/Ctrl+F 下翻一屏</td>
+<td><code>:q</code> 如果未修改缓冲区数据则退出</td>
 </tr>
 <tr>
-<td><code>j</code>：光标下移一个行</td>
-<td>PageUp/Ctrl+B：上翻一屏</td>
-<td><code>q!</code>：放弃对缓冲区数据的所有修改并退出</td>
+<td><code>j</code> 光标下移一个行</td>
+<td>PageUp/Ctrl+B 上翻一屏</td>
+<td><code>:q!</code> 放弃对缓冲区数据的所有修改并退出</td>
 </tr>
 <tr>
-<td><code>k</code>：光标上移一行</td>
-<td><code>G</code>：移到缓冲区的最后一行</td>
-<td><code>w filename</code>：将文件另存为其他名称</td>
+<td><code>k</code> 光标上移一行</td>
+<td><code>G</code> 移到缓冲区的最后一行</td>
+<td><code>:w filename</code> 将文件另存为其他名称</td>
 </tr>
 <tr>
-<td><code>l</code>/Backspace：光标右移一个字符</td>
-<td><code>num G</code>：移到缓冲区的第<code>num</code>行</td>
-<td><code>wq</code>：将缓冲区数据保存到文件中并退出</td>
+<td><code>l</code>/Backspace 光标右移一个字符</td>
+<td><code>num G</code> 移到缓冲区的第<code>num</code>行</td>
+<td><code>:wq</code> 将缓冲区数据保存到文件中并退出</td>
 </tr>
 <tr>
-<td>方向键：在文本区域移动光标</td>
-<td><code>gg</code>：移到缓冲区的第一行</td>
-<td><code>:s/old/new/g</code>：替换当前行内出现的所有<code>old</code></td>
+<td>方向键 在文本区域移动光标</td>
+<td><code>gg</code> 移到缓冲区的第一行</td>
+<td><code>:s/old/new/g</code> 替换当前行内出现的所有<code>old</code></td>
 </tr>
 <tr>
-<td><code>x</code>/delete：删除光标当前所在位置的字符</td>
-<td><code>u</code>：撤销上一个编辑命令</td>
-<td><code>:n, ms/old/new/g</code>：替换第<code>n</code>行和第<code>m</code>之间出现的所有<code>old</code></td>
+<td><code>x</code>/delete 删除光标当前所在位置的字符</td>
+<td><code>u</code> 撤销上一个编辑命令</td>
+<td><code>:n, ms/old/new/g</code> 替换第<code>n</code>行和第<code>m</code>之间出现的所有<code>old</code></td>
 </tr>
 <tr>
-<td><code>dd</code>：删除光标当前所在行</td>
-<td><code>a</code>：在光标当前位置后追加数据</td>
-<td><code>:%s/old/new/g</code>：替换整个文件中出现的所有<code>old</code></td>
+<td><code>dd</code> 删除光标当前所在行</td>
+<td><code>a</code> 在光标当前位置后追加数据</td>
+<td><code>:%s/old/new/g</code> 替换整个文件中出现的所有<code>old</code></td>
 </tr>
 <tr>
-<td><code>dw</code>：删除光标当前所在位置的单词</td>
-<td><code>A</code>：在光标当前位置所在行结尾追加数据</td>
-<td><code>:%s/old/new/gc</code>：替换整个文件中出现的所有<code>old</code>，并在每次替换时提示</td>
+<td><code>dw</code> 删除光标当前所在位置的单词</td>
+<td><code>A</code> 在光标当前位置所在行结尾追加数据</td>
+<td><code>:%s/old/new/gc</code> 替换整个文件中出现的所有<code>old</code>，并在每次替换时提示</td>
 </tr>
 <tr>
-<td><code>d$</code>：删除光标当前所在位置至行尾的内容</td>
-<td><code>r char</code>：用<code>char</code>替换光标当前所在位置的单个字符</td>
+<td><code>d$</code> 删除光标当前所在位置至行尾的内容</td>
+<td><code>r char</code> 用<code>char</code>替换光标当前所在位置的单个字符</td>
 <td></td>
 </tr>
 <tr>
-<td><code>J</code>：删除光标当前所在行结尾的换行符（合并行）</td>
-<td><code>R text</code>：用<code>text</code>覆盖光标当前所在位置的内容</td>
+<td><code>J</code> 删除光标当前所在行结尾的换行符（合并行）</td>
+<td><code>R text</code> 用<code>text</code>覆盖光标当前所在位置的内容</td>
 <td></td>
 </tr>
 <tr>
-<td><code>yw</code>：复制一个单词</td>
-<td><code>p</code>：粘贴上一次被删除/复制的文本，可以与任何删除/复制文本的命令搭配使用</td>
+<td><code>yw</code> 复制一个单词</td>
+<td><code>p</code> 粘贴上一次被删除/复制的文本，可以与任何删除/复制文本的命令搭配使用</td>
 <td></td>
 </tr>
 <tr>
-<td><code>y$</code>：复制到行尾</td>
+<td><code>y$</code> 复制到行尾</td>
 <td></td>
 <td></td>
 </tr>
@@ -1532,7 +1532,7 @@
 </div>
     <footer class="app-footer">
   <p class="copyright">
-    &copy; 2024 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    &copy; 2025 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
     <br>
     Theme by <a target="_blank" rel="noopener" href="https://github.com/yanm1ng">yanm1ng</a>
     
